@@ -1,0 +1,80 @@
+datasets:
+  - dataset_id: dem_copernicus_30m
+    dataset_name: Copernicus DEM
+    publisher: Copernicus
+    license: Copernicus License
+    resolution: 30m
+    access_type: gee
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/COPERNICUS_DEM_GLO30
+    dataset_type: elevation
+    type: numeric_raster
+    assets:
+      visual_tiles:
+        url_template: []
+      value_tiles:
+        url_template: []
+      download:
+        cog_url: []
+      metadata:
+        url: []
+    description: Global digital elevation model used for terrain indicators.
+
+  - dataset_id: esa_worldcover_10m
+    dataset_name: ESA WorldCover
+    publisher: ESA
+    license: CC BY 4.0
+    resolution: 10m
+    access_type: gee
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/ESA_WorldCover_v200
+    dataset_type: land_cover
+    type: categorical_raster
+    assets:
+      visual_tiles:
+        url_template: []
+      value_tiles:
+        url_template: []
+      download:
+        cog_url: []
+      metadata:
+        url: []
+    description: Global land cover baseline for impervious and ecosystem indicators.
+
+  - dataset_id: worldpop_population
+    dataset_name: WorldPop Population Density
+    publisher: WorldPop
+    license: CC BY 4.0
+    resolution: 100m
+    access_type: manual_download
+    source_url: https://www.worldpop.org
+    dataset_type: population
+    type: numeric_raster
+    assets:
+      visual_tiles:
+        url_template: []
+      value_tiles:
+        url_template: []
+      download:
+        cog_url: []
+      metadata:
+        url: []
+    description: Population distribution raster used for exposure analysis.
+
+  - dataset_id: osm_building_footprints
+    dataset_name: OSM Building Footprints
+    publisher: OpenStreetMap Contributors
+    license: ODbL 1.0
+    resolution: vector
+    access_type: public_api
+    source_url: https://www.openstreetmap.org
+    dataset_type: buildings
+    type: vector
+    assets:
+      visual_tiles:
+        url_template: []
+      value_tiles:
+        url_template: []
+      download:
+        cog_url: []
+      metadata:
+        url: []
+    description: Building geometries used to derive building density and built exposure.

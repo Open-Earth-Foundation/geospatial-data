@@ -1,0 +1,153 @@
+layers:
+  - layer_id: slope
+    layer_name: Slope
+    layer_type: derived_indicator
+    analytical_level: 1
+    category: terrain
+    source_datasets:
+      - dem_copernicus_30m
+    dependencies: []
+    transformation_script: transformation/dem/compute_slope.py
+    output_format: cog
+    s3_path: []
+    description: Terrain slope derived from DEM.
+
+  - layer_id: flow_accumulation
+    layer_name: Flow Accumulation
+    layer_type: derived_indicator
+    analytical_level: 1
+    category: hydrology
+    source_datasets:
+      - dem_copernicus_30m
+    dependencies: []
+    transformation_script: transformation/dem/compute_flow_accumulation.py
+    output_format: cog
+    s3_path: []
+    description: Upslope contributing area proxy derived from elevation.
+
+  - layer_id: population_density
+    layer_name: Population Density
+    layer_type: derived_indicator
+    analytical_level: 1
+    category: exposure
+    source_datasets:
+      - worldpop_population
+    dependencies: []
+    transformation_script: transformation/exposure/compute_population_density.py
+    output_format: cog
+    s3_path: []
+    description: Population density raster normalized for exposure scoring.
+
+  - layer_id: building_density
+    layer_name: Building Density
+    layer_type: derived_indicator
+    analytical_level: 1
+    category: exposure
+    source_datasets:
+      - osm_building_footprints
+    dependencies: []
+    transformation_script: transformation/exposure/compute_building_density.py
+    output_format: cog
+    s3_path: []
+    description: Built footprint density indicator.
+
+  - layer_id: canopy_cover_pct
+    layer_name: Canopy Cover Percentage
+    layer_type: derived_indicator
+    analytical_level: 1
+    category: ecosystem
+    source_datasets:
+      - modis_ndvi
+      - esa_worldcover_10m
+    dependencies: []
+    transformation_script: transformation/ecosystem/compute_canopy_cover.py
+    output_format: cog
+    s3_path: []
+    description: Vegetation canopy proxy used for cooling and ecosystem analysis.
+
+  - layer_id: flood_hazard
+    layer_name: Flood Hazard
+    layer_type: hazard
+    analytical_level: 2
+    category: flood
+    source_datasets: []
+    dependencies:
+      - flow_accumulation
+      - slope
+      - canopy_cover_pct
+    transformation_script: transformation/hazard/compute_flood_hazard.py
+    output_format: cog
+    s3_path: []
+    description: Composite flood hazard index combining terrain and land-surface proxies.
+
+  - layer_id: heat_hazard
+    layer_name: Heat Hazard
+    layer_type: hazard
+    analytical_level: 2
+    category: heat
+    source_datasets:
+      - era5_temperature
+    dependencies:
+      - canopy_cover_pct
+      - building_density
+    transformation_script: transformation/hazard/compute_heat_hazard.py
+    output_format: cog
+    s3_path: []
+    description: Composite heat hazard using temperature baseline and urban form indicators.
+
+  - layer_id: exposure_score
+    layer_name: Exposure Score
+    layer_type: exposure
+    analytical_level: 2
+    category: exposure
+    source_datasets: []
+    dependencies:
+      - population_density
+      - building_density
+    transformation_script: transformation/exposure/compute_exposure_score.py
+    output_format: cog
+    s3_path: []
+    description: Combined exposure index for people and built assets.
+
+  - layer_id: cooling_capacity
+    layer_name: Cooling Capacity
+    layer_type: ecosystem_function
+    analytical_level: 2
+    category: ecosystem
+    source_datasets: []
+    dependencies:
+      - canopy_cover_pct
+      - esa_worldcover_10m
+    transformation_script: transformation/ecosystem/compute_cooling_capacity.py
+    output_format: cog
+    s3_path: []
+    description: Ecosystem cooling function proxy used for NbS opportunity screening.
+
+  - layer_id: composite_risk
+    layer_name: Composite Risk
+    layer_type: risk
+    analytical_level: 3
+    category: risk
+    source_datasets: []
+    dependencies:
+      - flood_hazard
+      - heat_hazard
+      - exposure_score
+    transformation_script: transformation/decision/compute_composite_risk.py
+    output_format: cog
+    s3_path: []
+    description: Final risk index combining hazard intensity and exposure.
+
+  - layer_id: nbs_opportunity_zones
+    layer_name: NbS Opportunity Zones
+    layer_type: decision_output
+    analytical_level: 3
+    category: decision
+    source_datasets: []
+    dependencies:
+      - composite_risk
+      - cooling_capacity
+    transformation_script: transformation/decision/compute_nbs_opportunity_zones.py
+    output_format: pmtiles
+    s3_path: []
+    description: Priority intervention zones where ecosystem actions can reduce risk.
