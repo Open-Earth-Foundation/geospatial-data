@@ -64,6 +64,12 @@ Each dataset entry should include:
 - `access_type` (`gee`, `manual_download`, `public_api`, `internal_storage`)
 - `source_url`
 - `dataset_type`
+- `type` (`categorical_raster`, `numeric_raster`, `vector`)
+- `assets`
+  - `visual_tiles.url_template`
+  - `value_tiles.url_template` (optional)
+  - `download.cog_url`
+  - `metadata.url`
 - `description`
 
 Why it exists:
@@ -71,6 +77,7 @@ Why it exists:
 - track provenance
 - preserve reproducibility
 - document upstream dependencies
+- define API-ready asset locations for fast client integration
 
 ### `collections/`
 
