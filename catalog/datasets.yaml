@@ -1,4 +1,28 @@
 datasets:
+  - dataset_id: dynamic_world_30m
+    dataset_name: Dynamic World V1 
+    publisher: World Resources Institute Google
+    license: CC-BY 4.0
+    resolution: 10m
+    access_type: gee
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/GOOGLE_DYNAMICWORLD_V1#description
+    dataset_type: land_cover
+    type: categorical_raster
+    assets:
+      visual_tiles:
+        url_template:
+          - https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/land_use/dynamic_world/V1/2023/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template:
+          - https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/land_use/dynamic_world/V1/2023/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url:
+          - https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/land_use/dynamic_world/V1/2023/land_use_cog.tif
+      metadata:
+        url:
+          - https://geo-test-api.s3.amazonaws.com/nbs/porto_alegre/land_use/v2026-03-06/metadata.json
+    description: Versioned categorical land-use raster exposed by the test API for Porto Alegre.
+    
   - dataset_id: dem_copernicus_30m
     dataset_name: Copernicus DEM
     publisher: Copernicus
