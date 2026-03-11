@@ -1,0 +1,26 @@
+collections:
+  - id: transport
+    name: Transport
+    datasets:
+      - poa_gtfs
+
+  - id: land_cover
+    name: Land cover
+    datasets:
+      - dynamic_world_30m
+      - esa_worldcover_10m
+
+  - id: elevation
+    name: Elevation
+    datasets:
+      - dem_copernicus_30m
+
+  - id: population
+    name: Population
+    datasets:
+      - worldpop_population
+
+  - id: buildings
+    name: Buildings
+    datasets:
+      - osm_building_footprints

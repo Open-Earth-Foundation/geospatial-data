@@ -102,3 +102,22 @@ datasets:
       metadata:
         url: []
     description: Building geometries used to derive building density and built exposure.
+
+  - dataset_id: poa_gtfs
+    dataset_name: GTFS Porto Alegre
+    publisher: EPTC (Empresa Pública de Transporte e Circulação)
+    license: CC BY 4.0
+    resolution: vector
+    crs: EPSG:4326
+    access_type: manual_download
+    source_url: https://dadosabertos.poa.br/dataset/gtfs
+    dataset_type: transport
+    type: vector
+    assets:
+      bus_routes:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/poa-gtfs/release/2024-10-01/shapes.geojson
+      bus_stops:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/poa-gtfs/release/2024-10-01/stops.geojson
+    description: >
+      General Transit Feed Specification (GTFS) for Porto Alegre bus transit.
+      Includes routes, stops, shapes, and schedules.

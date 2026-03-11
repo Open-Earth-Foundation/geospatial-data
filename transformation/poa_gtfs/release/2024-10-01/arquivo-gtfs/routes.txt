@@ -1,0 +1,396 @@
+route_id,agency_id,route_short_name,route_long_name,route_desc,route_type,route_url,route_color,route_text_color
+1112,EPTC,1112,Hipica/Tristeza,,3,https://linhas.eptc.com.br,FF0000,000000
+176,EPTC,176,Serraria (Rodoviaria),,3,https://linhas.eptc.com.br,FF0000,000000
+188,EPTC,188,Assuncao,,3,https://linhas.eptc.com.br,FF0000,000000
+211,EPTC,211,Restinga Velha,,3,https://linhas.eptc.com.br,FF0000,000000
+216,EPTC,216,Restinga Gloria,,3,https://linhas.eptc.com.br,FF0000,000000
+253,EPTC,253,Renascenca,,3,https://linhas.eptc.com.br,FF0000,000000
+2531,EPTC,2531,Renascença/ Retorno Via Ipiranga,,3,https://linhas.eptc.com.br,FF0000,000000
+2541,EPTC,2541,Embratel-canudos-cascatinha,,3,https://linhas.eptc.com.br,FF0000,000000
+2632,EPTC,2632,Orfanotrofio/Azenha,,3,https://linhas.eptc.com.br,FF0000,000000
+266,EPTC,266,Vila Nova,,3,https://linhas.eptc.com.br,FF0000,000000
+268,EPTC,268,Belem Novo(Via Cavalhada),,3,https://linhas.eptc.com.br,FF0000,000000
+2741,EPTC,2741,Gloria/Cascatinha/Azenha,,3,https://linhas.eptc.com.br,FF0000,000000
+2802,EPTC,2802,Otto/Hps/3ª Perimetral,,3,https://linhas.eptc.com.br,FF0000,000000
+2812,EPTC,2812,Campo Novo/Gedeon Leite,,3,https://linhas.eptc.com.br,FF0000,000000
+2815,EPTC,2815,Campo Novo Via Jorge Pereira Nunes,,3,https://linhas.eptc.com.br,FF0000,000000
+282,EPTC,282,Cruzeiro Do Sul,,3,https://linhas.eptc.com.br,FF0000,000000
+283,EPTC,283,Ipanema / Cavalhada,,3,https://linhas.eptc.com.br,FF0000,000000
+3441,EPTC,3441,Santa Maria/Clemente Pereira,,3,https://linhas.eptc.com.br,008000,000000
+360,EPTC,360,I P E,,3,https://linhas.eptc.com.br,008000,000000
+3945,EPTC,3945,Mapa/Quinta Do Portal/Via Ipiranga,,3,https://linhas.eptc.com.br,008000,000000
+397,EPTC,397,Bonsucesso,,3,https://linhas.eptc.com.br,008000,000000
+3974,EPTC,3974,Bonsucesso/Santa Helena,,3,https://linhas.eptc.com.br,008000,000000
+439,EPTC,439,Sao Manoel,,3,https://linhas.eptc.com.br,008000,000000
+4911,EPTC,4911,Passo Dorneles /V. Safira/Jd Protasio Alves,,3,https://linhas.eptc.com.br,008000,000000
+4943,EPTC,4943,Rubem Berta/Protásio/Circular No Bairro,,3,https://linhas.eptc.com.br,008000,000000
+496,EPTC,496,Jardim Protasio Alves/Passo Dorneles,,3,https://linhas.eptc.com.br,008000,000000
+497,EPTC,497,Mario Quintana,,3,https://linhas.eptc.com.br,008000,000000
+610,EPTC,610,Minuano,,3,https://linhas.eptc.com.br,0000FF,000000
+615,EPTC,615,Sarandi,,3,https://linhas.eptc.com.br,0000FF,000000
+617,EPTC,617,Iguatemi,,3,https://linhas.eptc.com.br,0000FF,000000
+661,EPTC,661,Leopoldina,,3,https://linhas.eptc.com.br,0000FF,000000
+665,EPTC,665,Planalto/Sabará,,3,https://linhas.eptc.com.br,0000FF,000000
+671,EPTC,671,Carlos Gomes / Salso,,3,https://linhas.eptc.com.br,008000,000000
+721,EPTC,721,Nova Gleba-santa Rosa/Sertorio,,3,https://linhas.eptc.com.br,0000FF,000000
+731,EPTC,731,Parque Dos Maias / Sertorio,,3,https://linhas.eptc.com.br,0000FF,000000
+7311,EPTC,7311,Parque Dos Maias/Cairú Via Sertório,,3,https://linhas.eptc.com.br,0000FF,000000
+861,EPTC,861,Leopoldina / Cairu,,3,https://linhas.eptc.com.br,0000FF,000000
+A66,EPTC,A66,Alimentadora 3 Meninas,,3,https://linhas.eptc.com.br,FF0000,000000
+A70,EPTC,A70,Alimentadora Extrema,,3,https://linhas.eptc.com.br,FF0000,000000
+A81,EPTC,A81,Alimentadora Campo Novo/Cavalhada,,3,https://linhas.eptc.com.br,FF0000,000000
+A876,EPTC,A876,Escolar/Gedeon Leite,,3,https://linhas.eptc.com.br,FF0000,000000
+A97,EPTC,A97,Alimentadora Jardim Protasio Alves,,3,https://linhas.eptc.com.br,008000,000000
+A971,EPTC,A971,Alimentadora J. P. Alves/Escolar,,3,https://linhas.eptc.com.br,008000,000000
+A991,EPTC,A991,Quirinas/Passo Da Batalha (Circular Alimentadora),,3,https://linhas.eptc.com.br,008000,000000
+B091,EPTC,B091,Aeroporto/Industrias/Iguatemi/Anchieta,,3,https://linhas.eptc.com.br,0000FF,000000
+B51,EPTC,B51,Parque / Postao Iapi/H Conceicao,,3,https://linhas.eptc.com.br,0000FF,000000
+B55,EPTC,B55,Protasio/Humaita,,3,https://linhas.eptc.com.br,0000FF,000000
+C2,EPTC,C2,Circular Praca Xv,,3,https://linhas.eptc.com.br,008000,000000
+C31,EPTC,C31,Circular Urca/Sabados/Domingos/Feriados,,3,https://linhas.eptc.com.br,CC7722,000000
+D67,EPTC,D67,Lami Via Belem Novo/Direta,,3,https://linhas.eptc.com.br,FF0000,000000
+D70,EPTC,D70,Diretao/Santa Rosa,,3,https://linhas.eptc.com.br,0000FF,000000
+M31,EPTC,M31,Corujao Assis Brasil/Baltazar,,3,https://linhas.eptc.com.br,0000FF,000000
+M52,EPTC,M52,Corujao - Assis Brasil / Protasio,,3,https://linhas.eptc.com.br,0000FF,000000
+R1,EPTC,R1,Rapida / Jardim Vila Nova,,3,https://linhas.eptc.com.br,FF0000,000000
+R101,EPTC,R101,Rápida Restinga Nova/Cavalhada/Domingos,,3,https://linhas.eptc.com.br,FF0000,000000
+R68,EPTC,R68,Rapida Belem Novo(Via Cavalhada),,3,https://linhas.eptc.com.br,FF0000,000000
+T1,EPTC,T1,Transversal 1,,3,https://linhas.eptc.com.br,CC7722,000000
+T6,EPTC,T6,Transversal 6,,3,https://linhas.eptc.com.br,CC7722,000000
+A288,EPTC,A288,Alim. Dorival Castilhos/Imperial Parque/Morro Alto,,3,https://linhas.eptc.com.br,FF0000,000000
+A265,EPTC,A265,Alimentadora/Jardim Medianeira,,3,https://linhas.eptc.com.br,FF0000,000000
+4924,EPTC,4924,Petrópolis/Sesc (Mob),,3,https://linhas.eptc.com.br,0000FF,000000
+2572,EPTC,2572,Paulino Azurenha/Azenha/Cascatinha (Via Leste),,3,https://linhas.eptc.com.br,008000,000000
+6372,EPTC,6372,Chacara Das Pedras Via Iapi,,3,https://linhas.eptc.com.br,0000FF,000000
+7053,EPTC,7053,Aeroporto/Ceasa/Fecomercio,,3,https://linhas.eptc.com.br,0000FF,000000
+O662,EPTC,O662,Orla Rubem Berta,,3,https://linhas.eptc.com.br,0000FF,000000
+2552,EPTC,2552,Caldre Fiao/Paulino Azurenha,,3,https://linhas.eptc.com.br,008000,000000
+A63,EPTC,A63,Alim. Wenceslau Fontoura/Triangulo Circular,,3,https://linhas.eptc.com.br,0000FF,000000
+A631,EPTC,A631,Alim. Wenceslau Fontoura Até Triangulo,,3,https://linhas.eptc.com.br,0000FF,000000
+4411,EPTC,4411,Antonio De Carvalho/Beco Souza Costa,,3,https://linhas.eptc.com.br,008000,000000
+7042,EPTC,7042,Humaita/Ernesto Neugebauer,,3,https://linhas.eptc.com.br,0000FF,000000
+25612,EPTC,25612,Nazareth (Mais),,3,https://linhas.eptc.com.br,008000,000000
+43312,EPTC,43312,Vila Jardim (Mob),,3,https://linhas.eptc.com.br,0000FF,000000
+43322,EPTC,43322,Vila Jardim Via Gasômetro Domingos (Mob),,3,https://linhas.eptc.com.br,0000FF,000000
+1111,EPTC,1111,Restinga Velha(Tristeza)/Shopping,,3,https://linhas.eptc.com.br,FF0000,000000
+165,EPTC,165,Cohab,,3,https://linhas.eptc.com.br,FF0000,000000
+168,EPTC,168,Belem Novo(Via Tristeza),,3,https://linhas.eptc.com.br,FF0000,000000
+171,EPTC,171,Ponta Grossa,,3,https://linhas.eptc.com.br,FF0000,000000
+1715,EPTC,1715,Ponta Grossa/Escola Loureiro Da Silva,,3,https://linhas.eptc.com.br,FF0000,000000
+173,EPTC,173,Camaqua,,3,https://linhas.eptc.com.br,FF0000,000000
+1761,EPTC,1761,Serraria/Rodoviaria/Via Mendes Ouriques,,3,https://linhas.eptc.com.br,FF0000,000000
+250,EPTC,250,1 De Maio,,3,https://linhas.eptc.com.br,FF0000,000000
+254,EPTC,254,Embratel (Cascatinha),,3,https://linhas.eptc.com.br,FF0000,000000
+2621,EPTC,2621,Jardim V.nova(Cascatinha),,3,https://linhas.eptc.com.br,FF0000,000000
+264,EPTC,264,Prado,,3,https://linhas.eptc.com.br,FF0000,000000
+2733,EPTC,2733,Belem Novo/Hipica/Veludo(Via Schneider),,3,https://linhas.eptc.com.br,FF0000,000000
+2811,EPTC,2811,Campo Novo / Morro Agudo,,3,https://linhas.eptc.com.br,FF0000,000000
+2816,EPTC,2816,Campo Novo/Gedeon Leite/Domingos,,3,https://linhas.eptc.com.br,FF0000,000000
+2832,EPTC,2832,Ipanema/Cavalhada/Cirino Prunes,,3,https://linhas.eptc.com.br,FF0000,000000
+284,EPTC,284,Belem Velho (S.francisco)/Rincao/Betao,,3,https://linhas.eptc.com.br,FF0000,000000
+344,EPTC,344,Santa Maria,,3,https://linhas.eptc.com.br,008000,000000
+3944,EPTC,3944,Mapa Via Parada 4,,3,https://linhas.eptc.com.br,008000,000000
+3982,EPTC,3982,Pinheiro / Ate Terminal Azenha,,3,https://linhas.eptc.com.br,008000,000000
+3984,EPTC,3984,Pinheiro Via Vicosa,,3,https://linhas.eptc.com.br,008000,000000
+3987,EPTC,3987,Pinheiro/Lami-verao,,3,https://linhas.eptc.com.br,008000,000000
+429,EPTC,429,Protasio / Iguatemi / Vila Inga,,3,https://linhas.eptc.com.br,008000,000000
+4291,EPTC,4291,Protasio/Iguatemi/Cananeia,,3,https://linhas.eptc.com.br,008000,000000
+470,EPTC,470,Bom Jesus/Madri,,3,https://linhas.eptc.com.br,008000,000000
+4921,EPTC,4921,Petropolis/Vila Margarita,,3,https://linhas.eptc.com.br,008000,000000
+4934,EPTC,4934,Jardim Ypu/Petrópolis,,3,https://linhas.eptc.com.br,008000,000000
+4951,EPTC,4951,Manoel Elias/Morro Santana,,3,https://linhas.eptc.com.br,008000,000000
+614,EPTC,614,Leao/Porto Seco,,3,https://linhas.eptc.com.br,0000FF,000000
+621,EPTC,621,Nova Gleba/Santa Rosa,,3,https://linhas.eptc.com.br,0000FF,000000
+6321,EPTC,6321,N. Sra. De Fátima Via Santo Expedito,,3,https://linhas.eptc.com.br,0000FF,000000
+653,EPTC,653,Itu Coinma/Av Do Forte,,3,https://linhas.eptc.com.br,0000FF,000000
+659,EPTC,659,Inga,,3,https://linhas.eptc.com.br,0000FF,000000
+6611,EPTC,6611,Leopoldina (Chacara Da Fumaca),,3,https://linhas.eptc.com.br,0000FF,000000
+6612,EPTC,6612,Leopoldina/Noite,,3,https://linhas.eptc.com.br,0000FF,000000
+6651,EPTC,6651,Planalto/Sabara Via Jardim Europa,,3,https://linhas.eptc.com.br,0000FF,000000
+701,EPTC,701,Vila Farrapos/Voluntarios,,3,https://linhas.eptc.com.br,0000FF,000000
+7041,EPTC,7041,Humaita/A.j.renner/Dona Teodora,,3,https://linhas.eptc.com.br,0000FF,000000
+7271,EPTC,7271,Agostinho/Cairú Via Sertório,,3,https://linhas.eptc.com.br,0000FF,000000
+7621,EPTC,7621,Rubem Berta/Cairu Via Sertorio,,3,https://linhas.eptc.com.br,0000FF,000000
+855,EPTC,855,Protasio/Cairu,,3,https://linhas.eptc.com.br,0000FF,000000
+856,EPTC,856,Passo Das Pedras/Cairu,,3,https://linhas.eptc.com.br,0000FF,000000
+A09,EPTC,A09,Alim. Restinga Nova/Restinga Velha,,3,https://linhas.eptc.com.br,FF0000,000000
+A1,EPTC,A1,Alimentadora Escolar A1,,3,https://linhas.eptc.com.br,FF0000,000000
+A11,EPTC,A11,Alimentadora Chacara Do Banco,,3,https://linhas.eptc.com.br,FF0000,000000
+A360,EPTC,A360,Alimentadora Ipe,,3,https://linhas.eptc.com.br,008000,000000
+A671,EPTC,A671,Escolar Lami Ii,,3,https://linhas.eptc.com.br,FF0000,000000
+A74,EPTC,A74,Alimentadora Canta Galo/Extrema,,3,https://linhas.eptc.com.br,FF0000,000000
+A87,EPTC,A87,Aliment. Moradas Da Hipica/Costa Gama,,3,https://linhas.eptc.com.br,FF0000,000000
+A953,EPTC,A953,Alim Ch Das Peras/Q Do Portal/Ida,,3,https://linhas.eptc.com.br,008000,000000
+B01,EPTC,B01,Universitaria/Fapa,,3,https://linhas.eptc.com.br,0000FF,000000
+B011,EPTC,B011,Rubem Berta/Fiergs,,3,https://linhas.eptc.com.br,0000FF,000000
+B252,EPTC,B252,A. Feijo/Joao Paris/Humaita,,3,https://linhas.eptc.com.br,0000FF,000000
+E30,EPTC,E30,Fiergs/Assis Brasil,,3,https://linhas.eptc.com.br,0000FF,000000
+R62,EPTC,R62,Rapida Rubem Berta,,3,https://linhas.eptc.com.br,0000FF,000000
+T2,EPTC,T2,Transversal 2,,3,https://linhas.eptc.com.br,CC7722,000000
+T3,EPTC,T3,Transversal 3,,3,https://linhas.eptc.com.br,CC7722,000000
+A974,EPTC,A974,Alimentadora Jd. Protasio Alves/Alzira Rosa,,3,https://linhas.eptc.com.br,008000,000000
+6333,EPTC,6333,Costa E Silva/Leão,,3,https://linhas.eptc.com.br,0000FF,000000
+7032,EPTC,7032,Vila Farrapos/Arena,,3,https://linhas.eptc.com.br,0000FF,000000
+3462,EPTC,3462,Sao Jose/Santa Catarina,,3,https://linhas.eptc.com.br,008000,000000
+3763,EPTC,3763,Herdeiros/Sta Paula/Ant. De Carvalho/Alim.,,3,https://linhas.eptc.com.br,008000,000000
+4925,EPTC,4925,Petrópolis/Vila Margarita (Mob),,3,https://linhas.eptc.com.br,0000FF,000000
+3946,EPTC,3946,Q Do Portal/Mapa Ate Salgado Filho,,3,https://linhas.eptc.com.br,008000,000000
+A21,EPTC,A21,Alimentadora Nova Gleba/Sta Rosa,,3,https://linhas.eptc.com.br,0000FF,000000
+SD72,EPTC,SD72,Santa Rosa/Anchieta Semidireto,,3,https://linhas.eptc.com.br,0000FF,000000
+A25,EPTC,A25,Alimentadora A.feijo/Triangulo,,3,https://linhas.eptc.com.br,0000FF,000000
+5203,EPTC,5203,Triangulo 24 De Outubro Auxiliadora,,3,https://linhas.eptc.com.br,0000FF,000000
+4906,EPTC,4906,Morro Santana/Jardim Ypu,,3,https://linhas.eptc.com.br,008000,000000
+6102,EPTC,6102,Minuano/Lindoia/Sarandi,,3,https://linhas.eptc.com.br,0000FF,000000
+T111,EPTC,T111,3ª Perimetral/Ate Dr. Campos Velho,,3,https://linhas.eptc.com.br,CC7722,000000
+O171,EPTC,O171,Orla Ponta Grossa/Serraria,,3,https://linhas.eptc.com.br,FF0000,000000
+110,EPTC,110,Restinga Nova Via Tristeza,,3,https://linhas.eptc.com.br,FF0000,000000
+195,EPTC,195,T V,,3,https://linhas.eptc.com.br,FF0000,000000
+209,EPTC,209,Restinga,,3,https://linhas.eptc.com.br,FF0000,000000
+210,EPTC,210,Restinga Nova,,3,https://linhas.eptc.com.br,FF0000,000000
+2441,EPTC,2441,Santa Teresa/Via Mariano De Matos,,3,https://linhas.eptc.com.br,FF0000,000000
+251,EPTC,251,Alpes,,3,https://linhas.eptc.com.br,FF0000,000000
+263,EPTC,263,Orfanotrofio,,3,https://linhas.eptc.com.br,FF0000,000000
+2661,EPTC,2661,Vila Nova (Joao Salomoni),,3,https://linhas.eptc.com.br,FF0000,000000
+267,EPTC,267,Lami(Via Belem Novo),,3,https://linhas.eptc.com.br,FF0000,000000
+2675,EPTC,2675,Lami Até Cavalhada,,3,https://linhas.eptc.com.br,FF0000,000000
+2681,EPTC,2681,Belém Novo/Chapéu Do Sol,,3,https://linhas.eptc.com.br,FF0000,000000
+269,EPTC,269,Lami/Belem,,3,https://linhas.eptc.com.br,FF0000,000000
+272,EPTC,272,Moradas Da Hipica,,3,https://linhas.eptc.com.br,FF0000,000000
+273,EPTC,273,Belem Novo/Hipica,,3,https://linhas.eptc.com.br,FF0000,000000
+2731,EPTC,2731,Belem Novo/Hipica(Via Schneider),,3,https://linhas.eptc.com.br,FF0000,000000
+274,EPTC,274,Gloria/Azenha/Cascatinha,,3,https://linhas.eptc.com.br,FF0000,000000
+2813,EPTC,2813,Campo Novo/Morro Agudo/Domingos,,3,https://linhas.eptc.com.br,FF0000,000000
+2814,EPTC,2814,Campo Novo/Domingos,,3,https://linhas.eptc.com.br,FF0000,000000
+2821,EPTC,2821,Pereira Passos,,3,https://linhas.eptc.com.br,FF0000,000000
+2843,EPTC,2843,B. Velho(S.franciso)/Rincao/Betao Ate Azenha,,3,https://linhas.eptc.com.br,FF0000,000000
+T12,EPTC,T12,Restinga/Cairú,,3,https://linhas.eptc.com.br,CC7722,000000
+341,EPTC,341,Bento/Terminal Antônio De Carvalho,,3,https://linhas.eptc.com.br,008000,000000
+347,EPTC,347,Alameda,,3,https://linhas.eptc.com.br,008000,000000
+3943,EPTC,3943,Mapa / Via Ipiranga,,3,https://linhas.eptc.com.br,008000,000000
+3972,EPTC,3972,Bonsucesso / Ate Terminal Azenha,,3,https://linhas.eptc.com.br,008000,000000
+3986,EPTC,3986,Viçosa(Pinheiro),,3,https://linhas.eptc.com.br,008000,000000
+4292,EPTC,4292,Protasio/Iguatemi/Dez De Maio,,3,https://linhas.eptc.com.br,008000,000000
+491,EPTC,491,Passo Dorneles / Vila Safira,,3,https://linhas.eptc.com.br,008000,000000
+4971,EPTC,4971,Mario Quintana/Safira,,3,https://linhas.eptc.com.br,008000,000000
+520,EPTC,520,Triangulo/24 De Outubro,,3,https://linhas.eptc.com.br,0000FF,000000
+T13,EPTC,T13,Triângulo/Puc,,3,https://linhas.eptc.com.br,CC7722,000000
+605,EPTC,605,Jardim Sao Pedro,,3,https://linhas.eptc.com.br,0000FF,000000
+611,EPTC,611,Lindoia,,3,https://linhas.eptc.com.br,0000FF,000000
+624,EPTC,624,Sao Borja,,3,https://linhas.eptc.com.br,0000FF,000000
+650,EPTC,650,Av.do Forte/Itu Coinma,,3,https://linhas.eptc.com.br,0000FF,000000
+662,EPTC,662,Rubem Berta,,3,https://linhas.eptc.com.br,0000FF,000000
+6712,EPTC,6712,Carlos Gomes/Salso - Dom/Fer,,3,https://linhas.eptc.com.br,008000,000000
+704,EPTC,704,Humaita,,3,https://linhas.eptc.com.br,0000FF,000000
+727,EPTC,727,Agostinho/Sertorio,,3,https://linhas.eptc.com.br,0000FF,000000
+756,EPTC,756,Passo Das Pedras / Sertorio,,3,https://linhas.eptc.com.br,0000FF,000000
+761,EPTC,761,Leopoldina/Sertorio,,3,https://linhas.eptc.com.br,0000FF,000000
+7612,EPTC,7612,Leopoldina/Sertorio/Noite,,3,https://linhas.eptc.com.br,0000FF,000000
+762,EPTC,762,Rubem Berta (Sertorio),,3,https://linhas.eptc.com.br,0000FF,000000
+815,EPTC,815,Sarandi / Cairu,,3,https://linhas.eptc.com.br,0000FF,000000
+A141,EPTC,A141,Alimentadora Restinga/Lomba/5unidade,,3,https://linhas.eptc.com.br,FF0000,000000
+A16,EPTC,A16,Alim. Dorival C. Machado/Parque Lavoura /Rotula Serraria,,3,https://linhas.eptc.com.br,FF0000,000000
+A28,EPTC,A28,Escolar,,3,https://linhas.eptc.com.br,FF0000,000000
+A348,EPTC,A348,Jardim Bento Goncalves/Terminal Azenha,,3,https://linhas.eptc.com.br,008000,000000
+A60,EPTC,A60,Alim. Triangulo/A Brasil/Fiergs Ate F. Ferrari,,3,https://linhas.eptc.com.br,0000FF,000000
+A872,EPTC,A872,Alimentadora Hípica/Costa Gama,,3,https://linhas.eptc.com.br,FF0000,000000
+A993,EPTC,A993,Quirinas/P. Batalha/Circular/Escolar,,3,https://linhas.eptc.com.br,008000,000000
+B09,EPTC,B09,Aeroporto/Industrias/Iguatemi,,3,https://linhas.eptc.com.br,0000FF,000000
+B511,EPTC,B511,Parque/H Conceicao/Postao Iapi,,3,https://linhas.eptc.com.br,0000FF,000000
+B56,EPTC,B56,Passo Das Pedras / Aeroporto,,3,https://linhas.eptc.com.br,0000FF,000000
+C3,EPTC,C3,Circular Urca,,3,https://linhas.eptc.com.br,CC7722,000000
+C80,EPTC,C80,Circular Zona Sul,,3,https://linhas.eptc.com.br,FF0000,000000
+D13,EPTC,D13,Diretao/Elisabeth,,3,https://linhas.eptc.com.br,0000FF,000000
+D72,EPTC,D72,Diretao/Via Sta. Rosa,,3,https://linhas.eptc.com.br,0000FF,000000
+M10,EPTC,M10,Restinga Nova Via Velha/5 Unid/Noturna,,3,https://linhas.eptc.com.br,FF0000,000000
+R321,EPTC,R321,Rapida - Bonsucesso/Parada 13,,3,https://linhas.eptc.com.br,008000,000000
+R9,EPTC,R9,Rapida Hipica,,3,https://linhas.eptc.com.br,FF0000,000000
+T10,EPTC,T10,Triangulo/Antonio De Carvalho,,3,https://linhas.eptc.com.br,CC7722,000000
+T11,EPTC,T11,3ª Perimetral,,3,https://linhas.eptc.com.br,CC7722,000000
+T52,EPTC,T52,Transversal 5/Domingos,,3,https://linhas.eptc.com.br,CC7722,000000
+T7,EPTC,T7,Nilo/Praia De Belas,,3,https://linhas.eptc.com.br,CC7722,000000
+7052,EPTC,7052,Aeroporto/Ceasa,,3,https://linhas.eptc.com.br,0000FF,000000
+7151,EPTC,7151,Sarandi/Sertório,,3,https://linhas.eptc.com.br,0000FF,000000
+4944,EPTC,4944,Rubem Berta/Jardim Ypu,,3,https://linhas.eptc.com.br,008000,000000
+4332,EPTC,4332,Vila Jardim Via Gasômetro/Domingos,,3,https://linhas.eptc.com.br,008000,000000
+A161,EPTC,A161,Alim. Dorival C Machado/Imp. Parque/Rot. E Prado,,3,https://linhas.eptc.com.br,FF0000,000000
+A85,EPTC,A85,Alimentadora/Nonoai,,3,https://linhas.eptc.com.br,FF0000,000000
+3752,EPTC,3752,Agronomia/Ufrgs,,3,https://linhas.eptc.com.br,008000,000000
+C22,EPTC,C22,Circular Praca Xv/Orla,,3,https://linhas.eptc.com.br,008000,000000
+3443,EPTC,3443,Santa Maria/Vdt. Dona Leopoldina,,3,https://linhas.eptc.com.br,008000,000000
+43321,EPTC,43321,Vila Jardim Via Gasômetro Domingos (Via Leste),,3,https://linhas.eptc.com.br,008000,000000
+49232,EPTC,49232,Petrópolis/Sesc/Domingos (Mob),,3,https://linhas.eptc.com.br,0000FF,000000
+E378,EPTC,E378,Integradora,,3,https://linhas.eptc.com.br,FF0000,000000
+EM013,EPTC,EM013,Noite Dos Museus (Mais),,3,https://linhas.eptc.com.br,008000,000000
+1106,EPTC,1106,Restinga Nova Via Tristeza (Mais),,3,https://linhas.eptc.com.br,008000,000000
+4321,EPTC,4321,Carlos Gomes/Petrópolis (Mob),,3,https://linhas.eptc.com.br,0000FF,000000
+4382,EPTC,4382,Santana/Jardim Botanico,,3,https://linhas.eptc.com.br,008000,000000
+3947,EPTC,3947,Q Do Portal/Map/Pda 6,,3,https://linhas.eptc.com.br,008000,000000
+O491,EPTC,O491,Orla/Passo Dorneles,,3,https://linhas.eptc.com.br,008000,000000
+O627,EPTC,O627,Orla Agostinho,,3,https://linhas.eptc.com.br,0000FF,000000
+3953,EPTC,3953,Quinta Do Portal/Via Ipiranga,,3,https://linhas.eptc.com.br,008000,000000
+2576,EPTC,2576,Paulino Azurenha/Caldre Fiao,,3,https://linhas.eptc.com.br,008000,000000
+A48,EPTC,A48,Alimentadora Jardim Bento Goncalves,,3,https://linhas.eptc.com.br,008000,000000
+A20,EPTC,A20,Alimentadora Lami/Restinga Até Hospital,,3,https://linhas.eptc.com.br,FF0000,000000
+25611,EPTC,25611,Intendente Azevedo (Mais),,3,https://linhas.eptc.com.br,008000,000000
+25613,EPTC,25613,Nazareth/Intendente (Mais),,3,https://linhas.eptc.com.br,008000,000000
+A931,EPTC,A931,Alimentadora Escolar Ana Iris (Mob),,3,https://linhas.eptc.com.br,0000FF,000000
+49231,EPTC,49231,Petrópolis/Sesc/Domingos (Via Leste),,3,https://linhas.eptc.com.br,008000,000000
+4953,EPTC,4953,Manoel Elias/Morro Santana Via Teresilda Steffen,,3,https://linhas.eptc.com.br,008000,000000
+T112,EPTC,T112,3ª Perimetral/Até Vdt Eduardo Utzig,,3,https://linhas.eptc.com.br,CC7722,000000
+2726,EPTC,2726,Moradas Da Hipica/Via Costa Gama,,3,https://linhas.eptc.com.br,FF0000,000000
+EM011,EPTC,EM011,Noite Dos Museus (Mob),,3,https://linhas.eptc.com.br,0000FF,000000
+1102,EPTC,1102,Restinga Nova Via Tristeza/Barra Shopping,,3,https://linhas.eptc.com.br,FF0000,000000
+111,EPTC,111,Restinga Velha (Tristeza),,3,https://linhas.eptc.com.br,FF0000,000000
+1714,EPTC,1714,Ponta Grossa/Escola Odila Gay,,3,https://linhas.eptc.com.br,FF0000,000000
+179,EPTC,179,Serraria,,3,https://linhas.eptc.com.br,FF0000,000000
+184,EPTC,184,Juca Batista,,3,https://linhas.eptc.com.br,FF0000,000000
+1841,EPTC,1841,Juca Batista Via Oswaldo Cruz,,3,https://linhas.eptc.com.br,FF0000,000000
+2141,EPTC,2141,5ª Unidade/Escolar Ii,,3,https://linhas.eptc.com.br,FF0000,000000
+244,EPTC,244,Santa Teresa,,3,https://linhas.eptc.com.br,FF0000,000000
+2602,EPTC,2602,Belem Velho/J. Pessoa,,3,https://linhas.eptc.com.br,FF0000,000000
+262,EPTC,262,Jardim V. Nova,,3,https://linhas.eptc.com.br,FF0000,000000
+2672,EPTC,2672,Lami(Via Beco Da Vitoria),,3,https://linhas.eptc.com.br,FF0000,000000
+2693,EPTC,2693,Praia Operaçao Veraneio,,3,https://linhas.eptc.com.br,FF0000,000000
+2701,EPTC,2701,Grutinha Via Amapa,,3,https://linhas.eptc.com.br,FF0000,000000
+280,EPTC,280,Otto/Hps,,3,https://linhas.eptc.com.br,FF0000,000000
+2801,EPTC,2801,Otto/Hps/Sabados/Domingos/Feriados,,3,https://linhas.eptc.com.br,FF0000,000000
+281,EPTC,281,Campo Novo,,3,https://linhas.eptc.com.br,FF0000,000000
+286,EPTC,286,Belem Velho/Cristal/Ufrgs,,3,https://linhas.eptc.com.br,FF0000,000000
+289,EPTC,289,Rincao/Via Oscar Pereira,,3,https://linhas.eptc.com.br,FF0000,000000
+353,EPTC,353,Ipiranga / Puc / Ufrgs,,3,https://linhas.eptc.com.br,0000FF,000000
+361,EPTC,361,C E F E R,,3,https://linhas.eptc.com.br,008000,000000
+3762,EPTC,3762,Herdeiros/Esmeralda/Antônio De Carvalho/Alimentadora,,3,https://linhas.eptc.com.br,008000,000000
+395,EPTC,395,Quinta Do Portal/Salgado Filho,,3,https://linhas.eptc.com.br,008000,000000
+3973,EPTC,3973,Bonsucesso / Via Ipiranga,,3,https://linhas.eptc.com.br,008000,000000
+398,EPTC,398,Pinheiro,,3,https://linhas.eptc.com.br,008000,000000
+3981,EPTC,3981,Pinheiro/Parada 24,,3,https://linhas.eptc.com.br,008000,000000
+441,EPTC,441,Antonio De Carvalho,,3,https://linhas.eptc.com.br,008000,000000
+510,EPTC,510,Auxiliadora,,3,https://linhas.eptc.com.br,0000FF,000000
+613,EPTC,613,Elisabeth,,3,https://linhas.eptc.com.br,0000FF,000000
+620,EPTC,620,Iguatemi / V. Jardim,,3,https://linhas.eptc.com.br,0000FF,000000
+6201,EPTC,6201,Iguatemi / Elizabeth,,3,https://linhas.eptc.com.br,0000FF,000000
+627,EPTC,627,Agostinho,,3,https://linhas.eptc.com.br,0000FF,000000
+631,EPTC,631,Parque Dos Maias,,3,https://linhas.eptc.com.br,0000FF,000000
+633,EPTC,633,Costa E Silva,,3,https://linhas.eptc.com.br,0000FF,000000
+652,EPTC,652,Hospital,,3,https://linhas.eptc.com.br,0000FF,000000
+718,EPTC,718,Ilha Da Pintada,,3,https://linhas.eptc.com.br,0000FF,000000
+A14,EPTC,A14,Alimentadora Lomba/Restinga/5 Unidade,,3,https://linhas.eptc.com.br,008000,000000
+A53,EPTC,A53,Triangulo/Coinma/Av Do Forte,,3,https://linhas.eptc.com.br,0000FF,000000
+A62,EPTC,A62,Wenceslau Fontoura  (Alimentadora),,3,https://linhas.eptc.com.br,0000FF,000000
+A841,EPTC,A841,Alimentadora B.velho/S.fco/Rincao/Betao,,3,https://linhas.eptc.com.br,FF0000,000000
+A871,EPTC,A871,Alim.moradas Da Hipica Via Gedeon Leite,,3,https://linhas.eptc.com.br,FF0000,000000
+A875,EPTC,A875,Alimentadora Rua Do Schneider,,3,https://linhas.eptc.com.br,FF0000,000000
+A952,EPTC,A952,Alimentadora Pda 3/Ch. Das Peras/Pda 6,,3,https://linhas.eptc.com.br,008000,000000
+B02,EPTC,B02,Leopoldina/Aeroporto/Industrias,,3,https://linhas.eptc.com.br,0000FF,000000
+B022,EPTC,B022,Fapa/Aeroporto/Leopoldina,,3,https://linhas.eptc.com.br,0000FF,000000
+B251,EPTC,B251,A. Feijo/Humaita/Joao Paris,,3,https://linhas.eptc.com.br,0000FF,000000
+M68,EPTC,M68,Noturna (Belem Novo),,3,https://linhas.eptc.com.br,FF0000,000000
+R16,EPTC,R16,Rapida Restinga Nova/Gloria,,3,https://linhas.eptc.com.br,FF0000,000000
+R67,EPTC,R67,Rapida Lami Via Belem Novo,,3,https://linhas.eptc.com.br,FF0000,000000
+R81,EPTC,R81,Rapida Campo Novo,,3,https://linhas.eptc.com.br,FF0000,000000
+T1D,EPTC,T1D,T1 Direta,,3,https://linhas.eptc.com.br,CC7722,000000
+T22,EPTC,T22,Transversal 2/Domingos,,3,https://linhas.eptc.com.br,CC7722,000000
+T23,EPTC,T23,Transversal 2/Arena,,3,https://linhas.eptc.com.br,CC7722,000000
+T2A2,EPTC,T2A2,Transversal 2 (P Azurenha/Postao)/Domingos,,3,https://linhas.eptc.com.br,CC7722,000000
+T4,EPTC,T4,Transversal 4,,3,https://linhas.eptc.com.br,CC7722,000000
+T51,EPTC,T51,Transversal 5/Sabados/Feriados,,3,https://linhas.eptc.com.br,CC7722,000000
+T8,EPTC,T8,Campus / Farrapos,,3,https://linhas.eptc.com.br,CC7722,000000
+T9,EPTC,T9,Puc,,3,https://linhas.eptc.com.br,CC7722,000000
+A05,EPTC,A05,Alimentadora Terminal Trensurb/Industrias,,3,https://linhas.eptc.com.br,0000FF,000000
+4923,EPTC,4923,Petropolis/Sesc/Domingos,,3,https://linhas.eptc.com.br,008000,000000
+2573,EPTC,2573,Paulino Azurenha/Cascatinha/Azenha (Via Leste),,3,https://linhas.eptc.com.br,008000,000000
+A27,EPTC,A27,Alimentadora Agostinho,,3,https://linhas.eptc.com.br,0000FF,000000
+SD73,EPTC,SD73,Fernando Ferrari/Anchieta Semidireto,,3,https://linhas.eptc.com.br,0000FF,000000
+189,EPTC,189,Padre Reus/Liberal,,3,https://linhas.eptc.com.br,FF0000,000000
+A135,EPTC,A135,Alimentadora Elisabeth/Sarandi/Triangulo,,3,https://linhas.eptc.com.br,0000FF,000000
+4961,EPTC,4961,Jardim Protasio Alves,,3,https://linhas.eptc.com.br,008000,000000
+6276,EPTC,6276,Agostinho/Fiergs Ate F. Ferrari,,3,https://linhas.eptc.com.br,0000FF,000000
+A955,EPTC,A955,Alim Q Do Portal/Ch Das Peras/Volta,,3,https://linhas.eptc.com.br,008000,000000
+A632,EPTC,A632,Alim. Triângulo Até Wenceslau Fontoura,,3,https://linhas.eptc.com.br,0000FF,000000
+T44,EPTC,T44,Transversal 4 (Carnaval),,3,https://linhas.eptc.com.br,CC7722,000000
+1842,EPTC,1842,Juca Batista Via Hermes Pacheco,,3,https://linhas.eptc.com.br,FF0000,000000
+M681,EPTC,M681,Noturna Belem Novo/Campo Novo,,3,https://linhas.eptc.com.br,FF0000,000000
+43311,EPTC,43311,Vila Jardim (Via Leste),,3,https://linhas.eptc.com.br,008000,000000
+E703,EPTC,E703,Vila Farrapos,,3,https://linhas.eptc.com.br,0000FF,000000
+E178,EPTC,E178,Praia De Belas,,3,https://linhas.eptc.com.br,008000,000000
+1713,EPTC,1713,Linha Ponta Grossa Até Otto,,3,https://linhas.eptc.com.br,FF0000,000000
+1792,EPTC,1792,Serraria / Oswaldo Cruz,,3,https://linhas.eptc.com.br,FF0000,000000
+212,EPTC,212,Restinga / Lami,,3,https://linhas.eptc.com.br,FF0000,000000
+214,EPTC,214,5ª Unidade/Escolar,,3,https://linhas.eptc.com.br,FF0000,000000
+255,EPTC,255,Caldre Fiao,,3,https://linhas.eptc.com.br,008000,000000
+2601,EPTC,2601,Belem Velho (Cascatinha),,3,https://linhas.eptc.com.br,FF0000,000000
+2631,EPTC,2631,Orfanotrofio/Jardim Medianeira,,3,https://linhas.eptc.com.br,FF0000,000000
+2671,EPTC,2671,Lami/Varejao(Via Edgar Pires De Castro),,3,https://linhas.eptc.com.br,FF0000,000000
+270,EPTC,270,Grutinha,,3,https://linhas.eptc.com.br,FF0000,000000
+271,EPTC,271,Amapa,,3,https://linhas.eptc.com.br,FF0000,000000
+2721,EPTC,2721,Moradas Da Hipica(Costa Gama),,3,https://linhas.eptc.com.br,FF0000,000000
+2723,EPTC,2723,Hipica (Gedeon Leite),,3,https://linhas.eptc.com.br,FF0000,000000
+2732,EPTC,2732,Belem Novo/Hipica/Veludo,,3,https://linhas.eptc.com.br,FF0000,000000
+T12A,EPTC,T12A,Restinga Cairu/Via Bento,,3,https://linhas.eptc.com.br,CC7722,000000
+343,EPTC,343,Campus / Ipiranga,,3,https://linhas.eptc.com.br,CC7722,000000
+3442,EPTC,3442,Santa Maria/Iii Perimetral,,3,https://linhas.eptc.com.br,008000,000000
+345,EPTC,345,Santa Catarina,,3,https://linhas.eptc.com.br,008000,000000
+346,EPTC,346,Sao Jose,,3,https://linhas.eptc.com.br,008000,000000
+349,EPTC,349,São Caetano,,3,https://linhas.eptc.com.br,008000,000000
+3491,EPTC,3491,São Caetano/Venancio,,3,https://linhas.eptc.com.br,008000,000000
+375,EPTC,375,Agronomia/Informática,,3,https://linhas.eptc.com.br,008000,000000
+3942,EPTC,3942,Mapa/Quinta Do Portal/Ate Terminal Azenha,,3,https://linhas.eptc.com.br,008000,000000
+3951,EPTC,3951,Quinta Portal/Salg. Filho/Parada 6,,3,https://linhas.eptc.com.br,008000,000000
+3983,EPTC,3983,Pinheiro / Via Ipiranga,,3,https://linhas.eptc.com.br,008000,000000
+436,EPTC,436,Jardim Ipe,,3,https://linhas.eptc.com.br,008000,000000
+4381,EPTC,4381,Santana/Sábados,,3,https://linhas.eptc.com.br,008000,000000
+473,EPTC,473,Jardim Carvalho/Jardim Do Salso,,3,https://linhas.eptc.com.br,008000,000000
+476,EPTC,476,Petropolis / Puc,,3,https://linhas.eptc.com.br,008000,000000
+494,EPTC,494,Rubem Berta / Protasio,,3,https://linhas.eptc.com.br,008000,000000
+4942,EPTC,4942,Batista Flores / Rubem Berta,,3,https://linhas.eptc.com.br,008000,000000
+495,EPTC,495,Manoel Elias / Protasio,,3,https://linhas.eptc.com.br,008000,000000
+4952,EPTC,4952,Manoel Elias/Protasio Via Teresilda Steffen,,3,https://linhas.eptc.com.br,008000,000000
+525,EPTC,525,Rio Branco / Anita / Iguatemi,,3,https://linhas.eptc.com.br,008000,000000
+632,EPTC,632,Nossa Senhora De Fatima,,3,https://linhas.eptc.com.br,0000FF,000000
+6371,EPTC,6371,Chacara Das Pedras/Araruama,,3,https://linhas.eptc.com.br,0000FF,000000
+654,EPTC,654,Educandario Petropolis,,3,https://linhas.eptc.com.br,0000FF,000000
+656,EPTC,656,Passo Das Pedras / Fapa,,3,https://linhas.eptc.com.br,0000FF,000000
+702,EPTC,702,Bairro Anchieta,,3,https://linhas.eptc.com.br,0000FF,000000
+7611,EPTC,7611,Leopoldina/Sertorio (Chacara Da Fumaca),,3,https://linhas.eptc.com.br,0000FF,000000
+8612,EPTC,8612,Leopoldina/Cairu/Noite,,3,https://linhas.eptc.com.br,0000FF,000000
+862,EPTC,862,Rubem Berta (Cairu),,3,https://linhas.eptc.com.br,0000FF,000000
+A13,EPTC,A13,Sao Caetano (Alimentadora),,3,https://linhas.eptc.com.br,FF0000,000000
+A143,EPTC,A143,Alimentadora/Pitinga/Escolar,,3,https://linhas.eptc.com.br,008000,000000
+A15,EPTC,A15,Escola Tecnica Restinga/Hospital,,3,https://linhas.eptc.com.br,FF0000,000000
+A19,EPTC,A19,Hospital Restinga,,3,https://linhas.eptc.com.br,FF0000,000000
+A24,EPTC,A24,Sao Borja/Triangulo (Alimentadora),,3,https://linhas.eptc.com.br,0000FF,000000
+A33,EPTC,A33,Costa E Silva/Triangulo (Alimentadora),,3,https://linhas.eptc.com.br,0000FF,000000
+A621,EPTC,A621,Alimentadora Wenceslau Fontoura/Escolar,,3,https://linhas.eptc.com.br,0000FF,000000
+A67,EPTC,A67,Escolar Lami,,3,https://linhas.eptc.com.br,FF0000,000000
+A69,EPTC,A69,Alimentadora Canta Galo/Lami/Belem Novo,,3,https://linhas.eptc.com.br,FF0000,000000
+A86,EPTC,A86,Belem Velho/Cavalhada,,3,https://linhas.eptc.com.br,FF0000,000000
+A99,EPTC,A99,Passo Da Batalha (Circular / Alimentadora),,3,https://linhas.eptc.com.br,008000,000000
+B021,EPTC,B021,Leopoldina/Aeroporto/Fapa,,3,https://linhas.eptc.com.br,0000FF,000000
+B05,EPTC,B05,Jardim Floresta/Obirici,,3,https://linhas.eptc.com.br,0000FF,000000
+B25,EPTC,B25,A. Feijo / Humaita,,3,https://linhas.eptc.com.br,0000FF,000000
+D18,EPTC,D18,Ilha Da Pintada/Direta,,3,https://linhas.eptc.com.br,0000FF,000000
+M21,EPTC,M21,Corujao Baltazar/Assis Brasil,,3,https://linhas.eptc.com.br,0000FF,000000
+M79,EPTC,M79,Madrugadao Serraria/Ponta Grossa,,3,https://linhas.eptc.com.br,FF0000,000000
+M98,EPTC,M98,Noturna (Pinheiro),,3,https://linhas.eptc.com.br,008000,000000
+R10,EPTC,R10,Rapida Restinga Nova/Cavalhada,,3,https://linhas.eptc.com.br,FF0000,000000
+R31,EPTC,R31,Rapida - Bento,,3,https://linhas.eptc.com.br,008000,000000
+R4,EPTC,R4,Rapida - Restinga Velha,,3,https://linhas.eptc.com.br,FF0000,000000
+R41,EPTC,R41,Rapida - Protasio,,3,https://linhas.eptc.com.br,008000,000000
+R5,EPTC,R5,Rapida Ponta Grossa,,3,https://linhas.eptc.com.br,FF0000,000000
+T2A,EPTC,T2A,Transversal 2 (Via Paulino Azurenha / Postao),,3,https://linhas.eptc.com.br,CC7722,000000
+T2A1,EPTC,T2A1,Transversal 2/A. J. Renner,,3,https://linhas.eptc.com.br,CC7722,000000
+T5,EPTC,T5,Transversal 5,,3,https://linhas.eptc.com.br,CC7722,000000
+T61,EPTC,T61,Transversal 6 (Carnaval),,3,https://linhas.eptc.com.br,CC7722,000000
+TR62,EPTC,TR62,Troncal Baltazar,,3,https://linhas.eptc.com.br,0000FF,000000
+B093,EPTC,B093,Anchieta/Industrias/Iguatemi,,3,https://linhas.eptc.com.br,0000FF,000000
+1795,EPTC,1795,Serraria/Guaíba/Diário,,3,https://linhas.eptc.com.br,FF0000,000000
+6135,EPTC,6135,Elisabeth/Sarandi,,3,https://linhas.eptc.com.br,0000FF,000000
+1493,EPTC,1493,Icarai/Menino Deus,,3,https://linhas.eptc.com.br,FF0000,000000
+A954,EPTC,A954,Ch Peras/Pda 6,,3,https://linhas.eptc.com.br,008000,000000
+A31,EPTC,A31,Alimentadora Parque Dos Maias,,3,https://linhas.eptc.com.br,0000FF,000000
+O210,EPTC,O210,Orla Restinga Nova,,3,https://linhas.eptc.com.br,FF0000,000000
+O398,EPTC,O398,Orla/Pinheiro,,3,https://linhas.eptc.com.br,008000,000000
+T45,EPTC,T45,Transversal 4 (Porto Seco/Triangulo),,3,https://linhas.eptc.com.br,CC7722,000000
+A270,EPTC,A270,Alimentadora Cavalhada/Aracaju Escolar,,3,https://linhas.eptc.com.br,FF0000,000000
+A932,EPTC,A932,Alimentadora  Escolar Ana Iris (Via Leste),,3,https://linhas.eptc.com.br,008000,000000
+EM012,EPTC,EM012,Noite Dos Museus (Viva Sul),,3,https://linhas.eptc.com.br,FF0000,000000

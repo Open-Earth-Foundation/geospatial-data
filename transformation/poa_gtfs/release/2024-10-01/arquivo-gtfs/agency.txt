@@ -1,0 +1,2 @@
+agency_id,agency_name,agency_url,agency_timezone,agency_lang,agency_phone,agency_fare_url
+EPTC,Empresa Publica de Transportes e Circulacao,http://linhas.eptc.com.br,America/Sao_Paulo,pt,+55 156,https://prefeitura.poa.br/carta-de-servicos/informacoes-tabela-horaria-e-itinerarios-de-onibus
