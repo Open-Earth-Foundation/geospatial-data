@@ -122,7 +122,7 @@ datasets:
       General Transit Feed Specification (GTFS) for Porto Alegre bus transit.
       Includes routes, stops, shapes, and schedules.
 
-  - dataset_id: br_ibge_sidra
+  - dataset_id: br_ibge
     dataset_name: IBGE SIDRA Census Aggregates
     publisher: IBGE (Instituto Brasileiro de Geografia e Estatística)
     license: CC BY 4.0

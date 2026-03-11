@@ -23,7 +23,7 @@ collections:
   - id: socioeconomics
     name: Socioeconomics
     datasets:
-      - br_ibge_sidra
+      - br_ibge
 
   - id: buildings
     name: Buildings
