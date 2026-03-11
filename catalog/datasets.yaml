@@ -121,3 +121,20 @@ datasets:
     description: >
       General Transit Feed Specification (GTFS) for Porto Alegre bus transit.
       Includes routes, stops, shapes, and schedules.
+
+  - dataset_id: br_ibge_sidra
+    dataset_name: IBGE SIDRA Census Aggregates
+    publisher: IBGE (Instituto Brasileiro de Geografia e Estatística)
+    license: CC BY 4.0
+    resolution: vector
+    crs: EPSG:4326
+    access_type: public_api
+    source_url: https://servicodados.ibge.gov.br/api/docs
+    dataset_type: census
+    type: vector
+    assets:
+      indicators:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/br_ibge/release/2010/porto_alegre/porto_alegre_indicators.geojson
+    description: >
+      Neighbourhood-level census indicators from IBGE SIDRA API (Census 2010).
+      Population, poverty rate, piped water, formal sewage.

@@ -20,6 +20,11 @@ collections:
     datasets:
       - worldpop_population
 
+  - id: socioeconomics
+    name: Socioeconomics
+    datasets:
+      - br_ibge_sidra
+
   - id: buildings
     name: Buildings
     datasets:
