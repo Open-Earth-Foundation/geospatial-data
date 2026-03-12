@@ -7,18 +7,17 @@ collections:
   - id: land_cover
     name: Land cover
     datasets:
-      - dynamic_world_30m
-      - esa_worldcover_10m
+      - dynamic_world
 
   - id: elevation
     name: Elevation
     datasets:
-      - dem_copernicus_30m
+      - copernicus_dem
 
   - id: population
     name: Population
     datasets:
-      - worldpop_population
+      - ghsl_population
 
   - id: socioeconomics
     name: Socioeconomics
@@ -28,9 +27,34 @@ collections:
   - id: buildings
     name: Buildings
     datasets:
-      - osm_building_footprints
+      - ghsl_built_up
 
   - id: solar
     name: Solar
     datasets:
       - global_solar_atlas
+
+  - id: settlement
+    name: Settlement / Urbanization
+    datasets:
+      - ghsl_degree_urbanization
+
+  - id: hydrography
+    name: Hydrography
+    datasets:
+      - merit_hydro
+
+  - id: water
+    name: Surface water
+    datasets:
+      - jrc_global_surface_water
+
+  - id: forest
+    name: Forest
+    datasets:
+      - hansen_forest_change
+
+  - id: night_lights
+    name: Night lights
+    datasets:
+      - noaa_viirs_nightlights
