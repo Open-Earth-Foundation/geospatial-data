@@ -1,0 +1,6 @@
+# JRC GSW occurrence (%) visual style
+# Matches catalog example palette: ['ffffff', 'ffbbbb', '0000ff']
+nv 0 0 0 0
+0 255 255 255
+50 255 187 187
+100 0 0 255

@@ -1,0 +1,4 @@
+# Hansen loss visual style
+# 0 = no loss, 1 = loss
+0 240 240 240
+1 255 0 0

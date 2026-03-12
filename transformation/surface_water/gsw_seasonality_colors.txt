@@ -1,0 +1,5 @@
+# JRC GSW seasonality (months 0-12) visual style
+nv 0 0 0 0
+0 255 255 255
+6 173 216 230
+12 0 0 255

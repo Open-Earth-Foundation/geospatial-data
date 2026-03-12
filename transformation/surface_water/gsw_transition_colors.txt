@@ -1,0 +1,16 @@
+# JRC GSW transition class colors
+# 0 No change, 1 Permanent, 2 New permanent, 3 Lost permanent,
+# 4 Seasonal, 5 New seasonal, 6 Lost seasonal,
+# 7 Seasonal to permanent, 8 Permanent to seasonal,
+# 9 Ephemeral permanent, 10 Ephemeral seasonal
+0 255 255 255
+1 0 0 255
+2 34 177 76
+3 209 16 45
+4 153 217 234
+5 181 230 29
+6 230 161 170
+7 255 127 39
+8 255 201 14
+9 127 127 127
+10 195 195 195
