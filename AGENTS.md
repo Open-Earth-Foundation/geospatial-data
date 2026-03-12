@@ -36,7 +36,7 @@ Read `catalog/datasets.yaml` — datasets may have a `crs` field (e.g. `EPSG:432
 
 ## How to answer "Where are the output files?" or "What does transformation X produce?"
 
-Transformation outputs live under `transformation/{theme}/releases/{version}/output/`. Typical outputs: `*.geojson`, `*.tif` (COG), `*.pmtiles`, and `metadata.json`.
+Transformation outputs live under `transformation/{dataset_slug}/releases/{version}/output/`. Typical outputs: `*.geojson`, `*.tif` (COG), `*.pmtiles`, and `metadata.json`.
 
 **Release vs time period:** The release folder (`releases/{version}/`) is the **dataset/transformation version** (e.g. `v1`, `v2`, `2024-10-01`), not the time period of the source data. The collection period (e.g. year 2024) belongs in a separate subdirectory, e.g. `releases/v1/2024/output/` for outputs built from 2024 source data.
 
@@ -44,12 +44,26 @@ Transformation outputs live under `transformation/{theme}/releases/{version}/out
 
 Use the **add-geospatial-dataset** skill (`.cursor/skills/add-geospatial-dataset/`). It covers the full workflow: folder structure, GEE export, GDAL pipeline (COG + visual + value tiles), catalog and collection updates, and S3 upload.
 
+## Dataset slug naming
+
+Use **snake_case**. Prefer `{source}_{descriptor}` or `{source}_{product}`:
+
+| Pattern | Examples |
+|---------|----------|
+| Publisher/source + descriptor | `ghsl_degree_urbanization`, `ghsl_built_up`, `ghsl_population`, `jrc_global_surface_water` |
+| Publisher + product name | `copernicus_dem`, `hansen_forest_change`, `merit_hydro`, `noaa_viirs_nightlights` |
+| Product name (well-known) | `dynamic_world`, `global_solar_atlas` |
+| Geographic + product | `poa_gtfs`, `br_ibge` |
+
+- **Source abbreviations:** `ghsl`, `jrc`, `noaa`, `copernicus`, `hansen`, `merit`
+- **Avoid:** spaces, hyphens, camelCase; resolution in slug (e.g. prefer `copernicus_dem` not `dem_copernicus_30m`)
+
 ## Canonical paths
 
 - **Catalog (all datasets):** `catalog/datasets.yaml`
 - **Dataset categories:** `collections/collections.yaml`
 - **Analytical layers:** `collections/layers.yaml`
-- **Transformation scripts:** `transformation/{theme}/`
-- **Transformation outputs:** `transformation/{theme}/releases/{version}/output/` or `transformation/{theme}/releases/{version}/{period}/output/` (period = data collection year/date)
+- **Transformation scripts:** `transformation/{dataset_slug}/`
+- **Transformation outputs:** `transformation/{dataset_slug}/releases/{version}/output/` or `transformation/{dataset_slug}/releases/{version}/{period}/output/` (period = data collection year/date)
 - **Tile generation example:** `transformation/global_solar_atlas/v2/raster_transformation.ipynb`
-- **Source data (per release):** `transformation/{theme}/releases/{version}/arquivo-gtfs/` (or similar)
+- **Source data (per release):** `transformation/{dataset_slug}/releases/{version}/arquivo-gtfs/` (or similar)
