@@ -1,0 +1,11 @@
+# Encode categorical class code in R channel: R=class, G=0, B=0
+# NoData -200 is mapped to 0
+-200 0 0 0
+10 10 0 0
+11 11 0 0
+12 12 0 0
+13 13 0 0
+21 21 0 0
+22 22 0 0
+23 23 0 0
+30 30 0 0

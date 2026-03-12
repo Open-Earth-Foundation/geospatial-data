@@ -1,0 +1,5 @@
+# GHSL built_surface color table (m2 per 100m grid cell): black -> white
+# Matches GEE visParams: min=0, max=8000, palette=['000000','FFFFFF']
+nv 0 0 0 0
+0 0 0 0
+8000 255 255 255

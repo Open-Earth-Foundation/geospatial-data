@@ -1,0 +1,20 @@
+# GHSL Degree of Urbanisation (SMOD) class color table
+# Value  Color     Description
+# -200   #000000   No Data
+# 10     #7ab6f5   Water
+# 11     #cdf57a   Very low density rural
+# 12     #abcd66   Low density rural
+# 13     #375623   Rural cluster
+# 21     #ffff00   Suburban or peri-urban
+# 22     #a87000   Semi-dense urban cluster
+# 23     #732600   Dense urban cluster
+# 30     #ff0000   Urban centre
+-200 0 0 0
+10 122 182 245
+11 205 245 122
+12 171 205 102
+13 55 86 35
+21 255 255 0
+22 168 112 0
+23 115 38 0
+30 255 0 0

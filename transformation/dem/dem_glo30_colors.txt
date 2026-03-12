@@ -1,0 +1,8 @@
+# Copernicus DEM GLO-30 color table
+# Matches GEE visParams: min=0, max=1000, palette=['0000ff','00ffff','ffff00','ff0000','ffffff']
+nv 0 0 0 0
+0 0 0 255
+250 0 255 255
+500 255 255 0
+750 255 0 0
+1000 255 255 255
