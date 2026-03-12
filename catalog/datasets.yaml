@@ -157,7 +157,7 @@ datasets:
       PV Output (kWh/kWp/day) from Global Solar Atlas Brazil LTAy AvgDailyTotals.
 
   - dataset_id: br_ibge
-    dataset_name: IBGE SIDRA Census Aggregates
+    dataset_name: IBGE Census Data
     publisher: IBGE (Instituto Brasileiro de Geografia e Estatística)
     license: CC BY 4.0
     resolution: vector
@@ -166,9 +166,15 @@ datasets:
     source_url: https://servicodados.ibge.gov.br/api/docs
     dataset_type: census
     type: vector
+    data_quality:
+      temporal_coverage: "2010 (indicators), 2022 (informal settlements)"
+      accuracy: "Official statistics; possible undercount in informal areas"
+      limitations: "Indicators from Census 2010; FCU boundaries from Census 2022; some FCUs not yet sectorized"
     assets:
       indicators:
         url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/br_ibge/release/2010/porto_alegre/porto_alegre_indicators.geojson
+      informal_settlements:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/br_ibge/release/2024/porto_alegre/poa_informal_settlements.geojson
     description: >
-      Neighbourhood-level census indicators from IBGE SIDRA API (Census 2010).
-      Population, poverty rate, piped water, formal sewage.
+      IBGE Census data for Porto Alegre. Includes neighbourhood-level indicators (Census 2010, SIDRA API)
+      and informal settlement polygons (Census 2022, favelas e comunidades urbanas).
