@@ -23,7 +23,7 @@ datasets:
           - https://geo-test-api.s3.amazonaws.com/nbs/porto_alegre/land_use/v2026-03-06/metadata.json
     description: Versioned categorical land-use raster exposed by the test API for Porto Alegre.
     
-  - dataset_id: dem_copernicus_30m
+  - dataset_id: copernicus_dem
     dataset_name: Copernicus DEM
     publisher: Copernicus
     license: Copernicus License
@@ -42,66 +42,6 @@ datasets:
       metadata:
         url: []
     description: Global digital elevation model used for terrain indicators.
-
-  - dataset_id: esa_worldcover_10m
-    dataset_name: ESA WorldCover
-    publisher: ESA
-    license: CC BY 4.0
-    resolution: 10m
-    access_type: gee
-    source_url: https://developers.google.com/earth-engine/datasets/catalog/ESA_WorldCover_v200
-    dataset_type: land_cover
-    type: categorical_raster
-    assets:
-      visual_tiles:
-        url_template: []
-      value_tiles:
-        url_template: []
-      download:
-        cog_url: []
-      metadata:
-        url: []
-    description: Global land cover baseline for impervious and ecosystem indicators.
-
-  - dataset_id: worldpop_population
-    dataset_name: WorldPop Population Density
-    publisher: WorldPop
-    license: CC BY 4.0
-    resolution: 100m
-    access_type: manual_download
-    source_url: https://www.worldpop.org
-    dataset_type: population
-    type: numeric_raster
-    assets:
-      visual_tiles:
-        url_template: []
-      value_tiles:
-        url_template: []
-      download:
-        cog_url: []
-      metadata:
-        url: []
-    description: Population distribution raster used for exposure analysis.
-
-  - dataset_id: osm_building_footprints
-    dataset_name: OSM Building Footprints
-    publisher: OpenStreetMap Contributors
-    license: ODbL 1.0
-    resolution: vector
-    access_type: public_api
-    source_url: https://www.openstreetmap.org
-    dataset_type: buildings
-    type: vector
-    assets:
-      visual_tiles:
-        url_template: []
-      value_tiles:
-        url_template: []
-      download:
-        cog_url: []
-      metadata:
-        url: []
-    description: Building geometries used to derive building density and built exposure.
 
   - dataset_id: poa_gtfs
     dataset_name: GTFS Porto Alegre
@@ -155,6 +95,39 @@ datasets:
         url: https://geo-test-api.s3.us-east-1.amazonaws.com/global_solar_atlas/release/v2/pvout_metadata.json
     description: >
       PV Output (kWh/kWp/day) from Global Solar Atlas Brazil LTAy AvgDailyTotals.
+
+  - dataset_id: ghsl_built_up
+    dataset_name: GHSL Built-Up Settlement Grid
+    publisher: JRC (Joint Research Centre)
+    license: CC BY 4.0
+    resolution: 100m
+    crs: EPSG:3857
+    access_type: gee
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/JRC_GHSL_P2023A_GHS_BUILT_S
+    dataset_type: built_up
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "2025 (P2023A)"
+      accuracy: "Built-up surface in m² per 100m grid cell"
+      limitations: "Clamped 0–10000 m² for value tiles"
+    value_encoding:
+      type: rgb_packed
+      scale: 1.0
+      offset: 0.0
+      unit: "m²"
+      decode_formula: "value = R + 256*G + 65536*B"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/ghsl_built_up/release/v1/2025/porto_alegre/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/ghsl_built_up/release/v1/2025/porto_alegre/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/ghsl_built_up/release/v1/2025/porto_alegre/poa_ghsl_built_up_100m_p2023a_2025_cog.tif
+      metadata:
+        url: []
+    description: >
+      GHSL Built-Up P2023A built-up surface (m² per 100m cell) for Porto Alegre.
+      Exported from GEE GHS_BUILT_S 2025, clipped and tiled for mapping.
 
   - dataset_id: br_ibge
     dataset_name: IBGE Census Data
