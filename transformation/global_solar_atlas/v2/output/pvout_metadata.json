@@ -1,0 +1,12 @@
+{
+  "layer": "PVOUT",
+  "description": "PV Output (kWh/kWp/day)",
+  "time_period": "1999 to 2018",
+  "encoding": {
+    "type": "terrain_rgb",
+    "scale": 0.001,
+    "offset": 0.0,
+    "unit": "kWh/kWp/day",
+    "decode_formula": "value = (R * 256 * 256 + G * 256 + B) * scale + offset"
+  }
+}

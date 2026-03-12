@@ -29,3 +29,8 @@ collections:
     name: Buildings
     datasets:
       - osm_building_footprints
+
+  - id: solar
+    name: Solar
+    datasets:
+      - global_solar_atlas

@@ -122,6 +122,40 @@ datasets:
       General Transit Feed Specification (GTFS) for Porto Alegre bus transit.
       Includes routes, stops, shapes, and schedules.
 
+  - dataset_id: global_solar_atlas
+    dataset_name: Global Solar Atlas PV Output
+    publisher: World Bank Group, Solargis
+    license: Free for non-commercial use
+    resolution: 930m
+    crs: EPSG:3857
+    access_type: manual_download
+    source_url: https://globalsolaratlas.info/download/brazil
+    dataset_type: solar
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "1999-2018 (LTAy)"
+      accuracy: "±4% typical for PVOUT"
+      limitations: "Regional screening; site-specific validation recommended for project planning"
+    value_encoding:
+      type: terrain_rgb
+      scale: 0.001
+      offset: 0.0
+      unit: "kWh/kWp/day"
+      decode_formula: "value = (R * 256 * 256 + G * 256 + B) * scale + offset"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/global_solar_atlas/release/v2/tiles_pvout/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/global_solar_atlas/release/v2/tiles_pvout_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/global_solar_atlas/release/v2/poa_PVOUT_cog.tif
+      neighbourhoods:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/global_solar_atlas/release/v2/poa_solar_neighbourhoods.geojson
+      metadata:
+        url: https://geo-test-api.s3.us-east-1.amazonaws.com/global_solar_atlas/release/v2/pvout_metadata.json
+    description: >
+      PV Output (kWh/kWp/day) from Global Solar Atlas Brazil LTAy AvgDailyTotals.
+
   - dataset_id: br_ibge
     dataset_name: IBGE SIDRA Census Aggregates
     publisher: IBGE (Instituto Brasileiro de Geografia e Estatística)
