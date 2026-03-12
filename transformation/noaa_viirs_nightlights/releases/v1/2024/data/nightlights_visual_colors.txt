@@ -1,0 +1,14 @@
+# Night lights visual colormap — dark "night" style
+# Dark navy (no light) -> blue -> cyan -> bright yellow/white (hotspots)
+# avg_rad in nW/cm²/sr — typical urban 10-100, bright centers 50-200+
+# value R G B
+0 8 8 24
+5 15 25 55
+10 20 45 90
+25 25 70 130
+50 50 120 180
+75 80 180 220
+100 140 220 255
+150 230 245 200
+200 255 255 230
+300 255 255 255

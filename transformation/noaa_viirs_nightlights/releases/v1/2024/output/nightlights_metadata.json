@@ -1,0 +1,12 @@
+{
+  "layer": "avg_rad",
+  "description": "Average DNB radiance (night lights)",
+  "time_period": "2024",
+  "encoding": {
+    "type": "terrain_rgb",
+    "scale": 0.1,
+    "offset": 0.0,
+    "unit": "nW/cm\u00b2/sr",
+    "decode_formula": "value = (R * 256 * 256 + G * 256 + B) * scale + offset"
+  }
+}

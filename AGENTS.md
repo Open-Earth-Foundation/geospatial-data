@@ -2,6 +2,10 @@
 
 This file helps AI assistants and MCP tools understand the geospatial-data repository. Read this first when answering questions about datasets, layers, or transformations.
 
+## Purpose
+
+The geospatial-data repository curates Level 0 source datasets and transformation pipelines that produce analytical outputs (COGs, tiles, GeoJSON) for city-scale mapping. AI assistants should use this guidance to answer questions about datasets, find transformation logic, and add new datasets following the established conventions.
+
 ## How to answer "What datasets do we have?"
 
 Read `catalog/datasets.yaml`. It lists all Level 0 source datasets with `dataset_id`, `dataset_name`, `publisher`, `license`, `resolution`, `access_type`, `source_url`, `dataset_type`, `type`, `assets`, and `description`. Optional fields include `crs` for coordinate reference system.
@@ -32,42 +36,13 @@ Read `catalog/datasets.yaml` — datasets may have a `crs` field (e.g. `EPSG:432
 
 ## How to answer "Where are the output files?" or "What does transformation X produce?"
 
-Transformation outputs live under `transformation/{theme}/release/{version}/output/`. Typical outputs: `*.geojson`, `*.tif` (COG), `*.pmtiles`, and `metadata.json`.
+Transformation outputs live under `transformation/{theme}/releases/{version}/output/`. Typical outputs: `*.geojson`, `*.tif` (COG), `*.pmtiles`, and `metadata.json`.
 
-## How to answer "How do I generate COGs and tiles from a raster?"
+**Release vs time period:** The release folder (`releases/{version}/`) is the **dataset/transformation version** (e.g. `v1`, `v2`, `2024-10-01`), not the time period of the source data. The collection period (e.g. year 2024) belongs in a separate subdirectory, e.g. `releases/v1/2024/output/` for outputs built from 2024 source data.
 
-Generic pipeline for any GeoTIFF that needs web map tiles:
+## How to answer "How do I generate COGs and tiles?" or "How do I add a new dataset?"
 
-1. **Reproject to Web Mercator** (if not already EPSG:3857):
-   ```bash
-   gdalwarp -t_srs EPSG:3857 -r near input.tif input_3857.tif
-   ```
-
-2. **Convert to COG**:
-   ```bash
-   gdal_translate -of COG input_3857.tif output_cog.tif \
-     -co COMPRESS=DEFLATE -co OVERVIEWS=AUTO \
-     -co RESAMPLING=AVERAGE   # numeric data
-     # -co RESAMPLING=NEAREST  # categorical data
-   ```
-
-3. **Colorize for visual tiles** (create a `value R G B` colors file):
-   ```bash
-   gdaldem color-relief output_cog.tif colors.txt colorized.tif
-   ```
-
-4. **Generate XYZ tiles**:
-   ```bash
-   gdal2tiles.py -r near -z 8-15 --xyz -w none colorized.tif output/tiles_visual/
-   ```
-
-5. **Value tiles** (for hover/click lookup):
-   - **Categorical**: R=class_id, G=0, B=0. Create colors file mapping each class to its ID in R.
-   - **Numeric (Terrain RGB)**: `encoded = round((value - offset) / scale)` → R,G,B. Create colors file mapping value ranges to encoded RGB. Add `value_encoding` (scale, offset, unit) to `catalog/datasets.yaml`.
-
-**Tools:** `gdalwarp`, `gdal_translate`, `gdaldem color-relief`, `gdal2tiles.py`
-
-**Example:** `transformation/global_solar_atlas/AGENTS.md` and `transformation/global_solar_atlas/v2/raster_transformation.ipynb` for PVOUT.
+Use the **add-geospatial-dataset** skill (`.cursor/skills/add-geospatial-dataset/`). It covers the full workflow: folder structure, GEE export, GDAL pipeline (COG + visual + value tiles), catalog and collection updates, and S3 upload.
 
 ## Canonical paths
 
@@ -75,6 +50,6 @@ Generic pipeline for any GeoTIFF that needs web map tiles:
 - **Dataset categories:** `collections/collections.yaml`
 - **Analytical layers:** `collections/layers.yaml`
 - **Transformation scripts:** `transformation/{theme}/`
-- **Transformation outputs:** `transformation/{theme}/release/{version}/output/` or `transformation/{theme}/v2/output/`
+- **Transformation outputs:** `transformation/{theme}/releases/{version}/output/` or `transformation/{theme}/releases/{version}/{period}/output/` (period = data collection year/date)
 - **Tile generation example:** `transformation/global_solar_atlas/v2/raster_transformation.ipynb`
-- **Source data (per release):** `transformation/{theme}/release/{version}/arquivo-gtfs/` (or similar)
+- **Source data (per release):** `transformation/{theme}/releases/{version}/arquivo-gtfs/` (or similar)

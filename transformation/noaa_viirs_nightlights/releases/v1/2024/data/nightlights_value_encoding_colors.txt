@@ -1,0 +1,18 @@
+# Night lights Terrain RGB encoding: value = (R*256² + G*256 + B) * scale + offset
+# scale=0.1, offset=0, unit=nW/cm²/sr
+# value R G B
+0 0 0 0
+5 0 0 50
+10 0 0 100
+20 0 0 200
+30 0 0 44
+40 0 0 144
+50 0 1 244
+60 0 2 88
+70 0 2 188
+80 0 3 32
+90 0 3 132
+100 0 3 232
+150 0 5 220
+200 0 7 208
+300 0 11 184
