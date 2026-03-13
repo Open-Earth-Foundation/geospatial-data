@@ -125,6 +125,44 @@ datasets:
       GHSL Built-Up P2023A built-up surface (m² per 100m cell) for Porto Alegre.
       Exported from GEE GHS_BUILT_S 2025, clipped and tiled for mapping.
 
+  - dataset_id: ghsl_degree_urbanization
+    dataset_name: GHSL Degree of Urbanization (SMOD)
+    publisher: JRC (Joint Research Centre)
+    license: CC BY 4.0
+    resolution: 1000m
+    crs: EPSG:3857
+    access_type: gee
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/JRC_GHSL_P2023A_GHS_SMOD_V2-0
+    dataset_type: settlement
+    type: categorical_raster
+    data_quality:
+      temporal_coverage: "2025 (P2023A)"
+      accuracy: "Eurostat Degree of Urbanisation methodology"
+      limitations: "1 km grid; class from population and built-up density"
+    value_encoding:
+      type: class_lookup
+      classes:
+        10: { name: Water, color: "#7AB6F5" }
+        11: { name: Very low density rural, color: "#CDF57A" }
+        12: { name: Low density rural, color: "#ABCD66" }
+        13: { name: Rural cluster, color: "#375623" }
+        21: { name: Suburban or peri-urban, color: "#FFFF00" }
+        22: { name: Semi-dense urban cluster, color: "#A87000" }
+        23: { name: Dense urban cluster, color: "#732600" }
+        30: { name: Urban centre, color: "#FF0000" }
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/ghsl_degree_urbanization/release/v2/2024/porto_alegre/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/ghsl_degree_urbanization/release/v2/2024/porto_alegre/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/ghsl_degree_urbanization/release/v2/2024/porto_alegre/poa_ghsl_degree_urb_1000m_p2023a_2025_cog.tif
+      metadata:
+        url: []
+    description: >
+      GHSL Degree of Urbanization (SMOD) P2023A for Porto Alegre.
+      Rural-urban classification (water, rural, suburban, urban centre) at 1 km resolution.
+
   - dataset_id: br_ibge
     dataset_name: IBGE Census Data
     publisher: IBGE (Instituto Brasileiro de Geografia e Estatística)
