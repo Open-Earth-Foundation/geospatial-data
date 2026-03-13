@@ -48,6 +48,10 @@ Transformation outputs live under `transformation/{dataset_slug}/releases/{versi
 
 Use the **add-geospatial-dataset** skill (`.cursor/skills/add-geospatial-dataset/`). It covers the full workflow: folder structure, GEE export, GDAL pipeline (COG + visual + value tiles), catalog and collection updates, and S3 upload.
 
+## How to answer "How do I add a catalog entry?" or "Add dataset X to the catalog"
+
+Use the **add-catalog-entry** skill (`.cursor/skills/add-catalog-entry/`). It adds an entry to `catalog/datasets.yaml` only — use when a transformation exists and you need to register it in the catalog.
+
 ## Dataset slug naming
 
 Use **snake_case**. Prefer `{source}_{descriptor}` or `{source}_{product}`:
