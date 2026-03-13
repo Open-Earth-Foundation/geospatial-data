@@ -58,6 +58,47 @@ datasets:
       General Transit Feed Specification (GTFS) for Porto Alegre bus transit.
       Includes routes, stops, shapes, and schedules.
 
+  - dataset_id: jrc_global_surface_water
+    dataset_name: JRC Global Surface Water (Transition)
+    publisher: JRC (Joint Research Centre)
+    license: CC BY 4.0
+    resolution: 30m
+    crs: EPSG:3857
+    access_type: gee
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/JRC_GSW1_4_GlobalSurfaceWater
+    dataset_type: water
+    type: categorical_raster
+    data_quality:
+      temporal_coverage: "1984–2021"
+      accuracy: "Landsat-based; transition between first/last year"
+      limitations: "Categorical change classes only"
+    value_encoding:
+      type: class_lookup
+      classes:
+        0: { name: No change, color: "#FFFFFF" }
+        1: { name: Permanent water, color: "#0000FF" }
+        2: { name: New permanent, color: "#22B14C" }
+        3: { name: Lost permanent, color: "#D1102D" }
+        4: { name: Seasonal water, color: "#99D9EA" }
+        5: { name: New seasonal, color: "#B5E61D" }
+        6: { name: Lost seasonal, color: "#E6A1AA" }
+        7: { name: Seasonal to permanent, color: "#FF7F27" }
+        8: { name: Permanent to seasonal, color: "#FFC90E" }
+        9: { name: Ephemeral permanent, color: "#7F7F7F" }
+        10: { name: Ephemeral seasonal, color: "#C3C3C3" }
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/jrc_global_surface_water/release/v1/porto_alegre/transition/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/jrc_global_surface_water/release/v1/porto_alegre/transition/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/jrc_global_surface_water/release/v1/porto_alegre/transition/poa_gsw_transition_30m_v1_4_cog.tif
+      metadata:
+        url: []
+    description: >
+      JRC Global Surface Water v1.4 transition classes for Porto Alegre.
+      Water regime change (permanent, seasonal, lost, new). Supports flood/drought adaptation planning.
+
   - dataset_id: global_solar_atlas
     dataset_name: Global Solar Atlas PV Output
     publisher: World Bank Group, Solargis

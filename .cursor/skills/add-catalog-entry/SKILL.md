@@ -31,7 +31,7 @@ Use **snake_case**. Prefer `{source}_{descriptor}` or `{source}_{product}`:
 
 ## Entry template
 
-Add to `catalog/datasets.yaml` under the `datasets:` list. Insert before the last entry or in logical order.
+Add to `catalog/datasets.yaml` under the `datasets:` list. **Append new entries to the end of the document** (after the last dataset entry).
 
 ### Raster (numeric)
 
@@ -166,4 +166,4 @@ Add to `catalog/datasets.yaml` under the `datasets:` list. Insert before the las
 - [ ] Match `type` to data (numeric_raster, categorical_raster, vector)
 - [ ] Add `value_encoding` for rasters: numeric (formula) or categorical (class_lookup)
 - [ ] Use `[]` for assets not yet on S3
-- [ ] Insert entry in logical order (e.g. by dataset_type or alphabetically)
+- [ ] Append new entry to the end of the document
