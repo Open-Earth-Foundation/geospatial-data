@@ -19,6 +19,7 @@ Architecture for a versioned geospatial catalog that curates raster and vector l
 flowchart TB
     subgraph Processing["Data Processing"]
         DP["transformation/ (GEE / local)"]
+        M["models/ (configs, weights)"]
     end
 
     subgraph Storage["Asset Storage"]
@@ -33,6 +34,8 @@ flowchart TB
         APP["Applications\n(map display, queries)"]
     end
 
+    DP -->|"Level 1 indicators"| M
+    M -->|"Level 2–3 layers"| DP
     DP -->|"publishes assets"| S3
     DP -->|"updates catalog"| YAML
     APP -->|"looks up catalog"| YAML
@@ -40,6 +43,7 @@ flowchart TB
 ```
 
 **Relationships:**
+- **Transformation → Models**: Pipelines produce Level 1 indicators; models (configs, weights) define how to combine them into Level 2–3 layers.
 - **Data Processing → S3**: Pipelines publish tiles, COGs, and GeoJSON to S3.
 - **Data Processing → Catalog**: Pipelines (or manual updates) add/update entries in `catalog/datasets.yaml` in the repo.
 - **Applications → Catalog**: Apps read the catalog from the GitHub repo (e.g. raw YAML URL or cloned repo) to discover layers and asset URLs.
@@ -51,6 +55,7 @@ flowchart TB
 |-----------|------|
 | **Catalog** | `catalog/datasets.yaml` in the repo — source of truth for layers, metadata, and access URLs |
 | **Data processing** | GEE or local pipelines; ingest → transform → publish |
+| **Models** | `models/` in the repo — configs, weights, and model cards for Level 2–3 composite layers |
 | **Asset storage (S3)** | Raster (COGs, tiles) and vector (GeoJSON) — all on S3 for this POC |
 
 ---
@@ -58,8 +63,12 @@ flowchart TB
 ## Data Flow
 
 ```
-Raw Data → Offline Transformations → Analytical Layers → Stored (S3)
-                                                      → Catalog updated (repo)
+Raw Data → transformation/ → Level 1 indicators
+                                 ↓
+            models/ (configs, weights) → Level 2–3 composite layers
+                                 ↓
+            Stored (S3) + Catalog updated (repo)
+                                 ↓
 Applications → Look up catalog (repo) → Fetch assets (S3)
 ```
 

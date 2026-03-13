@@ -20,12 +20,15 @@ geospatial-data/
     datasets.yaml
   collections/
     layers.yaml
+  models/
+    ... model configs, weights, and model cards ...
   transformation/
     ... scripts grouped by theme ...
 ```
 
 - `catalog/`: Level 0 raw source datasets and provenance metadata.
 - `collections/`: analytical layer definitions and dependency graph (Levels 1-3).
+- `models/`: model artifacts, configs, and model cards used to produce Level 2–3 layers.
 - `transformation/`: scripts that ingest, transform, and publish layer outputs.
 
 ## Analytical pipeline model
@@ -97,6 +100,20 @@ Each layer entry should include:
 - `s3_path`
 - `description`
 
+### `models/`
+
+Contains model artifacts and configuration used to produce Level 2–3 analytical layers (hazards, exposure scores, composite risk, NbS opportunity zones).
+
+Typical contents:
+
+- `model_card.md` — purpose, inputs, outputs, limitations
+- `config.yaml` — weights, thresholds, formula parameters
+- `v1/`, `v2/` — versioned model weights or serialized artifacts
+
+Transformations consume Level 1 indicators (and sometimes Level 0 data) and apply these models to produce composite layers. Model outputs are published via the same transformation pipeline and S3.
+
+See `models/README.md` for conventions and usage.
+
 ### `transformation/`
 
 Contains executable scripts to build analytical products. Typical responsibilities:
@@ -120,6 +137,7 @@ Transformation pipelines should publish precomputed artifacts in S3:
 
 - Keep `catalog/datasets.yaml` up to date before building new layers.
 - Register new analytical outputs in `collections/layers.yaml`.
+- Add model configs and model cards in `models/{layer_id}/` for Level 2–3 layers.
 - Prefer deterministic, idempotent transformation scripts.
 - Include metadata generation in every pipeline.
-- Use stable, machine-friendly IDs (`snake_case`) for datasets and layers.
+- Use stable, machine-friendly IDs (`snake_case`) for datasets, layers, and model folders.

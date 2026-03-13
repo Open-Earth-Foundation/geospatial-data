@@ -22,6 +22,10 @@ Read `collections/layers.yaml`. It defines derived indicators (Level 1), composi
 
 Look in `transformation/` — each subfolder (e.g. `poa_gtfs`, `land_cover`) contains scripts or notebooks that ingest source data and produce outputs. Check the folder's `README.md` for source, release layout, and usage.
 
+## How to answer "What models do we use?" or "Where is the model for layer X?"
+
+Read `models/README.md` and look in `models/` — each subfolder (e.g. `flood_hazard`, `composite_risk`) holds model configs, weights, and model cards for Level 2–3 layers. Models consume Level 1 indicators and produce composite analytical outputs.
+
 ## How to answer "What is the data quality of dataset X?" or "What are the limitations?"
 
 Read `catalog/datasets.yaml` — datasets may have a `data_quality` block with `temporal_coverage`, `accuracy`, and `limitations`. If absent, no quality metadata is recorded.
@@ -63,6 +67,7 @@ Use **snake_case**. Prefer `{source}_{descriptor}` or `{source}_{product}`:
 - **Catalog (all datasets):** `catalog/datasets.yaml`
 - **Dataset categories:** `collections/collections.yaml`
 - **Analytical layers:** `collections/layers.yaml`
+- **Models (Level 2–3):** `models/{layer_id}/` — see `models/README.md`
 - **Transformation scripts:** `transformation/{dataset_slug}/`
 - **Transformation outputs:** `transformation/{dataset_slug}/releases/{version}/output/` or `transformation/{dataset_slug}/releases/{version}/{period}/output/` (period = data collection year/date)
 - **Tile generation example:** `transformation/global_solar_atlas/v2/raster_transformation.ipynb`
