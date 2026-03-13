@@ -9,6 +9,11 @@ collections:
     datasets:
       - dynamic_world
 
+  - id: vegetation
+    name: Vegetation
+    datasets:
+      - modis_ndvi
+
   - id: elevation
     name: Elevation
     datasets:
@@ -58,3 +63,8 @@ collections:
     name: Night lights
     datasets:
       - noaa_viirs_nightlights
+
+  - id: flood
+    name: Flood
+    datasets:
+      - copernicus_emsn194

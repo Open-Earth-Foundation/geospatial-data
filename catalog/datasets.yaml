@@ -213,3 +213,36 @@ datasets:
     description: >
       Max water depth (m) from Copernicus EMS Risk and Recovery Mapping activation EMSN194.
       Flood delineation for Porto Alegre, Rio Grande do Sul, May 2024.
+
+  - dataset_id: modis_ndvi
+    dataset_name: MODIS NDVI (MOD13Q1)
+    publisher: NASA LP DAAC / USGS EROS
+    license: No restrictions on use
+    resolution: 250m
+    crs: EPSG:3857
+    access_type: gee
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/MODIS_061_MOD13Q1
+    dataset_type: vegetation
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "2000 to present (16-day composites)"
+      accuracy: "Atmospherically corrected; masked for clouds, water, aerosols"
+      limitations: "250m resolution; annual mean composite for mapping"
+    value_encoding:
+      type: terrain_rgb
+      scale: 0.001
+      offset: -1.0
+      unit: ""
+      decode_formula: "value = (R * 256 * 256 + G * 256 + B) * scale + offset"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/modis_ndvi/release/v1/2024/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/modis_ndvi/release/v1/2024/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/modis_ndvi/release/v1/2024/ndvi_cog.tif
+      metadata:
+        url: https://geo-test-api.s3.us-east-1.amazonaws.com/modis_ndvi/release/v1/2024/ndvi_metadata.json
+    description: >
+      Normalized Difference Vegetation Index (NDVI) from MODIS Terra MOD13Q1.
+      Annual mean composite for Porto Alegre. Values -1 to 1 (scaled from raw 0.0001).

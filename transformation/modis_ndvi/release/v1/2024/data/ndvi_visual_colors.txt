@@ -1,0 +1,11 @@
+# NDVI visual colormap: low (brown) -> high (green)
+# MOD13Q1 scaled -1 to 1; typical vegetated 0.2–0.8
+# value R G B
+nv 0 0 0 0
+-0.2 139 90 43
+0 210 180 140
+0.2 255 255 153
+0.4 173 221 142
+0.6 120 198 121
+0.8 49 163 84
+1 0 104 55

@@ -1,0 +1,12 @@
+{
+  "layer": "ndvi",
+  "description": "Normalized Difference Vegetation Index (-1 to 1)",
+  "time_period": "2024",
+  "encoding": {
+    "type": "terrain_rgb",
+    "scale": 0.001,
+    "offset": -1.0,
+    "unit": "",
+    "decode_formula": "value = (R * 256 * 256 + G * 256 + B) * scale + offset"
+  }
+}
