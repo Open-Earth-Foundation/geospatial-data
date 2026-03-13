@@ -1,5 +1,9 @@
-# GHSL built_surface color table (m2 per 100m grid cell): black -> white
-# Matches GEE visParams: min=0, max=8000, palette=['000000','FFFFFF']
+# GHSL built_surface color table (m² per 100m grid cell): low -> high built-up
+# Warm urban palette: cream -> terracotta -> brick
 nv 0 0 0 0
-0 0 0 0
-8000 255 255 255
+0 255 250 240
+1000 255 230 200
+2000 250 200 160
+4000 230 150 110
+6000 190 100 80
+8000 140 60 50
