@@ -163,6 +163,39 @@ datasets:
       GHSL Degree of Urbanization (SMOD) P2023A for Porto Alegre.
       Rural-urban classification (water, rural, suburban, urban centre) at 1 km resolution.
 
+  - dataset_id: ghsl_population
+    dataset_name: GHSL Population Grid
+    publisher: JRC (Joint Research Centre)
+    license: CC BY 4.0
+    resolution: 100m
+    crs: EPSG:3857
+    access_type: gee
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/JRC_GHSL_P2023A_GHS_POP
+    dataset_type: population
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "2025 (P2023A)"
+      accuracy: "Inhabitants per 100m grid cell"
+      limitations: "Clamped 0–16777215 for value tiles (24-bit rgb_packed)"
+    value_encoding:
+      type: rgb_packed
+      scale: 1.0
+      offset: 0.0
+      unit: "inhabitants"
+      decode_formula: "value = R + 256*G + 65536*B"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/ghsl_population/release/v1/2025/porto_alegre/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/ghsl_population/release/v1/2025/porto_alegre/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/ghsl_population/release/v1/2025/porto_alegre/poa_ghsl_pop_100m_p2023a_2025_cog.tif
+      metadata:
+        url: []
+    description: >
+      GHSL Population P2023A inhabitants per 100m cell for Porto Alegre.
+      Exported from GEE GHS_POP 2025, clipped and tiled for mapping.
+
   - dataset_id: br_ibge
     dataset_name: IBGE Census Data
     publisher: IBGE (Instituto Brasileiro de Geografia e Estatística)
