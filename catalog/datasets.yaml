@@ -390,3 +390,36 @@ datasets:
     description: >
       Normalized Difference Vegetation Index (NDVI) from MODIS Terra MOD13Q1.
       Annual mean composite for Porto Alegre. Values -1 to 1 (scaled from raw 0.0001).
+
+  - dataset_id: merit_hydro
+    dataset_name: MERIT Hydro HAND (Height Above Nearest Drainage)
+    publisher: University of Tokyo (Yamazaki et al.)
+    license: CC BY 4.0
+    resolution: 90m
+    crs: EPSG:3857
+    access_type: gee
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/MERIT_Hydro_v1_0_1
+    dataset_type: hydrography
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "Static (MERIT DEM-based)"
+      accuracy: "Relative error in drainage area < 0.05 for 90% of GRDC gauges"
+      limitations: "Clamped 0–16777215 for value tiles (24-bit rgb_packed)"
+    value_encoding:
+      type: rgb_packed
+      scale: 1.0
+      offset: 0.0
+      unit: "m"
+      decode_formula: "value = R + 256*G + 65536*B"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/merit_hydro/release/v1/porto_alegre/hnd/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/merit_hydro/release/v1/porto_alegre/hnd/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/merit_hydro/release/v1/porto_alegre/hnd/poa_merit_hydro_hnd_90m_v1_0_1_cog.tif
+      metadata:
+        url: []
+    description: >
+      Height Above Nearest Drainage (HAND) from MERIT Hydro v1.0.1.
+      Elevation above nearest stream in meters; used for flood mapping and drainage context.

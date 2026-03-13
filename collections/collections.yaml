@@ -1,70 +1,93 @@
-collections:
-  - id: transport
-    name: Transport
-    datasets:
-      - poa_gtfs
+# Collections group datasets for discovery. Optional `group` field enables UI grouping.
+# All dataset_ids must exist in catalog/datasets.yaml.
 
+collections:
+  # --- Land & vegetation ---
   - id: land_cover
     name: Land cover
+    group: land_environment
     datasets:
       - dynamic_world
 
   - id: vegetation
     name: Vegetation
+    group: land_environment
     datasets:
       - modis_ndvi
 
-  - id: elevation
-    name: Elevation
+  - id: forest
+    name: Forest
+    group: land_environment
     datasets:
-      - copernicus_dem
+      - hansen_forest_change
 
+  # --- Water & flood ---
+  - id: water
+    name: Surface water
+    group: water_flood
+    datasets:
+      - jrc_global_surface_water
+
+  - id: hydrography
+    name: Hydrography
+    group: water_flood
+    datasets:
+      - merit_hydro
+
+  - id: flood
+    name: Flood
+    group: water_flood
+    datasets:
+      - copernicus_emsn194
+
+  # --- Built environment ---
+  - id: buildings
+    name: Buildings
+    group: built_environment
+    datasets:
+      - ghsl_built_up
+
+  - id: settlement
+    name: Settlement / Urbanization
+    group: built_environment
+    datasets:
+      - ghsl_degree_urbanization
+
+  # --- Population & socioeconomics ---
   - id: population
     name: Population
+    group: population_socio
     datasets:
       - ghsl_population
 
   - id: socioeconomics
     name: Socioeconomics
+    group: population_socio
     datasets:
       - br_ibge
 
-  - id: buildings
-    name: Buildings
+  # --- Infrastructure & energy ---
+  - id: transport
+    name: Transport
+    group: infrastructure
     datasets:
-      - ghsl_built_up
+      - poa_gtfs
 
   - id: solar
     name: Solar
+    group: infrastructure
     datasets:
       - global_solar_atlas
 
-  - id: settlement
-    name: Settlement / Urbanization
-    datasets:
-      - ghsl_degree_urbanization
-
-  - id: hydrography
-    name: Hydrography
-    datasets:
-      - merit_hydro
-
-  - id: water
-    name: Surface water
-    datasets:
-      - jrc_global_surface_water
-
-  - id: forest
-    name: Forest
-    datasets:
-      - hansen_forest_change
-
   - id: night_lights
     name: Night lights
+    group: infrastructure
     datasets:
       - noaa_viirs_nightlights
 
-  - id: flood
-    name: Flood
+  # --- Terrain ---
+  - id: elevation
+    name: Elevation
+    group: terrain
     datasets:
-      - copernicus_emsn194
+      - copernicus_dem
