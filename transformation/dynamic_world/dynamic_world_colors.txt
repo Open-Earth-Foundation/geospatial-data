@@ -1,11 +1,11 @@
-# Dynamic World color table: value R G B
+# Dynamic World color table: value R G B (app-friendly palette)
 # 0 Water, 1 Trees, 2 Grass, 3 Flooded vegetation, 4 Crops, 5 Shrub, 6 Built, 7 Bare, 8 Snow
-0 65 155 223
-1 57 125 73
-2 136 176 83
-3 122 135 198
-4 228 150 53
-5 223 195 90
-6 196 40 27
-7 165 155 143
-8 179 159 225
+0 98 176 204
+1 72 140 95
+2 152 185 130
+3 160 170 195
+4 215 165 95
+5 205 185 130
+6 180 95 85
+7 175 168 158
+8 185 205 225

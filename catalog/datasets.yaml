@@ -1,5 +1,5 @@
 datasets:
-  - dataset_id: dynamic_world_30m
+  - dataset_id: dynamic_world
     dataset_name: Dynamic World V1 
     publisher: World Resources Institute Google
     license: CC-BY 4.0
@@ -8,40 +8,36 @@ datasets:
     source_url: https://developers.google.com/earth-engine/datasets/catalog/GOOGLE_DYNAMICWORLD_V1#description
     dataset_type: land_cover
     type: categorical_raster
+    data_quality:
+      temporal_coverage: "2015 to present (annual composites)"
+      accuracy: "Deep learning classification; ~10m resolution"
+      limitations: "Annual composite, cloud-filtered; may underrepresent ephemeral land cover"
+    value_encoding:
+      type: class_lookup
+      classes:
+        0: { name: Water, color: "#62B0CC" }
+        1: { name: Trees, color: "#488C5F" }
+        2: { name: Grass, color: "#98B982" }
+        3: { name: Flooded vegetation, color: "#A0AAC3" }
+        4: { name: Crops, color: "#D7A55F" }
+        5: { name: Shrub, color: "#CDB982" }
+        6: { name: Built, color: "#B45F55" }
+        7: { name: Bare, color: "#AFA89E" }
+        8: { name: Snow, color: "#B9CDE1" }
     assets:
       visual_tiles:
         url_template:
-          - https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/land_use/dynamic_world/V1/2023/tiles_visual/{z}/{x}/{y}.png
+          - https://geo-test-api.s3.us-east-1.amazonaws.com/dynamic_world/release/v1/2023/porto_alegre/tiles_visual/{z}/{x}/{y}.png
       value_tiles:
         url_template:
-          - https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/land_use/dynamic_world/V1/2023/tiles_values/{z}/{x}/{y}.png
+          - https://geo-test-api.s3.us-east-1.amazonaws.com/dynamic_world/release/v1/2023/porto_alegre/tiles_values/{z}/{x}/{y}.png
       download:
         cog_url:
-          - https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/land_use/dynamic_world/V1/2023/land_use_cog.tif
+          - https://geo-test-api.s3.us-east-1.amazonaws.com/dynamic_world/release/v1/2023/porto_alegre/poa_dynamicworld_cog.tif
       metadata:
         url:
-          - https://geo-test-api.s3.amazonaws.com/nbs/porto_alegre/land_use/v2026-03-06/metadata.json
+          - https://geo-test-api.s3.us-east-1.amazonaws.com/dynamic_world/release/v1/2023/porto_alegre/metadata.json
     description: Versioned categorical land-use raster exposed by the test API for Porto Alegre.
-    
-  - dataset_id: copernicus_dem
-    dataset_name: Copernicus DEM
-    publisher: Copernicus
-    license: Copernicus License
-    resolution: 30m
-    access_type: gee
-    source_url: https://developers.google.com/earth-engine/datasets/catalog/COPERNICUS_DEM_GLO30
-    dataset_type: elevation
-    type: numeric_raster
-    assets:
-      visual_tiles:
-        url_template: []
-      value_tiles:
-        url_template: []
-      download:
-        cog_url: []
-      metadata:
-        url: []
-    description: Global digital elevation model used for terrain indicators.
 
   - dataset_id: poa_gtfs
     dataset_name: GTFS Porto Alegre

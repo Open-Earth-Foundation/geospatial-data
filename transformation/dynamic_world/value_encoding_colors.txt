@@ -1,0 +1,11 @@
+# Encode value in R channel: R=value, G=0, B=0 (browser reads R to get value)
+# For categorical 0-8; extend to 255 if needed for larger value ranges
+0 0 0 0
+1 1 0 0
+2 2 0 0
+3 3 0 0
+4 4 0 0
+5 5 0 0
+6 6 0 0
+7 7 0 0
+8 8 0 0
