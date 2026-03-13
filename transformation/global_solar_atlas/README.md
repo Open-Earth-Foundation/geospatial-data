@@ -15,7 +15,7 @@ Download the **Brazil LTAy AvgDailyTotals** GeoTIFF package (v2). Extract into `
 | Input | Description |
 |-------|-------------|
 | `Brazil_GISdata_LTAy_AvgDailyTotals_GlobalSolarAtlas-v2_GEOTIFF/{GHI,PVOUT,DNI,GTI,DIF}.tif` | Brazil-wide solar raster layers |
-| `../br_ibge/releases/2010/output/porto_alegre_neighbourhoods.geojson` | Neighbourhood boundaries for zonal stats |
+| `../br_ibge/release/2010/output/porto_alegre_neighbourhoods.geojson` | Neighbourhood boundaries for zonal stats |
 
 ## Outputs
 
@@ -39,5 +39,5 @@ Download the **Brazil LTAy AvgDailyTotals** GeoTIFF package (v2). Extract into `
 
 1. Download the Brazil GeoTIFF package from [globalsolaratlas.info](https://globalsolaratlas.info/download/brazil)
 2. Extract into `Brazil_GISdata_LTAy_AvgDailyTotals_GlobalSolarAtlas-v2_GEOTIFF/`
-3. Ensure `porto_alegre_neighbourhoods.geojson` exists in `../br_ibge/releases/2010/output/`
+3. Ensure `porto_alegre_neighbourhoods.geojson` exists in `../br_ibge/release/2010/output/`
 4. Run the cells in `transformation.ipynb` (requires `numpy`, `pandas`, `imageio`, `matplotlib`)

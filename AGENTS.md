@@ -40,9 +40,9 @@ Read `catalog/datasets.yaml` — datasets may have a `crs` field (e.g. `EPSG:432
 
 ## How to answer "Where are the output files?" or "What does transformation X produce?"
 
-Transformation outputs live under `transformation/{dataset_slug}/releases/{version}/output/`. Typical outputs: `*.geojson`, `*.tif` (COG), `*.pmtiles`, and `metadata.json`.
+Transformation outputs live under `transformation/{dataset_slug}/release/{version}/output/`. Typical outputs: `*.geojson`, `*.tif` (COG), `*.pmtiles`, and `metadata.json`.
 
-**Release vs time period:** The release folder (`releases/{version}/`) is the **dataset/transformation version** (e.g. `v1`, `v2`, `2024-10-01`), not the time period of the source data. The collection period (e.g. year 2024) belongs in a separate subdirectory, e.g. `releases/v1/2024/output/` for outputs built from 2024 source data.
+**Release vs time period:** The release folder (`release/{version}/`) is the **dataset/transformation version** (e.g. `v1`, `v2`, `2024-10-01`), not the time period of the source data. The collection period (e.g. year 2024) belongs in a separate subdirectory, e.g. `release/v1/2024/output/` for outputs built from 2024 source data.
 
 ## How to answer "How do I generate COGs and tiles?" or "How do I add a new dataset?"
 
@@ -73,6 +73,6 @@ Use **snake_case**. Prefer `{source}_{descriptor}` or `{source}_{product}`:
 - **Analytical layers:** `collections/layers.yaml`
 - **Models (Level 2–3):** `models/{layer_id}/` — see `models/README.md`
 - **Transformation scripts:** `transformation/{dataset_slug}/`
-- **Transformation outputs:** `transformation/{dataset_slug}/releases/{version}/output/` or `transformation/{dataset_slug}/releases/{version}/{period}/output/` (period = data collection year/date)
+- **Transformation outputs:** `transformation/{dataset_slug}/release/{version}/output/` or `transformation/{dataset_slug}/release/{version}/{period}/output/` (period = data collection year/date)
 - **Tile generation example:** `transformation/global_solar_atlas/v2/raster_transformation.ipynb`
-- **Source data (per release):** `transformation/{dataset_slug}/releases/{version}/arquivo-gtfs/` (or similar)
+- **Source data (per release):** `transformation/{dataset_slug}/release/{version}/arquivo-gtfs/` (or similar)

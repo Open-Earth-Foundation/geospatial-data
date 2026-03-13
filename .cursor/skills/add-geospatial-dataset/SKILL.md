@@ -24,7 +24,7 @@ Track progress when adding a dataset:
 ```
 transformation/{dataset_slug}/
 ├── README.md
-└── releases/{version}/{period}/
+└── release/{version}/{period}/
     ├── transformation.ipynb
     ├── data/
     │   ├── {layer}_visual_colors.txt

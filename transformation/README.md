@@ -4,12 +4,12 @@
 
 ## Directory convention
 
-Use `releases/{version}/{period}/` for each dataset:
+Use `release/{version}/{period}/` for each dataset:
 
 ```text
 transformation/{dataset_slug}/
 ├── README.md
-└── releases/
+└── release/
     └── {version}/           # e.g. v1, v2 (dataset/transformation release)
         └── {period}/        # e.g. 2024 (data collection period)
             ├── *.ipynb      # transformation notebooks
@@ -19,7 +19,7 @@ transformation/{dataset_slug}/
 
 - **version** = dataset release (v1, v2), not the time period
 - **period** = data collection period (year or date)
-- Run notebooks from `releases/{version}/{period}/`; they expect `data/` and write to `output/`
+- Run notebooks from `release/{version}/{period}/`; they expect `data/` and write to `output/`
 
 ## Typical script responsibilities
 

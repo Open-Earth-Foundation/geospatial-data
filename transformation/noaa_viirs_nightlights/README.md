@@ -2,7 +2,7 @@
 
 Transformation pipeline for NOAA VIIRS DNB monthly composites → Porto Alegre clipped raster, COG, and map tiles.
 
-**Release convention:** The release folder is the **dataset version** (e.g. `v1`), not the data collection period. Time period (e.g. 2024) lives in a subdirectory: `releases/v1/2024/`.
+**Release convention:** The release folder is the **dataset version** (e.g. `v1`), not the data collection period. Time period (e.g. 2024) lives in a subdirectory: `release/v1/2024/`.
 
 ## Source
 
@@ -31,6 +31,6 @@ Stray-light corrected monthly composites. Pixel size ~464 m. Data from 2014 to p
 
 ## Usage
 
-1. Run `releases/v1/2024/transformation.ipynb` (requires `earthengine-api`, GDAL).
-2. **Step 1 (GEE):** Exports annual mean composite to Google Drive. Poll task status, then download the GeoTIFF to `releases/v1/2024/data/`.
+1. Run `release/v1/2024/transformation.ipynb` (requires `earthengine-api`, GDAL).
+2. **Step 1 (GEE):** Exports annual mean composite to Google Drive. Poll task status, then download the GeoTIFF to `release/v1/2024/data/`.
 3. **Step 2 (GDAL):** Run the COG + tiles cells. Requires the GeoTIFF in `data/`.
