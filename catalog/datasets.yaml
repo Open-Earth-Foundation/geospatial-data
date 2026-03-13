@@ -163,6 +163,38 @@ datasets:
       GHSL Degree of Urbanization (SMOD) P2023A for Porto Alegre.
       Rural-urban classification (water, rural, suburban, urban centre) at 1 km resolution.
 
+  - dataset_id: hansen_forest_change
+    dataset_name: Hansen Global Forest Change (Loss)
+    publisher: UMD / Google
+    license: CC BY 4.0
+    resolution: 30m
+    crs: EPSG:3857
+    access_type: gee
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/UMD_hansen_global_forest_change_2024_v1_12
+    dataset_type: forest
+    type: categorical_raster
+    data_quality:
+      temporal_coverage: "2000–2024"
+      accuracy: "Stand-replacement forest loss from Landsat"
+      limitations: "Binary loss only; lossyear band gives year of loss"
+    value_encoding:
+      type: class_lookup
+      classes:
+        0: { name: No loss, color: "#F0F0F0" }
+        1: { name: Forest loss, color: "#FF0000" }
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/hansen_forest_change/release/v1/2024/porto_alegre/loss/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/hansen_forest_change/release/v1/2024/porto_alegre/loss/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/hansen_forest_change/release/v1/2024/porto_alegre/loss/poa_hansen_loss_30m_v1_12_cog.tif
+      metadata:
+        url: []
+    description: >
+      Hansen Global Forest Change v1.12 forest loss for Porto Alegre.
+      Binary: 0 = no loss, 1 = loss (2000–2024). Supports restoration and climate action planning.
+
   - dataset_id: ghsl_population
     dataset_name: GHSL Population Grid
     publisher: JRC (Joint Research Centre)
