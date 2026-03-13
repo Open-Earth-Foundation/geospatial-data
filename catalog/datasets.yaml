@@ -151,3 +151,36 @@ datasets:
     description: >
       IBGE Census data for Porto Alegre. Includes neighbourhood-level indicators (Census 2010, SIDRA API)
       and informal settlement polygons (Census 2022, favelas e comunidades urbanas).
+
+  - dataset_id: noaa_viirs_nightlights
+    dataset_name: NOAA VIIRS Night Lights
+    publisher: NOAA
+    license: Public domain
+    resolution: 500m
+    crs: EPSG:3857
+    access_type: gee
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/NOAA_VIIRS_DNB_MONTHLY_V1_VCMSLCFG
+    dataset_type: night_lights
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "2014 to present (monthly composites)"
+      accuracy: "Stray-light corrected; avg_rad in nW/cm²/sr"
+      limitations: "VCMSLCFG extends coverage toward poles with reduced quality; cf_cvg band indicates cloud-free coverage"
+    value_encoding:
+      type: terrain_rgb
+      scale: 0.1
+      offset: 0.0
+      unit: "nW/cm²/sr"
+      decode_formula: "value = (R * 256 * 256 + G * 256 + B) * scale + offset"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/noaa_viirs_nightlights/release/v1/2024/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/noaa_viirs_nightlights/release/v1/2024/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/noaa_viirs_nightlights/release/v1/2024/poa_nightlights_cog.tif
+      metadata:
+        url: https://geo-test-api.s3.us-east-1.amazonaws.com/noaa_viirs_nightlights/release/v1/2024/nightlights_metadata.json
+    description: >
+      VIIRS Day/Night Band (DNB) average radiance for Porto Alegre. Annual mean composite from monthly
+      stray-light corrected imagery. Proxy for human activity and electrification.
