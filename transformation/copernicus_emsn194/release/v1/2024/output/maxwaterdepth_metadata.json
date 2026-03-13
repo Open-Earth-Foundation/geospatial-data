@@ -1,0 +1,11 @@
+{
+  "layer": "maxwaterdepth",
+  "description": "Max water depth (m) — EMSN194 flood delineation, Porto Alegre May 2024",
+  "encoding": {
+    "type": "terrain_rgb",
+    "scale": 0.01,
+    "offset": 0.0,
+    "unit": "m",
+    "decode_formula": "value = (R * 256 * 256 + G * 256 + B) * scale + offset"
+  }
+}

@@ -180,3 +180,36 @@ datasets:
     description: >
       VIIRS Day/Night Band (DNB) average radiance for Porto Alegre. Annual mean composite from monthly
       stray-light corrected imagery. Proxy for human activity and electrification.
+
+  - dataset_id: copernicus_emsn194
+    dataset_name: Copernicus EMS Max Water Depth (EMSN194)
+    publisher: Copernicus Emergency Management Service (CEMS)
+    license: Copernicus License (EU free for use)
+    resolution: 30m
+    crs: EPSG:3857
+    access_type: manual_download
+    source_url: https://mapping.emergency.copernicus.eu/activations/EMSN194/
+    dataset_type: flood
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "May 2024 (flood event)"
+      accuracy: "Risk and Recovery Mapping delineation products"
+      limitations: "Single-event snapshot; Porto Alegre AOI only"
+    value_encoding:
+      type: terrain_rgb
+      scale: 0.01
+      offset: 0.0
+      unit: "m"
+      decode_formula: "value = (R * 256 * 256 + G * 256 + B) * scale + offset"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/copernicus_emsn194/release/v1/2024/porto_alegre/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/copernicus_emsn194/release/v1/2024/porto_alegre/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/copernicus_emsn194/release/v1/2024/porto_alegre/maxwaterdepth_cog.tif
+      metadata:
+        url: https://geo-test-api.s3.us-east-1.amazonaws.com/copernicus_emsn194/release/v1/2024/porto_alegre/maxwaterdepth_metadata.json
+    description: >
+      Max water depth (m) from Copernicus EMS Risk and Recovery Mapping activation EMSN194.
+      Flood delineation for Porto Alegre, Rio Grande do Sul, May 2024.

@@ -1,0 +1,15 @@
+# Max Water Depth Terrain RGB encoding: value = (R*256² + G*256 + B) * scale + offset
+# scale=0.01, offset=0, unit=m
+# value R G B
+nv 0 0 0 0
+0 0 0 0
+0.5 0 0 50
+1 0 0 100
+2 0 0 200
+3 0 1 44
+4 0 1 144
+5 0 1 244
+6 0 2 88
+7 0 2 188
+8 0 3 32
+10 0 3 232
