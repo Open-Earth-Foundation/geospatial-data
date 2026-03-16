@@ -20,6 +20,7 @@ collections:
     group: land_environment
     datasets:
       - hansen_forest_change
+      - hansen_treecover2000
 
   # --- Water & flood ---
   - id: water
@@ -27,12 +28,16 @@ collections:
     group: water_flood
     datasets:
       - jrc_global_surface_water
+      - jrc_global_surface_water_occurrence
+      - jrc_global_surface_water_seasonality
 
   - id: hydrography
     name: Hydrography
     group: water_flood
     datasets:
       - merit_hydro
+      - merit_hydro_elv
+      - merit_hydro_upa
 
   - id: flood
     name: Flood
@@ -84,6 +89,58 @@ collections:
     group: infrastructure
     datasets:
       - noaa_viirs_nightlights
+
+  # --- Climate hazards ---
+  - id: extreme_precipitation
+    name: Extreme precipitation
+    group: climate_hazards
+    datasets:
+      - chirps_r90p_2024
+      - chirps_r90p_climatology
+      - chirps_r95p_2024
+      - chirps_r95p_climatology
+      - chirps_r99p_2024
+      - chirps_r99p_climatology
+      - chirps_rx1day_2024
+      - chirps_rx1day_climatology
+      - chirps_rx5day_2024
+      - chirps_rx5day_climatology
+
+  - id: extreme_temperature
+    name: Extreme temperature
+    group: climate_hazards
+    datasets:
+      - era5land_tnx_2024
+      - era5land_tnx_climatology
+      - era5land_tx90p_2024
+      - era5land_tx90p_climatology
+      - era5land_tx99p_2024
+      - era5land_tx99p_climatology
+      - era5land_txx_2024
+      - era5land_txx_climatology
+
+  - id: heatwave
+    name: Heatwave
+    group: climate_hazards
+    datasets:
+      - era5land_hwm_2024
+      - era5land_hwm_climatology
+      - era5land_hwm_2030s_45
+      - era5land_hwm_2030s_85
+      - era5land_hwm_2050s_85
+      - era5land_hwm_2100s_85
+
+  - id: flood_risk_index
+    name: Flood risk index
+    group: climate_hazards
+    datasets:
+      - chirps_copdem_fri_2024
+      - chirps_copdem_fri_2030s_ssp245
+      - chirps_copdem_fri_2030s_ssp585
+      - chirps_copdem_fri_2050s_ssp245
+      - chirps_copdem_fri_2050s_ssp585
+      - chirps_copdem_fri_2100s_ssp245
+      - chirps_copdem_fri_2100s_ssp585
 
   # --- Terrain ---
   - id: elevation

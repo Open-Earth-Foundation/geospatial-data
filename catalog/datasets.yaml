@@ -391,7 +391,7 @@ datasets:
       Normalized Difference Vegetation Index (NDVI) from MODIS Terra MOD13Q1.
       Annual mean composite for Porto Alegre. Values -1 to 1 (scaled from raw 0.0001).
 
-  - dataset_id: merit_hydro
+  - dataset_id: merit_hydro_hnd
     dataset_name: MERIT Hydro HAND (Height Above Nearest Drainage)
     publisher: University of Tokyo (Yamazaki et al.)
     license: CC BY 4.0
@@ -423,3 +423,1193 @@ datasets:
     description: >
       Height Above Nearest Drainage (HAND) from MERIT Hydro v1.0.1.
       Elevation above nearest stream in meters; used for flood mapping and drainage context.
+
+  - dataset_id: hansen_treecover2000
+    dataset_name: Hansen Global Forest Change (Treecover 2000)
+    publisher: UMD / Google
+    license: CC BY 4.0
+    resolution: 30m
+    crs: EPSG:3857
+    access_type: gee
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/UMD_hansen_global_forest_change_2024_v1_12
+    dataset_type: forest
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "Year 2000 baseline"
+      accuracy: "Percent tree canopy cover derived from Landsat"
+      limitations: "Baseline layer only (not annual change)"
+    value_encoding:
+      type: single_channel
+      scale: 1.0
+      offset: 0.0
+      unit: "%"
+      decode_formula: "value = R"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/hansen_forest_change/release/v1/2024/porto_alegre/tree_cover_2000/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/hansen_forest_change/release/v1/2024/porto_alegre/tree_cover_2000/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/hansen_forest_change/release/v1/2024/porto_alegre/tree_cover_2000/poa_hansen_treecover2000_30m_v1_12_cog.tif
+      metadata:
+        url: []
+    description: >
+      Hansen Global Forest Change v1.12 tree canopy cover baseline (year 2000).
+      Pixel values represent percent tree cover.
+
+  - dataset_id: jrc_global_surface_water_occurrence
+    dataset_name: JRC Global Surface Water (Occurrence)
+    publisher: JRC (Joint Research Centre)
+    license: CC BY 4.0
+    resolution: 30m
+    crs: EPSG:3857
+    access_type: gee
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/JRC_GSW1_4_GlobalSurfaceWater
+    dataset_type: water
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "1984-2021"
+      accuracy: "Landsat-based surface water occurrence"
+      limitations: "Long-term percentage metric, not event-level flood depth"
+    value_encoding:
+      type: single_channel
+      scale: 1.0
+      offset: 0.0
+      unit: "%"
+      decode_formula: "value = R"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/jrc_global_surface_water/release/v1/porto_alegre/occurrence/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/jrc_global_surface_water/release/v1/porto_alegre/occurrence/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/jrc_global_surface_water/release/v1/porto_alegre/occurrence/poa_gsw_occurrence_30m_v1_4_cog.tif
+      metadata:
+        url: []
+    description: >
+      JRC Global Surface Water v1.4 occurrence layer.
+      Pixel values represent the frequency of water presence over the observation period.
+
+  - dataset_id: jrc_global_surface_water_seasonality
+    dataset_name: JRC Global Surface Water (Seasonality)
+    publisher: JRC (Joint Research Centre)
+    license: CC BY 4.0
+    resolution: 30m
+    crs: EPSG:3857
+    access_type: gee
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/JRC_GSW1_4_GlobalSurfaceWater
+    dataset_type: water
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "1984-2021"
+      accuracy: "Landsat-based monthly water persistence proxy"
+      limitations: "Aggregated long-term seasonality, not near-real-time conditions"
+    value_encoding:
+      type: single_channel
+      scale: 1.0
+      offset: 0.0
+      unit: "months"
+      decode_formula: "value = R"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/jrc_global_surface_water/release/v1/porto_alegre/seasonality/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/jrc_global_surface_water/release/v1/porto_alegre/seasonality/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/jrc_global_surface_water/release/v1/porto_alegre/seasonality/poa_gsw_seasonality_30m_v1_4_cog.tif
+      metadata:
+        url: []
+    description: >
+      JRC Global Surface Water v1.4 seasonality layer.
+      Pixel values represent the number of months with detected surface water.
+
+  - dataset_id: merit_hydro_elv
+    dataset_name: MERIT Hydro Elevation (ELV)
+    publisher: University of Tokyo (Yamazaki et al.)
+    license: CC BY 4.0
+    resolution: 90m
+    crs: EPSG:3857
+    access_type: gee
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/MERIT_Hydro_v1_0_1
+    dataset_type: hydrography
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "Static (MERIT Hydro v1.0.1)"
+      accuracy: "Hydrologically adjusted elevation surface"
+      limitations: "Global DEM derivative; local artifacts may remain"
+    value_encoding:
+      type: rgb_packed
+      scale: 1.0
+      offset: -10000.0
+      unit: "m"
+      decode_formula: "value = (R + 256*G + 65536*B) + offset"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/merit_hydro/release/v1/porto_alegre/elv/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/merit_hydro/release/v1/porto_alegre/elv/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/merit_hydro/release/v1/porto_alegre/elv/poa_merit_hydro_elv_90m_v1_0_1_cog.tif
+      metadata:
+        url: []
+    description: >
+      MERIT Hydro v1.0.1 elevation layer (ELV), derived from hydrologically corrected DEM.
+      Suitable for terrain and drainage context analyses.
+
+  - dataset_id: merit_hydro_upa
+    dataset_name: MERIT Hydro Upstream Area (UPA)
+    publisher: University of Tokyo (Yamazaki et al.)
+    license: CC BY 4.0
+    resolution: 90m
+    crs: EPSG:3857
+    access_type: gee
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/MERIT_Hydro_v1_0_1
+    dataset_type: hydrography
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "Static (MERIT Hydro v1.0.1)"
+      accuracy: "Flow-accumulation based upstream area estimate"
+      limitations: "Sensitive to DEM conditioning and river network assumptions"
+    value_encoding:
+      type: rgb_packed
+      scale: 1.0
+      offset: 0.0
+      unit: "km^2"
+      decode_formula: "value = (R + 256*G + 65536*B) * scale + offset"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/merit_hydro/release/v1/porto_alegre/upa/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/merit_hydro/release/v1/porto_alegre/upa/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/merit_hydro/release/v1/porto_alegre/upa/poa_merit_hydro_upa_90m_v1_0_1_cog.tif
+      metadata:
+        url: []
+    description: >
+      MERIT Hydro v1.0.1 upstream area layer (UPA).
+      Represents accumulated contributing area used in hydrologic and flood modeling.
+
+  - dataset_id: copernicus_dem
+    dataset_name: Copernicus DEM GLO-30
+    publisher: Copernicus Programme
+    license: Copernicus open data license
+    resolution: 30m
+    crs: EPSG:3857
+    access_type: manual_download
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/COPERNICUS_DEM_GLO30
+    dataset_type: elevation
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "Static global DEM"
+      accuracy: "Global 30 m elevation model"
+      limitations: "Vertical accuracy varies by terrain and region"
+    value_encoding:
+      type: rgb_packed
+      scale: 1.0
+      offset: 0.0
+      unit: "m"
+      decode_formula: "value = (R + 256*G + 65536*B) * scale + offset"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/copernicus_dem/release/v1/2024/porto_alegre/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/copernicus_dem/release/v1/2024/porto_alegre/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/copernicus_dem/release/v1/2024/porto_alegre/poa_dem_glo30m_cog.tif
+      metadata:
+        url: []
+    description: >
+      Copernicus DEM GLO-30 elevation model.
+      Provides baseline topographic elevation for terrain and risk analyses.
+
+  - dataset_id: chirps_r90p_2024
+    dataset_name: CHIRPS Extreme Precipitation Index R90p (2024)
+    publisher: UCSB/CHG (source), Open Earth Foundation (derived processing)
+    license: Public domain (CHIRPS)
+    resolution: 0.05 degree (~5566m)
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/UCSB-CHG_CHIRPS_DAILY
+    dataset_type: extreme_precipitation
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "2024"
+      accuracy: "Derived from CHIRPS daily precipitation and OEF extreme-index workflow"
+      limitations: "Derived hazard indicator; interpretation depends on methodology and baseline choices"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 100
+      offset: 49960
+      unit: "mm"
+      decode_formula: "value = (R + 256*G + 65536*B + offset) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_precipitation/chirps/V2_0/2024/r90p/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_precipitation/chirps/V2_0/2024/r90p/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_precipitation/chirps/V2_0/2024/r90p/R90p_2024_cog.tif
+      metadata:
+        url: []
+    description: >
+      R90p extreme precipitation indicator for Porto Alegre (2024), derived from CHIRPS daily data.
+      Encoded as 24-bit RGB with per-layer scale/offset for value tiles.
+
+  - dataset_id: chirps_r90p_climatology
+    dataset_name: CHIRPS Extreme Precipitation Index R90p (Climatology)
+    publisher: UCSB/CHG (source), Open Earth Foundation (derived processing)
+    license: Public domain (CHIRPS)
+    resolution: 0.05 degree (~5566m)
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/UCSB-CHG_CHIRPS_DAILY
+    dataset_type: extreme_precipitation
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "Annual climatology"
+      accuracy: "Derived from CHIRPS daily precipitation and OEF extreme-index workflow"
+      limitations: "Derived hazard indicator; interpretation depends on methodology and baseline choices"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 100
+      offset: 37045
+      unit: "mm"
+      decode_formula: "value = (R + 256*G + 65536*B + offset) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_precipitation/chirps/V2_0/annual_climatology/r90p/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_precipitation/chirps/V2_0/annual_climatology/r90p/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_precipitation/chirps/V2_0/annual_climatology/r90p/R90p_climatology_cog.tif
+      metadata:
+        url: []
+    description: >
+      R90p annual climatology extreme precipitation indicator for Porto Alegre, derived from CHIRPS daily data.
+      Encoded as 24-bit RGB with per-layer scale/offset for value tiles.
+
+  - dataset_id: chirps_r95p_2024
+    dataset_name: CHIRPS Extreme Precipitation Index R95p (2024)
+    publisher: UCSB/CHG (source), Open Earth Foundation (derived processing)
+    license: Public domain (CHIRPS)
+    resolution: 0.05 degree (~5566m)
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/UCSB-CHG_CHIRPS_DAILY
+    dataset_type: extreme_precipitation
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "2024"
+      accuracy: "Derived from CHIRPS daily precipitation and OEF extreme-index workflow"
+      limitations: "Derived hazard indicator; interpretation depends on methodology and baseline choices"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 100
+      offset: 31068
+      unit: "mm"
+      decode_formula: "value = (R + 256*G + 65536*B + offset) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_precipitation/chirps/V2_0/2024/r95p/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_precipitation/chirps/V2_0/2024/r95p/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_precipitation/chirps/V2_0/2024/r95p/R95p_2024_cog.tif
+      metadata:
+        url: []
+    description: >
+      R95p extreme precipitation indicator for Porto Alegre (2024), derived from CHIRPS daily data.
+      Encoded as 24-bit RGB with per-layer scale/offset for value tiles.
+
+  - dataset_id: chirps_r95p_climatology
+    dataset_name: CHIRPS Extreme Precipitation Index R95p (Climatology)
+    publisher: UCSB/CHG (source), Open Earth Foundation (derived processing)
+    license: Public domain (CHIRPS)
+    resolution: 0.05 degree (~5566m)
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/UCSB-CHG_CHIRPS_DAILY
+    dataset_type: extreme_precipitation
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "Annual climatology"
+      accuracy: "Derived from CHIRPS daily precipitation and OEF extreme-index workflow"
+      limitations: "Derived hazard indicator; interpretation depends on methodology and baseline choices"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 100
+      offset: 21819
+      unit: "mm"
+      decode_formula: "value = (R + 256*G + 65536*B + offset) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_precipitation/chirps/V2_0/annual_climatology/r95p/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_precipitation/chirps/V2_0/annual_climatology/r95p/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_precipitation/chirps/V2_0/annual_climatology/r95p/R95p_climatology_pot_cog.tif
+      metadata:
+        url: []
+    description: >
+      R95p annual climatology extreme precipitation indicator for Porto Alegre, derived from CHIRPS daily data.
+      Encoded as 24-bit RGB with per-layer scale/offset for value tiles.
+
+  - dataset_id: chirps_r99p_2024
+    dataset_name: CHIRPS Extreme Precipitation Index R99p (2024)
+    publisher: UCSB/CHG (source), Open Earth Foundation (derived processing)
+    license: Public domain (CHIRPS)
+    resolution: 0.05 degree (~5566m)
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/UCSB-CHG_CHIRPS_DAILY
+    dataset_type: extreme_precipitation
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "2024"
+      accuracy: "Derived from CHIRPS daily precipitation and OEF extreme-index workflow"
+      limitations: "Derived hazard indicator; interpretation depends on methodology and baseline choices"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 100
+      offset: 12196
+      unit: "mm"
+      decode_formula: "value = (R + 256*G + 65536*B + offset) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_precipitation/chirps/V2_0/2024/r99p/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_precipitation/chirps/V2_0/2024/r99p/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_precipitation/chirps/V2_0/2024/r99p/R99p_2024_pot_cog.tif
+      metadata:
+        url: []
+    description: >
+      R99p extreme precipitation indicator for Porto Alegre (2024), derived from CHIRPS daily data.
+      Encoded as 24-bit RGB with per-layer scale/offset for value tiles.
+
+  - dataset_id: chirps_r99p_climatology
+    dataset_name: CHIRPS Extreme Precipitation Index R99p (Climatology)
+    publisher: UCSB/CHG (source), Open Earth Foundation (derived processing)
+    license: Public domain (CHIRPS)
+    resolution: 0.05 degree (~5566m)
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/UCSB-CHG_CHIRPS_DAILY
+    dataset_type: extreme_precipitation
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "Annual climatology"
+      accuracy: "Derived from CHIRPS daily precipitation and OEF extreme-index workflow"
+      limitations: "Derived hazard indicator; interpretation depends on methodology and baseline choices"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 100
+      offset: 8476
+      unit: "mm"
+      decode_formula: "value = (R + 256*G + 65536*B + offset) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_precipitation/chirps/V2_0/annual_climatology/r99p/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_precipitation/chirps/V2_0/annual_climatology/r99p/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_precipitation/chirps/V2_0/annual_climatology/r99p/R99p_climatology_pot_cog.tif
+      metadata:
+        url: []
+    description: >
+      R99p annual climatology extreme precipitation indicator for Porto Alegre, derived from CHIRPS daily data.
+      Encoded as 24-bit RGB with per-layer scale/offset for value tiles.
+
+  - dataset_id: chirps_rx1day_2024
+    dataset_name: CHIRPS Extreme Precipitation Index RX1day (2024)
+    publisher: UCSB/CHG (source), Open Earth Foundation (derived processing)
+    license: Public domain (CHIRPS)
+    resolution: 0.05 degree (~5566m)
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/UCSB-CHG_CHIRPS_DAILY
+    dataset_type: extreme_precipitation
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "2024"
+      accuracy: "Derived from CHIRPS daily precipitation and OEF extreme-index workflow"
+      limitations: "Derived hazard indicator; interpretation depends on methodology and baseline choices"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 100
+      offset: 6459
+      unit: "mm"
+      decode_formula: "value = (R + 256*G + 65536*B + offset) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_precipitation/chirps/V2_0/2024/rx1day/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_precipitation/chirps/V2_0/2024/rx1day/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_precipitation/chirps/V2_0/2024/rx1day/RX1day_2024_pot_cog.tif
+      metadata:
+        url: []
+    description: >
+      RX1day extreme precipitation indicator for Porto Alegre (2024), derived from CHIRPS daily data.
+      Encoded as 24-bit RGB with per-layer scale/offset for value tiles.
+
+  - dataset_id: chirps_rx1day_climatology
+    dataset_name: CHIRPS Extreme Precipitation Index RX1day (Climatology)
+    publisher: UCSB/CHG (source), Open Earth Foundation (derived processing)
+    license: Public domain (CHIRPS)
+    resolution: 0.05 degree (~5566m)
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/UCSB-CHG_CHIRPS_DAILY
+    dataset_type: extreme_precipitation
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "Annual climatology"
+      accuracy: "Derived from CHIRPS daily precipitation and OEF extreme-index workflow"
+      limitations: "Derived hazard indicator; interpretation depends on methodology and baseline choices"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 100
+      offset: 5727
+      unit: "mm"
+      decode_formula: "value = (R + 256*G + 65536*B + offset) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_precipitation/chirps/V2_0/annual_climatology/rx1day/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_precipitation/chirps/V2_0/annual_climatology/rx1day/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_precipitation/chirps/V2_0/annual_climatology/rx1day/RX1day_climatology_pot_cog.tif
+      metadata:
+        url: []
+    description: >
+      RX1day annual climatology extreme precipitation indicator for Porto Alegre, derived from CHIRPS daily data.
+      Encoded as 24-bit RGB with per-layer scale/offset for value tiles.
+
+  - dataset_id: chirps_rx5day_2024
+    dataset_name: CHIRPS Extreme Precipitation Index RX5day (2024)
+    publisher: UCSB/CHG (source), Open Earth Foundation (derived processing)
+    license: Public domain (CHIRPS)
+    resolution: 0.05 degree (~5566m)
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/UCSB-CHG_CHIRPS_DAILY
+    dataset_type: extreme_precipitation
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "2024"
+      accuracy: "Derived from CHIRPS daily precipitation and OEF extreme-index workflow"
+      limitations: "Derived hazard indicator; interpretation depends on methodology and baseline choices"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 100
+      offset: 17535
+      unit: "mm"
+      decode_formula: "value = (R + 256*G + 65536*B + offset) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_precipitation/chirps/V2_0/2024/rx5day/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_precipitation/chirps/V2_0/2024/rx5day/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_precipitation/chirps/V2_0/2024/rx5day/RX5day_2024_pot_cog.tif
+      metadata:
+        url: []
+    description: >
+      RX5day extreme precipitation indicator for Porto Alegre (2024), derived from CHIRPS daily data.
+      Encoded as 24-bit RGB with per-layer scale/offset for value tiles.
+
+  - dataset_id: chirps_rx5day_climatology
+    dataset_name: CHIRPS Extreme Precipitation Index RX5day (Climatology)
+    publisher: UCSB/CHG (source), Open Earth Foundation (derived processing)
+    license: Public domain (CHIRPS)
+    resolution: 0.05 degree (~5566m)
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/UCSB-CHG_CHIRPS_DAILY
+    dataset_type: extreme_precipitation
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "Annual climatology"
+      accuracy: "Derived from CHIRPS daily precipitation and OEF extreme-index workflow"
+      limitations: "Derived hazard indicator; interpretation depends on methodology and baseline choices"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 100
+      offset: 11014
+      unit: "mm"
+      decode_formula: "value = (R + 256*G + 65536*B + offset) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_precipitation/chirps/V2_0/annual_climatology/rx5day/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_precipitation/chirps/V2_0/annual_climatology/rx5day/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_precipitation/chirps/V2_0/annual_climatology/rx5day/RX5day_climatology_pot_cog.tif
+      metadata:
+        url: []
+    description: >
+      RX5day annual climatology extreme precipitation indicator for Porto Alegre, derived from CHIRPS daily data.
+      Encoded as 24-bit RGB with per-layer scale/offset for value tiles.
+
+  - dataset_id: era5land_tnx_2024
+    dataset_name: ERA5-Land Extreme Temperature Index TNx (2024)
+    publisher: ECMWF/Copernicus (source), Open Earth Foundation (derived processing)
+    license: Copernicus C3S/CAMS License
+    resolution: 11132m
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/ECMWF_ERA5_LAND_DAILY_AGGR#description
+    dataset_type: extreme_temperature
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "2024"
+      accuracy: "Derived from ERA5-Land Daily Aggregates and OEF extreme-index workflow"
+      limitations: "Derived hazard indicator; interpretation depends on methodology and baseline choices"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 100
+      offset: 2566
+      unit: ""
+      decode_formula: "value = (R + 256*G + 65536*B + offset) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_temperature/era5/land_daily_aggregated/2024/tnx/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_temperature/era5/land_daily_aggregated/2024/tnx/values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_temperature/era5/land_daily_aggregated/2024/tnx/TNx_2024_pot_cog.tif
+      metadata:
+        url: []
+    description: >
+      TNx extreme temperature indicator for Porto Alegre (2024), derived from ERA5-Land.
+      Encoded as 24-bit RGB with per-layer scale/offset for value tiles.
+
+  - dataset_id: era5land_tnx_climatology
+    dataset_name: ERA5-Land Extreme Temperature Index TNx (Climatology)
+    publisher: ECMWF/Copernicus (source), Open Earth Foundation (derived processing)
+    license: Copernicus C3S/CAMS License
+    resolution: 11132m
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/ECMWF_ERA5_LAND_DAILY_AGGR#description
+    dataset_type: extreme_temperature
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "Annual climatology"
+      accuracy: "Derived from ERA5-Land Daily Aggregates and OEF extreme-index workflow"
+      limitations: "Derived hazard indicator; interpretation depends on methodology and baseline choices"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 100
+      offset: 2505
+      unit: ""
+      decode_formula: "value = (R + 256*G + 65536*B + offset) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_temperature/era5/land_daily_aggregated/annual_climatology/tnx/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_temperature/era5/land_daily_aggregated/annual_climatology/tnx/values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_temperature/era5/land_daily_aggregated/annual_climatology/tnx/TNx_climatology_pot_cog.tif
+      metadata:
+        url: []
+    description: >
+      TNx annual climatology extreme temperature indicator for Porto Alegre, derived from ERA5-Land.
+      Encoded as 24-bit RGB with per-layer scale/offset for value tiles.
+
+  - dataset_id: era5land_tx90p_2024
+    dataset_name: ERA5-Land Extreme Temperature Index TX90p (2024)
+    publisher: ECMWF/Copernicus (source), Open Earth Foundation (derived processing)
+    license: Copernicus C3S/CAMS License
+    resolution: 11132m
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/ECMWF_ERA5_LAND_DAILY_AGGR#description
+    dataset_type: extreme_temperature
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "2024"
+      accuracy: "Derived from ERA5-Land Daily Aggregates and OEF extreme-index workflow"
+      limitations: "Derived hazard indicator; interpretation depends on methodology and baseline choices"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 100
+      offset: 1174
+      unit: ""
+      decode_formula: "value = (R + 256*G + 65536*B + offset) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_temperature/era5/land_daily_aggregated/2024/tx90p/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_temperature/era5/land_daily_aggregated/2024/tx90p/values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_temperature/era5/land_daily_aggregated/2024/tx90p/TX90p_2024_pot_cog.tif
+      metadata:
+        url: []
+    description: >
+      TX90p extreme temperature indicator for Porto Alegre (2024), derived from ERA5-Land.
+      Encoded as 24-bit RGB with per-layer scale/offset for value tiles.
+
+  - dataset_id: era5land_tx90p_climatology
+    dataset_name: ERA5-Land Extreme Temperature Index TX90p (Climatology)
+    publisher: ECMWF/Copernicus (source), Open Earth Foundation (derived processing)
+    license: Copernicus C3S/CAMS License
+    resolution: 11132m
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/ECMWF_ERA5_LAND_DAILY_AGGR#description
+    dataset_type: extreme_temperature
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "Annual climatology"
+      accuracy: "Derived from ERA5-Land Daily Aggregates and OEF extreme-index workflow"
+      limitations: "Derived hazard indicator; interpretation depends on methodology and baseline choices"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 100
+      offset: 977
+      unit: ""
+      decode_formula: "value = (R + 256*G + 65536*B + offset) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_temperature/era5/land_daily_aggregated/annual_climatology/tx90p/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_temperature/era5/land_daily_aggregated/annual_climatology/tx90p/values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_temperature/era5/land_daily_aggregated/annual_climatology/tx90p/TX90p_climatology_pot_cog.tif
+      metadata:
+        url: []
+    description: >
+      TX90p annual climatology extreme temperature indicator for Porto Alegre, derived from ERA5-Land.
+      Encoded as 24-bit RGB with per-layer scale/offset for value tiles.
+
+  - dataset_id: era5land_tx99p_2024
+    dataset_name: ERA5-Land Extreme Temperature Index TX99p (2024)
+    publisher: ECMWF/Copernicus (source), Open Earth Foundation (derived processing)
+    license: Copernicus C3S/CAMS License
+    resolution: 11132m
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/ECMWF_ERA5_LAND_DAILY_AGGR#description
+    dataset_type: extreme_temperature
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "2024"
+      accuracy: "Derived from ERA5-Land Daily Aggregates and OEF extreme-index workflow"
+      limitations: "Derived hazard indicator; interpretation depends on methodology and baseline choices"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 100
+      offset: 82
+      unit: ""
+      decode_formula: "value = (R + 256*G + 65536*B + offset) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_temperature/era5/land_daily_aggregated/2024/tx99p/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_temperature/era5/land_daily_aggregated/2024/tx99p/values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_temperature/era5/land_daily_aggregated/2024/tx99p/TX99p_2024_pot_cog.tif
+      metadata:
+        url: []
+    description: >
+      TX99p extreme temperature indicator for Porto Alegre (2024), derived from ERA5-Land.
+      Encoded as 24-bit RGB with per-layer scale/offset for value tiles.
+
+  - dataset_id: era5land_tx99p_climatology
+    dataset_name: ERA5-Land Extreme Temperature Index TX99p (Climatology)
+    publisher: ECMWF/Copernicus (source), Open Earth Foundation (derived processing)
+    license: Copernicus C3S/CAMS License
+    resolution: 11132m
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/ECMWF_ERA5_LAND_DAILY_AGGR#description
+    dataset_type: extreme_temperature
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "Annual climatology"
+      accuracy: "Derived from ERA5-Land Daily Aggregates and OEF extreme-index workflow"
+      limitations: "Derived hazard indicator; interpretation depends on methodology and baseline choices"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 100
+      offset: 145
+      unit: ""
+      decode_formula: "value = (R + 256*G + 65536*B + offset) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_temperature/era5/land_daily_aggregated/annual_climatology/tx99p/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_temperature/era5/land_daily_aggregated/annual_climatology/tx99p/values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_temperature/era5/land_daily_aggregated/annual_climatology/tx99p/TX99p_climatology_pot_cog.tif
+      metadata:
+        url: []
+    description: >
+      TX99p annual climatology extreme temperature indicator for Porto Alegre, derived from ERA5-Land.
+      Encoded as 24-bit RGB with per-layer scale/offset for value tiles.
+
+  - dataset_id: era5land_txx_2024
+    dataset_name: ERA5-Land Extreme Temperature Index TXx (2024)
+    publisher: ECMWF/Copernicus (source), Open Earth Foundation (derived processing)
+    license: Copernicus C3S/CAMS License
+    resolution: 11132m
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/ECMWF_ERA5_LAND_DAILY_AGGR#description
+    dataset_type: extreme_temperature
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "2024"
+      accuracy: "Derived from ERA5-Land Daily Aggregates and OEF extreme-index workflow"
+      limitations: "Derived hazard indicator; interpretation depends on methodology and baseline choices"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 100
+      offset: 3632
+      unit: ""
+      decode_formula: "value = (R + 256*G + 65536*B + offset) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_temperature/era5/land_daily_aggregated/2024/txx/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_temperature/era5/land_daily_aggregated/2024/txx/values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_temperature/era5/land_daily_aggregated/2024/txx/TXx_2024_pot_cog.tif
+      metadata:
+        url: []
+    description: >
+      TXx extreme temperature indicator for Porto Alegre (2024), derived from ERA5-Land.
+      Encoded as 24-bit RGB with per-layer scale/offset for value tiles.
+
+  - dataset_id: era5land_txx_climatology
+    dataset_name: ERA5-Land Extreme Temperature Index TXx (Climatology)
+    publisher: ECMWF/Copernicus (source), Open Earth Foundation (derived processing)
+    license: Copernicus C3S/CAMS License
+    resolution: 11132m
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/ECMWF_ERA5_LAND_DAILY_AGGR#description
+    dataset_type: extreme_temperature
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "Annual climatology"
+      accuracy: "Derived from ERA5-Land Daily Aggregates and OEF extreme-index workflow"
+      limitations: "Derived hazard indicator; interpretation depends on methodology and baseline choices"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 100
+      offset: 30841
+      unit: ""
+      decode_formula: "value = (R + 256*G + 65536*B + offset) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_temperature/era5/land_daily_aggregated/annual_climatology/txx/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_temperature/era5/land_daily_aggregated/annual_climatology/txx/values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_temperature/era5/land_daily_aggregated/annual_climatology/txx/TXx_climatology_pot_cog.tif
+      metadata:
+        url: []
+    description: >
+      TXx annual climatology extreme temperature indicator for Porto Alegre, derived from ERA5-Land.
+      Encoded as 24-bit RGB with per-layer scale/offset for value tiles.
+
+  - dataset_id: chirps_copdem_fri_2024
+    dataset_name: Flood Risk Index (FRI 2024)
+    publisher: UCSB/CHG + Copernicus Programme (source), Open Earth Foundation (derived processing)
+    license: Public domain (CHIRPS) + Copernicus open data license
+    resolution: 0.05 degree (~5566m)
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/UCSB-CHG_CHIRPS_DAILY
+    dataset_type: flood_risk_index
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "2024"
+      accuracy: "Derived index combining CHIRPS precipitation signals with Copernicus DEM context"
+      limitations: "Model-derived composite indicator; scenario assumptions and weighting affect interpretation"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 100
+      offset: 6
+      unit: "index"
+      decode_formula: "value = (R + 256*G + 65536*B + offset) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/floods/flood_risk_index/oef_calculation/2024/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/floods/flood_risk_index/oef_calculation/2024/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/floods/flood_risk_index/oef_calculation/2024/FRI_2024_POT_cog.tif
+      metadata:
+        url: []
+    description: >
+      Flood Risk Index for Porto Alegre (2024), derived from CHIRPS and Copernicus DEM-based processing.
+      Encoded as 24-bit RGB with per-layer scale/offset for value tiles.
+
+  - dataset_id: chirps_copdem_fri_2030s_ssp245
+    dataset_name: Flood Risk Index (FRI 2030s SSP245)
+    publisher: UCSB/CHG + Copernicus Programme (source), Open Earth Foundation (derived processing)
+    license: Public domain (CHIRPS) + Copernicus open data license
+    resolution: 0.05 degree (~5566m)
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/UCSB-CHG_CHIRPS_DAILY
+    dataset_type: flood_risk_index
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "2030s (SSP245)"
+      accuracy: "Derived index combining CHIRPS precipitation signals with Copernicus DEM context"
+      limitations: "Model-derived composite indicator; scenario assumptions and weighting affect interpretation"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 100
+      offset: 1
+      unit: "index"
+      decode_formula: "value = (R + 256*G + 65536*B + offset) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/floods/flood_risk_index/oef_calculation/2030s_ssp245/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/floods/flood_risk_index/oef_calculation/2030s_ssp245/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/floods/flood_risk_index/oef_calculation/2030s_ssp245/FRI_2030s_ssp245_pot_cog.tif
+      metadata:
+        url: []
+    description: >
+      Flood Risk Index for Porto Alegre (2030s SSP245), derived from CHIRPS and Copernicus DEM-based processing.
+      Encoded as 24-bit RGB with per-layer scale/offset for value tiles.
+
+  - dataset_id: chirps_copdem_fri_2030s_ssp585
+    dataset_name: Flood Risk Index (FRI 2030s SSP585)
+    publisher: UCSB/CHG + Copernicus Programme (source), Open Earth Foundation (derived processing)
+    license: Public domain (CHIRPS) + Copernicus open data license
+    resolution: 0.05 degree (~5566m)
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/UCSB-CHG_CHIRPS_DAILY
+    dataset_type: flood_risk_index
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "2030s (SSP585)"
+      accuracy: "Derived index combining CHIRPS precipitation signals with Copernicus DEM context"
+      limitations: "Model-derived composite indicator; scenario assumptions and weighting affect interpretation"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 100
+      offset: 13
+      unit: "index"
+      decode_formula: "value = (R + 256*G + 65536*B + offset) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/floods/flood_risk_index/oef_calculation/2030s_ssp585/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/floods/flood_risk_index/oef_calculation/2030s_ssp585/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/floods/flood_risk_index/oef_calculation/2030s_ssp585/FRI_2030s_ssp585_pot_cog.tif
+      metadata:
+        url: []
+    description: >
+      Flood Risk Index for Porto Alegre (2030s SSP585), derived from CHIRPS and Copernicus DEM-based processing.
+      Encoded as 24-bit RGB with per-layer scale/offset for value tiles.
+
+  - dataset_id: chirps_copdem_fri_2050s_ssp245
+    dataset_name: Flood Risk Index (FRI 2050s SSP245)
+    publisher: UCSB/CHG + Copernicus Programme (source), Open Earth Foundation (derived processing)
+    license: Public domain (CHIRPS) + Copernicus open data license
+    resolution: 0.05 degree (~5566m)
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/UCSB-CHG_CHIRPS_DAILY
+    dataset_type: flood_risk_index
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "2050s (SSP245)"
+      accuracy: "Derived index combining CHIRPS precipitation signals with Copernicus DEM context"
+      limitations: "Model-derived composite indicator; scenario assumptions and weighting affect interpretation"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 100
+      offset: 9
+      unit: "index"
+      decode_formula: "value = (R + 256*G + 65536*B + offset) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/floods/flood_risk_index/oef_calculation/2050s_ssp245/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/floods/flood_risk_index/oef_calculation/2050s_ssp245/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/floods/flood_risk_index/oef_calculation/2050s_ssp245/FRI_2050s_ssp245_pot_cog.tif
+      metadata:
+        url: []
+    description: >
+      Flood Risk Index for Porto Alegre (2050s SSP245), derived from CHIRPS and Copernicus DEM-based processing.
+      Encoded as 24-bit RGB with per-layer scale/offset for value tiles.
+
+  - dataset_id: chirps_copdem_fri_2050s_ssp585
+    dataset_name: Flood Risk Index (FRI 2050s SSP585)
+    publisher: UCSB/CHG + Copernicus Programme (source), Open Earth Foundation (derived processing)
+    license: Public domain (CHIRPS) + Copernicus open data license
+    resolution: 0.05 degree (~5566m)
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/UCSB-CHG_CHIRPS_DAILY
+    dataset_type: flood_risk_index
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "2050s (SSP585)"
+      accuracy: "Derived index combining CHIRPS precipitation signals with Copernicus DEM context"
+      limitations: "Model-derived composite indicator; scenario assumptions and weighting affect interpretation"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 100
+      offset: 0
+      unit: "index"
+      decode_formula: "value = (R + 256*G + 65536*B + offset) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/floods/flood_risk_index/oef_calculation/2050s_ssp585/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/floods/flood_risk_index/oef_calculation/2050s_ssp585/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/floods/flood_risk_index/oef_calculation/2050s_ssp585/FRI_2050s_ssp585_pot_cog.tif
+      metadata:
+        url: []
+    description: >
+      Flood Risk Index for Porto Alegre (2050s SSP585), derived from CHIRPS and Copernicus DEM-based processing.
+      Encoded as 24-bit RGB with per-layer scale/offset for value tiles.
+
+  - dataset_id: chirps_copdem_fri_2100s_ssp245
+    dataset_name: Flood Risk Index (FRI 2100s SSP245)
+    publisher: UCSB/CHG + Copernicus Programme (source), Open Earth Foundation (derived processing)
+    license: Public domain (CHIRPS) + Copernicus open data license
+    resolution: 0.05 degree (~5566m)
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/UCSB-CHG_CHIRPS_DAILY
+    dataset_type: flood_risk_index
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "2100s (SSP245)"
+      accuracy: "Derived index combining CHIRPS precipitation signals with Copernicus DEM context"
+      limitations: "Model-derived composite indicator; scenario assumptions and weighting affect interpretation"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 100
+      offset: 0
+      unit: "index"
+      decode_formula: "value = (R + 256*G + 65536*B + offset) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/floods/flood_risk_index/oef_calculation/2100s_ssp245/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/floods/flood_risk_index/oef_calculation/2100s_ssp245/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/floods/flood_risk_index/oef_calculation/2100s_ssp245/FRI_2100s_ssp245_pot_cog.tif
+      metadata:
+        url: []
+    description: >
+      Flood Risk Index for Porto Alegre (2100s SSP245), derived from CHIRPS and Copernicus DEM-based processing.
+      Encoded as 24-bit RGB with per-layer scale/offset for value tiles.
+
+  - dataset_id: chirps_copdem_fri_2100s_ssp585
+    dataset_name: Flood Risk Index (FRI 2100s SSP585)
+    publisher: UCSB/CHG + Copernicus Programme (source), Open Earth Foundation (derived processing)
+    license: Public domain (CHIRPS) + Copernicus open data license
+    resolution: 0.05 degree (~5566m)
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/UCSB-CHG_CHIRPS_DAILY
+    dataset_type: flood_risk_index
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "2100s (SSP585)"
+      accuracy: "Derived index combining CHIRPS precipitation signals with Copernicus DEM context"
+      limitations: "Model-derived composite indicator; scenario assumptions and weighting affect interpretation"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 100
+      offset: 0
+      unit: "index"
+      decode_formula: "value = (R + 256*G + 65536*B + offset) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/floods/flood_risk_index/oef_calculation/2100s_ssp585/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/floods/flood_risk_index/oef_calculation/2100s_ssp585/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/floods/flood_risk_index/oef_calculation/2100s_ssp585/FRI_2100s_ssp585_pot_cog.tif
+      metadata:
+        url: []
+    description: >
+      Flood Risk Index for Porto Alegre (2100s SSP585), derived from CHIRPS and Copernicus DEM-based processing.
+      Encoded as 24-bit RGB with per-layer scale/offset for value tiles.
+
+  - dataset_id: era5land_hwm_2024
+    dataset_name: Heatwave Magnitude Index HWM (2024)
+    publisher: ECMWF/Copernicus (source), Open Earth Foundation (derived processing)
+    license: Copernicus C3S/CAMS License
+    resolution: 11132m
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/ECMWF_ERA5_LAND_DAILY_AGGR#description
+    dataset_type: heatwave
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "2024"
+      accuracy: "Derived heatwave indicator from ERA5-Land and OEF processing workflow"
+      limitations: "Model-derived indicator; interpretation depends on heatwave definition and thresholds"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 100
+      offset: 600
+      unit: "index"
+      decode_formula: "value = (R + 256*G + 65536*B + offset) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/heatwave_indices/hwm/2024/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/heatwave_indices/hwm/2024/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/heatwave_indices/hwm/2024/HWM_2024_pot_cog.tif
+      metadata:
+        url: []
+    description: >
+      HWM heatwave indicator for Porto Alegre (2024), derived from ERA5-Land.
+      Encoded as 24-bit RGB with per-layer scale/offset for value tiles.
+
+  - dataset_id: era5land_hwm_climatology
+    dataset_name: Heatwave Magnitude Index HWM (Climatology)
+    publisher: ECMWF/Copernicus (source), Open Earth Foundation (derived processing)
+    license: Copernicus C3S/CAMS License
+    resolution: 11132m
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/ECMWF_ERA5_LAND_DAILY_AGGR#description
+    dataset_type: heatwave
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "Annual climatology"
+      accuracy: "Derived heatwave indicator from ERA5-Land and OEF processing workflow"
+      limitations: "Model-derived indicator; interpretation depends on heatwave definition and thresholds"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 100
+      offset: 685
+      unit: "index"
+      decode_formula: "value = (R + 256*G + 65536*B + offset) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/heatwave_indices/hwm/annual_climatology/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/heatwave_indices/hwm/annual_climatology/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/heatwave_indices/hwm/annual_climatology/HWM_climatology_pot_cog.tif
+      metadata:
+        url: []
+    description: >
+      HWM annual climatology heatwave indicator for Porto Alegre, derived from ERA5-Land.
+      Encoded as 24-bit RGB with per-layer scale/offset for value tiles.
+
+  - dataset_id: era5land_hwm_2030s_45
+    dataset_name: Heatwave Magnitude Index HWM (2030s SSP245)
+    publisher: ECMWF/Copernicus (source), Open Earth Foundation (derived processing)
+    license: Copernicus C3S/CAMS License
+    resolution: 11132m
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/ECMWF_ERA5_LAND_DAILY_AGGR#description
+    dataset_type: heatwave
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "2030s (SSP245)"
+      accuracy: "Derived heatwave indicator from ERA5-Land and OEF processing workflow"
+      limitations: "Model-derived indicator; interpretation depends on heatwave definition and thresholds"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 100
+      offset: 1035
+      unit: "index"
+      decode_formula: "value = (R + 256*G + 65536*B + offset) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/heatwave_indices/hwm/2030s_ssp245/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/heatwave_indices/hwm/2030s_ssp245/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/heatwave_indices/hwm/2030s_ssp245/HWM_2030s_45_cog.tif
+      metadata:
+        url: []
+    description: >
+      HWM heatwave indicator for Porto Alegre (2030s SSP245), derived from ERA5-Land.
+      Encoded as 24-bit RGB with per-layer scale/offset for value tiles.
+
+  - dataset_id: era5land_hwm_2030s_85
+    dataset_name: Heatwave Magnitude Index HWM (2030s SSP585)
+    publisher: ECMWF/Copernicus (source), Open Earth Foundation (derived processing)
+    license: Copernicus C3S/CAMS License
+    resolution: 11132m
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/ECMWF_ERA5_LAND_DAILY_AGGR#description
+    dataset_type: heatwave
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "2030s (SSP585)"
+      accuracy: "Derived heatwave indicator from ERA5-Land and OEF processing workflow"
+      limitations: "Model-derived indicator; interpretation depends on heatwave definition and thresholds"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 100
+      offset: 1003
+      unit: "index"
+      decode_formula: "value = (R + 256*G + 65536*B + offset) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/heatwave_indices/hwm/2030s_ssp585/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/heatwave_indices/hwm/2030s_ssp585/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/heatwave_indices/hwm/2030s_ssp585/HWM_2030s_85_cog.tif
+      metadata:
+        url: []
+    description: >
+      HWM heatwave indicator for Porto Alegre (2030s SSP585), derived from ERA5-Land.
+      Encoded as 24-bit RGB with per-layer scale/offset for value tiles.
+
+  - dataset_id: era5land_hwm_2050s_85
+    dataset_name: Heatwave Magnitude Index HWM (2050s SSP585)
+    publisher: ECMWF/Copernicus (source), Open Earth Foundation (derived processing)
+    license: Copernicus C3S/CAMS License
+    resolution: 11132m
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/ECMWF_ERA5_LAND_DAILY_AGGR#description
+    dataset_type: heatwave
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "2050s (SSP585)"
+      accuracy: "Derived heatwave indicator from ERA5-Land and OEF processing workflow"
+      limitations: "Model-derived indicator; interpretation depends on heatwave definition and thresholds"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 100
+      offset: 1003
+      unit: "index"
+      decode_formula: "value = (R + 256*G + 65536*B + offset) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/heatwave_indices/hwm/2050s_ssp245/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/heatwave_indices/hwm/2050s_ssp245/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/heatwave_indices/hwm/2050s_ssp245/HWM_2050s_85_cog.tif
+      metadata:
+        url: []
+    description: >
+      HWM heatwave indicator for Porto Alegre (2050s_85 label in processing outputs), derived from ERA5-Land.
+      Encoded as 24-bit RGB with per-layer scale/offset for value tiles.
+
+  - dataset_id: era5land_hwm_2100s_85
+    dataset_name: Heatwave Magnitude Index HWM (2100s SSP585)
+    publisher: ECMWF/Copernicus (source), Open Earth Foundation (derived processing)
+    license: Copernicus C3S/CAMS License
+    resolution: 11132m
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/ECMWF_ERA5_LAND_DAILY_AGGR#description
+    dataset_type: heatwave
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "2100s (SSP585)"
+      accuracy: "Derived heatwave indicator from ERA5-Land and OEF processing workflow"
+      limitations: "Model-derived indicator; interpretation depends on heatwave definition and thresholds"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 100
+      offset: 2383
+      unit: "index"
+      decode_formula: "value = (R + 256*G + 65536*B + offset) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/heatwave_indices/hwm/2100s_ssp585/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/heatwave_indices/hwm/2100s_ssp585/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/heatwave_indices/hwm/2100s_ssp585/HWM_2100s_85_cog.tif
+      metadata:
+        url: []
+    description: >
+      HWM heatwave indicator for Porto Alegre (2100s SSP585), derived from ERA5-Land.
+      Encoded as 24-bit RGB with per-layer scale/offset for value tiles.
