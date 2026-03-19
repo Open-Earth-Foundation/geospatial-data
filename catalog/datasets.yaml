@@ -325,6 +325,26 @@ datasets:
       VIIRS Day/Night Band (DNB) average radiance for Porto Alegre. Annual mean composite from monthly
       stray-light corrected imagery. Proxy for human activity and electrification.
 
+  - dataset_id: mapbiomas_power_infrastructure
+    dataset_name: MapBiomas Power Infrastructure (Substations & Transmission Lines)
+    publisher: MapBiomas
+    license: CC BY 4.0
+    resolution: vector
+    crs: EPSG:4326
+    access_type: manual_download
+    source_url: https://brasil.mapbiomas.org/dados-de-infraestrutura/
+    dataset_type: energy_infrastructure
+    type: vector
+    data_quality:
+      temporal_coverage: "Compiled through August 2025"
+      accuracy: "Compiled from IBGE, ANTT, EPE, ONS, MME, ANAC and other sources"
+      limitations: "Best available compilation; may not include all recent installations"
+    assets:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/mapbiomass_energy_infra/energy_infrastructure.geojson
+    description: >
+      MapBiomas Brasil electrical infrastructure: substations (points) and high-voltage transmission
+      lines (linestrings). Supports energy project siting and grid proximity analysis.
+
   - dataset_id: copernicus_emsn194
     dataset_name: Copernicus EMS Max Water Depth (EMSN194)
     publisher: Copernicus Emergency Management Service (CEMS)
@@ -1613,3 +1633,24 @@ datasets:
     description: >
       HWM heatwave indicator for Porto Alegre (2100s SSP585), derived from ERA5-Land.
       Encoded as 24-bit RGB with per-layer scale/offset for value tiles.
+
+  - dataset_id: mapbiomas_energy_infrastructure
+    dataset_name: MapBiomas Energy Infrastructure (Porto Alegre)
+    publisher: MapBiomas
+    license: CC BY 4.0
+    resolution: vector
+    crs: EPSG:4326
+    access_type: manual_download
+    source_url: https://brasil.mapbiomas.org/dados-de-infraestrutura/
+    dataset_type: energy_infrastructure
+    type: vector
+    data_quality:
+      temporal_coverage: "Compiled through August 2025"
+      accuracy: "Compiled from IBGE, ANTT, EPE, ONS, MME, ANAC and other sources"
+      limitations: "Best available compilation; clipped to Porto Alegre bbox"
+    assets:
+      energy_infrastructure:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/mapbiomass_energy_infra/energy_infrastructure.geojson
+    description: >
+      Combined MapBiomas energy infrastructure for Porto Alegre: transmission lines, substations,
+      solar photovoltaic plants, and small hydroelectric plants. Tagged by infrastructure_type.

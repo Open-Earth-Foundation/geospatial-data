@@ -90,6 +90,13 @@ collections:
     datasets:
       - noaa_viirs_nightlights
 
+  - id: power_grid
+    name: Power grid
+    group: infrastructure
+    datasets:
+      - mapbiomas_power_infrastructure
+      - mapbiomas_energy_infrastructure
+
   # --- Climate hazards ---
   - id: extreme_precipitation
     name: Extreme precipitation
