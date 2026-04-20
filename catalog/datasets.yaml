@@ -1715,3 +1715,26 @@ datasets:
     description: >
       SoilGrids WRB 2006 most-probable soil group classes clipped to Porto Alegre.
       Visual tiles use the WRB palette; value tiles encode class IDs as class_code = R.
+
+  - dataset_id: relative_wealth_index_brazil
+    dataset_name: Relative Wealth Index (Brazil)
+    publisher: Meta AI for Good
+    license: See source terms (Meta AI for Good Relative Wealth Index)
+    resolution: 2.4km
+    crs: EPSG:4326
+    access_type: internal_storage
+    source_url: https://ai.meta.com/ai-for-good/datasets/relative-wealth-index/
+    dataset_type: wealth
+    type: vector
+    data_quality:
+      temporal_coverage: "Published in 2022 (PNAS 119(3): e2113658119)"
+      accuracy: "Model-predicted relative standard of living from de-identified connectivity, satellite imagery, and nontraditional sources"
+      limitations: "Relative index (not direct income/poverty measure); uncertainty provided per point in the error field"
+    assets:
+      rwi_points:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/meta/release/2023/brazil/relative_wealth_index/bra_relative_wealth_index_points.geojson
+      metadata:
+        url: []
+    description: >
+      Point-based Relative Wealth Index for Brazil with attributes `rwi` and `error` in EPSG:4326.
+      Citation: Chi G, Fang H, Chatterjee S, Blumenstock JE (2022), PNAS 119(3): e2113658119, DOI 10.1073/pnas.2113658119.
