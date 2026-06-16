@@ -292,20 +292,23 @@ datasets:
       IBGE Census data for Porto Alegre. Includes neighbourhood-level indicators (Census 2010, SIDRA API)
       and informal settlement polygons (Census 2022, favelas e comunidades urbanas).
 
-  - dataset_id: poa_flood_exposure
-    dataset_name: Flood Exposure Score (POA grid)
+  - dataset_id: poa_exposure
+    dataset_name: Exposure Score — Population Density (POA, shared)
     publisher: IBGE (source indicators), Open Earth Foundation (grid rasterization)
     license: CC BY 4.0
     resolution: ~250m
-    crs: EPSG:3857
+    crs: EPSG:4326
     access_type: internal_storage
     source_url: https://servicodados.ibge.gov.br/api/docs
-    dataset_type: flood
+    dataset_type: shared
     type: numeric_raster
     data_quality:
-      temporal_coverage: "Census 2010 indicators (population), static neighborhood rasterization"
-      accuracy: "Min–max normalized total population per POA neighborhood, burned to hazard grid"
-      limitations: "Constant exposure score within each barrio polygon; screening proxy, not asset inventory"
+      temporal_coverage: "Census 2022 (Censo 2022 population by neighbourhood)"
+      accuracy: "Min–max normalized population density (people/km²) per POA neighbourhood, burned to canonical 250 m grid"
+      limitations: >
+        Constant exposure score within each bairro polygon; polygon area includes parks, water bodies,
+        and industrial zones that may underestimate residential density in some bairros.
+        Screening proxy, not asset inventory.
     value_encoding:
       type: rgb_24bit_scaled
       scale: 10000
@@ -314,32 +317,33 @@ datasets:
       decode_formula: "value = (R + 256*G + 65536*B) / scale"
     assets:
       visual_tiles:
-        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/floods/exposure/tiles_visual/{z}/{x}/{y}.png
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/shared/exposure/tiles_visual/{z}/{x}/{y}.png
       value_tiles:
-        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/floods/exposure/tiles_values/{z}/{x}/{y}.png
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/shared/exposure/tiles_values/{z}/{x}/{y}.png
       download:
-        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/floods/exposure/flood_exposure_cog.tif
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/shared/exposure/exposure_cog.tif
       metadata:
         url: []
     description: >
-      Neighborhood exposure score (0–1) for Porto Alegre on the flood hazard grid. Derived from IBGE-linked
-      population indicators (`br_ibge` / `geospatial-data/transformation/br_ibge`), min–max normalized by barrio
-      and rasterized to match the OEF hazard grid (~250 m).
+      Shared neighbourhood exposure score (0–1) for Porto Alegre on a canonical 250 m grid.
+      Derived from IBGE Censo 2022 population, computed as population density (people/km²) per bairro,
+      min–max normalized across all POA bairros. Used as the E component in both flood and heat risk scores.
+      Computed by `shared/compute_ev.ipynb`.
 
-  - dataset_id: poa_flood_vulnerability
-    dataset_name: Flood Vulnerability Score (POA grid)
+  - dataset_id: poa_vulnerability
+    dataset_name: Vulnerability Score — Vulnerable Age Share (POA, shared)
     publisher: IBGE (source indicators), Open Earth Foundation (grid rasterization)
     license: CC BY 4.0
     resolution: ~250m
-    crs: EPSG:3857
+    crs: EPSG:4326
     access_type: internal_storage
     source_url: https://servicodados.ibge.gov.br/api/docs
-    dataset_type: flood
+    dataset_type: shared
     type: numeric_raster
     data_quality:
-      temporal_coverage: "Census 2010 indicators (poverty, age structure), static neighborhood rasterization"
-      accuracy: "Geometric mean of poverty and vulnerable-age shares, min–max normalized per POA neighborhood"
-      limitations: "Constant vulnerability score within each barrio polygon; screening index, not social vulnerability index official product"
+      temporal_coverage: "Census 2022 (Censo 2022 age structure by neighbourhood)"
+      accuracy: "Min–max normalized share of population aged 0–4 or 60+ per POA neighbourhood, burned to canonical 250 m grid"
+      limitations: "Constant vulnerability score within each bairro polygon; age-only proxy; poverty not included (not available at bairro level in Censo 2022 aggregates)"
     value_encoding:
       type: rgb_24bit_scaled
       scale: 10000
@@ -348,17 +352,18 @@ datasets:
       decode_formula: "value = (R + 256*G + 65536*B) / scale"
     assets:
       visual_tiles:
-        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/floods/vulnerability/tiles_visual/{z}/{x}/{y}.png
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/shared/vulnerability/tiles_visual/{z}/{x}/{y}.png
       value_tiles:
-        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/floods/vulnerability/tiles_values/{z}/{x}/{y}.png
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/shared/vulnerability/tiles_values/{z}/{x}/{y}.png
       download:
-        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/floods/vulnerability/flood_vulnerability_cog.tif
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/shared/vulnerability/vulnerability_cog.tif
       metadata:
         url: []
     description: >
-      Neighborhood vulnerability score (0–1) for Porto Alegre on the flood hazard grid. Derived from IBGE-linked
-      poverty and age indicators (`br_ibge` / `geospatial-data/transformation/br_ibge`), combined and rasterized
-      to match the OEF hazard grid (~250 m).
+      Shared neighbourhood vulnerability score (0–1) for Porto Alegre on a canonical 250 m grid.
+      Derived from IBGE Censo 2022 age data: share of population aged 0–4 or 60+ per bairro,
+      min–max normalized across all POA bairros. Used as the V component in both flood and heat risk scores.
+      Computed by `shared/compute_ev.ipynb`.
 
   - dataset_id: poa_flood_hazard
     dataset_name: Flood Hazard Score (POA)
@@ -1767,6 +1772,79 @@ datasets:
     description: >
       HWM heatwave indicator for Porto Alegre (2100s SSP585), derived from ERA5-Land.
       Encoded as 24-bit RGB with per-layer scale/offset for value tiles.
+
+  - dataset_id: poa_heat_hazard
+    dataset_name: Heat Hazard Score (POA)
+    publisher: Open Earth Foundation (derived processing)
+    license: CC BY 4.0
+    resolution: ~250m
+    crs: EPSG:4326
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/LANDSAT_LC08_C02_T1_L2
+    dataset_type: heat
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "DJF summers 2015–2024 (Landsat 8, MODIS MOD11A2)"
+      accuracy: "Arithmetic mean of three normalized LST layers: Landsat 8 P90 anomaly, MODIS LST daytime P90, MODIS LST nighttime P90"
+      limitations: >
+        LST is a surface temperature proxy, not air temperature; values reflect land cover and albedo.
+        DJF season only; cloud masking may reduce coverage in some years.
+        ERA5-Land excluded due to coarse spatial resolution (~9 km) adding spatial artifacts at urban scale.
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 10000
+      offset: 0.0
+      unit: "score"
+      decode_formula: "value = (R + 256*G + 65536*B) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/heat/hazard/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/heat/hazard/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/heat/hazard/heat_hazard_score_cog.tif
+      metadata:
+        url: []
+    description: >
+      OEF heat hazard susceptibility index (0–1) for Porto Alegre. Ensemble of Landsat 8 LST P90 anomaly,
+      MODIS MOD11A2 daytime LST P90, and MODIS MOD11A2 nighttime LST P90 on a common ~250 m grid.
+      Arithmetic mean of normalized layers. Documented in `heat_hazard_score_methodology.md`.
+
+  - dataset_id: poa_heat_risk
+    dataset_name: Heat Risk Score H×E×V (POA)
+    publisher: Open Earth Foundation (derived processing)
+    license: CC BY 4.0
+    resolution: ~250m
+    crs: EPSG:4326
+    access_type: internal_storage
+    source_url: https://servicodados.ibge.gov.br/api/docs
+    dataset_type: heat
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "Static composite: heat hazard (2015–2024 DJF) + shared E/V (Censo 2022)"
+      accuracy: "R = (H × E × V)^(1/3) on cells where all three components are finite"
+      limitations: >
+        Screening-level composite; E/V constant per bairro; not IPCC full risk or loss modeling.
+        Heat hazard based on LST (surface), not air temperature or heat stress indices (UTCI/WBGT).
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 10000
+      offset: 0.0
+      unit: "score"
+      decode_formula: "value = (R + 256*G + 65536*B) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/heat/risk/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/heat/risk/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/heat/risk/heat_risk_score_cog.tif
+      metadata:
+        url: []
+    description: >
+      OEF heat risk screening index (0–1) for Porto Alegre: geometric mean of heat hazard (OEF LST ensemble),
+      exposure (shared population density score) and vulnerability (shared vulnerable age score).
+      Documented in `heat_risk_score_methodology.md`.
 
   - dataset_id: mapbiomas_energy_infrastructure
     dataset_name: MapBiomas Energy Infrastructure (Porto Alegre)
