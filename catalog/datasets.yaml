@@ -1866,3 +1866,582 @@ datasets:
     description: >
       Combined MapBiomas energy infrastructure for Porto Alegre: transmission lines, substations,
       solar photovoltaic plants, and small hydroelectric plants. Tagged by infrastructure_type.
+
+  - dataset_id: soilgrids_wrb_2006_soil_groups
+    dataset_name: SoilGrids WRB 2006 Soil Groups (Porto Alegre)
+    publisher: ISRIC - World Soil Information
+    license: CC BY 4.0
+    resolution: 250m
+    crs: EPSG:4326
+    access_type: internal_storage
+    source_url: https://www.isric.org/explore/soilgrids
+    dataset_type: soil
+    type: categorical_raster
+    data_quality:
+      temporal_coverage: "WRB 2006 reference soil group classification"
+      accuracy: "Most probable WRB class from SoilGrids categorical product"
+      limitations: "Categorical classes only; value tiles store class code in the R channel"
+    value_encoding:
+      type: class_lookup
+      decode_formula: "class_code = R"
+      classes:
+        0: { name: Acrisols, color: "#F7991D" }
+        1: { name: Albeluvisols, color: "#9B9D57" }
+        2: { name: Alisols, color: "#FAF7C0" }
+        3: { name: Andosols, color: "#ED3A33" }
+        4: { name: Arenosols, color: "#F7D8AC" }
+        5: { name: Calcisols, color: "#FFEE00" }
+        6: { name: Cambisols, color: "#FECD67" }
+        7: { name: Chernozems, color: "#E2C837" }
+        8: { name: Cryosols, color: "#756A92" }
+        9: { name: Durisols, color: "#EFE6BF" }
+        10: { name: Ferralsols, color: "#F6872D" }
+        11: { name: Fluvisols, color: "#01B0EF" }
+        12: { name: Gleysols, color: "#9291B9" }
+        13: { name: Gypsisols, color: "#FBF6A5" }
+        14: { name: Histosols, color: "#8B898A" }
+        15: { name: Kastanozems, color: "#C99580" }
+        16: { name: Leptosols, color: "#D5D6D8" }
+        17: { name: Lixisols, color: "#F9BDBF" }
+        18: { name: Luvisols, color: "#F48385" }
+        19: { name: Nitisols, color: "#F7A082" }
+        20: { name: Phaeozems, color: "#BA6850" }
+        21: { name: Planosols, color: "#F59354" }
+        22: { name: Plinthosols, color: "#6F0E41" }
+        23: { name: Podzols, color: "#0DAF63" }
+        24: { name: Regosols, color: "#FFE2AE" }
+        25: { name: Solonchaks, color: "#ED3994" }
+        26: { name: Solonetz, color: "#F4CDE2" }
+        27: { name: Stagnosols, color: "#40C1EB" }
+        28: { name: Umbrisols, color: "#618F82" }
+        29: { name: Vertisols, color: "#9E567C" }
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/soilgrids/release/2006/porto_alegre/world_reference_base_soil_groups/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/soilgrids/release/2006/porto_alegre/world_reference_base_soil_groups/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/soilgrids/release/2006/porto_alegre/world_reference_base_soil_groups/world_reference_base_2006_soil_groups_2006_cog.tif
+      metadata:
+        url: []
+    description: >
+      SoilGrids WRB 2006 most-probable soil group classes clipped to Porto Alegre.
+      Visual tiles use the WRB palette; value tiles encode class IDs as class_code = R.
+
+  - dataset_id: relative_wealth_index_brazil
+    dataset_name: Relative Wealth Index (Brazil)
+    publisher: Meta AI for Good
+    license: See source terms (Meta AI for Good Relative Wealth Index)
+    resolution: 2.4km
+    crs: EPSG:4326
+    access_type: internal_storage
+    source_url: https://ai.meta.com/ai-for-good/datasets/relative-wealth-index/
+    dataset_type: wealth
+    type: vector
+    data_quality:
+      temporal_coverage: "Published in 2022 (PNAS 119(3): e2113658119)"
+      accuracy: "Model-predicted relative standard of living from de-identified connectivity, satellite imagery, and nontraditional sources"
+      limitations: "Relative index (not direct income/poverty measure); uncertainty provided per point in the error field"
+    assets:
+      rwi_points:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/meta/release/2023/brazil/relative_wealth_index/bra_relative_wealth_index_points.geojson
+      metadata:
+        url: []
+    description: >
+      Point-based Relative Wealth Index for Brazil with attributes `rwi` and `error` in EPSG:4326.
+      Citation: Chi G, Fang H, Chatterjee S, Blumenstock JE (2022), PNAS 119(3): e2113658119, DOI 10.1073/pnas.2113658119.
+
+  - dataset_id: sentinel2_lst_anomaly
+    dataset_name: Landsat Daytime Land Surface Temperature Anomaly (Porto Alegre)
+    publisher: USGS / NASA (source), Open Earth Foundation (derived processing)
+    license: Public domain (USGS Landsat Collection 2)
+    resolution: 30m
+    crs: EPSG:3857
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/LANDSAT_LC08_C02_T1_L2#description
+    dataset_type: extreme_temperature
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "2018-01-01 to 2025-01-01 mean daytime LST baseline"
+      accuracy: "Derived from Landsat 8 Collection 2 L2 surface temperature (ST_B10) with cloud masking and city-mean anomaly calculation"
+      limitations: "Represents anomaly from citywide mean climatology; values depend on masking and compositing choices"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 100
+      offset: -20000
+      unit: "degC"
+      decode_formula: "value = (R + 256*G + 65536*B + offset) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/sentinel-2/release/level2_collection2_tier1/porto_alegre/lst_anomaly/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/sentinel-2/release/level2_collection2_tier1/porto_alegre/lst_anomaly/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/sentinel-2/release/level2_collection2_tier1/porto_alegre/lst_anomaly/poa_lst_anomaly_cog.tif
+      metadata:
+        url: []
+    description: >
+      Daytime land surface temperature anomaly for Porto Alegre, computed as annual mean LST minus citywide mean baseline.
+      Encoded as 24-bit RGB with scale/offset for value tiles.
+
+  - dataset_id: sentinel2_p90_daytime_lst_c
+    dataset_name: Landsat Daytime Land Surface Temperature P90 (Porto Alegre)
+    publisher: USGS / NASA (source), Open Earth Foundation (derived processing)
+    license: Public domain (USGS Landsat Collection 2)
+    resolution: 30m
+    crs: EPSG:3857
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/LANDSAT_LC08_C02_T1_L2#description
+    dataset_type: extreme_temperature
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "2018-01-01 to 2025-01-01"
+      accuracy: "Derived from Landsat 8 Collection 2 L2 surface temperature (ST_B10) with QA cloud masking and 90th percentile compositing"
+      limitations: "Represents high-end daytime LST percentile; sensitive to period selection and cloud masking"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 100
+      offset: -10000
+      unit: "degC"
+      decode_formula: "value = (R + 256*G + 65536*B + offset) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/sentinel-2/release/level2_collection2_tier1/porto_alegre/p90_daytime_lst_c/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/sentinel-2/release/level2_collection2_tier1/porto_alegre/p90_daytime_lst_c/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/sentinel-2/release/level2_collection2_tier1/porto_alegre/p90_daytime_lst_c/poa_p90_daytime_lst_c_cog.tif
+      metadata:
+        url: []
+    description: >
+      Daytime land surface temperature 90th percentile (P90) for Porto Alegre, derived from Landsat 8 L2 surface temperature.
+      Encoded as 24-bit RGB with scale/offset for value tiles.
+
+  - dataset_id: sentinel2_mean_dry_season_daytime_lst_c
+    dataset_name: Landsat Mean Dry Season Daytime Land Surface Temperature (Porto Alegre)
+    publisher: USGS / NASA (source), Open Earth Foundation (derived processing)
+    license: Public domain (USGS Landsat Collection 2)
+    resolution: 30m
+    crs: EPSG:3857
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/LANDSAT_LC08_C02_T1_L2#description
+    dataset_type: extreme_temperature
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "2018-01-01 to 2025-01-01 (dry months: Apr-Sep)"
+      accuracy: "Derived from Landsat 8 Collection 2 L2 surface temperature (ST_B10) with QA cloud masking and dry-season mean compositing"
+      limitations: "Seasonal mean surface temperature product; sensitive to dry-season month definition and cloud masking"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 100
+      offset: -10000
+      unit: "degC"
+      decode_formula: "value = (R + 256*G + 65536*B + offset) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/sentinel-2/release/level2_collection2_tier1/porto_alegre/mean_dry_season_daytime_lst_c/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/sentinel-2/release/level2_collection2_tier1/porto_alegre/mean_dry_season_daytime_lst_c/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/sentinel-2/release/level2_collection2_tier1/porto_alegre/mean_dry_season_daytime_lst_c/poa_mean_dry_season_daytime_lst_c_cog.tif
+      metadata:
+        url: []
+    description: >
+      Mean daytime land surface temperature for the dry season (April-September) in Porto Alegre, derived from Landsat 8 L2 surface temperature.
+      Encoded as 24-bit RGB with scale/offset for value tiles.
+
+  - dataset_id: sentinel2_monthly_climatology_daytime_lst_c_jan
+    dataset_name: Landsat Monthly Climatology Daytime LST - January (Porto Alegre)
+    publisher: USGS / NASA (source), Open Earth Foundation (derived processing)
+    license: Public domain (USGS Landsat Collection 2)
+    resolution: 30m
+    crs: EPSG:3857
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/LANDSAT_LC08_C02_T1_L2#description
+    dataset_type: extreme_temperature
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "2018-01-01 to 2025-01-01 (January climatology)"
+      accuracy: "Derived from Landsat 8 Collection 2 L2 surface temperature (ST_B10) with QA cloud masking and monthly mean compositing"
+      limitations: "Monthly climatology product; sensitive to cloud masking and available scenes"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 100
+      offset: -10000
+      unit: "degC"
+      decode_formula: "value = (R + 256*G + 65536*B + offset) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/sentinel-2/release/level2_collection2_tier1/porto_alegre/monthly_climatology_jan/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/sentinel-2/release/level2_collection2_tier1/porto_alegre/monthly_climatology_feb/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/sentinel-2/release/level2_collection2_tier1/porto_alegre/monthly_climatology_jan/poa_month_01_climatology_daytime_lst_c_cog.tif
+      metadata:
+        url: []
+    description: >
+      January monthly climatology daytime land surface temperature for Porto Alegre, derived from Landsat 8 L2 surface temperature.
+      Encoded as 24-bit RGB with scale/offset for value tiles.
+
+  - dataset_id: sentinel2_monthly_climatology_daytime_lst_c_feb
+    dataset_name: Landsat Monthly Climatology Daytime LST - February (Porto Alegre)
+    publisher: USGS / NASA (source), Open Earth Foundation (derived processing)
+    license: Public domain (USGS Landsat Collection 2)
+    resolution: 30m
+    crs: EPSG:3857
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/LANDSAT_LC08_C02_T1_L2#description
+    dataset_type: extreme_temperature
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "2018-01-01 to 2025-01-01 (February climatology)"
+      accuracy: "Derived from Landsat 8 Collection 2 L2 surface temperature (ST_B10) with QA cloud masking and monthly mean compositing"
+      limitations: "Monthly climatology product; sensitive to cloud masking and available scenes"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 100
+      offset: -10000
+      unit: "degC"
+      decode_formula: "value = (R + 256*G + 65536*B + offset) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/sentinel-2/release/level2_collection2_tier1/porto_alegre/monthly_climatology_feb/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/sentinel-2/release/level2_collection2_tier1/porto_alegre/monthly_climatology_feb/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/sentinel-2/release/level2_collection2_tier1/porto_alegre/monthly_climatology_feb/poa_month_02_climatology_daytime_lst_c_cog.tif
+      metadata:
+        url: []
+    description: >
+      February monthly climatology daytime land surface temperature for Porto Alegre, derived from Landsat 8 L2 surface temperature.
+      Encoded as 24-bit RGB with scale/offset for value tiles.
+
+  - dataset_id: sentinel2_monthly_climatology_daytime_lst_c_mar
+    dataset_name: Landsat Monthly Climatology Daytime LST - March (Porto Alegre)
+    publisher: USGS / NASA (source), Open Earth Foundation (derived processing)
+    license: Public domain (USGS Landsat Collection 2)
+    resolution: 30m
+    crs: EPSG:3857
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/LANDSAT_LC08_C02_T1_L2#description
+    dataset_type: extreme_temperature
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "2018-01-01 to 2025-01-01 (March climatology)"
+      accuracy: "Derived from Landsat 8 Collection 2 L2 surface temperature (ST_B10) with QA cloud masking and monthly mean compositing"
+      limitations: "Monthly climatology product; sensitive to cloud masking and available scenes"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 100
+      offset: -10000
+      unit: "degC"
+      decode_formula: "value = (R + 256*G + 65536*B + offset) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/sentinel-2/release/level2_collection2_tier1/porto_alegre/monthly_climatology_mar/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/sentinel-2/release/level2_collection2_tier1/porto_alegre/monthly_climatology_mar/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/sentinel-2/release/level2_collection2_tier1/porto_alegre/monthly_climatology_mar/poa_month_03_climatology_daytime_lst_c_cog.tif
+      metadata:
+        url: []
+    description: >
+      March monthly climatology daytime land surface temperature for Porto Alegre, derived from Landsat 8 L2 surface temperature.
+      Encoded as 24-bit RGB with scale/offset for value tiles.
+
+  - dataset_id: sentinel2_monthly_climatology_daytime_lst_c_apr
+    dataset_name: Landsat Monthly Climatology Daytime LST - April (Porto Alegre)
+    publisher: USGS / NASA (source), Open Earth Foundation (derived processing)
+    license: Public domain (USGS Landsat Collection 2)
+    resolution: 30m
+    crs: EPSG:3857
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/LANDSAT_LC08_C02_T1_L2#description
+    dataset_type: extreme_temperature
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "2018-01-01 to 2025-01-01 (April climatology)"
+      accuracy: "Derived from Landsat 8 Collection 2 L2 surface temperature (ST_B10) with QA cloud masking and monthly mean compositing"
+      limitations: "Monthly climatology product; sensitive to cloud masking and available scenes"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 100
+      offset: -10000
+      unit: "degC"
+      decode_formula: "value = (R + 256*G + 65536*B + offset) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/sentinel-2/release/level2_collection2_tier1/porto_alegre/monthly_climatology_abr/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/sentinel-2/release/level2_collection2_tier1/porto_alegre/monthly_climatology_abr/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/sentinel-2/release/level2_collection2_tier1/porto_alegre/monthly_climatology_abr/poa_month_04_climatology_daytime_lst_c_cog.tif
+      metadata:
+        url: []
+    description: >
+      April monthly climatology daytime land surface temperature for Porto Alegre, derived from Landsat 8 L2 surface temperature.
+      Encoded as 24-bit RGB with scale/offset for value tiles.
+
+  - dataset_id: sentinel2_monthly_climatology_daytime_lst_c_may
+    dataset_name: Landsat Monthly Climatology Daytime LST - May (Porto Alegre)
+    publisher: USGS / NASA (source), Open Earth Foundation (derived processing)
+    license: Public domain (USGS Landsat Collection 2)
+    resolution: 30m
+    crs: EPSG:3857
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/LANDSAT_LC08_C02_T1_L2#description
+    dataset_type: extreme_temperature
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "2018-01-01 to 2025-01-01 (May climatology)"
+      accuracy: "Derived from Landsat 8 Collection 2 L2 surface temperature (ST_B10) with QA cloud masking and monthly mean compositing"
+      limitations: "Monthly climatology product; sensitive to cloud masking and available scenes"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 100
+      offset: -10000
+      unit: "degC"
+      decode_formula: "value = (R + 256*G + 65536*B + offset) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/sentinel-2/release/level2_collection2_tier1/porto_alegre/monthly_climatology_may/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/sentinel-2/release/level2_collection2_tier1/porto_alegre/monthly_climatology_may/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/sentinel-2/release/level2_collection2_tier1/porto_alegre/monthly_climatology_may/poa_month_05_climatology_daytime_lst_c_cog.tif
+      metadata:
+        url: []
+    description: >
+      May monthly climatology daytime land surface temperature for Porto Alegre, derived from Landsat 8 L2 surface temperature.
+      Encoded as 24-bit RGB with scale/offset for value tiles.
+
+  - dataset_id: sentinel2_monthly_climatology_daytime_lst_c_jun
+    dataset_name: Landsat Monthly Climatology Daytime LST - June (Porto Alegre)
+    publisher: USGS / NASA (source), Open Earth Foundation (derived processing)
+    license: Public domain (USGS Landsat Collection 2)
+    resolution: 30m
+    crs: EPSG:3857
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/LANDSAT_LC08_C02_T1_L2#description
+    dataset_type: extreme_temperature
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "2018-01-01 to 2025-01-01 (June climatology)"
+      accuracy: "Derived from Landsat 8 Collection 2 L2 surface temperature (ST_B10) with QA cloud masking and monthly mean compositing"
+      limitations: "Monthly climatology product; sensitive to cloud masking and available scenes"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 100
+      offset: -10000
+      unit: "degC"
+      decode_formula: "value = (R + 256*G + 65536*B + offset) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/sentinel-2/release/level2_collection2_tier1/porto_alegre/monthly_climatology_jun/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/sentinel-2/release/level2_collection2_tier1/porto_alegre/monthly_climatology_jun/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/sentinel-2/release/level2_collection2_tier1/porto_alegre/monthly_climatology_jun/poa_month_06_climatology_daytime_lst_c_cog.tif
+      metadata:
+        url: []
+    description: >
+      June monthly climatology daytime land surface temperature for Porto Alegre, derived from Landsat 8 L2 surface temperature.
+      Encoded as 24-bit RGB with scale/offset for value tiles.
+
+  - dataset_id: sentinel2_monthly_climatology_daytime_lst_c_jul
+    dataset_name: Landsat Monthly Climatology Daytime LST - July (Porto Alegre)
+    publisher: USGS / NASA (source), Open Earth Foundation (derived processing)
+    license: Public domain (USGS Landsat Collection 2)
+    resolution: 30m
+    crs: EPSG:3857
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/LANDSAT_LC08_C02_T1_L2#description
+    dataset_type: extreme_temperature
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "2018-01-01 to 2025-01-01 (July climatology)"
+      accuracy: "Derived from Landsat 8 Collection 2 L2 surface temperature (ST_B10) with QA cloud masking and monthly mean compositing"
+      limitations: "Monthly climatology product; sensitive to cloud masking and available scenes"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 100
+      offset: -10000
+      unit: "degC"
+      decode_formula: "value = (R + 256*G + 65536*B + offset) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/sentinel-2/release/level2_collection2_tier1/porto_alegre/monthly_climatology_jul/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/sentinel-2/release/level2_collection2_tier1/porto_alegre/monthly_climatology_jul/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/sentinel-2/release/level2_collection2_tier1/porto_alegre/monthly_climatology_jul/poa_month_07_climatology_daytime_lst_c_cog.tif
+      metadata:
+        url: []
+    description: >
+      July monthly climatology daytime land surface temperature for Porto Alegre, derived from Landsat 8 L2 surface temperature.
+      Encoded as 24-bit RGB with scale/offset for value tiles.
+
+  - dataset_id: sentinel2_monthly_climatology_daytime_lst_c_aug
+    dataset_name: Landsat Monthly Climatology Daytime LST - August (Porto Alegre)
+    publisher: USGS / NASA (source), Open Earth Foundation (derived processing)
+    license: Public domain (USGS Landsat Collection 2)
+    resolution: 30m
+    crs: EPSG:3857
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/LANDSAT_LC08_C02_T1_L2#description
+    dataset_type: extreme_temperature
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "2018-01-01 to 2025-01-01 (August climatology)"
+      accuracy: "Derived from Landsat 8 Collection 2 L2 surface temperature (ST_B10) with QA cloud masking and monthly mean compositing"
+      limitations: "Monthly climatology product; sensitive to cloud masking and available scenes"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 100
+      offset: -10000
+      unit: "degC"
+      decode_formula: "value = (R + 256*G + 65536*B + offset) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/sentinel-2/release/level2_collection2_tier1/porto_alegre/monthly_climatology_ago/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/sentinel-2/release/level2_collection2_tier1/porto_alegre/monthly_climatology_ago/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/sentinel-2/release/level2_collection2_tier1/porto_alegre/monthly_climatology_ago/poa_month_08_climatology_daytime_lst_c_cog.tif
+      metadata:
+        url: []
+    description: >
+      August monthly climatology daytime land surface temperature for Porto Alegre, derived from Landsat 8 L2 surface temperature.
+      Encoded as 24-bit RGB with scale/offset for value tiles.
+
+  - dataset_id: sentinel2_monthly_climatology_daytime_lst_c_sep
+    dataset_name: Landsat Monthly Climatology Daytime LST - September (Porto Alegre)
+    publisher: USGS / NASA (source), Open Earth Foundation (derived processing)
+    license: Public domain (USGS Landsat Collection 2)
+    resolution: 30m
+    crs: EPSG:3857
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/LANDSAT_LC08_C02_T1_L2#description
+    dataset_type: extreme_temperature
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "2018-01-01 to 2025-01-01 (September climatology)"
+      accuracy: "Derived from Landsat 8 Collection 2 L2 surface temperature (ST_B10) with QA cloud masking and monthly mean compositing"
+      limitations: "Monthly climatology product; sensitive to cloud masking and available scenes"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 100
+      offset: -10000
+      unit: "degC"
+      decode_formula: "value = (R + 256*G + 65536*B + offset) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/sentinel-2/release/level2_collection2_tier1/porto_alegre/monthly_climatology_set/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/sentinel-2/release/level2_collection2_tier1/porto_alegre/monthly_climatology_set/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/sentinel-2/release/level2_collection2_tier1/porto_alegre/monthly_climatology_set/poa_month_09_climatology_daytime_lst_c_cog.tif
+      metadata:
+        url: []
+    description: >
+      September monthly climatology daytime land surface temperature for Porto Alegre, derived from Landsat 8 L2 surface temperature.
+      Encoded as 24-bit RGB with scale/offset for value tiles.
+
+  - dataset_id: sentinel2_monthly_climatology_daytime_lst_c_oct
+    dataset_name: Landsat Monthly Climatology Daytime LST - October (Porto Alegre)
+    publisher: USGS / NASA (source), Open Earth Foundation (derived processing)
+    license: Public domain (USGS Landsat Collection 2)
+    resolution: 30m
+    crs: EPSG:3857
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/LANDSAT_LC08_C02_T1_L2#description
+    dataset_type: extreme_temperature
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "2018-01-01 to 2025-01-01 (October climatology)"
+      accuracy: "Derived from Landsat 8 Collection 2 L2 surface temperature (ST_B10) with QA cloud masking and monthly mean compositing"
+      limitations: "Monthly climatology product; sensitive to cloud masking and available scenes"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 100
+      offset: -10000
+      unit: "degC"
+      decode_formula: "value = (R + 256*G + 65536*B + offset) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/sentinel-2/release/level2_collection2_tier1/porto_alegre/monthly_climatology_oct/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/sentinel-2/release/level2_collection2_tier1/porto_alegre/monthly_climatology_oct/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/sentinel-2/release/level2_collection2_tier1/porto_alegre/monthly_climatology_oct/poa_month_10_climatology_daytime_lst_c_cog.tif
+      metadata:
+        url: []
+    description: >
+      October monthly climatology daytime land surface temperature for Porto Alegre, derived from Landsat 8 L2 surface temperature.
+      Encoded as 24-bit RGB with scale/offset for value tiles.
+
+  - dataset_id: sentinel2_monthly_climatology_daytime_lst_c_nov
+    dataset_name: Landsat Monthly Climatology Daytime LST - November (Porto Alegre)
+    publisher: USGS / NASA (source), Open Earth Foundation (derived processing)
+    license: Public domain (USGS Landsat Collection 2)
+    resolution: 30m
+    crs: EPSG:3857
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/LANDSAT_LC08_C02_T1_L2#description
+    dataset_type: extreme_temperature
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "2018-01-01 to 2025-01-01 (November climatology)"
+      accuracy: "Derived from Landsat 8 Collection 2 L2 surface temperature (ST_B10) with QA cloud masking and monthly mean compositing"
+      limitations: "Monthly climatology product; sensitive to cloud masking and available scenes"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 100
+      offset: -10000
+      unit: "degC"
+      decode_formula: "value = (R + 256*G + 65536*B + offset) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/sentinel-2/release/level2_collection2_tier1/porto_alegre/monthly_climatology_nov/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/sentinel-2/release/level2_collection2_tier1/porto_alegre/monthly_climatology_nov/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/sentinel-2/release/level2_collection2_tier1/porto_alegre/monthly_climatology_nov/poa_month_11_climatology_daytime_lst_c_cog.tif
+      metadata:
+        url: []
+    description: >
+      November monthly climatology daytime land surface temperature for Porto Alegre, derived from Landsat 8 L2 surface temperature.
+      Encoded as 24-bit RGB with scale/offset for value tiles.
+
+  - dataset_id: sentinel2_monthly_climatology_daytime_lst_c_dec
+    dataset_name: Landsat Monthly Climatology Daytime LST - December (Porto Alegre)
+    publisher: USGS / NASA (source), Open Earth Foundation (derived processing)
+    license: Public domain (USGS Landsat Collection 2)
+    resolution: 30m
+    crs: EPSG:3857
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/LANDSAT_LC08_C02_T1_L2#description
+    dataset_type: extreme_temperature
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "2018-01-01 to 2025-01-01 (December climatology)"
+      accuracy: "Derived from Landsat 8 Collection 2 L2 surface temperature (ST_B10) with QA cloud masking and monthly mean compositing"
+      limitations: "Monthly climatology product; sensitive to cloud masking and available scenes"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 100
+      offset: -10000
+      unit: "degC"
+      decode_formula: "value = (R + 256*G + 65536*B + offset) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/sentinel-2/release/level2_collection2_tier1/porto_alegre/monthly_climatology_dec/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/sentinel-2/release/level2_collection2_tier1/porto_alegre/monthly_climatology_dec/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/sentinel-2/release/level2_collection2_tier1/porto_alegre/monthly_climatology_dec/poa_month_12_climatology_daytime_lst_c_cog.tif
+      metadata:
+        url: []
+    description: >
+      December monthly climatology daytime land surface temperature for Porto Alegre, derived from Landsat 8 L2 surface temperature.
+      Encoded as 24-bit RGB with scale/offset for value tiles.

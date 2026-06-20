@@ -1,0 +1,10 @@
+# JRC Global River Flood Hazard Maps v2.1 - RP500 depth style
+# Values are flood depth in meters.
+nv 0 0 0 0
+0 255 255 229
+0.5 255 247 188
+1 254 227 145
+2 254 196 79
+3 236 112 20
+5 189 0 38
+20 80 0 120
