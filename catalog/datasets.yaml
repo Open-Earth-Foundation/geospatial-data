@@ -1866,3 +1866,95 @@ datasets:
     description: >
       Combined MapBiomas energy infrastructure for Porto Alegre: transmission lines, substations,
       solar photovoltaic plants, and small hydroelectric plants. Tagged by infrastructure_type.
+
+  - dataset_id: poa_landslide_hazard
+    dataset_name: Landslide Hazard Score (POA)
+    publisher: Open Earth Foundation (derived processing)
+    license: CC BY 4.0
+    resolution: ~90m
+    crs: EPSG:4326
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/COPERNICUS_DEM_GLO30
+    dataset_type: landslide
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: >
+        Static terrain layers (Copernicus GLO-30 DEM slope, MERIT Hydro HAND, SoilGrids clay);
+        climate layer CHIRPS R90p long-run climatology;
+        vegetation MODIS NDVI P10 DJF 2015–2024;
+        land cover Dynamic World mode 2023.
+      accuracy: >
+        Weighted ensemble of five normalized terrain and climate layers on a 90 m grid.
+        Formula: H = clamp01(0.45×slope_risk + 0.20×precip_risk×slope_risk
+        + 0.15×low_cohesion×slope_risk + 0.10×lack_of_veg×slope_risk
+        + 0.10×hand_factor×slope_risk) ± Dynamic World land cover modifier.
+        Slope activation gate: slope < 15° → H = 0.
+      limitations: >
+        Susceptibility index only — not failure probability or event frequency.
+        CHIRPS R90p at ~5 km; nearest-neighbour resampled to 90 m.
+        Not validated against CEMADEN or INMET historical landslide inventory.
+        Static: does not capture time-varying antecedent moisture or seasonal vegetation dynamics.
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 10000
+      offset: 0.0
+      unit: "score"
+      decode_formula: "value = (R + 256*G + 65536*B) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/landslides/hazard/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/landslides/hazard/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/landslides/hazard/landslide_hazard_score_90m_cog.tif
+      metadata:
+        url: []
+    description: >
+      OEF landslide susceptibility index (0–1) for Porto Alegre on a 90 m grid.
+      Ensemble of Copernicus GLO-30 slope, CHIRPS R90p climatology, SoilGrids clay %,
+      MODIS NDVI P10 (DJF 2015–2024), and MERIT Hydro HAND, with Dynamic World land cover modifier.
+      Slope < 15° gates all components to zero. Documented in `landslide_hazard_score_methodology.md`.
+
+  - dataset_id: poa_landslide_risk
+    dataset_name: Landslide Risk Score H×E×V (POA)
+    publisher: Open Earth Foundation (derived processing)
+    license: CC BY 4.0
+    resolution: ~90m
+    crs: EPSG:4326
+    access_type: internal_storage
+    source_url: https://servicodados.ibge.gov.br/api/docs
+    dataset_type: landslide
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: >
+        Static composite: landslide hazard (terrain + CHIRPS R90p climatology + MODIS DJF 2015–2024)
+        combined with shared E/V from Censo 2022.
+      accuracy: >
+        R = (H × E × V)^(1/3) on 90 m cells where all three components are finite.
+        E and V are bairro-level attributes burned onto the 90 m hazard grid
+        (resolution-agnostic rasterization — same polygon data as flood/heat, different grid).
+      limitations: >
+        Screening-level composite; E/V constant per bairro; not IPCC full risk or casualty modeling.
+        Non-zero risk only appears on slopes ≥ 15° within inhabited bairros.
+        Area denominator in E includes parks, water bodies, and non-residential land.
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 10000
+      offset: 0.0
+      unit: "score"
+      decode_formula: "value = (R + 256*G + 65536*B) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/landslides/risk/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/landslides/risk/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/landslides/risk/landslide_risk_score_cog.tif
+      metadata:
+        url: []
+    description: >
+      OEF landslide risk screening index (0–1) for Porto Alegre on a 90 m grid: geometric mean of
+      landslide hazard (OEF terrain+climate ensemble), exposure (shared IBGE Censo 2022 population
+      density score), and vulnerability (shared IBGE Censo 2022 vulnerable age score).
+      E and V bairro polygons are burned at 90 m resolution for this product specifically.
+      Documented in `landslide_risk_score_methodology.md`.
