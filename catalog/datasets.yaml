@@ -391,7 +391,7 @@ datasets:
       value_tiles:
         url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/floods/hazard/tiles_values/{z}/{x}/{y}.png
       download:
-        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/floods/hazard/flood_hazard_score_cog.tif
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/floods/hazard/flood_hazard_score_idw_cog.tif
       metadata:
         url: []
     description: >
