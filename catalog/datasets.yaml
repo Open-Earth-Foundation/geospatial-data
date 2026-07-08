@@ -365,6 +365,30 @@ datasets:
       min–max normalized across all POA bairros. Used as the V component in both flood and heat risk scores.
       Computed by `shared/compute_ev.ipynb`.
 
+  - dataset_id: poa_ev_bairro
+    dataset_name: Exposure & Vulnerability by Bairro (POA, shared)
+    publisher: Open Earth Foundation (derived processing)
+    license: CC BY 4.0
+    resolution: vector
+    crs: EPSG:4326
+    access_type: internal_storage
+    source_url: https://servicodados.ibge.gov.br/api/docs
+    dataset_type: shared
+    type: vector
+    data_quality:
+      temporal_coverage: "Census 2022 (Censo 2022 population and age structure by neighbourhood)"
+      accuracy: "Min–max normalized exposure (population density) and vulnerability (age 0–4 or 60+) per bairro; n=94 inhabited bairros"
+      limitations: >
+        Bairro-level constant scores; age-only vulnerability proxy; polygon area includes parks and water.
+        Shared E/V source — hazard risk products may use hazard-specific E/V columns in their own bairro vectors.
+    assets:
+      download:
+        gpkg_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/shared/vector/poa_ev_normalized.gpkg
+    description: >
+      Shared neighbourhood exposure and vulnerability attributes for Porto Alegre (IBGE Censo 2022 bairro boundaries).
+      Vector companion to `poa_exposure` and `poa_vulnerability` rasters. Key fields: exposure_score,
+      vulnerability_score, total_population, population_density. Computed by `shared/compute_ev.ipynb`.
+
   - dataset_id: poa_flood_hazard
     dataset_name: Flood Hazard Score (POA)
     publisher: Open Earth Foundation (derived processing)
@@ -425,11 +449,14 @@ datasets:
         url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/floods/risk/tiles_values/{z}/{x}/{y}.png
       download:
         cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/floods/risk/flood_risk_score_cog.tif
+        bairro_gpkg_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/floods/vector/flood_risk_score_poa.gpkg
       metadata:
         url: []
     description: >
       OEF flood risk screening index (0–1) for Porto Alegre: geometric mean of hazard (OEF ensemble), exposure
       (IBGE population grid), and vulnerability (IBGE poverty + age grid). Documented in `flood_risk_score_methodology.md`.
+      Bairro vector (`bairro_gpkg_url`): zonal mean hazard, exposure, vulnerability, and risk per bairro (n=94);
+      fields flood_hazard_mean, flood_exposure_score, flood_vulnerability_score, flood_risk_score. Used for Step 0 screening.
 
   - dataset_id: noaa_viirs_nightlights
     dataset_name: NOAA VIIRS Night Lights
@@ -1803,6 +1830,7 @@ datasets:
         url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/heat/hazard/tiles_values/{z}/{x}/{y}.png
       download:
         cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/heat/hazard/heat_hazard_score_cog.tif
+        bairro_gpkg_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/heat/vector/heat_hazard_score_poa.gpkg
       metadata:
         url: []
     description: >
@@ -1839,12 +1867,15 @@ datasets:
         url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/heat/risk/tiles_values/{z}/{x}/{y}.png
       download:
         cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/heat/risk/heat_risk_score_cog.tif
+        bairro_gpkg_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/heat/vector/heat_risk_score_poa.gpkg
       metadata:
         url: []
     description: >
       OEF heat risk screening index (0–1) for Porto Alegre: geometric mean of heat hazard (OEF LST ensemble),
       exposure (shared population density score) and vulnerability (shared vulnerable age score).
       Documented in `heat_risk_score_methodology.md`.
+      Bairro vector (`bairro_gpkg_url`): zonal mean hazard, exposure, vulnerability, and risk per bairro (n=94);
+      fields heat_hazard_mean, heat_exposure_score, heat_vulnerability_score, heat_risk_score. Used for Step 0 screening.
 
   - dataset_id: mapbiomas_energy_infrastructure
     dataset_name: MapBiomas Energy Infrastructure (Porto Alegre)
@@ -1907,6 +1938,7 @@ datasets:
         url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/landslides/hazard/tiles_values/{z}/{x}/{y}.png
       download:
         cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/landslides/hazard/landslide_hazard_score_90m_cog.tif
+        bairro_gpkg_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/landslides/vector/landslide_hazard_score_poa.gpkg
       metadata:
         url: []
     description: >
@@ -1950,6 +1982,7 @@ datasets:
         url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/landslides/risk/tiles_values/{z}/{x}/{y}.png
       download:
         cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/landslides/risk/landslide_risk_score_cog.tif
+        bairro_gpkg_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/landslides/vector/landslide_risk_score_poa.gpkg
       metadata:
         url: []
     description: >
@@ -1958,3 +1991,516 @@ datasets:
       density score), and vulnerability (shared IBGE Censo 2022 vulnerable age score).
       E and V bairro polygons are burned at 90 m resolution for this product specifically.
       Documented in `landslide_risk_score_methodology.md`.
+      Bairro vector (`bairro_gpkg_url`): zonal mean hazard, exposure, vulnerability, and risk per bairro (n=94);
+      fields landslide_hazard_mean, landslide_exposure_score, landslide_vulnerability_score, landslide_risk_score.
+      Used for Step 0 screening.
+
+  - dataset_id: jrc_gloflor_v2
+    dataset_name: JRC Global River Flood Hazard Maps v2.1 (RP100 Depth)
+    publisher: JRC (Joint Research Centre) / CEMS GLOFAS
+    license: JRC open data (no restriction on use or distribution)
+    resolution: 90m
+    crs: EPSG:4326
+    access_type: gee
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/JRC_CEMS_GLOFAS_FloodHazard_v2_1
+    dataset_type: flood
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "Static modeled fluvial depth (RP100); GLOFAS v2.1 release"
+      accuracy: "LISFLOOD discharges + LISFLOOD-FP inundation along global river network"
+      limitations: "Modeled fluvial depth only; not pluvial, coastal, or sewer flooding; not event-specific"
+    value_encoding:
+      type: single_channel
+      scale: 1.0
+      offset: 0.0
+      unit: "m"
+      decode_formula: "value = R"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/jrc_global_surface_water/release/v1/porto_alegre/rp100_depth/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/jrc_global_surface_water/release/v1/porto_alegre/rp100_depth/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/jrc_global_surface_water/release/v1/porto_alegre/rp100_depth/jrc_rp100_depth_cog.tif
+      metadata:
+        url: []
+    description: >
+      JRC/CEMS GLOFAS Flood Hazard v2.1 RP100 inundation depth for Porto Alegre.
+      Input to the OEF flood hazard ensemble (`jrc_norm` after impact-class normalization).
+      COUGAR local exports: `projects/cougar/floods/data/input/jrc_rp100_depth_poa.tif`,
+      `jrc_rp100_depth_norm_poa.tif`. Processed in `floods/script/jrc_global_river_flood.ipynb`.
+
+  - dataset_id: wri_aqueduct_flood
+    dataset_name: WRI Aqueduct Flood Hazard Maps v2 (River RP100 Depth)
+    publisher: World Resources Institute
+    license: CC BY 4.0
+    resolution: ~1000m
+    crs: EPSG:4326
+    access_type: gee
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/WRI_Aqueduct_Flood_Hazard_Maps_V2
+    dataset_type: flood
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "Historical baseline (1980); return period 100 years"
+      accuracy: "Global riverine inundation depth from WATCH model ensemble"
+      limitations: "Coarse native resolution (~1 km); screening signal only; not event-specific May 2024 depth"
+    value_encoding:
+      type: single_channel
+      scale: 1.0
+      offset: 0.0
+      unit: "m"
+      decode_formula: "value = R"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/wri_aqueduct/release/v1/porto_alegre/depth_rp100/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/wri_aqueduct/release/v1/porto_alegre/depth_rp100/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/wri_aqueduct/release/v1/porto_alegre/depth_rp100/aqueduct_depth_rp100_cog.tif
+      metadata:
+        url: []
+    description: >
+      WRI Aqueduct Floods v2 riverine inundation depth (`inunriver`, historical, RP100) for Porto Alegre.
+      Input to the OEF flood hazard ensemble (`aqueduct_norm` after impact-class normalization).
+      COUGAR local exports: `projects/cougar/floods/data/input/aqueduct_depth_rp100_poa.tif`,
+      `aqueduct_depth_rp100_norm_poa.tif`. Processed in `floods/script/WRI_aqueduct.ipynb`.
+
+  - dataset_id: global_flood_database
+    dataset_name: Global Flood Database v1 (MODIS Events)
+    publisher: Cloud to Street (C2S) / Dartmouth Flood Observatory
+    license: CC BY-NC 4.0
+    resolution: 30m
+    crs: EPSG:4326
+    access_type: gee
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/GLOBAL_FLOOD_DB_MODIS_EVENTS_V1
+    dataset_type: flood
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "2000–2018 (mapped MODIS flood events)"
+      accuracy: "Observed flood extent per event; aggregated to event-count raster"
+      limitations: "Observed frequency within catalog, not physical flood probability; excludes permanent water before summing"
+    value_encoding:
+      type: single_channel
+      scale: 1.0
+      offset: 0.0
+      unit: "event count"
+      decode_formula: "value = R"
+    assets:
+      visual_tiles:
+        url_template:
+          - https://geo-test-api.s3.us-east-1.amazonaws.com/global_flood_database/release/v1/porto_alegre/flood_event_count_no_perm_water/tiles_visual/{z}/{x}/{y}.png
+          - https://geo-test-api.s3.us-east-1.amazonaws.com/global_flood_database/release/v1/porto_alegre/flood_observed_once/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template:
+          - https://geo-test-api.s3.us-east-1.amazonaws.com/global_flood_database/release/v1/porto_alegre/flood_event_count_no_perm_water/tiles_values/{z}/{x}/{y}.png
+          - https://geo-test-api.s3.us-east-1.amazonaws.com/global_flood_database/release/v1/porto_alegre/flood_observed_once/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url:
+          - https://geo-test-api.s3.us-east-1.amazonaws.com/global_flood_database/release/v1/porto_alegre/flood_event_count_no_perm_water/gfd_flood_event_count_no_perm_water_cog.tif
+          - https://geo-test-api.s3.us-east-1.amazonaws.com/global_flood_database/release/v1/porto_alegre/flood_observed_once/gfd_flood_observed_once_cog.tif
+      metadata:
+        url: []
+    description: >
+      Global Flood Database v1 MODIS event catalog for Porto Alegre. Aggregated to
+      `flood_event_count_no_perm_water` (robust normalized to 0–1 as `gfd_count_norm`) and
+      binary `gfd_observed_once`. COUGAR local exports in `projects/cougar/floods/data/input/`.
+      Processed in `floods/script/global_flood_database.ipynb`.
+
+  - dataset_id: gfplain250m
+    dataset_name: GFPLAIN250m Global Floodplain Mask
+    publisher: IAHS (International Association of Hydrological Sciences)
+    license: CC BY 4.0
+    resolution: 250m
+    crs: EPSG:4326
+    access_type: gee
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/IAHS_GFPLAIN250_v0
+    dataset_type: flood
+    type: categorical_raster
+    data_quality:
+      temporal_coverage: "Static geomorphic baseline (2018 release)"
+      accuracy: "Geomorphological floodplain delineation from terrain indices"
+      limitations: "Binary floodplain susceptibility only; no depth, probability, or pluvial/coastal flooding"
+    value_encoding:
+      type: class_lookup
+      classes:
+        0: { name: Non-floodplain, color: "#FFFFFF" }
+        1: { name: Floodplain, color: "#2166AC" }
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/gfplain/release/v1/porto_alegre/gfplain_250m/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/gfplain/release/v1/porto_alegre/gfplain_250m/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/gfplain/release/v1/porto_alegre/gfplain_250m/gfplain_250m_cog.tif
+      metadata:
+        url: []
+    description: >
+      GFPLAIN250m geomorphic floodplain mask for Porto Alegre. Binary structural susceptibility
+      layer (weight 0.10) in the OEF flood hazard ensemble. COUGAR local export:
+      `projects/cougar/floods/data/input/gfplain_250m_poa.tif`.
+      Processed in `floods/script/GFPLAIN250m.ipynb`.
+
+  - dataset_id: soilgrids_clay
+    dataset_name: SoilGrids Clay Content (0–30 cm)
+    publisher: ISRIC (via OpenLandMap / GEE)
+    license: CC BY 4.0
+    resolution: 250m
+    crs: EPSG:4326
+    access_type: gee
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/OpenLandMap_SOL_SOL_CLAY-WFRACTION_USDA-3A1A1A_M_v02
+    dataset_type: soil
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "Static (SoilGrids v2 baseline)"
+      accuracy: "Mean clay weight fraction 0–30 cm depth"
+      limitations: "Global soil map; not site geotechnical survey; urban compaction not represented"
+    value_encoding:
+      type: single_channel
+      scale: 1.0
+      offset: 0.0
+      unit: "%"
+      decode_formula: "value = R"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/soilgrids/release/2006/porto_alegre/clay_pct_250m/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/soilgrids/release/2006/porto_alegre/clay_pct_250m/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/soilgrids/release/2006/porto_alegre/clay_pct_250m/poa_clay_pct_250m_cog.tif
+      metadata:
+        url: []
+    description: >
+      SoilGrids v2 clay weight fraction (% at 0–30 cm) for Porto Alegre from
+      `OpenLandMap/SOL/SOL_CLAY-WFRACTION_USDA-3A1A1A_M/v02`. Pore-pressure proxy in the
+      landslide hazard ensemble. COUGAR local export:
+      `projects/cougar/landslides/input_data/poa_clay_pct_250m.tif`.
+      Processed in `landslides/script/clay_soilgrids.ipynb`.
+
+  - dataset_id: landsat8_lst_djf
+    dataset_name: Landsat 8 LST P90 DJF Composite (POA)
+    publisher: USGS / NASA (source), Open Earth Foundation (derived processing)
+    license: Public domain (Landsat)
+    resolution: 30m
+    crs: EPSG:4326
+    access_type: gee
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/LANDSAT_LC08_C02_T1_L2
+    dataset_type: heat
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "DJF summers 2015–2024 (10 seasons)"
+      accuracy: "P90 of cloud-masked ST_B10 surface temperature; min-max normalized to 0–1 for ensemble"
+      limitations: "Surface temperature (LST), not air temperature; cloud gaps may reduce coverage"
+    value_encoding:
+      type: single_channel
+      scale: 1.0
+      offset: 0.0
+      unit: "score"
+      decode_formula: "value = R"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/landsat8/release/v1/porto_alegre/lst_p90/djf_2015_2024/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/landsat8/release/v1/porto_alegre/lst_p90/djf_2015_2024/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/landsat8/release/v1/porto_alegre/lst_p90/djf_2015_2024/lst_lc08_p90_djf_2015_2024_poa_cog.tif
+      metadata:
+        url: []
+    description: >
+      Landsat 8 Collection 2 Tier 1 LST P90 composite for Porto Alegre DJF 2015–2024.
+      Primary high-resolution layer in the OEF heat hazard ensemble. COUGAR local exports in
+      `projects/cougar/heat/input_data/` (`lst_lc08_p90_*.tif`, `lst_lc08_norm_*.tif`,
+      `lst_lc08_obs_count_*.tif`). Processed in `heat/script/lst_landsat8.ipynb`.
+
+  - dataset_id: modis_mod11a2_lst_djf
+    dataset_name: MODIS MOD11A2 LST P90 DJF Composite (POA)
+    publisher: NASA LP DAAC (source), Open Earth Foundation (derived processing)
+    license: No restrictions on use
+    resolution: 1000m
+    crs: EPSG:4326
+    access_type: gee
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/MODIS_061_MOD11A2
+    dataset_type: heat
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "DJF summers 2015–2024 (10 seasons)"
+      accuracy: "P90 of quality-masked daytime and nighttime LST; min-max normalized to 0–1"
+      limitations: "1 km resolution; LST is surface temperature proxy, not air temperature or heat stress index"
+    value_encoding:
+      type: single_channel
+      scale: 1.0
+      offset: 0.0
+      unit: "score"
+      decode_formula: "value = R"
+    assets:
+      visual_tiles:
+        url_template:
+          - https://geo-test-api.s3.us-east-1.amazonaws.com/modis_11a2/release/v1/porto_alegre/lst_day_p90/djf_2015_2024/tiles_visual/{z}/{x}/{y}.png
+          - https://geo-test-api.s3.us-east-1.amazonaws.com/modis_11a2/release/v1/porto_alegre/lst_night_p90/djf_2015_2024/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template:
+          - https://geo-test-api.s3.us-east-1.amazonaws.com/modis_11a2/release/v1/porto_alegre/lst_day_p90/djf_2015_2024/tiles_values/{z}/{x}/{y}.png
+          - https://geo-test-api.s3.us-east-1.amazonaws.com/modis_11a2/release/v1/porto_alegre/lst_night_p90/djf_2015_2024/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url:
+          - https://geo-test-api.s3.us-east-1.amazonaws.com/modis_11a2/release/v1/porto_alegre/lst_day_p90/djf_2015_2024/mod11a2_lst_day_p90_djf_2015_2024_poa_cog.tif
+          - https://geo-test-api.s3.us-east-1.amazonaws.com/modis_11a2/release/v1/porto_alegre/lst_night_p90/djf_2015_2024/mod11a2_lst_night_p90_djf_2015_2024_poa_cog.tif
+      metadata:
+        url: []
+    description: >
+      MODIS Terra MOD11A2 daytime and nighttime LST P90 composites for Porto Alegre DJF 2015–2024.
+      Two independent layers in the OEF heat hazard ensemble. COUGAR local exports in
+      `projects/cougar/heat/input_data/` (`mod11a2_lst_day_*.tif`, `mod11a2_lst_night_*.tif`).
+      Processed in `heat/script/MOD11A2.ipynb`.
+
+  - dataset_id: era5_land_heatwave_freq_djf
+    dataset_name: ERA5-Land Heat-Wave Day Frequency DJF (POA)
+    publisher: ECMWF/Copernicus (source), Open Earth Foundation (derived processing)
+    license: Copernicus C3S/CAMS License
+    resolution: ~9000m
+    crs: EPSG:4326
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/ECMWF_ERA5_LAND_DAILY_AGGR
+    dataset_type: heat
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "DJF seasons 2015–2024"
+      accuracy: "Mean annual count of days exceeding local DJF P90 T_max threshold per grid cell"
+      limitations: >
+        ~9 km native resolution — excluded from operational heat hazard ensemble due to spatial
+        artefacts at urban scale; retained for regional screening context only
+    value_encoding:
+      type: single_channel
+      scale: 1.0
+      offset: 0.0
+      unit: "days/season"
+      decode_formula: "value = R"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/era5_land/release/v1/porto_alegre/hw_freq/djf_2015_2024/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/era5_land/release/v1/porto_alegre/hw_freq/djf_2015_2024/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/era5_land/release/v1/porto_alegre/hw_freq/djf_2015_2024/era5_hw_freq_djf_2015_2024_poa_cog.tif
+      metadata:
+        url: []
+    description: >
+      ERA5-Land 2 m air temperature heat-wave frequency for Porto Alegre DJF 2015–2024.
+      Derived from Copernicus CDS hourly `t2m` (`reanalysis-era5-land`). COUGAR local exports:
+      `projects/cougar/heat/input_data/era5_hw_freq_djf_2015_2024_poa.tif`,
+      `era5_hw_norm_djf_2015_2024_poa.tif`; raw NetCDF in `era5_land/`.
+      Processed in `heat/script/era5_land.ipynb`. Not included in `poa_heat_hazard` ensemble.
+
+  - dataset_id: poa_slope
+    dataset_name: Terrain Slope from Copernicus DEM (POA)
+    publisher: Open Earth Foundation (derived processing)
+    license: Copernicus open data license
+    resolution: 30m
+    crs: EPSG:4326
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/COPERNICUS_DEM_GLO30
+    dataset_type: elevation
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "Static (derived from Copernicus GLO-30 DEM)"
+      accuracy: "Slope in degrees from GEE ee.Terrain.slope(); averaged to 90 m for landslide scoring"
+      limitations: "DEM derivative; local artifacts possible; slope alone does not indicate stability"
+    value_encoding:
+      type: single_channel
+      scale: 1.0
+      offset: 0.0
+      unit: "degrees"
+      decode_formula: "value = R"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/copernicus_dem/release/v1/2024/porto_alegre/slope_deg_30m/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/copernicus_dem/release/v1/2024/porto_alegre/slope_deg_30m/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/copernicus_dem/release/v1/2024/porto_alegre/slope_deg_30m/poa_slope_deg_30m_cog.tif
+      metadata:
+        url: []
+    description: >
+      Slope in degrees for Porto Alegre derived from Copernicus GLO-30 DEM.
+      Primary activation gate (slope ≥ 15°) in the landslide hazard ensemble.
+      COUGAR local export: `projects/cougar/landslides/input_data/poa_slope_deg_30m.tif`.
+      Processed in `landslides/script/slope_from_dem.ipynb`.
+
+  - dataset_id: poa_relative_elevation
+    dataset_name: Relative Elevation / Low-Lying Index (POA)
+    publisher: Open Earth Foundation (derived processing)
+    license: Copernicus open data license
+    resolution: 30m
+    crs: EPSG:4326
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/COPERNICUS_DEM_GLO30
+    dataset_type: elevation
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "Static (derived from Copernicus GLO-30 DEM)"
+      accuracy: "Min-max normalized elevation within POA AOI (1 = lowest relative elevation)"
+      limitations: "Screening proxy for low-lying accumulation; not hydraulic modeling or flood depth"
+    value_encoding:
+      type: single_channel
+      scale: 1.0
+      offset: 0.0
+      unit: "score"
+      decode_formula: "value = R"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/copernicus_dem/release/v1/2024/porto_alegre/relative_elevation_30m/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/copernicus_dem/release/v1/2024/porto_alegre/relative_elevation_30m/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/copernicus_dem/release/v1/2024/porto_alegre/relative_elevation_30m/poa_relative_elevation_30m_cog.tif
+      metadata:
+        url: []
+    description: >
+      Relative low-lying index (0–1) for Porto Alegre derived from Copernicus GLO-30 DEM.
+      Diagnostic layer for flood NBS site screening (rain gardens, wetlands, floodable parks).
+      COUGAR local export: `projects/cougar/floods/data/output/poa_relative_elevation_30m.tif`.
+      Processed in `floods/script/relative_elevation_depression_from_dem.ipynb`.
+
+  - dataset_id: poa_depression_mask
+    dataset_name: Topographic Depression Sink Mask (POA)
+    publisher: Open Earth Foundation (derived processing)
+    license: Copernicus open data license
+    resolution: 30m
+    crs: EPSG:4326
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/COPERNICUS_DEM_GLO30
+    dataset_type: elevation
+    type: categorical_raster
+    data_quality:
+      temporal_coverage: "Static (derived from Copernicus GLO-30 DEM)"
+      accuracy: "D8 local depression mask (sink with no outlet) from priority-flood fill"
+      limitations: "Topographic sink only; does not account for drainage infrastructure or soil infiltration"
+    value_encoding:
+      type: class_lookup
+      classes:
+        0: { name: Not a depression, color: "#FFFFFF" }
+        1: { name: Depression sink, color: "#2166AC" }
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/copernicus_dem/release/v1/2024/porto_alegre/depression_mask_30m/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/copernicus_dem/release/v1/2024/porto_alegre/depression_mask_30m/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/copernicus_dem/release/v1/2024/porto_alegre/depression_mask_30m/poa_depression_mask_30m_cog.tif
+      metadata:
+        url: []
+    description: >
+      Binary topographic depression mask for Porto Alegre derived from Copernicus GLO-30 DEM
+      using D8 flow routing and priority-flood fill. Diagnostic for flood NBS screening.
+      COUGAR local export: `projects/cougar/floods/data/output/poa_depression_mask_30m.tif`.
+      Processed in `floods/script/relative_elevation_depression_from_dem.ipynb`.
+
+  - dataset_id: poa_depression_depth
+    dataset_name: Topographic Depression Depth (POA)
+    publisher: Open Earth Foundation (derived processing)
+    license: Copernicus open data license
+    resolution: 30m
+    crs: EPSG:4326
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/COPERNICUS_DEM_GLO30
+    dataset_type: elevation
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "Static (derived from Copernicus GLO-30 DEM)"
+      accuracy: "Depression depth (m) = filled DEM elevation minus original DEM elevation"
+      limitations: "Hydrologically naive fill; urban drainage networks not represented"
+    value_encoding:
+      type: single_channel
+      scale: 1.0
+      offset: 0.0
+      unit: "m"
+      decode_formula: "value = R"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/copernicus_dem/release/v1/2024/porto_alegre/depression_depth_30m/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/copernicus_dem/release/v1/2024/porto_alegre/depression_depth_30m/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/copernicus_dem/release/v1/2024/porto_alegre/depression_depth_30m/poa_depression_depth_30m_cog.tif
+      metadata:
+        url: []
+    description: >
+      Depression depth in meters for Porto Alegre derived from Copernicus GLO-30 DEM
+      (filled surface minus original elevation). Diagnostic for flood NBS screening.
+      COUGAR local export: `projects/cougar/floods/data/output/poa_depression_depth_30m.tif`.
+      Processed in `floods/script/relative_elevation_depression_from_dem.ipynb`.
+
+  - dataset_id: dynamic_world_mode_250m
+    dataset_name: Dynamic World Mode 2023 (250 m, POA)
+    publisher: Google / WRI (source), Open Earth Foundation (derived processing)
+    license: CC BY 4.0
+    resolution: 250m
+    crs: EPSG:4326
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/GOOGLE_DYNAMICWORLD_V1
+    dataset_type: land_cover
+    type: categorical_raster
+    data_quality:
+      temporal_coverage: "2023 mode composite"
+      accuracy: "Majority class per 250 m cell from Dynamic World 10 m"
+      limitations: "2023 vintage; built/bare modifier in landslide hazard only"
+    value_encoding:
+      type: class_lookup
+      classes:
+        0: { name: Water, color: "#419BDF" }
+        1: { name: Trees, color: "#397D49" }
+        2: { name: Grass, color: "#88B053" }
+        3: { name: Flooded vegetation, color: "#7A87C6" }
+        4: { name: Crops, color: "#E49635" }
+        5: { name: Shrub and scrub, color: "#DFC35A" }
+        6: { name: Built, color: "#C4281B" }
+        7: { name: Bare, color: "#A59B8F" }
+        8: { name: Snow and ice, color: "#B39FE1" }
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/dynamic_world/release/v1/2023/porto_alegre/dw_mode_250m/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/dynamic_world/release/v1/2023/porto_alegre/dw_mode_250m/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/dynamic_world/release/v1/2023/porto_alegre/dw_mode_250m/poa_dw_mode_250m_cog.tif
+      metadata:
+        url: []
+    description: >
+      Dynamic World 2023 mode land-cover class resampled to 250 m for Porto Alegre.
+      Built/bare land-cover modifier in the landslide hazard ensemble.
+      COUGAR local export: `projects/cougar/landslides/input_data/poa_dw_mode_250m.tif`.
+      Processed in `landslides/script/dynamic_world_landslide.ipynb`.
+
+  - dataset_id: modis_ndvi_p10_djf
+    dataset_name: MODIS NDVI P10 DJF Climatology (POA)
+    publisher: NASA LP DAAC / USGS EROS (source), Open Earth Foundation (derived processing)
+    license: No restrictions on use
+    resolution: 250m
+    crs: EPSG:4326
+    access_type: gee
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/MODIS_061_MOD13Q1
+    dataset_type: vegetation
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "DJF summers 2015–2024"
+      accuracy: "P10 of MODIS Terra MOD13Q1 16-day NDVI composites, scaled to -1 to 1"
+      limitations: "250 m resolution; P10 captures low vegetation condition, not annual mean greenness"
+    value_encoding:
+      type: rgb_24bit_scaled_offset
+      scale: 10000
+      offset: -1.0
+      unit: "NDVI"
+      decode_formula: "if encoded == 0 then nodata else value = ((R + 256*G + 65536*B - 1) / scale) + offset"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/modis/release/v1/porto_alegre/MOD13Q1_061/ndvi_p10/djf_2015_2024/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/modis/release/v1/porto_alegre/MOD13Q1_061/ndvi_p10/djf_2015_2024/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/modis/release/v1/porto_alegre/MOD13Q1_061/ndvi_p10/djf_2015_2024/poa_ndvi_p10_djf_2015_2024_cog.tif
+      metadata:
+        url: []
+    description: >
+      MODIS MOD13Q1 NDVI P10 climatology for Porto Alegre DJF 2015–2024. P10 represents
+      low vegetation cover conditions used as a root-cohesion protection proxy in the
+      landslide hazard workflow. Processed in `landslides/script/ndvi_modis.ipynb`.
+
