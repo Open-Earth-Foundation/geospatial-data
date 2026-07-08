@@ -458,6 +458,46 @@ datasets:
       Bairro vector (`bairro_gpkg_url`): zonal mean hazard, exposure, vulnerability, and risk per bairro (n=94);
       fields flood_hazard_mean, flood_exposure_score, flood_vulnerability_score, flood_risk_score. Used for Step 0 screening.
 
+  - dataset_id: poa_flood_mechanism_type
+    dataset_name: Flood Mechanism Type (POA, 250 m)
+    publisher: Open Earth Foundation (derived processing)
+    license: CC BY 4.0
+    resolution: ~250m
+    crs: EPSG:3857
+    access_type: internal_storage
+    source_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/floods/hazard/flood_hazard_score_idw_cog.tif
+    dataset_type: flood
+    type: categorical_raster
+    data_quality:
+      temporal_coverage: "Static screening layer from current catalog COGs and OSM waterways"
+      accuracy: "Per-cell dominant mechanism from rule-based NBS screening (riverine, pluvial, low-lying, drainage proxy)"
+      limitations: "Screening-level classification only; drainage_constrained is a proxy until municipal drainage data exists; not event-specific depth"
+    value_encoding:
+      type: class_lookup
+      decode_formula: "encoded = R + 256*G + 65536*B; if encoded == 0 then nodata else mechanism_code = encoded - 1"
+      classes:
+        0: { name: None, color: "#e0e0e0" }
+        1: { name: Riverine, color: "#2166ac" }
+        2: { name: Pluvial, color: "#fdae61" }
+        3: { name: Low-lying, color: "#abd9e9" }
+        4: { name: Drainage constrained, color: "#7b3294" }
+        5: { name: Mixed, color: "#969696" }
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/floods/flood_mechanism/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/floods/flood_mechanism/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/floods/flood_mechanism/flood_mechanism_type_poa_250m_cog.tif
+      metadata:
+        url: []
+    description: >
+      OEF dominant flood mechanism type per 250 m cell for Porto Alegre (ON-5990). Integer codes:
+      0 none, 1 riverine, 2 pluvial, 3 low_lying, 4 drainage_constrained, 5 mixed. Rules in
+      `projects/cougar/nbs_e2e/scripts/nbs_rules.py`; produced by `nbs_site_query_flood_e2e.ipynb`
+      (`BUILD_POA_LAYER` + `PUBLISH_POA_COG_TILES`). Rasterized on the OEF flood hazard 250 m grid.
+      Value tiles use Terrain RGB with +1 offset (`mechanism_code = encoded - 1`; encoded 0 = nodata).
+
   - dataset_id: noaa_viirs_nightlights
     dataset_name: NOAA VIIRS Night Lights
     publisher: NOAA
