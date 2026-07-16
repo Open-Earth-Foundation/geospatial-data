@@ -481,7 +481,7 @@ datasets:
         2: { name: Pluvial, color: "#fdae61" }
         3: { name: Low-lying, color: "#abd9e9" }
         4: { name: Drainage constrained, color: "#7b3294" }
-        5: { name: Mixed, color: "#969696" }
+        5: { name: Mixed, color: "#8e0152" }
     assets:
       visual_tiles:
         url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/floods/flood_mechanism/tiles_visual/{z}/{x}/{y}.png
@@ -525,7 +525,7 @@ datasets:
         3: { name: High daytime LST, color: "#fc8d59" }
         4: { name: Limited nocturnal cooling, color: "#9970ab" }
         5: { name: High social exposure, color: "#636363" }
-        6: { name: Mixed, color: "#969696" }
+        6: { name: Mixed, color: "#8e0152" }
     assets:
       visual_tiles:
         url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/heat/heat_mechanism/tiles_visual/{z}/{x}/{y}.png
@@ -571,7 +571,7 @@ datasets:
         6: { name: Disturbed bare slope, color: "#a6611a" }
         7: { name: Upslope convergence, color: "#5e3c99" }
         8: { name: High social exposure, color: "#636363" }
-        9: { name: Mixed, color: "#969696" }
+        9: { name: Mixed, color: "#8e0152" }
     assets:
       visual_tiles:
         url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/landslides/landslide_mechanism/tiles_visual/{z}/{x}/{y}.png
