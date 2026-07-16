@@ -489,6 +489,7 @@ datasets:
         url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/floods/flood_mechanism/tiles_values/{z}/{x}/{y}.png
       download:
         cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/floods/flood_mechanism/flood_mechanism_type_poa_250m_cog.tif
+        geojson_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/floods/flood_mechanism/flood_mechanism_type_poa_250m.geojson
       metadata:
         url: []
     description: >
@@ -497,6 +498,99 @@ datasets:
       `projects/cougar/nbs_e2e/scripts/nbs_rules.py`; produced by `nbs_site_query_flood_e2e.ipynb`
       (`BUILD_POA_LAYER` + `PUBLISH_POA_COG_TILES`). Rasterized on the OEF flood hazard 250 m grid.
       Value tiles use Terrain RGB with +1 offset (`mechanism_code = encoded - 1`; encoded 0 = nodata).
+      GeoJSON (`geojson_url`) lists screened cells with mechanism strengths, boolean flags, and
+      `is_interpolated` for analytical QA (not a map tile layer).
+
+  - dataset_id: poa_heat_mechanism_type
+    dataset_name: Heat Mechanism Type (POA, 250 m)
+    publisher: Open Earth Foundation (derived processing)
+    license: CC BY 4.0
+    resolution: ~250m
+    crs: EPSG:3857
+    access_type: internal_storage
+    source_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/heat/hazard/heat_hazard_score_cog.tif
+    dataset_type: heat
+    type: categorical_raster
+    data_quality:
+      temporal_coverage: "Static screening layer from current catalog COGs (LST, built-up, tree cover, H/E/V/R)"
+      accuracy: "Per-cell dominant heat mechanism from rule-based NBS screening (UHI, shade deficit, daytime LST, nocturnal cooling, social exposure)"
+      limitations: "Screening-level classification only; LST proxies are surface temperature not pedestrian comfort"
+    value_encoding:
+      type: class_lookup
+      decode_formula: "encoded = R + 256*G + 65536*B; if encoded == 0 then nodata else mechanism_code = encoded - 1"
+      classes:
+        0: { name: Without clear dominant, color: "#e0e0e0" }
+        1: { name: UHI built-up, color: "#d73027" }
+        2: { name: Shade deficit, color: "#fee08b" }
+        3: { name: High daytime LST, color: "#fc8d59" }
+        4: { name: Limited nocturnal cooling, color: "#9970ab" }
+        5: { name: High social exposure, color: "#636363" }
+        6: { name: Mixed, color: "#969696" }
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/heat/heat_mechanism/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/heat/heat_mechanism/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/heat/heat_mechanism/heat_mechanism_type_poa_250m_cog.tif
+        geojson_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/heat/heat_mechanism/heat_mechanism_type_poa_250m.geojson
+      metadata:
+        url: []
+    description: >
+      OEF dominant heat mechanism type per 250 m cell for Porto Alegre (ON-5991). Integer codes:
+      0 without_clear_dominant, 1 uhi_built_up, 2 shade_deficit, 3 high_daytime_lst, 4 limited_nocturnal_cooling,
+      5 high_social_exposure, 6 mixed. Rules in `projects/cougar/nbs_e2e/scripts/nbs_rules.py`;
+      produced by `nbs_site_query_heat_e2e.ipynb` (`BUILD_POA_HEAT_LAYER` + `PUBLISH_POA_HEAT_COG_TILES`).
+      Rasterized on the OEF heat hazard 250 m grid. GeoJSON (`geojson_url`) lists screened cells with
+      mechanism strengths, boolean flags, and `is_interpolated` for analytical QA (not a map tile layer).
+
+  - dataset_id: poa_landslide_mechanism_type
+    dataset_name: Landslide Mechanism Type (POA, 90 m)
+    publisher: Open Earth Foundation (derived processing)
+    license: CC BY 4.0
+    resolution: ~90m
+    crs: EPSG:3857
+    access_type: internal_storage
+    source_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/landslides/hazard/landslide_hazard_score_90m_cog.tif
+    dataset_type: landslide
+    type: categorical_raster
+    data_quality:
+      temporal_coverage: "Static screening layer from catalog COGs (slope, clay, NDVI P10, HAND, CHIRPS R90p, Dynamic World)"
+      accuracy: "Per-cell dominant landslide mechanism from rule-based NBS screening on hazard-active pixels (H > 0)"
+      limitations: "Screening-level classification only; not validated against CEMADEN inventory; CHIRPS at ~5 km"
+    value_encoding:
+      type: class_lookup
+      decode_formula: "encoded = R + 256*G + 65536*B; if encoded == 0 then nodata else mechanism_code = encoded - 1"
+      classes:
+        0: { name: Without clear dominant, color: "#e0e0e0" }
+        1: { name: Steep activatable slope, color: "#b2182b" }
+        2: { name: Rainfall trigger, color: "#2166ac" }
+        3: { name: Low cohesion wet, color: "#8c510a" }
+        4: { name: Vegetation deficit, color: "#d8b365" }
+        5: { name: Drainage saturation, color: "#4393c3" }
+        6: { name: Disturbed bare slope, color: "#a6611a" }
+        7: { name: Upslope convergence, color: "#5e3c99" }
+        8: { name: High social exposure, color: "#636363" }
+        9: { name: Mixed, color: "#969696" }
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/landslides/landslide_mechanism/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/landslides/landslide_mechanism/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/landslides/landslide_mechanism/landslide_mechanism_type_poa_90m_cog.tif
+        geojson_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/landslides/landslide_mechanism/landslide_mechanism_type_poa_90m.geojson
+      metadata:
+        url: []
+    description: >
+      OEF dominant landslide mechanism type per 90 m cell for Porto Alegre. Integer codes:
+      0 without_clear_dominant, 1 steep_activatable_slope, 2 rainfall_trigger, 3 low_cohesion_wet,
+      4 vegetation_deficit, 5 drainage_saturation, 6 disturbed_bare_slope, 7 upslope_convergence,
+      8 high_social_exposure, 9 mixed. Rules in `projects/cougar/nbs_e2e/scripts/nbs_rules.py`;
+      produced by `nbs_site_query_landslide_e2e.ipynb` (`BUILD_POA_LANDSLIDE_LAYER` +
+      `PUBLISH_POA_LANDSLIDE_COG_TILES`). Screened only where landslide hazard > 0.
+      GeoJSON (`geojson_url`) lists screened cells with mechanism strengths, `mixed_tied_mechanisms`,
+      boolean flags, and `is_interpolated` for analytical QA (not a map tile layer).
 
   - dataset_id: noaa_viirs_nightlights
     dataset_name: NOAA VIIRS Night Lights
