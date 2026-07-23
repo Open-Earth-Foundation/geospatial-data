@@ -52,9 +52,9 @@ geospatial-data/
 | A | Scaffold `models/*`, `transformation/{flood,heat}_hazard/config/sites/`, fix `layers.yaml` deps, this doc | Merged |
 | B | Flood input transformations (`jrc_*`, `wri_aqueduct`, `global_flood_database`, `gfplain250m`) + shared `flood_hazard/site_config.py` | Merged |
 | C | `flood_hazard` score notebook + `models/flood_hazard/{model_card,config}` | Merged |
-| D | Heat input transformations (`landsat_lst`, `modis_lst`, extend `era_land`) + shared `heat_hazard/site_config.py` | Pending / stacked |
-| **E (current)** | `heat_hazard` score notebook + `models/heat_hazard/{model_card,config}` | In progress |
-| F | Minnesota **city** site YAMLs + boundaries | Pending |
+| D | Heat input transformations (`landsat_lst`, `modis_lst`, extend `era_land`) + shared `heat_hazard/site_config.py` | Merged |
+| E | `heat_hazard` score notebook + `models/heat_hazard/{model_card,config}` | Merged |
+| **F (current)** | Minnesota **city** site YAMLs + boundaries | In progress |
 | Later | Risk / E/V, landslides, NbS mechanism docs under `models/nbs_*` | Pending |
 
 ## Flood input wiring (PR-B)
@@ -122,4 +122,26 @@ Small city boundary GeoJSON files under `sites/{city_slug}/boundary/` may be ver
 
 ## Minnesota note
 
-Early multi-site experiments used a statewide `minnesota` slug. Going forward, add one config + boundary per city and publish under city-scoped S3 prefixes.
+Early multi-site experiments used a statewide `minnesota` slug. That approach is superseded by city-level configs below.
+
+## Minnesota cities (PR-F)
+
+Configured city-level sites (not statewide):
+
+| site_slug | City |
+|-----------|------|
+| plymouth | Plymouth |
+| edina | Edina |
+| richfield | Richfield |
+| rochester | Rochester |
+| apple_valley | Apple Valley |
+
+Boundaries: OSM administrative polygons via Nominatim, stored under
+`transformation/{flood,heat}_hazard/sites/{city}/boundary/site.geojson`.
+
+Heat season for these cities: **JJA** (2015–2024).
+
+```bash
+export FLOODS_SITE=plymouth
+export HEAT_SITE=apple_valley
+```

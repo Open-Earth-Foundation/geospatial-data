@@ -1,0 +1,54 @@
+# City runtime config for heat_hazard
+site_slug: apple_valley
+display_name: Apple Valley
+country: United States
+admin_level: municipality
+output_prefix: apple_valley
+season: jja
+season_label: JJA
+start_year: 2015
+end_year: 2024
+boundary_path: sites/apple_valley/boundary/site.geojson
+bbox: [-93.248351, 44.717336, -93.151344, 44.775887]
+s3_prefix: oef_calculation/release/v1/apple_valley/climate_hazards/heat
+
+paths:
+  site_root: sites/apple_valley
+  data_input: sites/apple_valley/data/input
+  data_intermediate: sites/apple_valley/data/intermediate
+  data_output: sites/apple_valley/data/output
+  out: sites/apple_valley/out
+  cache: sites/apple_valley/cache
+  styles: styles
+
+layers:
+  landsat_p90: lst_lc08_p90_jja_2015_2024_apple_valley.tif
+  landsat_obs_count: lst_lc08_obs_count_jja_2015_2024_apple_valley.tif
+  landsat_norm: lst_lc08_norm_jja_2015_2024_apple_valley.tif
+  modis_day_p90: mod11a2_lst_day_p90_jja_2015_2024_apple_valley.tif
+  modis_night_p90: mod11a2_lst_night_p90_jja_2015_2024_apple_valley.tif
+  modis_day_norm: mod11a2_lst_day_norm_jja_2015_2024_apple_valley.tif
+  modis_night_norm: mod11a2_lst_night_norm_jja_2015_2024_apple_valley.tif
+  era5_hw_freq: era5_hw_freq_jja_2015_2024_apple_valley.tif
+  era5_hw_norm: era5_hw_norm_jja_2015_2024_apple_valley.tif
+
+outputs:
+  heat_hazard_score: heat_hazard_score_apple_valley.tif
+  heat_hazard_n_layers: heat_hazard_n_layers_apple_valley.tif
+  heat_hazard_vector: heat_hazard_score_apple_valley.gpkg
+
+# Optional overrides of models/heat_hazard/config.yaml (city wins on merge)
+hazard:
+  min_layers: 2
+  reference_layer: landsat_norm
+  include_era5: false
+
+publish:
+  tile_zoom: "8-15"
+
+# Neighbourhood aggregation not configured for Minnesota cities yet
+bairro:
+  enabled: false
+  mun_code: null
+  layer: null
+  gpkg_path: null
