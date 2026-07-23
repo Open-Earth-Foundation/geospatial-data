@@ -27,6 +27,9 @@ layers:
   jrc_depth: jrc_rp100_depth_apple_valley.tif
   jrc_norm: jrc_rp100_depth_norm_apple_valley.tif
   dem: apple_valley_dem_glo30_30m.tif
+  relative_elevation: apple_valley_relative_elevation_30m.tif
+  depression_mask: apple_valley_depression_mask_30m.tif
+  depression_depth: apple_valley_depression_depth_30m.tif
 
 outputs:
   flood_hazard_score: flood_hazard_score_apple_valley.tif

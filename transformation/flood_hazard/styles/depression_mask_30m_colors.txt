@@ -1,0 +1,7 @@
+# POA depression mask 30m.
+# GDAL color-relief palette for visual tiles.
+# 0 = not a D8 sink cell; 1 = D8 local depression / sink cell.
+nv 0 0 0 0
+0 247 247 247
+1 117 107 177
+255 0 0 0 0

@@ -27,6 +27,9 @@ layers:
   jrc_depth: jrc_rp100_depth_richfield.tif
   jrc_norm: jrc_rp100_depth_norm_richfield.tif
   dem: richfield_dem_glo30_30m.tif
+  relative_elevation: richfield_relative_elevation_30m.tif
+  depression_mask: richfield_depression_mask_30m.tif
+  depression_depth: richfield_depression_depth_30m.tif
 
 outputs:
   flood_hazard_score: flood_hazard_score_richfield.tif

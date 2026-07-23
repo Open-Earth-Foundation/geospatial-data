@@ -30,6 +30,10 @@ transformation/*/sites/*/data/
 transformation/*/sites/*/out/
 transformation/*/sites/*/intermediate/
 
+# NbS screening runtime outputs
+transformation/nbs_screening/output/*
+!transformation/nbs_screening/output/.gitkeep
+
 # Keep small city boundaries trackable when added:
 # transformation/*/sites/*/boundary/*.geojson
 

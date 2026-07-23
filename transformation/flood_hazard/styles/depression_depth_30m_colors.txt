@@ -1,0 +1,11 @@
+# POA depression depth 30m.
+# GDAL color-relief palette for visual tiles.
+# Values are filled DEM minus original DEM, in meters.
+nv 0 0 0 0
+0 247 247 247
+0.05 222 235 247
+0.15 198 219 239
+0.5 158 202 225
+1.0 107 174 214
+2.0 33 113 181
+5.0 8 48 107

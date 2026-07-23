@@ -173,6 +173,7 @@ layers:
     dependencies:
       - flood_hazard
     model: models/nbs_flood_mechanism_type/
+    transformation_script: transformation/nbs_screening/
     output_format: cog
     description: Dominant flood mechanism type per cell for NbS screening.
 
@@ -185,6 +186,7 @@ layers:
     dependencies:
       - heat_hazard
     model: models/nbs_heat_mechanism_type/
+    transformation_script: transformation/nbs_screening/
     output_format: cog
     description: Dominant heat mechanism type per cell for NbS screening.
 
@@ -197,5 +199,6 @@ layers:
     dependencies:
       - landslide_hazard
     model: models/nbs_landslide_mechanism_type/
+    transformation_script: transformation/nbs_screening/
     output_format: cog
     description: Dominant landslide mechanism type per cell for NbS screening.

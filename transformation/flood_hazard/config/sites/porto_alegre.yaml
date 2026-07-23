@@ -27,6 +27,9 @@ layers:
   jrc_depth: jrc_rp100_depth_poa.tif
   jrc_norm: jrc_rp100_depth_norm_poa.tif
   dem: poa_dem_glo30_30m.tif
+  relative_elevation: poa_relative_elevation_30m.tif
+  depression_mask: poa_depression_mask_30m.tif
+  depression_depth: poa_depression_depth_30m.tif
 
 outputs:
   flood_hazard_score: flood_hazard_score_poa.tif

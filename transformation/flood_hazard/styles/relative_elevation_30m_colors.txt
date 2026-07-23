@@ -1,0 +1,9 @@
+# POA relative elevation 30m low-lying index.
+# GDAL color-relief palette for visual tiles.
+# 0 = highest relative elevation; 1 = lowest relative elevation.
+nv 0 0 0 0
+0 247 247 247
+0.25 186 228 188
+0.5 123 204 196
+0.75 67 162 202
+1.0 8 81 156

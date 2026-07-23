@@ -35,7 +35,8 @@ geospatial-data/
     landslide_hazard/
       config/sites/{city_slug}.yaml
       sites/{city_slug}/
-    # input dataset folders (wri_aqueduct, landsat_lst, chirps_r90p, …)
+    nbs_screening/                  # mechanism rules + site-query notebooks
+    # input dataset folders (wri_aqueduct, landsat_lst, chirps_r90p, copernicus_dem, …)
   catalog/datasets.yaml           # published assets + provenance
   collections/layers.yaml         # analytical layer graph
 ```
@@ -59,8 +60,9 @@ geospatial-data/
 | D | Heat input transformations (`landsat_lst`, `modis_lst`, extend `era_land`) + shared `heat_hazard/site_config.py` | Merged |
 | E | `heat_hazard` score notebook + `models/heat_hazard/{model_card,config}` | Merged |
 | F | Minnesota **city** site YAMLs + boundaries (flood + heat) | Merged |
-| **G (current)** | Landslide inputs + `landslide_hazard` score (multi-city) | In progress |
-| Later | Risk / E/V, NbS mechanism docs under `models/nbs_*` | Pending |
+| G | Landslide inputs + `landslide_hazard` score (multi-city) | Merged |
+| **H (current)** | NbS screening core + DEM diagnostics (relative elevation / depression) | In progress |
+| Later | Risk / E/V, opportunity zones composition | Pending |
 
 ## Flood input wiring (PR-B)
 
@@ -168,3 +170,21 @@ export LANDSLIDES_SITE=porto_alegre
 - Methodology: `models/landslide_hazard/model_card.md`
 - `site_config.load_site_config` merges model defaults with city `hazard` / `publish` overrides
 - **Deferred:** `landslide_risk` until shared E/V exists for Minnesota cities
+
+## NbS screening wiring (PR-H)
+
+```bash
+export FLOODS_SITE=porto_alegre
+# DEM diagnostics for flood low-lying / storage NBS:
+# transformation/copernicus_dem/release/v1/relative_elevation_depression_from_dem.ipynb
+
+# Mechanism screening / site query:
+python transformation/nbs_screening/run_e2e.py --hazard flood
+# notebooks: transformation/nbs_screening/nbs_site_query_{flood,heat,landslide}_e2e.ipynb
+```
+
+- Rules: `transformation/nbs_screening/nbs_rules.py`
+- Catalog COG helpers: `transformation/nbs_screening/catalog_layers.py` (POA S3 URLs today)
+- Methodology: `transformation/nbs_screening/docs/` + `models/nbs_*_mechanism_type/`
+- Hard requirement: hazard score only; E/V/R optional until risk migration
+- **Deferred:** shared E/V, risk scores, full `nbs_opportunity_zones` composition; city-specific catalog URL map for Minnesota
