@@ -1,0 +1,20 @@
+ERA5-Land heat-wave frequency value tiles
+
+Source raster:
+input_data/era5_hw_freq_djf_2015_2024_poa.tif
+
+Generated outputs:
+output_data/era5_hw_freq_djf_2015_2024_poa/era5_hw_freq_djf_2015_2024_poa_cog.tif
+output_data/era5_hw_freq_djf_2015_2024_poa/era5_hw_freq_djf_2015_2024_poa_colorized.tif
+output_data/era5_hw_freq_djf_2015_2024_poa/era5_hw_freq_djf_2015_2024_poa_value_encoded_rgb.tif
+output_data/era5_hw_freq_djf_2015_2024_poa/tiles_visual/{z}/{x}/{y}.png
+output_data/era5_hw_freq_djf_2015_2024_poa/tiles_values/{z}/{x}/{y}.png
+
+Value tile encoding:
+encoded = R + 256 * G + 65536 * B
+
+Decode:
+if encoded == 0, value is nodata
+otherwise hw_days = (encoded - 1) / 100
+
+Values are mean annual DJF heat-wave day counts where daily Tmax exceeds the local P90 threshold, encoded at 0.01-day precision.

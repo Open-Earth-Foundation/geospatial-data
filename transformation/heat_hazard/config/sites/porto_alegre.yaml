@@ -1,4 +1,4 @@
-# Scaffold site config — paths will be finalized when notebooks move into this folder.
+# City runtime config for heat_hazard (paths, season, optional hazard overrides).
 site_slug: porto_alegre
 display_name: Porto Alegre
 country: Brazil

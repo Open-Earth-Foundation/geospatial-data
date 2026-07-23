@@ -1,0 +1,11 @@
+# Landsat 8 LST P90 DJF 2015-2024, degrees Celsius.
+# GDAL color-relief palette for visual tiles.
+# Cooler -> light yellow; hotter -> dark red.
+nv 0 0 0 0
+25 255 255 204
+30 255 237 160
+35 254 178 76
+40 253 141 60
+45 240 59 32
+50 189 0 38
+55 128 0 38

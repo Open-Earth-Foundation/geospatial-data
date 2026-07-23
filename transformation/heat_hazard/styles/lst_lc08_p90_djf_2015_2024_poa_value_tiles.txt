@@ -1,0 +1,20 @@
+Landsat 8 LST P90 DJF 2015-2024 value tiles
+
+Source raster:
+input_data/lst_lc08_p90_djf_2015_2024_poa.tif
+
+Generated outputs:
+output_data/lst_lc08_p90_djf_2015_2024_poa/lst_lc08_p90_djf_2015_2024_poa_cog.tif
+output_data/lst_lc08_p90_djf_2015_2024_poa/lst_lc08_p90_djf_2015_2024_poa_colorized.tif
+output_data/lst_lc08_p90_djf_2015_2024_poa/lst_lc08_p90_djf_2015_2024_poa_value_encoded_rgb.tif
+output_data/lst_lc08_p90_djf_2015_2024_poa/tiles_visual/{z}/{x}/{y}.png
+output_data/lst_lc08_p90_djf_2015_2024_poa/tiles_values/{z}/{x}/{y}.png
+
+Value tile encoding:
+encoded = R + 256 * G + 65536 * B
+
+Decode:
+if encoded == 0, value is nodata
+otherwise lst_celsius = ((encoded - 1) / 100) - 100
+
+LST values are P90 land surface temperature in degrees Celsius, encoded at 0.01 C precision.
