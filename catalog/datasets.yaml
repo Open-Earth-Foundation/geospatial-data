@@ -420,7 +420,9 @@ datasets:
         url: []
     description: >
       OEF flood hazard susceptibility index (0–1) for Porto Alegre. Ensemble of JRC GLOFLO v2.1, Global Flood Database,
-      WRI Aqueduct, and GFPLAIN250m on a common ~250 m grid. Documented in `flood_hazard_score_methodology.md`.
+      WRI Aqueduct, and GFPLAIN250m on a common ~250 m grid. Methodology in `models/flood_hazard/model_card.md`;
+      defaults in `models/flood_hazard/config.yaml`; score notebook
+      `transformation/flood_hazard/flood_hazard_score_v2.ipynb`.
 
   - dataset_id: poa_flood_risk
     dataset_name: Flood Risk Score H×E×V (POA)

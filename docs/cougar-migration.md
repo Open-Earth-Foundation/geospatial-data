@@ -50,8 +50,8 @@ geospatial-data/
 | PR | Scope | Status |
 |----|--------|--------|
 | A | Scaffold `models/*`, `transformation/{flood,heat}_hazard/config/sites/`, fix `layers.yaml` deps, this doc | Merged |
-| **B (current)** | Flood input transformations (`jrc_*`, `wri_aqueduct`, `global_flood_database`, `gfplain250m`) + shared `flood_hazard/site_config.py` | In progress |
-| C | `flood_hazard` score notebooks + `models/flood_hazard/{model_card,config}` | Pending |
+| B | Flood input transformations (`jrc_*`, `wri_aqueduct`, `global_flood_database`, `gfplain250m`) + shared `flood_hazard/site_config.py` | Merged |
+| **C (current)** | `flood_hazard` score notebook + `models/flood_hazard/{model_card,config}` | In progress |
 | D | Heat input transformations (`landsat_lst`, `modis_lst`, extend `era_land`) | Pending |
 | E | `heat_hazard` score notebooks + `models/heat_hazard/{model_card,config}` | Pending |
 | F | Minnesota **city** site YAMLs + boundaries | Pending |
@@ -67,6 +67,17 @@ export FLOODS_SITE=porto_alegre
 ```
 
 Outputs write to `transformation/flood_hazard/sites/{city}/data/` and `.../out/`.
+
+## Flood score wiring (PR-C)
+
+```bash
+export FLOODS_SITE=porto_alegre
+# run transformation/flood_hazard/flood_hazard_score_v2.ipynb
+```
+
+- Defaults: `models/flood_hazard/config.yaml`
+- Methodology: `models/flood_hazard/model_card.md`
+- `site_config.load_site_config` merges model defaults with city `hazard` / `idw` overrides
 
 ## Layer registry alignment (PR-A)
 

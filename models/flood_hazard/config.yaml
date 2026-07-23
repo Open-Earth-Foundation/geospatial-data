@@ -1,0 +1,34 @@
+# Default flood hazard ensemble parameters (Level 2).
+# City overrides: transformation/flood_hazard/config/sites/{city_slug}.yaml
+version: v1
+layer_id: flood_hazard
+
+hazard:
+  reference_grid: gfplain_250m
+  weights:
+    jrc_norm: 0.45
+    gfd_count_norm: 0.30
+    aqueduct_norm: 0.15
+    gfplain_250m: 0.10
+  min_layers: 3
+  require_fluvial_layer: true
+  fluvial_layers:
+    - jrc_norm
+    - aqueduct_norm
+
+# Optional distance-capped IDW gap-fill (derived product; does not replace base score)
+idw:
+  max_dist_m: 750
+  min_neighbors: 3
+  power: 2
+  k_neighbors: 32
+  use_gfplain_mask: false
+
+# Impact-class depth normalization used by JRC / Aqueduct input notebooks
+normalization:
+  depth_impact_classes_m:
+    - { max: 0.15, score: 0.00 }
+    - { max: 0.5, score: 0.25 }
+    - { max: 1.0, score: 0.50 }
+    - { max: 2.0, score: 0.75 }
+    - { max: null, score: 1.00 } # d > 2.0 m

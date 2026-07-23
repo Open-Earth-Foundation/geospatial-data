@@ -2,30 +2,31 @@
 
 Level 2 flood hazard ensemble model.
 
-## Status
-
-Scaffold (PR-A). Model card and default weights land in a later PR when the score transformation moves into this repo.
-
-## Planned contents
+## Contents
 
 ```text
 flood_hazard/
 ├── README.md
-├── model_card.md      # methodology (inputs, normalization, ensemble, IDW, limitations)
-├── config.yaml        # default weights, min_layers, fluvial rules, IDW params
-└── v1/                # optional versioned artifacts
+├── model_card.md      # methodology, validation, limitations
+├── config.yaml        # default weights, coverage rules, IDW params
+└── v1/                # optional versioned artifacts (unused for now)
 ```
 
 ## Runtime site overrides
 
-Per-city paths and filenames live in:
+Per-city paths and filenames:
 
 `transformation/flood_hazard/config/sites/{city_slug}.yaml`
 
-Default scoring parameters stay here in `config.yaml`; site YAML may override weights when needed.
+`site_config.py` merges `config.yaml` defaults with city `hazard` / `idw` blocks (city wins).
+
+## Pipeline
+
+1. Build inputs (JRC, Aqueduct, GFD, GFPLAIN) via sibling `transformation/*` notebooks.
+2. Run `transformation/flood_hazard/flood_hazard_score_v2.ipynb` with `FLOODS_SITE=<city>`.
+3. Publish COG / tiles from the notebook; register assets in `catalog/datasets.yaml`.
 
 ## Related
 
 - Layer registry: `collections/layers.yaml` → `layer_id: flood_hazard`
-- Score pipeline: `transformation/flood_hazard/` (to be added)
-- Upstream inputs: `jrc_gloflor_v2`, `global_flood_database`, `wri_aqueduct_flood`, `gfplain250m`
+- Score notebook: `transformation/flood_hazard/flood_hazard_score_v2.ipynb`
