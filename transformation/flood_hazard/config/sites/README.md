@@ -6,9 +6,21 @@ One YAML file per **city** (`{city_slug}.yaml`).
 
 - `site_slug` must match the filename stem and `sites/{city_slug}/`
 - Prefer municipality / metro city polygons — not statewide AOIs
-- Minnesota work uses city slugs (e.g. `minneapolis`, `duluth`), not `minnesota`
 - Default scoring parameters come from `models/flood_hazard/config.yaml`; site files hold paths, filenames, bbox, S3 prefix, and optional overrides
 
-## Example
+## Cities currently configured
 
-See `porto_alegre.yaml` for the city-level shape. Additional Minnesota city YAMLs will be added when city boundaries are ready.
+| site_slug | display_name | country |
+|-----------|--------------|---------|
+| porto_alegre | Porto Alegre | Brazil |
+| plymouth | Plymouth | United States (Minnesota) |
+| edina | Edina | United States (Minnesota) |
+| richfield | Richfield | United States (Minnesota) |
+| rochester | Rochester | United States (Minnesota) |
+| apple_valley | Apple Valley | United States (Minnesota) |
+
+## Usage
+
+```bash
+export FLOODS_SITE=plymouth
+```

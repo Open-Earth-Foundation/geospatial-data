@@ -36,6 +36,7 @@ heat_hazard/
 
 ```bash
 export HEAT_SITE=porto_alegre
+# Minnesota (JJA): plymouth | edina | richfield | rochester | apple_valley
 # optional POA bairro polygons:
 # export HEAT_BAIRRO_GPKG=/path/to/brazil_neighbourhood_geometries.gpkg
 # 1) run input notebooks (sibling folders)

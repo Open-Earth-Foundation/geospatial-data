@@ -6,10 +6,23 @@ One YAML file per **city** (`{city_slug}.yaml`).
 
 - `site_slug` must match the filename stem and `sites/{city_slug}/`
 - Prefer municipality / metro city polygons — not statewide AOIs
-- Minnesota work uses city slugs (e.g. `minneapolis`, `duluth`), not `minnesota`
 - Include season (`djf` / `jja`), year range, and layer filenames
 - Default scoring parameters come from `models/heat_hazard/config.yaml`
+- Minnesota cities use **JJA** (northern summer); Porto Alegre uses **DJF**
 
-## Example
+## Cities currently configured
 
-See `porto_alegre.yaml` for the city-level shape. Additional Minnesota city YAMLs will be added when city boundaries are ready.
+| site_slug | display_name | season | country |
+|-----------|--------------|--------|---------|
+| porto_alegre | Porto Alegre | DJF | Brazil |
+| plymouth | Plymouth | JJA | United States (Minnesota) |
+| edina | Edina | JJA | United States (Minnesota) |
+| richfield | Richfield | JJA | United States (Minnesota) |
+| rochester | Rochester | JJA | United States (Minnesota) |
+| apple_valley | Apple Valley | JJA | United States (Minnesota) |
+
+## Usage
+
+```bash
+export HEAT_SITE=edina
+```

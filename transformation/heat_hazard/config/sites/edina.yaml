@@ -1,0 +1,54 @@
+# City runtime config for heat_hazard
+site_slug: edina
+display_name: Edina
+country: United States
+admin_level: municipality
+output_prefix: edina
+season: jja
+season_label: JJA
+start_year: 2015
+end_year: 2024
+boundary_path: sites/edina/boundary/site.geojson
+bbox: [-93.401576, 44.859874, -93.318756, 44.93061]
+s3_prefix: oef_calculation/release/v1/edina/climate_hazards/heat
+
+paths:
+  site_root: sites/edina
+  data_input: sites/edina/data/input
+  data_intermediate: sites/edina/data/intermediate
+  data_output: sites/edina/data/output
+  out: sites/edina/out
+  cache: sites/edina/cache
+  styles: styles
+
+layers:
+  landsat_p90: lst_lc08_p90_jja_2015_2024_edina.tif
+  landsat_obs_count: lst_lc08_obs_count_jja_2015_2024_edina.tif
+  landsat_norm: lst_lc08_norm_jja_2015_2024_edina.tif
+  modis_day_p90: mod11a2_lst_day_p90_jja_2015_2024_edina.tif
+  modis_night_p90: mod11a2_lst_night_p90_jja_2015_2024_edina.tif
+  modis_day_norm: mod11a2_lst_day_norm_jja_2015_2024_edina.tif
+  modis_night_norm: mod11a2_lst_night_norm_jja_2015_2024_edina.tif
+  era5_hw_freq: era5_hw_freq_jja_2015_2024_edina.tif
+  era5_hw_norm: era5_hw_norm_jja_2015_2024_edina.tif
+
+outputs:
+  heat_hazard_score: heat_hazard_score_edina.tif
+  heat_hazard_n_layers: heat_hazard_n_layers_edina.tif
+  heat_hazard_vector: heat_hazard_score_edina.gpkg
+
+# Optional overrides of models/heat_hazard/config.yaml (city wins on merge)
+hazard:
+  min_layers: 2
+  reference_layer: landsat_norm
+  include_era5: false
+
+publish:
+  tile_zoom: "8-15"
+
+# Neighbourhood aggregation not configured for Minnesota cities yet
+bairro:
+  enabled: false
+  mun_code: null
+  layer: null
+  gpkg_path: null

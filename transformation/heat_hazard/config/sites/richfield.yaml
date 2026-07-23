@@ -1,0 +1,54 @@
+# City runtime config for heat_hazard
+site_slug: richfield
+display_name: Richfield
+country: United States
+admin_level: municipality
+output_prefix: richfield
+season: jja
+season_label: JJA
+start_year: 2015
+end_year: 2024
+boundary_path: sites/richfield/boundary/site.geojson
+bbox: [-93.318836, 44.861813, -93.244825, 44.890801]
+s3_prefix: oef_calculation/release/v1/richfield/climate_hazards/heat
+
+paths:
+  site_root: sites/richfield
+  data_input: sites/richfield/data/input
+  data_intermediate: sites/richfield/data/intermediate
+  data_output: sites/richfield/data/output
+  out: sites/richfield/out
+  cache: sites/richfield/cache
+  styles: styles
+
+layers:
+  landsat_p90: lst_lc08_p90_jja_2015_2024_richfield.tif
+  landsat_obs_count: lst_lc08_obs_count_jja_2015_2024_richfield.tif
+  landsat_norm: lst_lc08_norm_jja_2015_2024_richfield.tif
+  modis_day_p90: mod11a2_lst_day_p90_jja_2015_2024_richfield.tif
+  modis_night_p90: mod11a2_lst_night_p90_jja_2015_2024_richfield.tif
+  modis_day_norm: mod11a2_lst_day_norm_jja_2015_2024_richfield.tif
+  modis_night_norm: mod11a2_lst_night_norm_jja_2015_2024_richfield.tif
+  era5_hw_freq: era5_hw_freq_jja_2015_2024_richfield.tif
+  era5_hw_norm: era5_hw_norm_jja_2015_2024_richfield.tif
+
+outputs:
+  heat_hazard_score: heat_hazard_score_richfield.tif
+  heat_hazard_n_layers: heat_hazard_n_layers_richfield.tif
+  heat_hazard_vector: heat_hazard_score_richfield.gpkg
+
+# Optional overrides of models/heat_hazard/config.yaml (city wins on merge)
+hazard:
+  min_layers: 2
+  reference_layer: landsat_norm
+  include_era5: false
+
+publish:
+  tile_zoom: "8-15"
+
+# Neighbourhood aggregation not configured for Minnesota cities yet
+bairro:
+  enabled: false
+  mun_code: null
+  layer: null
+  gpkg_path: null

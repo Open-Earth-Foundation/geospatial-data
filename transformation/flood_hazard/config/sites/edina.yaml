@@ -1,0 +1,57 @@
+# City runtime config for flood_hazard
+site_slug: edina
+display_name: Edina
+country: United States
+admin_level: municipality
+output_prefix: edina
+boundary_path: sites/edina/boundary/site.geojson
+bbox: [-93.401576, 44.859874, -93.318756, 44.93061]
+s3_prefix: oef_calculation/release/v1/edina/climate_hazards/floods
+
+paths:
+  site_root: sites/edina
+  data_input: sites/edina/data/input
+  data_intermediate: sites/edina/data/intermediate
+  data_output: sites/edina/data/output
+  out: sites/edina/out
+  cache: sites/edina/cache
+  styles: styles
+
+layers:
+  aqueduct_depth: aqueduct_depth_rp100_edina.tif
+  aqueduct_norm: aqueduct_depth_rp100_norm_edina.tif
+  gfd_count: gfd_flood_event_count_no_perm_water_edina.tif
+  gfd_count_norm: gfd_flood_event_count_no_perm_water_norm_edina.tif
+  gfd_observed_once: gfd_flood_observed_once_edina.tif
+  gfplain: gfplain_250m_edina.tif
+  jrc_depth: jrc_rp100_depth_edina.tif
+  jrc_norm: jrc_rp100_depth_norm_edina.tif
+  dem: edina_dem_glo30_30m.tif
+
+outputs:
+  flood_hazard_score: flood_hazard_score_edina.tif
+  flood_hazard_score_strict: flood_hazard_score_strict_edina.tif
+  flood_hazard_n_layers_used: flood_hazard_n_layers_used_edina.tif
+  flood_hazard_score_idw: flood_hazard_score_idw_edina.tif
+  flood_hazard_is_interpolated: flood_hazard_is_interpolated_edina.tif
+  flood_hazard_interp_distance_m: flood_hazard_interp_distance_m_edina.tif
+  flood_hazard_score_interpolated_only: flood_hazard_score_interpolated_only_edina.tif
+
+# Optional overrides of models/flood_hazard/config.yaml (city wins on merge)
+hazard:
+  reference_grid: gfplain_250m
+  weights:
+    jrc_norm: 0.45
+    gfd_count_norm: 0.30
+    aqueduct_norm: 0.15
+    gfplain_250m: 0.10
+  min_layers: 3
+  require_fluvial_layer: true
+  fluvial_layers: [jrc_norm, aqueduct_norm]
+
+idw:
+  max_dist_m: 750
+  min_neighbors: 3
+  power: 2
+  k_neighbors: 32
+  use_gfplain_mask: false

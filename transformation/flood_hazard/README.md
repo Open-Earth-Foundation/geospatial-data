@@ -37,6 +37,7 @@ flood_hazard/
 
 ```bash
 export FLOODS_SITE=porto_alegre
+# Minnesota: plymouth | edina | richfield | rochester | apple_valley
 # 1) run input notebooks (sibling folders)
 # 2) run flood_hazard_score_v2.ipynb from this directory
 ```
