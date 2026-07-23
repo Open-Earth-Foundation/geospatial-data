@@ -36,11 +36,17 @@ flood_hazard/
 ## Usage
 
 ```bash
-export FLOODS_SITE=porto_alegre
+export FLOODS_SITE=plymouth
 # Minnesota: plymouth | edina | richfield | rochester | apple_valley
-# 1) run input notebooks (sibling folders)
-# 2) run flood_hazard_score_v2.ipynb from this directory
+
+# 1) Input notebooks (sibling folders) — default exports GeoTIFFs locally to
+#    sites/<city>/data/input/ via geemap (no Google Drive).
+#    Optional: export GEE_EXPORT_MODE=drive
+# 2) flood_hazard_score_v2.ipynb from this directory
 ```
+
+Local inputs/outputs under `sites/*/data/` and `sites/*/out/` are **gitignored**
+(also `*.tif` globally). Helper: `gee_local_export.py`.
 
 Defaults: `models/flood_hazard/config.yaml`  
 City overrides: `config/sites/{city}.yaml` (`hazard`, `idw`)
