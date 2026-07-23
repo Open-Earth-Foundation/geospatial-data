@@ -1972,7 +1972,9 @@ datasets:
     description: >
       OEF heat hazard susceptibility index (0–1) for Porto Alegre. Ensemble of Landsat 8 LST P90 anomaly,
       MODIS MOD11A2 daytime LST P90, and MODIS MOD11A2 nighttime LST P90 on a common ~250 m grid.
-      Arithmetic mean of normalized layers. Documented in `heat_hazard_score_methodology.md`.
+      Arithmetic mean of normalized layers. Methodology in `models/heat_hazard/model_card.md`;
+      defaults in `models/heat_hazard/config.yaml`; score notebook
+      `transformation/heat_hazard/heat_hazard_score.ipynb`.
 
   - dataset_id: poa_heat_risk
     dataset_name: Heat Risk Score H×E×V (POA)

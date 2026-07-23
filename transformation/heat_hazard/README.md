@@ -1,14 +1,12 @@
 # heat_hazard
 
-Transformation that applies `models/heat_hazard` to produce the Level 2 heat hazard score per city.
-
-Input-layer notebooks live in sibling dataset folders and share this folder’s city configs via `site_config.py`.
+Applies `models/heat_hazard` to produce the Level 2 heat hazard score per city.
 
 ## Status
 
 - PR-A: scaffold (configs, layout)
-- **PR-D:** `site_config.py`, input styles, Porto Alegre boundary; sibling input notebooks
-- PR-E (next): score notebook + `models/heat_hazard/{model_card,config}`
+- PR-D: `site_config.py`, input styles, Porto Alegre boundary; sibling input notebooks
+- **PR-E:** score notebook + model card/config wiring
 
 ## Layout
 
@@ -16,6 +14,7 @@ Input-layer notebooks live in sibling dataset folders and share this folder’s 
 heat_hazard/
 ├── README.md
 ├── site_config.py
+├── heat_hazard_score.ipynb
 ├── config/sites/{city_slug}.yaml
 ├── sites/{city_slug}/
 │   ├── boundary/site.geojson
@@ -25,7 +24,7 @@ heat_hazard/
 └── styles/
 ```
 
-## Upstream input notebooks (PR-D)
+## Upstream input notebooks
 
 | Dataset | Notebook |
 |---------|----------|
@@ -33,14 +32,20 @@ heat_hazard/
 | MODIS MOD11A2 LST | `../modis_lst/release/v1/MOD11A2.ipynb` |
 | ERA5-Land HW frequency (optional) | `../era_land/release/v1/era5_land.ipynb` |
 
-## Site selection
+## Usage
 
 ```bash
 export HEAT_SITE=porto_alegre
+# optional POA bairro polygons:
+# export HEAT_BAIRRO_GPKG=/path/to/brazil_neighbourhood_geometries.gpkg
+# 1) run input notebooks (sibling folders)
+# 2) run heat_hazard_score.ipynb from this directory
 ```
 
-Use city-level slugs only. Season (`djf` / `jja`) is configured per city YAML.
+Defaults: `models/heat_hazard/config.yaml`  
+City overrides: `config/sites/{city}.yaml` (`hazard`, `publish`, optional `bairro`)
 
 ## Model
 
-Default weights and methodology: `models/heat_hazard/` (model card lands in PR-E).
+- `models/heat_hazard/model_card.md`
+- `models/heat_hazard/config.yaml`

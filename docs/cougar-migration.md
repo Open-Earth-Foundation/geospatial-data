@@ -52,8 +52,8 @@ geospatial-data/
 | A | Scaffold `models/*`, `transformation/{flood,heat}_hazard/config/sites/`, fix `layers.yaml` deps, this doc | Merged |
 | B | Flood input transformations (`jrc_*`, `wri_aqueduct`, `global_flood_database`, `gfplain250m`) + shared `flood_hazard/site_config.py` | Merged |
 | C | `flood_hazard` score notebook + `models/flood_hazard/{model_card,config}` | Merged |
-| **D (current)** | Heat input transformations (`landsat_lst`, `modis_lst`, extend `era_land`) + shared `heat_hazard/site_config.py` | In progress |
-| E | `heat_hazard` score notebooks + `models/heat_hazard/{model_card,config}` | Pending |
+| D | Heat input transformations (`landsat_lst`, `modis_lst`, extend `era_land`) + shared `heat_hazard/site_config.py` | Pending / stacked |
+| **E (current)** | `heat_hazard` score notebook + `models/heat_hazard/{model_card,config}` | In progress |
 | F | Minnesota **city** site YAMLs + boundaries | Pending |
 | Later | Risk / E/V, landslides, NbS mechanism docs under `models/nbs_*` | Pending |
 
@@ -87,6 +87,19 @@ export HEAT_SITE=porto_alegre
 ```
 
 Outputs write to `transformation/heat_hazard/sites/{city}/data/` and `.../out/`. Season and year range come from the city YAML.
+
+## Heat score wiring (PR-E)
+
+```bash
+export HEAT_SITE=porto_alegre
+# optional: export HEAT_BAIRRO_GPKG=/path/to/bairro.gpkg
+# run transformation/heat_hazard/heat_hazard_score.ipynb
+```
+
+- Defaults: `models/heat_hazard/config.yaml`
+- Methodology: `models/heat_hazard/model_card.md`
+- `site_config.load_site_config` merges model defaults with city `hazard` / `publish` overrides
+- Bairro aggregation is optional and skipped when the neighbourhood GeoPackage is unavailable
 
 ## Layer registry alignment (PR-A)
 
