@@ -1,0 +1,11 @@
+# MODIS MOD11A2 nighttime LST P90 DJF 2015-2024, degrees Celsius.
+# GDAL color-relief palette for visual tiles.
+# Cooler -> blue; warmer -> red.
+nv 0 0 0 0
+18 49 54 149
+20 69 117 180
+22 116 173 209
+24 254 224 144
+26 253 174 97
+28 215 48 39
+32 165 0 38

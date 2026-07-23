@@ -1,0 +1,19 @@
+# Default heat hazard ensemble parameters (Level 2).
+# City overrides: transformation/heat_hazard/config/sites/{city_slug}.yaml
+version: v1
+layer_id: heat_hazard
+
+hazard:
+  # Equal-weight arithmetic mean of available normalized layers
+  min_layers: 2
+  reference_layer: landsat_norm
+  include_era5: false
+  target_resolution_m: 250
+  layer_weights:
+    landsat_norm: 1.0
+    modis_day_norm: 1.0
+    modis_night_norm: 1.0
+    era5_hw_norm: 1.0
+
+publish:
+  tile_zoom: "8-15"

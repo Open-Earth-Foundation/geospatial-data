@@ -1,4 +1,4 @@
-# Scaffold site config — paths will be finalized when notebooks move into this folder.
+# City runtime config for heat_hazard (paths, season, optional hazard overrides).
 site_slug: porto_alegre
 display_name: Porto Alegre
 country: Brazil
@@ -37,7 +37,7 @@ outputs:
   heat_hazard_n_layers: heat_hazard_n_layers_poa.tif
   heat_hazard_vector: heat_hazard_score_poa.gpkg
 
-# Optional site overrides of models/heat_hazard/config.yaml (defaults TBD in later PR)
+# Optional overrides of models/heat_hazard/config.yaml (city wins on merge)
 hazard:
   min_layers: 2
   reference_layer: landsat_norm
@@ -45,3 +45,11 @@ hazard:
 
 publish:
   tile_zoom: "8-15"
+
+# Optional neighbourhood aggregation (POA Censo 2022). Set HEAT_BAIRRO_GPKG or gpkg_path.
+bairro:
+  enabled: true
+  mun_code: "4314902"
+  layer: BR_bairros_CD2022
+  gpkg_path: null
+

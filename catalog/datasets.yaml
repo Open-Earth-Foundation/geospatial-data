@@ -1972,7 +1972,9 @@ datasets:
     description: >
       OEF heat hazard susceptibility index (0–1) for Porto Alegre. Ensemble of Landsat 8 LST P90 anomaly,
       MODIS MOD11A2 daytime LST P90, and MODIS MOD11A2 nighttime LST P90 on a common ~250 m grid.
-      Arithmetic mean of normalized layers. Documented in `heat_hazard_score_methodology.md`.
+      Arithmetic mean of normalized layers. Methodology in `models/heat_hazard/model_card.md`;
+      defaults in `models/heat_hazard/config.yaml`; score notebook
+      `transformation/heat_hazard/heat_hazard_score.ipynb`.
 
   - dataset_id: poa_heat_risk
     dataset_name: Heat Risk Score H×E×V (POA)
@@ -2344,9 +2346,9 @@ datasets:
         url: []
     description: >
       Landsat 8 Collection 2 Tier 1 LST P90 composite for Porto Alegre DJF 2015–2024.
-      Primary high-resolution layer in the OEF heat hazard ensemble. COUGAR local exports in
-      `projects/cougar/heat/input_data/` (`lst_lc08_p90_*.tif`, `lst_lc08_norm_*.tif`,
-      `lst_lc08_obs_count_*.tif`). Processed in `heat/script/lst_landsat8.ipynb`.
+      Primary high-resolution layer in the OEF heat hazard ensemble. Local exports land under
+      `transformation/heat_hazard/sites/{city}/data/`.
+      Processed in `transformation/landsat_lst/release/v1/lst_landsat8.ipynb`.
 
   - dataset_id: modis_mod11a2_lst_djf
     dataset_name: MODIS MOD11A2 LST P90 DJF Composite (POA)
@@ -2385,9 +2387,9 @@ datasets:
         url: []
     description: >
       MODIS Terra MOD11A2 daytime and nighttime LST P90 composites for Porto Alegre DJF 2015–2024.
-      Two independent layers in the OEF heat hazard ensemble. COUGAR local exports in
-      `projects/cougar/heat/input_data/` (`mod11a2_lst_day_*.tif`, `mod11a2_lst_night_*.tif`).
-      Processed in `heat/script/MOD11A2.ipynb`.
+      Two independent layers in the OEF heat hazard ensemble. Local exports land under
+      `transformation/heat_hazard/sites/{city}/data/`.
+      Processed in `transformation/modis_lst/release/v1/MOD11A2.ipynb`.
 
   - dataset_id: era5_land_heatwave_freq_djf
     dataset_name: ERA5-Land Heat-Wave Day Frequency DJF (POA)
@@ -2422,10 +2424,10 @@ datasets:
         url: []
     description: >
       ERA5-Land 2 m air temperature heat-wave frequency for Porto Alegre DJF 2015–2024.
-      Derived from Copernicus CDS hourly `t2m` (`reanalysis-era5-land`). COUGAR local exports:
-      `projects/cougar/heat/input_data/era5_hw_freq_djf_2015_2024_poa.tif`,
-      `era5_hw_norm_djf_2015_2024_poa.tif`; raw NetCDF in `era5_land/`.
-      Processed in `heat/script/era5_land.ipynb`. Not included in `poa_heat_hazard` ensemble.
+      Derived from Copernicus CDS hourly `t2m` (`reanalysis-era5-land`). Local exports land under
+      `transformation/heat_hazard/sites/{city}/data/`.
+      Processed in `transformation/era_land/release/v1/era5_land.ipynb`.
+      Optional in the heat hazard ensemble (`hazard.include_era5` in city site config).
 
   - dataset_id: poa_slope
     dataset_name: Terrain Slope from Copernicus DEM (POA)

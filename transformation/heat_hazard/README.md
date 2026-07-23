@@ -1,40 +1,51 @@
 # heat_hazard
 
-Transformation that applies `models/heat_hazard` to produce the Level 2 heat hazard score per city.
+Applies `models/heat_hazard` to produce the Level 2 heat hazard score per city.
 
 ## Status
 
-Scaffold (PR-A). Notebooks and shared site loader arrive in a later PR.
+- PR-A: scaffold (configs, layout)
+- PR-D: `site_config.py`, input styles, Porto Alegre boundary; sibling input notebooks
+- **PR-E:** score notebook + model card/config wiring
 
 ## Layout
 
 ```text
 heat_hazard/
 ├── README.md
-├── config/
-│   └── sites/
-│       ├── README.md
-│       └── {city_slug}.yaml    # one file per city
-├── sites/                      # local runtime data (gitignored except small boundaries)
-│   └── {city_slug}/
-│       ├── boundary/site.geojson
-│       ├── data/
-│       ├── cache/
-│       └── out/
-├── styles/                     # color tables / value-tile templates (later)
-└── release/                    # optional packaged releases (later)
+├── site_config.py
+├── heat_hazard_score.ipynb
+├── config/sites/{city_slug}.yaml
+├── sites/{city_slug}/
+│   ├── boundary/site.geojson
+│   ├── data/                 # gitignored
+│   ├── cache/                # gitignored
+│   └── out/                  # gitignored
+└── styles/
 ```
 
-## Site selection
+## Upstream input notebooks
 
-City configs live under `config/sites/`. Use a city-level `site_slug` (not statewide regions).
+| Dataset | Notebook |
+|---------|----------|
+| Landsat 8 LST | `../landsat_lst/release/v1/lst_landsat8.ipynb` |
+| MODIS MOD11A2 LST | `../modis_lst/release/v1/MOD11A2.ipynb` |
+| ERA5-Land HW frequency (optional) | `../era_land/release/v1/era5_land.ipynb` |
 
-Expected env var (to be wired when notebooks land):
+## Usage
 
 ```bash
 export HEAT_SITE=porto_alegre
+# optional POA bairro polygons:
+# export HEAT_BAIRRO_GPKG=/path/to/brazil_neighbourhood_geometries.gpkg
+# 1) run input notebooks (sibling folders)
+# 2) run heat_hazard_score.ipynb from this directory
 ```
+
+Defaults: `models/heat_hazard/config.yaml`  
+City overrides: `config/sites/{city}.yaml` (`hazard`, `publish`, optional `bairro`)
 
 ## Model
 
-Default weights and methodology: `models/heat_hazard/`.
+- `models/heat_hazard/model_card.md`
+- `models/heat_hazard/config.yaml`

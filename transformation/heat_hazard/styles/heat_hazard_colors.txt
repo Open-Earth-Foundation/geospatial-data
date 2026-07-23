@@ -1,0 +1,8 @@
+# Heat hazard score (0-1), RdYlGn reversed palette
+# Low heat hazard (green) -> medium (yellow) -> high (red)
+nv 0 0 0 0
+0   26 150 65
+0.25 166 217 106
+0.5  255 255 191
+0.75 253 174 97
+1.0  215 25 28
