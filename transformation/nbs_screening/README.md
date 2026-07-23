@@ -28,8 +28,9 @@ export FLOODS_SITE=porto_alegre
 # transformation/copernicus_dem/release/v1/relative_elevation_depression_from_dem.ipynb
 ```
 
-Writes `relative_elevation` / `depression_mask` / `depression_depth` into
-`transformation/flood_hazard/sites/<city>/data/output/`.
+Writes DEM + later local relative elevation / depression rasters into
+`transformation/flood_hazard/sites/<city>/data/`. GEE DEM export is **local by
+default** (gitignored); override with `GEE_EXPORT_MODE=drive`.
 
 ## Docs
 

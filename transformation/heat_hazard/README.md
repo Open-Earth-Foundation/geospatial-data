@@ -50,3 +50,9 @@ City overrides: `config/sites/{city}.yaml` (`hazard`, `publish`, optional `bairr
 
 - `models/heat_hazard/model_card.md`
 - `models/heat_hazard/config.yaml`
+
+## GEE export
+
+Input notebooks write GeoTIFFs to `sites/<city>/data/input/` by default (gitignored).
+Optional: `export GEE_EXPORT_MODE=drive`. Shared helper: `gee_local_export.py` (via `HEAT_SITE` site package path).
+

@@ -34,3 +34,9 @@ export LANDSLIDES_SITE=porto_alegre   # or plymouth, edina, richfield, rochester
 Defaults and methodology: `models/landslide_hazard/`.
 
 **Out of scope here:** `landslide_risk` (needs shared E/V for Minnesota).
+
+## GEE export
+
+Input notebooks write GeoTIFFs to `sites/<city>/data/input/` by default (gitignored).
+Optional: `export GEE_EXPORT_MODE=drive`. Shared helper: `gee_local_export.py` (via `LANDSLIDES_SITE` site package path).
+
