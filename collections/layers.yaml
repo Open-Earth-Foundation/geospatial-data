@@ -91,6 +91,29 @@ layers:
       LST percentiles (season configured per city). Optional ERA5-Land heatwave
       frequency may be enabled in site config. Methodology in models/heat_hazard/.
 
+  - layer_id: landslide_hazard
+    layer_name: Landslide Hazard
+    layer_type: hazard
+    analytical_level: 2
+    category: landslide
+    source_datasets:
+      - copernicus_dem
+      - chirps_r90p_climatology
+      - soilgrids_clay
+      - modis_ndvi
+      - merit_hydro_hnd
+      - dynamic_world
+    dependencies: []
+    transformation_script: transformation/landslide_hazard/
+    model: models/landslide_hazard/
+    output_format: cog
+    description: >
+      Ensemble landslide susceptibility index (0–1) on a 90 m grid from Copernicus
+      GLO-30 slope, CHIRPS R90p climatology, SoilGrids clay %, MODIS NDVI P10
+      (season configured per city), and MERIT Hydro HAND, with a Dynamic World
+      land-cover modifier. Slope < 15° gates all components to zero. Methodology
+      in models/landslide_hazard/.
+
   - layer_id: exposure_score
     layer_name: Exposure Score
     layer_type: exposure
@@ -171,7 +194,8 @@ layers:
     analytical_level: 3
     category: decision
     source_datasets: []
-    dependencies: []
+    dependencies:
+      - landslide_hazard
     model: models/nbs_landslide_mechanism_type/
     output_format: cog
     description: Dominant landslide mechanism type per cell for NbS screening.

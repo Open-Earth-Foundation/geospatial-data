@@ -1,0 +1,30 @@
+# Default landslide hazard ensemble parameters (Level 2).
+# City overrides: transformation/landslide_hazard/config/sites/{city_slug}.yaml
+version: v1
+layer_id: landslide_hazard
+
+hazard:
+  target_resolution_m: 90
+  slope_gate_deg: 15
+  slope_sat_deg: 35
+  clay_sat_pct: 40
+  hand_sat_m: 50
+  ndvi_dense_threshold: 0.4
+  weights:
+    slope_risk: 0.45
+    precip_risk: 0.20
+    low_cohesion: 0.15
+    lack_of_veg: 0.10
+    hand_factor: 0.10
+  modifiers:
+    bare_built_boost: 0.10
+    dense_veg_factor: 0.85
+    bare_built_classes: [6, 7]
+    dense_veg_classes: [1, 2, 3, 5]
+  fill:
+    hand_m: 25.0
+    clay_pct: 35.0
+    ndvi: 0.3
+
+publish:
+  tile_zoom: "8-15"

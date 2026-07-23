@@ -1,0 +1,48 @@
+# City runtime config for landslide_hazard
+site_slug: edina
+display_name: Edina
+country: United States
+admin_level: municipality
+output_prefix: edina
+season: jja
+season_label: JJA
+start_year: 2015
+end_year: 2024
+dw_year: 2023
+boundary_path: sites/edina/boundary/site.geojson
+bbox: [-93.401576, 44.859874, -93.318756, 44.93061]
+s3_prefix: oef_calculation/release/v1/edina/climate_hazards/landslides
+
+paths:
+  site_root: sites/edina
+  data_input: sites/edina/data/input
+  data_intermediate: sites/edina/data/intermediate
+  data_output: sites/edina/data/output
+  out: sites/edina/out
+  cache: sites/edina/cache
+  styles: styles
+
+layers:
+  slope_deg: edina_slope_deg_30m.tif
+  r90p: edina_r90p_climatology.tif
+  clay_pct: edina_clay_pct_250m.tif
+  ndvi_p10: edina_ndvi_p10_jja_2015_2024.tif
+  hand: edina_hand_90m.tif
+  dw_mode: edina_dw_mode_2023.tif
+
+outputs:
+  landslide_hazard_score: landslide_hazard_score_edina_90m.tif
+  landslide_hazard_vector: landslide_hazard_score_edina.gpkg
+
+# Optional overrides of models/landslide_hazard/config.yaml
+hazard:
+  target_resolution_m: 90
+
+publish:
+  tile_zoom: "8-15"
+
+bairro:
+  enabled: false
+  mun_code: null
+  layer: null
+  gpkg_path: null

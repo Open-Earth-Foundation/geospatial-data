@@ -1,0 +1,10 @@
+# SoilGrids clay percentage, 0-30 cm mean.
+# GDAL color-relief palette for visual tiles.
+# Clay is used in the landslide soil-risk formula as clamp01(clay_pct / 40).
+nv 0 0 0 0
+0 255 247 188
+5 254 227 145
+10 254 196 79
+20 217 95 14
+40 127 39 4
+100 84 24 0

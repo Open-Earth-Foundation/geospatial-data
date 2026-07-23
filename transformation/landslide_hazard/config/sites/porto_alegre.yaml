@@ -1,0 +1,48 @@
+# City runtime config for landslide_hazard
+site_slug: porto_alegre
+display_name: Porto Alegre
+country: Brazil
+admin_level: municipality
+output_prefix: poa
+season: djf
+season_label: DJF
+start_year: 2015
+end_year: 2024
+dw_year: 2023
+boundary_path: sites/porto_alegre/boundary/site.geojson
+bbox: [-51.30344, -30.26945, -51.018852, -29.932474]
+s3_prefix: oef_calculation/release/v1/porto_alegre/climate_hazards/landslides
+
+paths:
+  site_root: sites/porto_alegre
+  data_input: sites/porto_alegre/data/input
+  data_intermediate: sites/porto_alegre/data/intermediate
+  data_output: sites/porto_alegre/data/output
+  out: sites/porto_alegre/out
+  cache: sites/porto_alegre/cache
+  styles: styles
+
+layers:
+  slope_deg: poa_slope_deg_30m.tif
+  r90p: poa_r90p_climatology.tif
+  clay_pct: poa_clay_pct_250m.tif
+  ndvi_p10: poa_ndvi_p10_djf_2015_2024.tif
+  hand: poa_hand_90m.tif
+  dw_mode: poa_dw_mode_2023.tif
+
+outputs:
+  landslide_hazard_score: landslide_hazard_score_poa_90m.tif
+  landslide_hazard_vector: landslide_hazard_score_poa.gpkg
+
+# Optional overrides of models/landslide_hazard/config.yaml
+hazard:
+  target_resolution_m: 90
+
+publish:
+  tile_zoom: "8-15"
+
+bairro:
+  enabled: true
+  mun_code: "4314902"
+  layer: BR_bairros_CD2022
+  gpkg_path: null

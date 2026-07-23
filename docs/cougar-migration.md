@@ -23,7 +23,8 @@ geospatial-data/
     nbs_flood_mechanism_type/
     nbs_heat_mechanism_type/
     nbs_landslide_mechanism_type/
-    # later: flood_risk, heat_risk, landslide_hazard, exposure_score, …
+    landslide_hazard/
+    # later: flood_risk, heat_risk, exposure_score, …
   transformation/
     flood_hazard/
       config/sites/{city_slug}.yaml
@@ -31,7 +32,10 @@ geospatial-data/
     heat_hazard/
       config/sites/{city_slug}.yaml
       sites/{city_slug}/
-    # later: input dataset folders (wri_aqueduct, landsat_lst, …) and other scores
+    landslide_hazard/
+      config/sites/{city_slug}.yaml
+      sites/{city_slug}/
+    # input dataset folders (wri_aqueduct, landsat_lst, chirps_r90p, …)
   catalog/datasets.yaml           # published assets + provenance
   collections/layers.yaml         # analytical layer graph
 ```
@@ -54,8 +58,9 @@ geospatial-data/
 | C | `flood_hazard` score notebook + `models/flood_hazard/{model_card,config}` | Merged |
 | D | Heat input transformations (`landsat_lst`, `modis_lst`, extend `era_land`) + shared `heat_hazard/site_config.py` | Merged |
 | E | `heat_hazard` score notebook + `models/heat_hazard/{model_card,config}` | Merged |
-| **F (current)** | Minnesota **city** site YAMLs + boundaries | In progress |
-| Later | Risk / E/V, landslides, NbS mechanism docs under `models/nbs_*` | Pending |
+| F | Minnesota **city** site YAMLs + boundaries (flood + heat) | Merged |
+| **G (current)** | Landslide inputs + `landslide_hazard` score (multi-city) | In progress |
+| Later | Risk / E/V, NbS mechanism docs under `models/nbs_*` | Pending |
 
 ## Flood input wiring (PR-B)
 
@@ -139,9 +144,27 @@ Configured city-level sites (not statewide):
 Boundaries: OSM administrative polygons via Nominatim, stored under
 `transformation/{flood,heat}_hazard/sites/{city}/boundary/site.geojson`.
 
-Heat season for these cities: **JJA** (2015–2024).
+Heat / landslide vegetation–precip season for these cities: **JJA** (2015–2024). Porto Alegre remains **DJF**.
 
 ```bash
 export FLOODS_SITE=plymouth
 export HEAT_SITE=apple_valley
+export LANDSLIDES_SITE=rochester
 ```
+
+Boundaries for landslides reuse the same city polygons under
+`transformation/landslide_hazard/sites/{city}/boundary/site.geojson`.
+
+## Landslide wiring (PR-G)
+
+```bash
+export LANDSLIDES_SITE=porto_alegre
+# optional: export LANDSLIDE_BAIRRO_GPKG=/path/to/bairro.gpkg
+# run input notebooks under transformation/{copernicus_dem,chirps_r90p,soilgrids,modis_ndvi,merit_hydro,dynamic_world}/…
+# then transformation/landslide_hazard/landslide_hazard_score.ipynb
+```
+
+- Defaults: `models/landslide_hazard/config.yaml`
+- Methodology: `models/landslide_hazard/model_card.md`
+- `site_config.load_site_config` merges model defaults with city `hazard` / `publish` overrides
+- **Deferred:** `landslide_risk` until shared E/V exists for Minnesota cities

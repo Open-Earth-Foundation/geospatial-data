@@ -1,0 +1,11 @@
+# MODIS NDVI P10 DJF 2015-2024.
+# GDAL color-relief palette for visual tiles.
+# Low/negative NDVI -> brown; high NDVI -> green.
+nv 0 0 0 0
+-0.2 140 81 10
+0.0 216 179 101
+0.2 245 245 191
+0.4 166 217 106
+0.6 26 150 65
+0.8 0 104 55
+0.9 0 69 41

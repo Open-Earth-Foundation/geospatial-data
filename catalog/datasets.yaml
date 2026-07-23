@@ -2083,7 +2083,10 @@ datasets:
       OEF landslide susceptibility index (0–1) for Porto Alegre on a 90 m grid.
       Ensemble of Copernicus GLO-30 slope, CHIRPS R90p climatology, SoilGrids clay %,
       MODIS NDVI P10 (DJF 2015–2024), and MERIT Hydro HAND, with Dynamic World land cover modifier.
-      Slope < 15° gates all components to zero. Documented in `landslide_hazard_score_methodology.md`.
+      Slope < 15° gates all components to zero. Methodology in
+      `models/landslide_hazard/model_card.md`. Computed by
+      `transformation/landslide_hazard/landslide_hazard_score.ipynb`
+      (`export LANDSLIDES_SITE=porto_alegre`).
 
   - dataset_id: poa_landslide_risk
     dataset_name: Landslide Risk Score H×E×V (POA)
@@ -2311,9 +2314,9 @@ datasets:
     description: >
       SoilGrids v2 clay weight fraction (% at 0–30 cm) for Porto Alegre from
       `OpenLandMap/SOL/SOL_CLAY-WFRACTION_USDA-3A1A1A_M/v02`. Pore-pressure proxy in the
-      landslide hazard ensemble. COUGAR local export:
-      `projects/cougar/landslides/input_data/poa_clay_pct_250m.tif`.
-      Processed in `landslides/script/clay_soilgrids.ipynb`.
+      landslide hazard ensemble. Local exports land under
+      `transformation/landslide_hazard/sites/{city}/data/`.
+      Processed in `transformation/soilgrids/release/v1/clay_soilgrids.ipynb`.
 
   - dataset_id: landsat8_lst_djf
     dataset_name: Landsat 8 LST P90 DJF Composite (POA)
@@ -2461,8 +2464,8 @@ datasets:
     description: >
       Slope in degrees for Porto Alegre derived from Copernicus GLO-30 DEM.
       Primary activation gate (slope ≥ 15°) in the landslide hazard ensemble.
-      COUGAR local export: `projects/cougar/landslides/input_data/poa_slope_deg_30m.tif`.
-      Processed in `landslides/script/slope_from_dem.ipynb`.
+      Local exports land under `transformation/landslide_hazard/sites/{city}/data/`.
+      Processed in `transformation/copernicus_dem/release/v1/slope_from_dem.ipynb`.
 
   - dataset_id: poa_relative_elevation
     dataset_name: Relative Elevation / Low-Lying Index (POA)
@@ -2606,8 +2609,8 @@ datasets:
     description: >
       Dynamic World 2023 mode land-cover class resampled to 250 m for Porto Alegre.
       Built/bare land-cover modifier in the landslide hazard ensemble.
-      COUGAR local export: `projects/cougar/landslides/input_data/poa_dw_mode_250m.tif`.
-      Processed in `landslides/script/dynamic_world_landslide.ipynb`.
+      Local exports land under `transformation/landslide_hazard/sites/{city}/data/`.
+      Processed in `transformation/dynamic_world/release/v1/dynamic_world_landslide.ipynb`.
 
   - dataset_id: modis_ndvi_p10_djf
     dataset_name: MODIS NDVI P10 DJF Climatology (POA)
@@ -2641,5 +2644,7 @@ datasets:
     description: >
       MODIS MOD13Q1 NDVI P10 climatology for Porto Alegre DJF 2015–2024. P10 represents
       low vegetation cover conditions used as a root-cohesion protection proxy in the
-      landslide hazard workflow. Processed in `landslides/script/ndvi_modis.ipynb`.
+      landslide hazard workflow. Local exports land under
+      `transformation/landslide_hazard/sites/{city}/data/`.
+      Processed in `transformation/modis_ndvi/release/v1/ndvi_modis_landslide.ipynb`.
 

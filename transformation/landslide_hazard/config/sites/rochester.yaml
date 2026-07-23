@@ -1,0 +1,48 @@
+# City runtime config for landslide_hazard
+site_slug: rochester
+display_name: Rochester
+country: United States
+admin_level: municipality
+output_prefix: rochester
+season: jja
+season_label: JJA
+start_year: 2015
+end_year: 2024
+dw_year: 2023
+boundary_path: sites/rochester/boundary/site.geojson
+bbox: [-92.573562, 43.884547, -92.389001, 44.108253]
+s3_prefix: oef_calculation/release/v1/rochester/climate_hazards/landslides
+
+paths:
+  site_root: sites/rochester
+  data_input: sites/rochester/data/input
+  data_intermediate: sites/rochester/data/intermediate
+  data_output: sites/rochester/data/output
+  out: sites/rochester/out
+  cache: sites/rochester/cache
+  styles: styles
+
+layers:
+  slope_deg: rochester_slope_deg_30m.tif
+  r90p: rochester_r90p_climatology.tif
+  clay_pct: rochester_clay_pct_250m.tif
+  ndvi_p10: rochester_ndvi_p10_jja_2015_2024.tif
+  hand: rochester_hand_90m.tif
+  dw_mode: rochester_dw_mode_2023.tif
+
+outputs:
+  landslide_hazard_score: landslide_hazard_score_rochester_90m.tif
+  landslide_hazard_vector: landslide_hazard_score_rochester.gpkg
+
+# Optional overrides of models/landslide_hazard/config.yaml
+hazard:
+  target_resolution_m: 90
+
+publish:
+  tile_zoom: "8-15"
+
+bairro:
+  enabled: false
+  mun_code: null
+  layer: null
+  gpkg_path: null
