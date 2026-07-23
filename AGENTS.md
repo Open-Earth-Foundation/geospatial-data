@@ -24,7 +24,7 @@ Look in `transformation/` — each subfolder (e.g. `poa_gtfs`, `land_cover`) con
 
 ## How to answer "What models do we use?" or "Where is the model for layer X?"
 
-Read `models/README.md` and look in `models/` — each subfolder (e.g. `flood_hazard`, `composite_risk`) holds model configs, weights, and model cards for Level 2–3 layers. Models consume Level 1 indicators and produce composite analytical outputs.
+Read `models/README.md` and look in `models/` — each subfolder (e.g. `flood_hazard`, `heat_hazard`, `nbs_*`) holds model configs, weights, and model cards for Level 2–3 layers. Models consume Level 1 indicators (and sometimes Level 0 inputs) and produce composite analytical outputs. NbS methodology docs live under `models/nbs_*`. Per-city runtime configs live in `transformation/{score}/config/sites/{city_slug}.yaml` (city-level slugs only). See `docs/cougar-migration.md` for the hazard/NbS migration plan.
 
 ## How to answer "What is the data quality of dataset X?" or "What are the limitations?"
 

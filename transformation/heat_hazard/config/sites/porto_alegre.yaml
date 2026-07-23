@@ -1,0 +1,47 @@
+# Scaffold site config — paths will be finalized when notebooks move into this folder.
+site_slug: porto_alegre
+display_name: Porto Alegre
+country: Brazil
+admin_level: municipality
+output_prefix: poa
+season: djf
+season_label: DJF
+start_year: 2015
+end_year: 2024
+boundary_path: sites/porto_alegre/boundary/site.geojson
+bbox: [-51.30344, -30.26945, -51.018852, -29.932474]
+s3_prefix: oef_calculation/release/v1/porto_alegre/climate_hazards/heat
+
+paths:
+  site_root: sites/porto_alegre
+  data_input: sites/porto_alegre/data/input
+  data_intermediate: sites/porto_alegre/data/intermediate
+  data_output: sites/porto_alegre/data/output
+  out: sites/porto_alegre/out
+  cache: sites/porto_alegre/cache
+  styles: styles
+
+layers:
+  landsat_p90: lst_lc08_p90_djf_2015_2024_poa.tif
+  landsat_obs_count: lst_lc08_obs_count_djf_2015_2024_poa.tif
+  landsat_norm: lst_lc08_norm_djf_2015_2024_poa.tif
+  modis_day_p90: mod11a2_lst_day_p90_djf_2015_2024_poa.tif
+  modis_night_p90: mod11a2_lst_night_p90_djf_2015_2024_poa.tif
+  modis_day_norm: mod11a2_lst_day_norm_djf_2015_2024_poa.tif
+  modis_night_norm: mod11a2_lst_night_norm_djf_2015_2024_poa.tif
+  era5_hw_freq: era5_hw_freq_djf_2015_2024_poa.tif
+  era5_hw_norm: era5_hw_norm_djf_2015_2024_poa.tif
+
+outputs:
+  heat_hazard_score: heat_hazard_score_poa.tif
+  heat_hazard_n_layers: heat_hazard_n_layers_poa.tif
+  heat_hazard_vector: heat_hazard_score_poa.gpkg
+
+# Optional site overrides of models/heat_hazard/config.yaml (defaults TBD in later PR)
+hazard:
+  min_layers: 2
+  reference_layer: landsat_norm
+  include_era5: false
+
+publish:
+  tile_zoom: "8-15"

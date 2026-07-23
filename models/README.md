@@ -28,20 +28,38 @@ Use one subfolder per layer that has a model:
 models/
 ├── README.md
 ├── flood_hazard/
+│   ├── README.md
 │   ├── model_card.md      # purpose, inputs, outputs, limitations
 │   ├── config.yaml        # weights, thresholds, formula
-│   └── v1/
-│       └── weights.pt     # optional: serialized model
-├── composite_risk/
+│   └── v1/                # optional: versioned artifacts
+├── heat_hazard/
 │   └── ...
-└── nbs_opportunity_zones/
-    └── ...
+├── nbs_opportunity_zones/
+├── nbs_flood_mechanism_type/
+├── nbs_heat_mechanism_type/
+├── nbs_landslide_mechanism_type/
+└── ...
 ```
 
 - **model_card.md** — human-readable description of the model
 - **config.yaml** — parameters, weights, thresholds used at inference
 - **v1/, v2/** — versioned model weights or serialized artifacts (optional)
+- **NbS docs** (matrices, rules, recommendation notes) live under `models/nbs_*`
+
+## Site-specific runtime config
+
+Default model parameters stay in `models/{layer_id}/config.yaml`.
+
+Per-city paths, bbox, season, and filenames live next to the score transformation:
+
+```text
+transformation/{score}/config/sites/{city_slug}.yaml
+```
+
+Use **city-level** slugs only (e.g. `porto_alegre`, `minneapolis`), not statewide regions.
+
+See `docs/cougar-migration.md` for the migration plan and PR sequence.
 
 ## Layer IDs
 
-Model folder names should match `layer_id` in `collections/layers.yaml` (e.g. `flood_hazard`, `heat_hazard`, `exposure_score`, `composite_risk`, `nbs_opportunity_zones`).
+Model folder names should match `layer_id` in `collections/layers.yaml` (e.g. `flood_hazard`, `heat_hazard`, `nbs_opportunity_zones`).

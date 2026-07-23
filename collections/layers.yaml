@@ -60,13 +60,19 @@ layers:
     layer_type: hazard
     analytical_level: 2
     category: flood
-    source_datasets: []
-    dependencies:
-      - flow_accumulation
-      - slope
-      - canopy_cover_pct
+    source_datasets:
+      - jrc_gloflor_v2
+      - global_flood_database
+      - wri_aqueduct_flood
+      - gfplain250m
+    dependencies: []
+    transformation_script: transformation/flood_hazard/
+    model: models/flood_hazard/
     output_format: cog
-    description: Composite flood hazard index combining terrain and land-surface proxies.
+    description: >
+      Ensemble flood hazard screening index (0–1) from JRC GLOFLO depth (RP100),
+      Global Flood Database event count, WRI Aqueduct fluvial hazard, and GFPLAIN250m
+      on a common grid. Weights and methodology in models/flood_hazard/.
 
   - layer_id: heat_hazard
     layer_name: Heat Hazard
@@ -74,12 +80,16 @@ layers:
     analytical_level: 2
     category: heat
     source_datasets:
-      - era5_temperature
-    dependencies:
-      - canopy_cover_pct
-      - building_density
+      - landsat8_lst_djf
+      - modis_mod11a2_lst_djf
+    dependencies: []
+    transformation_script: transformation/heat_hazard/
+    model: models/heat_hazard/
     output_format: cog
-    description: Composite heat hazard using temperature baseline and urban form indicators.
+    description: >
+      Ensemble heat hazard screening index (0–1) from Landsat 8 and MODIS MOD11A2
+      LST percentiles (season configured per city). Optional ERA5-Land heatwave
+      frequency may be enabled in site config. Methodology in models/heat_hazard/.
 
   - layer_id: exposure_score
     layer_name: Exposure Score
@@ -127,5 +137,41 @@ layers:
     dependencies:
       - composite_risk
       - cooling_capacity
+    model: models/nbs_opportunity_zones/
     output_format: pmtiles
     description: Priority intervention zones where ecosystem actions can reduce risk.
+
+  - layer_id: nbs_flood_mechanism_type
+    layer_name: Flood Mechanism Type
+    layer_type: decision_output
+    analytical_level: 3
+    category: decision
+    source_datasets: []
+    dependencies:
+      - flood_hazard
+    model: models/nbs_flood_mechanism_type/
+    output_format: cog
+    description: Dominant flood mechanism type per cell for NbS screening.
+
+  - layer_id: nbs_heat_mechanism_type
+    layer_name: Heat Mechanism Type
+    layer_type: decision_output
+    analytical_level: 3
+    category: decision
+    source_datasets: []
+    dependencies:
+      - heat_hazard
+    model: models/nbs_heat_mechanism_type/
+    output_format: cog
+    description: Dominant heat mechanism type per cell for NbS screening.
+
+  - layer_id: nbs_landslide_mechanism_type
+    layer_name: Landslide Mechanism Type
+    layer_type: decision_output
+    analytical_level: 3
+    category: decision
+    source_datasets: []
+    dependencies: []
+    model: models/nbs_landslide_mechanism_type/
+    output_format: cog
+    description: Dominant landslide mechanism type per cell for NbS screening.

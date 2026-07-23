@@ -1,0 +1,57 @@
+# Scaffold site config — paths will be finalized when notebooks move into this folder.
+site_slug: porto_alegre
+display_name: Porto Alegre
+country: Brazil
+admin_level: municipality
+output_prefix: poa
+boundary_path: sites/porto_alegre/boundary/site.geojson
+bbox: [-51.30344, -30.26945, -51.018852, -29.932474]
+s3_prefix: oef_calculation/release/v1/porto_alegre/climate_hazards/floods
+
+paths:
+  site_root: sites/porto_alegre
+  data_input: sites/porto_alegre/data/input
+  data_intermediate: sites/porto_alegre/data/intermediate
+  data_output: sites/porto_alegre/data/output
+  out: sites/porto_alegre/out
+  cache: sites/porto_alegre/cache
+  styles: styles
+
+layers:
+  aqueduct_depth: aqueduct_depth_rp100_poa.tif
+  aqueduct_norm: aqueduct_depth_rp100_norm_poa.tif
+  gfd_count: gfd_flood_event_count_no_perm_water_poa.tif
+  gfd_count_norm: gfd_flood_event_count_no_perm_water_norm_poa.tif
+  gfd_observed_once: gfd_flood_observed_once_poa.tif
+  gfplain: gfplain_250m_poa.tif
+  jrc_depth: jrc_rp100_depth_poa.tif
+  jrc_norm: jrc_rp100_depth_norm_poa.tif
+  dem: poa_dem_glo30_30m.tif
+
+outputs:
+  flood_hazard_score: flood_hazard_score_poa.tif
+  flood_hazard_score_strict: flood_hazard_score_strict_poa.tif
+  flood_hazard_n_layers_used: flood_hazard_n_layers_used_poa.tif
+  flood_hazard_score_idw: flood_hazard_score_idw_poa.tif
+  flood_hazard_is_interpolated: flood_hazard_is_interpolated_poa.tif
+  flood_hazard_interp_distance_m: flood_hazard_interp_distance_m_poa.tif
+  flood_hazard_score_interpolated_only: flood_hazard_score_interpolated_only_poa.tif
+
+# Optional site overrides of models/flood_hazard/config.yaml (defaults TBD in later PR)
+hazard:
+  reference_grid: gfplain_250m
+  weights:
+    jrc_norm: 0.45
+    gfd_count_norm: 0.30
+    aqueduct_norm: 0.15
+    gfplain_250m: 0.10
+  min_layers: 3
+  require_fluvial_layer: true
+  fluvial_layers: [jrc_norm, aqueduct_norm]
+
+idw:
+  max_dist_m: 750
+  min_neighbors: 3
+  power: 2
+  k_neighbors: 32
+  use_gfplain_mask: false

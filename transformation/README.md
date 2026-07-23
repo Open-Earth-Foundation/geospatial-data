@@ -2,6 +2,19 @@
 
 `transformation/` holds scripts that convert Level 0 datasets into analytical outputs (Levels 1-3).
 
+## Score transformations (Level 2–3)
+
+Hazard/risk score pipelines (e.g. `flood_hazard`, `heat_hazard`) use:
+
+```text
+transformation/{score}/
+├── config/sites/{city_slug}.yaml   # one YAML per city
+├── sites/{city_slug}/              # local runtime data (mostly gitignored)
+└── ... notebooks / scripts
+```
+
+Default model parameters live in `models/{score}/`. See `docs/cougar-migration.md`.
+
 ## Directory convention
 
 Use `release/{version}/{period}/` for each dataset:
