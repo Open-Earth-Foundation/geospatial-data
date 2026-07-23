@@ -1,0 +1,11 @@
+# Copernicus DEM slope, degrees.
+# GDAL color-relief palette for visual tiles.
+# Landslide hazard use: slope_risk = clamp01((slope_deg - 15) / 20).
+nv 0 0 0 0
+0 255 255 204
+5 255 237 160
+10 254 217 118
+15 254 178 76
+25 253 141 60
+35 227 26 28
+50 128 0 38

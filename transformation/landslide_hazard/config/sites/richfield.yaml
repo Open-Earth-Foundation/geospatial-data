@@ -1,0 +1,48 @@
+# City runtime config for landslide_hazard
+site_slug: richfield
+display_name: Richfield
+country: United States
+admin_level: municipality
+output_prefix: richfield
+season: jja
+season_label: JJA
+start_year: 2015
+end_year: 2024
+dw_year: 2023
+boundary_path: sites/richfield/boundary/site.geojson
+bbox: [-93.318836, 44.861813, -93.244825, 44.890801]
+s3_prefix: oef_calculation/release/v1/richfield/climate_hazards/landslides
+
+paths:
+  site_root: sites/richfield
+  data_input: sites/richfield/data/input
+  data_intermediate: sites/richfield/data/intermediate
+  data_output: sites/richfield/data/output
+  out: sites/richfield/out
+  cache: sites/richfield/cache
+  styles: styles
+
+layers:
+  slope_deg: richfield_slope_deg_30m.tif
+  r90p: richfield_r90p_climatology.tif
+  clay_pct: richfield_clay_pct_250m.tif
+  ndvi_p10: richfield_ndvi_p10_jja_2015_2024.tif
+  hand: richfield_hand_90m.tif
+  dw_mode: richfield_dw_mode_2023.tif
+
+outputs:
+  landslide_hazard_score: landslide_hazard_score_richfield_90m.tif
+  landslide_hazard_vector: landslide_hazard_score_richfield.gpkg
+
+# Optional overrides of models/landslide_hazard/config.yaml
+hazard:
+  target_resolution_m: 90
+
+publish:
+  tile_zoom: "8-15"
+
+bairro:
+  enabled: false
+  mun_code: null
+  layer: null
+  gpkg_path: null

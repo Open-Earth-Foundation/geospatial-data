@@ -1,0 +1,48 @@
+# City runtime config for landslide_hazard
+site_slug: apple_valley
+display_name: Apple Valley
+country: United States
+admin_level: municipality
+output_prefix: apple_valley
+season: jja
+season_label: JJA
+start_year: 2015
+end_year: 2024
+dw_year: 2023
+boundary_path: sites/apple_valley/boundary/site.geojson
+bbox: [-93.248351, 44.717336, -93.151344, 44.775887]
+s3_prefix: oef_calculation/release/v1/apple_valley/climate_hazards/landslides
+
+paths:
+  site_root: sites/apple_valley
+  data_input: sites/apple_valley/data/input
+  data_intermediate: sites/apple_valley/data/intermediate
+  data_output: sites/apple_valley/data/output
+  out: sites/apple_valley/out
+  cache: sites/apple_valley/cache
+  styles: styles
+
+layers:
+  slope_deg: apple_valley_slope_deg_30m.tif
+  r90p: apple_valley_r90p_climatology.tif
+  clay_pct: apple_valley_clay_pct_250m.tif
+  ndvi_p10: apple_valley_ndvi_p10_jja_2015_2024.tif
+  hand: apple_valley_hand_90m.tif
+  dw_mode: apple_valley_dw_mode_2023.tif
+
+outputs:
+  landslide_hazard_score: landslide_hazard_score_apple_valley_90m.tif
+  landslide_hazard_vector: landslide_hazard_score_apple_valley.gpkg
+
+# Optional overrides of models/landslide_hazard/config.yaml
+hazard:
+  target_resolution_m: 90
+
+publish:
+  tile_zoom: "8-15"
+
+bairro:
+  enabled: false
+  mun_code: null
+  layer: null
+  gpkg_path: null
