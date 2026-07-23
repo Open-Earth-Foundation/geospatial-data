@@ -1,0 +1,6 @@
+# Global Flood Database observed-flooded-once binary layer.
+# GDAL color-relief palette for visual tiles.
+# 0 = never observed flooded; 1 = observed flooded at least once.
+nv 0 0 0 0
+0 247 247 247
+1 33 113 181

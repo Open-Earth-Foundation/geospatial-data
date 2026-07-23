@@ -1,0 +1,20 @@
+GFD flood event count excluding permanent water value tiles
+
+Source raster:
+sites/<site_slug>/data/input/gfd_flood_event_count_no_perm_water_poa.tif
+
+Generated outputs:
+sites/<site_slug>/out/gfd_flood_event_count_no_perm_water/gfd_flood_event_count_no_perm_water_cog.tif
+sites/<site_slug>/out/gfd_flood_event_count_no_perm_water/gfd_flood_event_count_no_perm_water_colorized.tif
+sites/<site_slug>/out/gfd_flood_event_count_no_perm_water/gfd_flood_event_count_no_perm_water_value_encoded_rgb.tif
+sites/<site_slug>/out/gfd_flood_event_count_no_perm_water/tiles_visual/{z}/{x}/{y}.png
+sites/<site_slug>/out/gfd_flood_event_count_no_perm_water/tiles_values/{z}/{x}/{y}.png
+
+Value tile encoding:
+encoded = R + 256 * G + 65536 * B
+
+Decode:
+if encoded == 0, value is nodata
+otherwise flood_event_count = encoded - 1
+
+Values are observed flood-event counts in the GFD 2000-2018 catalog, excluding permanent water. They are not probabilities.

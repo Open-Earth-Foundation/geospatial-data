@@ -1,0 +1,22 @@
+GFD observed flooded at least once value tiles
+
+Source raster:
+sites/<site_slug>/data/input/gfd_flood_observed_once_poa.tif
+
+Generated outputs:
+sites/<site_slug>/out/gfd_flood_observed_once/gfd_flood_observed_once_cog.tif
+sites/<site_slug>/out/gfd_flood_observed_once/gfd_flood_observed_once_colorized.tif
+sites/<site_slug>/out/gfd_flood_observed_once/gfd_flood_observed_once_value_encoded_rgb.tif
+sites/<site_slug>/out/gfd_flood_observed_once/tiles_visual/{z}/{x}/{y}.png
+sites/<site_slug>/out/gfd_flood_observed_once/tiles_values/{z}/{x}/{y}.png
+
+Value tile encoding:
+encoded = R + 256 * G + 65536 * B
+
+Decode:
+if encoded == 0, value is nodata
+otherwise observed_once = encoded - 1
+
+Observed-once values are binary:
+0 = never observed flooded
+1 = observed flooded at least once in the GFD 2000-2018 catalog, excluding permanent water.

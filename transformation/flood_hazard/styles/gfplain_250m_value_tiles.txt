@@ -1,0 +1,21 @@
+GFPLAIN250m value tiles
+
+Source raster:
+sites/<site_slug>/data/input/gfplain_250m_poa.tif
+
+Generated outputs:
+sites/<site_slug>/out/gfplain_250m/gfplain_250m_cog.tif
+sites/<site_slug>/out/gfplain_250m/gfplain_250m_colorized.tif
+sites/<site_slug>/out/gfplain_250m/gfplain_250m_value_encoded_rgb.tif
+sites/<site_slug>/out/gfplain_250m/tiles_visual/{z}/{x}/{y}.png
+sites/<site_slug>/out/gfplain_250m/tiles_values/{z}/{x}/{y}.png
+
+Value tile encoding:
+encoded = R + 256 * G + 65536 * B
+
+Decode:
+if encoded == 0, value is nodata
+otherwise gfplain_value = encoded - 1
+
+GFPLAIN250m values:
+1 = floodplain pixel
