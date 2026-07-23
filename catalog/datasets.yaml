@@ -496,9 +496,9 @@ datasets:
         url: []
     description: >
       OEF dominant flood mechanism type per 250 m cell for Porto Alegre (ON-5990). Integer codes:
-      0 none, 1 riverine, 2 pluvial, 3 low_lying, 4 drainage_constrained, 5 mixed. Rules in
-      `projects/cougar/nbs_e2e/scripts/nbs_rules.py`; produced by `nbs_site_query_flood_e2e.ipynb`
-      (`BUILD_POA_LAYER` + `PUBLISH_POA_COG_TILES`). Rasterized on the OEF flood hazard 250 m grid.
+      0 none, 1 riverine, 2 pluvial, 3 low_lying, 4 drainage_constrained, 5 mixed. Methodology
+      home: `models/nbs_flood_mechanism_type/` (rules/docs pending full migration). Rasterized on
+      the OEF flood hazard 250 m grid.
       Value tiles use Terrain RGB with +1 offset (`mechanism_code = encoded - 1`; encoded 0 = nodata).
       GeoJSON (`geojson_url`) lists screened cells with mechanism strengths, boolean flags, and
       `is_interpolated` for analytical QA (not a map tile layer).
@@ -541,10 +541,10 @@ datasets:
     description: >
       OEF dominant heat mechanism type per 250 m cell for Porto Alegre (ON-5991). Integer codes:
       0 without_clear_dominant, 1 uhi_built_up, 2 shade_deficit, 3 high_daytime_lst, 4 limited_nocturnal_cooling,
-      5 high_social_exposure, 6 mixed. Rules in `projects/cougar/nbs_e2e/scripts/nbs_rules.py`;
-      produced by `nbs_site_query_heat_e2e.ipynb` (`BUILD_POA_HEAT_LAYER` + `PUBLISH_POA_HEAT_COG_TILES`).
-      Rasterized on the OEF heat hazard 250 m grid. GeoJSON (`geojson_url`) lists screened cells with
-      mechanism strengths, boolean flags, and `is_interpolated` for analytical QA (not a map tile layer).
+      5 high_social_exposure, 6 mixed. Methodology home: `models/nbs_heat_mechanism_type/`
+      (rules/docs pending full migration). Rasterized on the OEF heat hazard 250 m grid.
+      GeoJSON (`geojson_url`) lists screened cells with mechanism strengths, boolean flags, and
+      `is_interpolated` for analytical QA (not a map tile layer).
 
   - dataset_id: poa_landslide_mechanism_type
     dataset_name: Landslide Mechanism Type (POA, 90 m)
@@ -588,9 +588,8 @@ datasets:
       OEF dominant landslide mechanism type per 90 m cell for Porto Alegre. Integer codes:
       0 without_clear_dominant, 1 steep_activatable_slope, 2 rainfall_trigger, 3 low_cohesion_wet,
       4 vegetation_deficit, 5 drainage_saturation, 6 disturbed_bare_slope, 7 upslope_convergence,
-      8 high_social_exposure, 9 mixed. Rules in `projects/cougar/nbs_e2e/scripts/nbs_rules.py`;
-      produced by `nbs_site_query_landslide_e2e.ipynb` (`BUILD_POA_LANDSLIDE_LAYER` +
-      `PUBLISH_POA_LANDSLIDE_COG_TILES`). Screened only where landslide hazard > 0.
+      8 high_social_exposure, 9 mixed. Methodology home: `models/nbs_landslide_mechanism_type/`
+      (rules/docs pending full migration). Screened only where landslide hazard > 0.
       GeoJSON (`geojson_url`) lists screened cells with mechanism strengths, `mixed_tied_mechanisms`,
       boolean flags, and `is_interpolated` for analytical QA (not a map tile layer).
 
@@ -2499,8 +2498,8 @@ datasets:
     description: >
       Relative low-lying index (0–1) for Porto Alegre derived from Copernicus GLO-30 DEM.
       Diagnostic layer for flood NBS site screening (rain gardens, wetlands, floodable parks).
-      COUGAR local export: `projects/cougar/floods/data/output/poa_relative_elevation_30m.tif`.
-      Processed in `floods/script/relative_elevation_depression_from_dem.ipynb`.
+      Published assets under `copernicus_dem/.../relative_elevation_30m/` (S3 URLs above).
+      DEM diagnostic notebook not yet migrated into `transformation/`.
 
   - dataset_id: poa_depression_mask
     dataset_name: Topographic Depression Sink Mask (POA)
@@ -2533,8 +2532,8 @@ datasets:
     description: >
       Binary topographic depression mask for Porto Alegre derived from Copernicus GLO-30 DEM
       using D8 flow routing and priority-flood fill. Diagnostic for flood NBS screening.
-      COUGAR local export: `projects/cougar/floods/data/output/poa_depression_mask_30m.tif`.
-      Processed in `floods/script/relative_elevation_depression_from_dem.ipynb`.
+      Published assets under `copernicus_dem/.../depression_mask_30m/` (S3 URLs above).
+      DEM diagnostic notebook not yet migrated into `transformation/`.
 
   - dataset_id: poa_depression_depth
     dataset_name: Topographic Depression Depth (POA)
@@ -2568,8 +2567,8 @@ datasets:
     description: >
       Depression depth in meters for Porto Alegre derived from Copernicus GLO-30 DEM
       (filled surface minus original elevation). Diagnostic for flood NBS screening.
-      COUGAR local export: `projects/cougar/floods/data/output/poa_depression_depth_30m.tif`.
-      Processed in `floods/script/relative_elevation_depression_from_dem.ipynb`.
+      Published assets under `copernicus_dem/.../depression_depth_30m/` (S3 URLs above).
+      DEM diagnostic notebook not yet migrated into `transformation/`.
 
   - dataset_id: dynamic_world_mode_250m
     dataset_name: Dynamic World Mode 2023 (250 m, POA)
