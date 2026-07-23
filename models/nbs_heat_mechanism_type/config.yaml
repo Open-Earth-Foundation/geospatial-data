@@ -1,0 +1,13 @@
+# Defaults for nbs_heat_mechanism_type
+version: v1
+layer_id: nbs_heat_mechanism_type
+
+screening:
+  # Soft-require hazard score; E/V/R optional until shared risk migration
+  require_hazard: true
+  require_exposure: false
+  require_vulnerability: false
+  require_risk: false
+
+publish:
+  tile_zoom: "8-15"

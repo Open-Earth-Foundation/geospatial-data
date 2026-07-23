@@ -27,6 +27,9 @@ layers:
   jrc_depth: jrc_rp100_depth_rochester.tif
   jrc_norm: jrc_rp100_depth_norm_rochester.tif
   dem: rochester_dem_glo30_30m.tif
+  relative_elevation: rochester_relative_elevation_30m.tif
+  depression_mask: rochester_depression_mask_30m.tif
+  depression_depth: rochester_depression_depth_30m.tif
 
 outputs:
   flood_hazard_score: flood_hazard_score_rochester.tif

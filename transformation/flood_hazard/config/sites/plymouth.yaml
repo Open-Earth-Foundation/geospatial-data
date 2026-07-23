@@ -27,6 +27,9 @@ layers:
   jrc_depth: jrc_rp100_depth_plymouth.tif
   jrc_norm: jrc_rp100_depth_norm_plymouth.tif
   dem: plymouth_dem_glo30_30m.tif
+  relative_elevation: plymouth_relative_elevation_30m.tif
+  depression_mask: plymouth_depression_mask_30m.tif
+  depression_depth: plymouth_depression_depth_30m.tif
 
 outputs:
   flood_hazard_score: flood_hazard_score_plymouth.tif
