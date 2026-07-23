@@ -47,15 +47,26 @@ geospatial-data/
 
 ## PR sequence
 
-| PR | Scope |
-|----|--------|
-| **A (this)** | Scaffold `models/*`, `transformation/{flood,heat}_hazard/config/sites/`, fix `layers.yaml` deps, this doc |
-| B | Flood input transformations (extend/add `jrc_*`, `wri_aqueduct`, `global_flood_database`, `gfplain250m`) |
-| C | `flood_hazard` score notebooks + `models/flood_hazard/{model_card,config}` |
-| D | Heat input transformations (`landsat_lst`, `modis_lst`, extend `era_land`) |
-| E | `heat_hazard` score notebooks + `models/heat_hazard/{model_card,config}` |
-| F | Minnesota **city** site YAMLs + boundaries |
-| Later | Risk / E/V, landslides, NbS mechanism docs under `models/nbs_*` |
+| PR | Scope | Status |
+|----|--------|--------|
+| A | Scaffold `models/*`, `transformation/{flood,heat}_hazard/config/sites/`, fix `layers.yaml` deps, this doc | Merged |
+| **B (current)** | Flood input transformations (`jrc_*`, `wri_aqueduct`, `global_flood_database`, `gfplain250m`) + shared `flood_hazard/site_config.py` | In progress |
+| C | `flood_hazard` score notebooks + `models/flood_hazard/{model_card,config}` | Pending |
+| D | Heat input transformations (`landsat_lst`, `modis_lst`, extend `era_land`) | Pending |
+| E | `heat_hazard` score notebooks + `models/heat_hazard/{model_card,config}` | Pending |
+| F | Minnesota **city** site YAMLs + boundaries | Pending |
+| Later | Risk / E/V, landslides, NbS mechanism docs under `models/nbs_*` | Pending |
+
+## Flood input wiring (PR-B)
+
+Input notebooks resolve city config from `transformation/flood_hazard/` (not from each dataset folder):
+
+```bash
+export FLOODS_SITE=porto_alegre
+# run notebooks under transformation/{dataset}/release/v1/
+```
+
+Outputs write to `transformation/flood_hazard/sites/{city}/data/` and `.../out/`.
 
 ## Layer registry alignment (PR-A)
 

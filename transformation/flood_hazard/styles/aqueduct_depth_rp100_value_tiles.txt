@@ -1,0 +1,20 @@
+Aqueduct RP100 depth value tiles
+
+Source raster:
+sites/<site_slug>/data/input/aqueduct_depth_rp100_poa.tif
+
+Generated outputs:
+sites/<site_slug>/out/aqueduct_depth_rp100/aqueduct_depth_rp100_cog.tif
+sites/<site_slug>/out/aqueduct_depth_rp100/aqueduct_depth_rp100_colorized.tif
+sites/<site_slug>/out/aqueduct_depth_rp100/aqueduct_depth_rp100_value_encoded_rgb.tif
+sites/<site_slug>/out/aqueduct_depth_rp100/tiles_visual/{z}/{x}/{y}.png
+sites/<site_slug>/out/aqueduct_depth_rp100/tiles_values/{z}/{x}/{y}.png
+
+Value tile encoding:
+encoded = R + 256 * G + 65536 * B
+
+Decode:
+if encoded == 0, value is nodata
+otherwise depth_m = (encoded - 1) / 1000
+
+Depth values are stored in meters and encoded at millimeter precision.

@@ -1,0 +1,6 @@
+# GFPLAIN250m floodplain mask.
+# GDAL color-relief palette for visual tiles.
+# 1 = floodplain pixel; nodata = outside GFPLAIN floodplain mask.
+nv 0 0 0 0
+0 247 247 247
+1 8 48 107

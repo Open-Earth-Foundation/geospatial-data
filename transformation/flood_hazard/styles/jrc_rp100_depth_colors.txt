@@ -1,0 +1,11 @@
+# JRC/CEMS GLOFAS Flood Hazard v2.1 RP100 depth (meters)
+# GDAL color-relief palette for visual tiles.
+# Low depth -> light blue; high depth -> dark blue.
+nv 0 0 0 0
+0 247 251 255
+0.15 222 235 247
+0.5 198 219 239
+1.0 107 174 214
+2.0 33 113 181
+3.0 8 81 156
+5.0 8 48 107

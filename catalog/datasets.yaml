@@ -2161,8 +2161,8 @@ datasets:
     description: >
       JRC/CEMS GLOFAS Flood Hazard v2.1 RP100 inundation depth for Porto Alegre.
       Input to the OEF flood hazard ensemble (`jrc_norm` after impact-class normalization).
-      COUGAR local exports: `projects/cougar/floods/data/input/jrc_rp100_depth_poa.tif`,
-      `jrc_rp100_depth_norm_poa.tif`. Processed in `floods/script/jrc_global_river_flood.ipynb`.
+      Local exports land under `transformation/flood_hazard/sites/{city}/data/`.
+      Processed in `transformation/jrc_global_river_flood_hazard_maps/release/v1/jrc_global_river_flood.ipynb`.
 
   - dataset_id: wri_aqueduct_flood
     dataset_name: WRI Aqueduct Flood Hazard Maps v2 (River RP100 Depth)
@@ -2196,8 +2196,8 @@ datasets:
     description: >
       WRI Aqueduct Floods v2 riverine inundation depth (`inunriver`, historical, RP100) for Porto Alegre.
       Input to the OEF flood hazard ensemble (`aqueduct_norm` after impact-class normalization).
-      COUGAR local exports: `projects/cougar/floods/data/input/aqueduct_depth_rp100_poa.tif`,
-      `aqueduct_depth_rp100_norm_poa.tif`. Processed in `floods/script/WRI_aqueduct.ipynb`.
+      Local exports land under `transformation/flood_hazard/sites/{city}/data/`.
+      Processed in `transformation/wri_aqueduct/release/v1/WRI_aqueduct.ipynb`.
 
   - dataset_id: global_flood_database
     dataset_name: Global Flood Database v1 (MODIS Events)
@@ -2237,8 +2237,9 @@ datasets:
     description: >
       Global Flood Database v1 MODIS event catalog for Porto Alegre. Aggregated to
       `flood_event_count_no_perm_water` (robust normalized to 0–1 as `gfd_count_norm`) and
-      binary `gfd_observed_once`. COUGAR local exports in `projects/cougar/floods/data/input/`.
-      Processed in `floods/script/global_flood_database.ipynb`.
+      binary `gfd_observed_once`. Local exports land under
+      `transformation/flood_hazard/sites/{city}/data/`.
+      Processed in `transformation/global_flood_database/release/v1/global_flood_database.ipynb`.
 
   - dataset_id: gfplain250m
     dataset_name: GFPLAIN250m Global Floodplain Mask
@@ -2270,9 +2271,9 @@ datasets:
         url: []
     description: >
       GFPLAIN250m geomorphic floodplain mask for Porto Alegre. Binary structural susceptibility
-      layer (weight 0.10) in the OEF flood hazard ensemble. COUGAR local export:
-      `projects/cougar/floods/data/input/gfplain_250m_poa.tif`.
-      Processed in `floods/script/GFPLAIN250m.ipynb`.
+      layer (weight 0.10) in the OEF flood hazard ensemble. Local exports land under
+      `transformation/flood_hazard/sites/{city}/data/`.
+      Processed in `transformation/gfplain250m/release/v1/GFPLAIN250m.ipynb`.
 
   - dataset_id: soilgrids_clay
     dataset_name: SoilGrids Clay Content (0–30 cm)

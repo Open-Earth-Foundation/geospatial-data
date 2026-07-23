@@ -1,0 +1,10 @@
+# Global Flood Database flood-event count, excluding permanent water.
+# GDAL color-relief palette for visual tiles.
+# Values are observed event counts in the 2000-2018 catalog, not probabilities.
+nv 0 0 0 0
+0 247 247 247
+1 198 219 239
+2 158 202 225
+3 107 174 214
+4 49 130 189
+6 8 81 156
