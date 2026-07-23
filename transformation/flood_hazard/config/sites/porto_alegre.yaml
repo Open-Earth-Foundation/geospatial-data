@@ -1,4 +1,4 @@
-# Scaffold site config — paths will be finalized when notebooks move into this folder.
+# City runtime config for flood_hazard (paths + optional hazard/idw overrides).
 site_slug: porto_alegre
 display_name: Porto Alegre
 country: Brazil
@@ -37,7 +37,7 @@ outputs:
   flood_hazard_interp_distance_m: flood_hazard_interp_distance_m_poa.tif
   flood_hazard_score_interpolated_only: flood_hazard_score_interpolated_only_poa.tif
 
-# Optional site overrides of models/flood_hazard/config.yaml (defaults TBD in later PR)
+# Optional overrides of models/flood_hazard/config.yaml (city wins on merge)
 hazard:
   reference_grid: gfplain_250m
   weights:

@@ -1,0 +1,8 @@
+# Flood hazard susceptibility index (0-1), viridis-like palette
+# Matches notebook maps: low (purple) -> high (yellow)
+nv 0 0 0 0
+0 68 1 84
+0.25 49 104 142
+0.5 53 183 121
+0.75 110 206 88
+1.0 253 231 37

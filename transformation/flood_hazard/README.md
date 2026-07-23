@@ -1,35 +1,30 @@
 # flood_hazard
 
-Transformation that applies `models/flood_hazard` to produce the Level 2 flood hazard score per city.
-
-Input-layer notebooks live in sibling dataset folders and share this folder’s city configs via `site_config.py`.
+Applies `models/flood_hazard` to produce the Level 2 flood hazard score per city.
 
 ## Status
 
-- **PR-A:** scaffold (configs, layout)
-- **PR-B:** `site_config.py`, styles for input layers, Porto Alegre boundary; input notebooks in sibling folders
-- **PR-C (next):** score notebook + `models/flood_hazard/{model_card,config}`
+- PR-A: scaffold (configs, layout)
+- PR-B: `site_config.py`, input-layer styles, Porto Alegre boundary; sibling input notebooks
+- **PR-C:** score notebook + model card/config wiring
 
 ## Layout
 
 ```text
 flood_hazard/
 ├── README.md
-├── site_config.py              # shared by flood input + score notebooks
-├── config/
-│   └── sites/
-│       ├── README.md
-│       └── {city_slug}.yaml    # one file per city
-├── sites/
-│   └── {city_slug}/
-│       ├── boundary/site.geojson
-│       ├── data/               # gitignored
-│       ├── cache/              # gitignored
-│       └── out/                # gitignored
-└── styles/                     # color tables / value-tile templates
+├── site_config.py
+├── flood_hazard_score_v2.ipynb
+├── config/sites/{city_slug}.yaml
+├── sites/{city_slug}/
+│   ├── boundary/site.geojson
+│   ├── data/                 # gitignored
+│   ├── cache/                # gitignored
+│   └── out/                  # gitignored
+└── styles/
 ```
 
-## Upstream input notebooks (PR-B)
+## Upstream input notebooks
 
 | Dataset | Notebook |
 |---------|----------|
@@ -38,14 +33,18 @@ flood_hazard/
 | Global Flood Database | `../global_flood_database/release/v1/global_flood_database.ipynb` |
 | GFPLAIN250m | `../gfplain250m/release/v1/GFPLAIN250m.ipynb` |
 
-## Site selection
+## Usage
 
 ```bash
 export FLOODS_SITE=porto_alegre
+# 1) run input notebooks (sibling folders)
+# 2) run flood_hazard_score_v2.ipynb from this directory
 ```
 
-Use city-level slugs only. Runtime GeoTIFFs are written under `sites/{city_slug}/`.
+Defaults: `models/flood_hazard/config.yaml`  
+City overrides: `config/sites/{city}.yaml` (`hazard`, `idw`)
 
 ## Model
 
-Default weights and methodology: `models/flood_hazard/` (model card lands in PR-C).
+- `models/flood_hazard/model_card.md`
+- `models/flood_hazard/config.yaml`
