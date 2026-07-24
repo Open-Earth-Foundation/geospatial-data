@@ -1,0 +1,12 @@
+# MODIS MOD11A2 daytime LST P90, degrees Celsius.
+# Shared GDAL color-relief palette for visual tiles (multi-city / multi-season).
+# Cooler -> light yellow; hotter -> dark red.
+nv 0 0 0 0
+15 255 255 229
+20 255 255 204
+25 255 237 160
+30 254 178 76
+35 253 141 60
+40 240 59 32
+45 189 0 38
+50 128 0 38

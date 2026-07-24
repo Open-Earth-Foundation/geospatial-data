@@ -2650,3 +2650,73 @@ datasets:
       `transformation/landslide_hazard/sites/{city}/data/`.
       Processed in `transformation/modis_ndvi/release/v1/ndvi_modis_landslide.ipynb`.
 
+  - dataset_id: plymouth_flood_hazard
+    dataset_name: Flood Hazard Score (Plymouth)
+    publisher: Open Earth Foundation (derived processing)
+    license: CC BY 4.0
+    resolution: ~250m
+    crs: EPSG:3857
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/JRC_GLOFLOR_V2_1
+    dataset_type: flood
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "Static hazard layers (JRC, Aqueduct, GFD, GFPLAIN ensemble)"
+      accuracy: "Weighted ensemble of normalized global fluvial hazard products; partial coverage rule (>=3/4 layers + fluvial); IDW gap-fill"
+      limitations: "Hazard screening only (no exposure/vulnerability); not event-specific observed depth"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 10000
+      offset: 0.0
+      unit: "score"
+      decode_formula: "value = (R + 256*G + 65536*B) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/plymouth/climate_hazards/floods/hazard/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/plymouth/climate_hazards/floods/hazard/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/plymouth/climate_hazards/floods/hazard/flood_hazard_score_idw_cog.tif
+      metadata:
+        url: []
+    description: >
+      OEF flood hazard susceptibility index (0–1) for Plymouth. Ensemble of JRC GLOFLO v2.1, Global Flood
+      Database, WRI Aqueduct, and GFPLAIN250m on a common ~250 m grid (IDW distance-capped fill).
+      Methodology in `models/flood_hazard/model_card.md`; defaults in `models/flood_hazard/config.yaml`;
+      score notebook `transformation/flood_hazard/flood_hazard_score_v2.ipynb`.
+
+  - dataset_id: plymouth_heat_hazard
+    dataset_name: Heat Hazard Score (Plymouth)
+    publisher: Open Earth Foundation (derived processing)
+    license: CC BY 4.0
+    resolution: ~250m
+    crs: EPSG:4326
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/LANDSAT_LC08_C02_T1_L2
+    dataset_type: heat
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "JJA 2015–2024 (Landsat 8, MODIS MOD11A2)"
+      accuracy: "Arithmetic mean of normalized LST layers: Landsat 8 P90, MODIS LST daytime P90, MODIS LST nighttime P90 (ERA5 optional per site config)"
+      limitations: "LST is a surface temperature proxy, not air temperature; values reflect land cover and albedo. Season-specific composite; cloud masking may reduce coverage in some years."
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 10000
+      offset: 0.0
+      unit: "score"
+      decode_formula: "value = (R + 256*G + 65536*B) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/plymouth/climate_hazards/heat/hazard/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/plymouth/climate_hazards/heat/hazard/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/plymouth/climate_hazards/heat/hazard/heat_hazard_score_cog.tif
+      metadata:
+        url: []
+    description: >
+      OEF heat hazard susceptibility index (0–1) for Plymouth. Ensemble of Landsat 8 LST P90, MODIS
+      MOD11A2 daytime LST P90, and MODIS MOD11A2 nighttime LST P90 on a common ~250 m grid. Arithmetic
+      mean of normalized layers. Methodology in `models/heat_hazard/model_card.md`; defaults in
+      `models/heat_hazard/config.yaml`; score notebook
+      `transformation/heat_hazard/heat_hazard_score.ipynb`.

@@ -71,6 +71,9 @@ Input notebooks resolve city config from `transformation/flood_hazard/` (not fro
 ```bash
 export FLOODS_SITE=porto_alegre
 # run notebooks under transformation/{dataset}/release/v1/
+# Default: GEE layers download straight into sites/<city>/data/input/ (gitignored).
+# Optional: export GEE_EXPORT_MODE=drive
+# Same local-export default applies to heat + landslide (+ NBS DEM) input notebooks.
 ```
 
 Outputs write to `transformation/flood_hazard/sites/{city}/data/` and `.../out/`.
