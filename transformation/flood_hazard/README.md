@@ -14,6 +14,8 @@ Applies `models/flood_hazard` to produce the Level 2 flood hazard score per city
 flood_hazard/
 ├── README.md
 ├── site_config.py
+├── gee_local_export.py
+├── flood_hazard_publish.py
 ├── flood_hazard_score_v2.ipynb
 ├── config/sites/{city_slug}.yaml
 ├── sites/{city_slug}/
@@ -48,8 +50,21 @@ export FLOODS_SITE=plymouth
 Local inputs/outputs under `sites/*/data/` and `sites/*/out/` are **gitignored**
 (also `*.tif` globally). Helper: `gee_local_export.py`.
 
+### Publish to S3 + catalog
+
+After Step 2b (IDW COG + tiles), the notebook **Step 3** cell uses
+`flood_hazard_publish.py`:
+
+| Flag | Default | Effect |
+|------|---------|--------|
+| `UPLOAD_TO_S3` | `False` | Upload COG + `tiles_visual` / `tiles_values` to `s3://geo-test-api/{s3_prefix}/hazard/` |
+| `WRITE_CATALOG` | `False` | Upsert `catalog/datasets.yaml` (`poa_flood_hazard` or `{city}_flood_hazard`); dry-run prints YAML when False |
+
+Requires AWS CLI + write access to `geo-test-api` when uploading. Catalog path comes from
+`config/sites/{city}.yaml` → `s3_prefix`.
+
 Defaults: `models/flood_hazard/config.yaml`  
-City overrides: `config/sites/{city}.yaml` (`hazard`, `idw`)
+City overrides: `config/sites/{city}.yaml` (`hazard`, `idw`, `s3_prefix`)
 
 ## Model
 

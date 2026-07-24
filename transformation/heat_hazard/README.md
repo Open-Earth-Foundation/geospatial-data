@@ -14,6 +14,8 @@ Applies `models/heat_hazard` to produce the Level 2 heat hazard score per city.
 heat_hazard/
 ├── README.md
 ├── site_config.py
+├── gee_local_export.py
+├── heat_hazard_publish.py
 ├── heat_hazard_score.ipynb
 ├── config/sites/{city_slug}.yaml
 ├── sites/{city_slug}/
@@ -45,6 +47,18 @@ export HEAT_SITE=porto_alegre
 
 Defaults: `models/heat_hazard/config.yaml`  
 City overrides: `config/sites/{city}.yaml` (`hazard`, `publish`, optional `bairro`)
+
+### Publish to S3 + catalog
+
+After the COG + Web Tiles cells, the notebook **Publish** cell uses
+`heat_hazard_publish.py`:
+
+| Flag | Default | Effect |
+|------|---------|--------|
+| `UPLOAD_TO_S3` | `False` | Upload COG + `tiles_visual` / `tiles_values` to `s3://geo-test-api/{s3_prefix}/hazard/` (bairro GPKG too if enabled) |
+| `WRITE_CATALOG` | `False` | Upsert `catalog/datasets.yaml` (`poa_heat_hazard` or `{city}_heat_hazard`); dry-run prints YAML when False |
+
+Requires AWS CLI + write access to `geo-test-api` when uploading.
 
 ## Model
 
