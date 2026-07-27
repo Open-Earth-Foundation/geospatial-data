@@ -1,0 +1,988 @@
+{
+  "Water Resources": {
+    "Droughts": {
+      "Hazard": [
+        {
+          "Index": "Standardized Precipitation Evapotranspiration Index (SPEI) Present",
+          "Description and relationship": "Provide a more nuanced understanding of drought by accounting for precipitation and temperature to assess drought by determining water balance",
+          "Attribute": "Duration/Severity/Frequency",
+          "Kind": "Bioclimatic"
+        },
+        {
+          "Index": "Standardized Precipitation Evapotranspiration Index (SPEI) 2030",
+          "Description and relationship": "Provide a more nuanced understanding of drought by accounting for precipitation and temperature to assess drought by determining water balance",
+          "Attribute": "Duration/Severity/Frequency",
+          "Kind": "Bioclimatic"
+        },
+        {
+          "Index": "Standardized Precipitation Evapotranspiration Index (SPEI) 2050",
+          "Description and relationship": "Provide a more nuanced understanding of drought by accounting for precipitation and temperature to assess drought by determining water balance",
+          "Attribute": "Duration/Severity/Frequency",
+          "Kind": "Bioclimatic"
+        },
+        {
+          "Index": "Maximum Consecutive Dry Days (CDD) Present",
+          "Description and relationship": "Determine the maximum period of days without rains in a year",
+          "Attribute": "Duration",
+          "Kind": "Climate"
+        },
+        {
+          "Index": "Maximum Consecutive Dry Days (CDD) 2030",
+          "Description and relationship": "Determine the maximum period of days without rains in a year",
+          "Attribute": "Duration",
+          "Kind": "Climate"
+        },
+        {
+          "Index": "Maximum Consecutive Dry Days (CDD) 2050",
+          "Description and relationship": "Determine the maximum period of days without rains in a year",
+          "Attribute": "Duration",
+          "Kind": "Climate"
+        }
+      ],
+      "Vulnerability": [
+        {
+          "Index": "Inadequate Water Acesss",
+          "Description and relationship": "Percentage of population with lack of adequate water access are more vulnerable to suffer with impacts of droughts on the water resources availability",
+          "Attribute": "Adaptative",
+          "Kind": "Socioeconomic"
+        },
+        {
+          "Index": "Income",
+          "Description and relationship": "Low-income population are often more vulnerable and sensible due to lack of resources to pay for water bill increases or get access to other alternatives of clean water",
+          "Attribute": "Sensibility",
+          "Kind": "Socioeconomic"
+        },
+        {
+          "Index": "Water security index",
+          "Description and relationship": "The Water Security Index was designed to portray, with simplicity and clarity, the different dimensions of water security, incorporating the concept of risk to water uses",
+          "Attribute": "Sensibility",
+          "Kind": "Socioeconomic and biophysical"
+        }
+      ],
+      "Exposure": [
+        {
+          "Index": "Population density",
+          "Description and relationship": "A higher population density means more people and infrastructure are concentrated in a given area, increasing the potential for greater harm when exposed to adverse events. This indicator reflects the likelihood that a large number of individuals will be affected by environmental or climate hazards, as densely populated regions often have higher demand for resources like water and food, and less capacity for adaptation or recovery in the face of disasters.",
+          "Attribute": "People exposition",
+          "Kind": "Demographic"
+        },
+        {
+          "Index": "Nutrition and Basic Medical Care",
+          "Description and relationship": "This index includes Vaccination Coverage, Hospitalizations for Primary Care-Sensitive Conditions (number of hospitalizations per 100,000 inhabitants), Adjusted Mortality for Primary Care-Sensitive Conditions (deaths per 100,000 inhabitants), Infant Mortality up to 5 years of age (deaths per thousand live births), Malnutrition (% of the population), Water Supply via Distribution Network (% of households), Adequate Sanitation (% of households), Water Supply Index (% of the population), Water Loss Index in Distribution (% of the volume of water supplied lost in distribution)",
+          "Attribute": "People exposition",
+          "Kind": "Socioeconomic"
+        }
+      ]
+    }
+  },
+  "Hydrogeological Disasters": {
+    "Landslides": {
+      "Hazard": [
+        {
+          "Index": "Landslide Threat Index Present",
+          "Description and relationship": "Modeled based on the interaction between climate events related to landslides, such as topographic characteristics (altitude, slope, aspect, vertical curvature, horizontal curvature, flow accumulation), geological characteristics (soil type, distance from rivers), human factors (land cover and use) and meteorological characteristics (climate indices Rx1day and Rx5day).",
+          "Attribute": "Susceptibility",
+          "Kind": "Bioclimatic"
+        },
+        {
+          "Index": "Landslide Threat Index 2030",
+          "Description and relationship": "Modeled based on the interaction between climate events related to landslides, such as topographic characteristics (altitude, slope, aspect, vertical curvature, horizontal curvature, flow accumulation), geological characteristics (soil type, distance from rivers), human factors (land cover and use) and meteorological characteristics (climate indices Rx1day and Rx5day).",
+          "Attribute": "Susceptibility",
+          "Kind": "Bioclimatic"
+        },
+        {
+          "Index": "Landslide Threat Index 2050",
+          "Description and relationship": "Modeled based on the interaction between climate events related to landslides, such as topographic characteristics (altitude, slope, aspect, vertical curvature, horizontal curvature, flow accumulation), geological characteristics (soil type, distance from rivers), human factors (land cover and use) and meteorological characteristics (climate indices Rx1day and Rx5day).",
+          "Attribute": "Susceptibility",
+          "Kind": "Bioclimatic"
+        }
+      ],
+      "Vulnerability": [
+        {
+          "Index": "Income",
+          "Description and relationship": "Low-income population are often more vulnerable and sensible due to lack of resources",
+          "Attribute": "Sensibility",
+          "Kind": "Socioeconomic"
+        },
+        {
+          "Index": "Age Distribution",
+          "Description and relationship": "Percentage of population older than 60 and younger than 5. Both the elderly (60 and older) and young children (under 5) are among the most vulnerable populations in the face of natural disasters due to factors that impact their ability to prepare for, respond to, and recover from these events",
+          "Attribute": "Sensibility",
+          "Kind": "Socioeconomic"
+        },
+        {
+          "Index": "Forest and non-forest natural cover",
+          "Description and relationship": "Percentage of the municipal area covered by forest or non-forest natural formation.",
+          "Attribute": "Exposition",
+          "Kind": "Physical"
+        }
+      ],
+      "Exposure": [
+        {
+          "Index": "Population density",
+          "Description and relationship": "A higher population density means more people and infrastructure are concentrated in a given area, increasing the potential for greater harm when exposed to adverse events. This indicator reflects the likelihood that a large number of individuals will be affected by environmental or climate hazards, as densely populated regions often have higher demand for resources like water and food, and less capacity for adaptation or recovery in the face of disasters.",
+          "Attribute": "Exposition",
+          "Kind": "Demographic"
+        },
+        {
+          "Index": "Houses in risk areas",
+          "Description and relationship": "Indicator of permanent private households exposed to natural disasters. Data from the Statistical Territorial Base of Risk Areas (BATER), generated by IBGE in 2018 in partnership with institutions that produce risk areas, such as CPRM.",
+          "Attribute": "Exposition",
+          "Kind": "Physical"
+        }
+      ]
+    },
+    "Floods": {
+      "Hazard": [
+        {
+          "Index": "Flood Threat Index",
+          "Description and relationship": "Modeled based on the interaction between climate events related to landslides, such as topographic characteristics (altitude, slope, aspect, vertical curvature, horizontal curvature, flow accumulation), geological characteristics (soil type, distance from rivers), human factors (land cover and use) and meteorological characteristics (climate indices Rx1day and Rx5day).",
+          "Attribute": "Susceptibility",
+          "Kind": "Bioclimatic"
+        },
+        {
+          "Index": "Flood Threat Index 2030",
+          "Description and relationship": "Modeled based on the interaction between climate events related to landslides, such as topographic characteristics (altitude, slope, aspect, vertical curvature, horizontal curvature, flow accumulation), geological characteristics (soil type, distance from rivers), human factors (land cover and use) and meteorological characteristics (climate indices Rx1day and Rx5day).",
+          "Attribute": "Susceptibility",
+          "Kind": "Bioclimatic"
+        },
+        {
+          "Index": "Flood Threat Index 2050",
+          "Description and relationship": "Modeled based on the interaction between climate events related to landslides, such as topographic characteristics (altitude, slope, aspect, vertical curvature, horizontal curvature, flow accumulation), geological characteristics (soil type, distance from rivers), human factors (land cover and use) and meteorological characteristics (climate indices Rx1day and Rx5day).",
+          "Attribute": "Susceptibility",
+          "Kind": "Bioclimatic"
+        }
+      ],
+      "Vulnerability": [
+        {
+          "Index": "Income",
+          "Description and relationship": "Low-income population are often more vulnerable and sensible due to lack of resources",
+          "Attribute": "Sensibility",
+          "Kind": "Socioeconomic"
+        },
+        {
+          "Index": "Age Distribution",
+          "Description and relationship": "Percentage of population older than 60 and younger than 5. Both the elderly (60 and older) and young children (under 5) are among the most vulnerable populations in the face of natural disasters due to factors that impact their ability to prepare for, respond to, and recover from these events",
+          "Attribute": "Sensibility",
+          "Kind": "Socioeconomic"
+        },
+        {
+          "Index": "Coverage rate of public urban drainage",
+          "Description and relationship": "IN021 - Coverage rate of public roads with underground storm drains or channels in urban areas",
+          "Attribute": "Adaptative",
+          "Kind": "Socioeconomic"
+        }
+      ],
+      "Exposure": [
+        {
+          "Index": "Population density",
+          "Description and relationship": "A higher population density means more people and infrastructure are concentrated in a given area, increasing the potential for greater harm when exposed to adverse events. This indicator reflects the likelihood that a large number of individuals will be affected by environmental or climate hazards, as densely populated regions often have higher demand for resources like water and food, and less capacity for adaptation or recovery in the face of disasters.",
+          "Attribute": "People exposition",
+          "Kind": "Demographic"
+        },
+        {
+          "Index": "Houses in risk areas",
+          "Description and relationship": "Indicator of permanent private households exposed to natural disasters. Data from the Statistical Territorial Base of Risk Areas (BATER), generated by IBGE in 2018 in partnership with institutions that produce risk areas, such as CPRM.",
+          "Attribute": "People exposition",
+          "Kind": "Socioeconomic"
+        }
+      ]
+    }
+  },
+  "Energy Security": {
+    "Droughts": {
+      "Hazard": [
+        {
+          "Index": "Standardized Precipitation Evapotranspiration Index (SPEI) Present",
+          "Description and relationship": "Provide a more nuanced understanding of drought by accounting for precipitation and temperature to assess drought by determining water balance",
+          "Attribute": "Duration/Severity/Frequency",
+          "Kind": "Bioclimatic"
+        },
+        {
+          "Index": "Standardized Precipitation Evapotranspiration Index (SPEI) 2030",
+          "Description and relationship": "Provide a more nuanced understanding of drought by accounting for precipitation and temperature to assess drought by determining water balance",
+          "Attribute": "Duration/Severity/Frequency",
+          "Kind": "Bioclimatic"
+        },
+        {
+          "Index": "Standardized Precipitation Evapotranspiration Index (SPEI) 2050",
+          "Description and relationship": "Provide a more nuanced understanding of drought by accounting for precipitation and temperature to assess drought by determining water balance",
+          "Attribute": "Duration/Severity/Frequency",
+          "Kind": "Bioclimatic"
+        },
+        {
+          "Index": "Maximum Consecutive Dry Days (CDD) Present",
+          "Description and relationship": "Determine the maximum period of days without rains in a year",
+          "Attribute": "Duration",
+          "Kind": "Climatic"
+        },
+        {
+          "Index": "Maximum Consecutive Dry Days (CDD) 2030",
+          "Description and relationship": "Determine the maximum period of days without rains in a year",
+          "Attribute": "Duration",
+          "Kind": "Climatic"
+        },
+        {
+          "Index": "Maximum Consecutive Dry Days (CDD) 2050",
+          "Description and relationship": "Determine the maximum period of days without rains in a year",
+          "Attribute": "Duration",
+          "Kind": "Climatic"
+        }
+      ],
+      "Vulnerability": [
+        {
+          "Index": "Electricity by municipality",
+          "Description and relationship": "Consumers and electricity consumption from 2010 to 2021.",
+          "Attribute": "Sensibility",
+          "Kind": "Socioeconomic"
+        },
+        {
+          "Index": "Income",
+          "Description and relationship": "Low-income population are often more vulnerable and sensible due to lack of resources to pay for water bill increases or get access to other alternatives of clean water",
+          "Attribute": "Sensibility",
+          "Kind": "Socioeconomic"
+        },
+        {
+          "Index": "Energy poverty",
+          "Description and relationship": "It covers three axes: (i) physical access to energy sources, measured, for example, by the existence of a connection to the National Interconnected System (SIN); (ii) possession of equipment, such as television, refrigerator, freezer and internet access; and (iii) accessibility, or the ability to pay for energy use, measured by the weight of energy expenses in the total household expenses. In the article, the Multidimensional Energy Poverty Index (MEPI) was calculated by state, differentiating between urban and rural populations. In AdaptaBrasil MCTI, in order to arrive at a single value for each state, the indicator was weighted by urban and rural populations.",
+          "Attribute": "Sensibility",
+          "Kind": "Socioeconomic"
+        }
+      ],
+      "Exposure": [
+        {
+          "Index": "Population density",
+          "Description and relationship": "A higher population density means more people and infrastructure are concentrated in a given area, increasing the potential for greater harm when exposed to adverse events. This indicator reflects the likelihood that a large number of individuals will be affected by environmental or climate hazards, as densely populated regions often have higher demand for resources like water and food, and less capacity for adaptation or recovery in the face of disasters.",
+          "Attribute": "People exposition",
+          "Kind": "Demographic"
+        },
+        {
+          "Index": "Energy power plants",
+          "Description and relationship": "The existence of energy power plants in the municipalities, mainly hydropower, are more suscetible to be affected by droughts and heatwaves",
+          "Attribute": "Infrastructure exposition",
+          "Kind": "Infrastruture"
+        }
+      ]
+    },
+    "Heatwaves": {
+      "Hazard": [
+        {
+          "Index": "Maximum temperature Present",
+          "Description and relationship": "This indicator is based on annual averages of maximum temperatures per municipality. This indicator represents the magnitude and sign of variation in maximum temperatures based on reference values obtained in the historical period, that is, between 1986 and 2005. This indicator allows us to assess whether there will be an indication of a reduction or increase in temperature for the chosen location.",
+          "Attribute": "Intensity",
+          "Kind": "Climatic"
+        },
+        {
+          "Index": "Maximum temperature 2030",
+          "Description and relationship": "This indicator is based on projections for 2030",
+          "Attribute": "Intensity",
+          "Kind": "Climatic"
+        },
+        {
+          "Index": "Maximum temperature 2060",
+          "Description and relationship": "This indicator is based on projections for 2050",
+          "Attribute": "Intensity",
+          "Kind": "Climatic"
+        }
+      ],
+      "Vulnerability": [
+        {
+          "Index": "Electricity by municipality",
+          "Description and relationship": "Consumers and electricity consumption from 2010 to 2021.",
+          "Attribute": "Sensibility",
+          "Kind": "Socioeconomic"
+        },
+        {
+          "Index": "Income",
+          "Description and relationship": "Low-income population are often more vulnerable and sensible due to lack of resources to pay for water bill increases or get access to other alternatives of clean water",
+          "Attribute": "Sensibility",
+          "Kind": "Socioeconomic"
+        },
+        {
+          "Index": "Energy poverty",
+          "Description and relationship": "It covers three axes: (i) physical access to energy sources, measured, for example, by the existence of a connection to the National Interconnected System (SIN); (ii) possession of equipment, such as television, refrigerator, freezer and internet access; and (iii) accessibility, or the ability to pay for energy use, measured by the weight of energy expenses in the total household expenses. In the article, the Multidimensional Energy Poverty Index (MEPI) was calculated by state, differentiating between urban and rural populations. In AdaptaBrasil MCTI, in order to arrive at a single value for each state, the indicator was weighted by urban and rural populations.",
+          "Attribute": "Sensibility",
+          "Kind": "Socioeconomic"
+        }
+      ],
+      "Exposure": [
+        {
+          "Index": "Population density",
+          "Description and relationship": "A higher population density means more people and infrastructure are concentrated in a given area, increasing the potential for greater harm when exposed to adverse events. This indicator reflects the likelihood that a large number of individuals will be affected by environmental or climate hazards, as densely populated regions often have higher demand for resources like water and food, and less capacity for adaptation or recovery in the face of disasters.",
+          "Attribute": "People exposition",
+          "Kind": "Demographic"
+        },
+        {
+          "Index": "Energy power plants",
+          "Description and relationship": "The existence of energy power plants in the municipalities, mainly hydropower, are more suscetible to be affected by droughts and heatwaves",
+          "Attribute": "Infrastructure exposition",
+          "Kind": "Infrastruture"
+        }
+      ]
+    }
+  },
+  "Food Security": {
+    "Droughts": {
+      "Hazard": [
+        {
+          "Index": "Standardized Precipitation Evapotranspiration Index (SPEI) Present",
+          "Description and relationship": "Provide a more nuanced understanding of drought by accounting for precipitation and temperature to assess drought by determining water balance",
+          "Attribute": "Duration/Severity/Frequency",
+          "Kind": "Bioclimatic"
+        },
+        {
+          "Index": "Standardized Precipitation Evapotranspiration Index (SPEI) 2030",
+          "Description and relationship": "Provide a more nuanced understanding of drought by accounting for precipitation and temperature to assess drought by determining water balance",
+          "Attribute": "Duration/Severity/Frequency",
+          "Kind": "Bioclimatic"
+        },
+        {
+          "Index": "Standardized Precipitation Evapotranspiration Index (SPEI) 2050",
+          "Description and relationship": "Provide a more nuanced understanding of drought by accounting for precipitation and temperature to assess drought by determining water balance",
+          "Attribute": "Duration/Severity/Frequency",
+          "Kind": "Bioclimatic"
+        },
+        {
+          "Index": "Maximum Consecutive Dry Days (CDD) Present",
+          "Description and relationship": "Determine the maximum period of days without rains in a year",
+          "Attribute": "Duration",
+          "Kind": "Climate"
+        },
+        {
+          "Index": "Maximum Consecutive Dry Days (CDD) 2030",
+          "Description and relationship": "Determine the maximum period of days without rains in a year",
+          "Attribute": "Duration",
+          "Kind": "Climate"
+        },
+        {
+          "Index": "Maximum Consecutive Dry Days (CDD) 2050",
+          "Description and relationship": "Determine the maximum period of days without rains in a year",
+          "Attribute": "Duration",
+          "Kind": "Climate"
+        }
+      ],
+      "Vulnerability": [
+        {
+          "Index": "Income",
+          "Description and relationship": "Low-income population are often more vulnerable and sensible due to lack of resources to face increasing food prices",
+          "Attribute": "Sensibility",
+          "Kind": "Socioeconomic"
+        },
+        {
+          "Index": "Food production and marketing",
+          "Description and relationship": "This information is the result of the composition of the indicators: low production of basic foods and lack of diversification of local production.",
+          "Attribute": "Sensibility",
+          "Kind": "Socioeconomic"
+        },
+        {
+          "Index": "Dependence on large-scale irrigation",
+          "Description and relationship": "This indicator measures dependence on large-scale irrigation, focusing on the characteristics of producers and agricultural establishments. It is calculated by multiplying the proportion of agricultural land using large-scale irrigation by a weight reflecting its regional importance in relation to drought threats. The proportion of irrigated land is based on the ratio of water used in irrigated agriculture to total water consumption, and the ratio of irrigated land using surface or sprinkler systems to total cultivated land. Water data comes from the 2017 Water Demand report by the National Water Agency (ANA), and irrigation data comes from the 2017 Agricultural Census by IBGE. Both are analyzed at the municipal level.",
+          "Attribute": "Sensibility",
+          "Kind": "Socioeconomic"
+        }
+      ],
+      "Exposure": [
+        {
+          "Index": "Economic factor (Dependency on Agriculture)",
+          "Description and relationship": "Share of Municipal Agriculture GDP on Total GDP (2020-2021)",
+          "Attribute": "Exposition",
+          "Kind": "Agriculture"
+        },
+        {
+          "Index": "Population density",
+          "Description and relationship": "A higher population density means more people and infrastructure are concentrated in a given area, increasing the potential for greater harm when exposed to adverse events. This indicator reflects the likelihood that a large number of individuals will be affected by environmental or climate hazards, as densely populated regions often have higher demand for resources like water and food, and less capacity for adaptation or recovery in the face of disasters.",
+          "Attribute": "People exposition",
+          "Kind": "Demographics"
+        },
+        {
+          "Index": "Municipal Agricultural Area",
+          "Description and relationship": "Municipal area dedicated to agriculture",
+          "Attribute": "Exposition",
+          "Kind": "Agriculture"
+        },
+        {
+          "Index": "Density of agricultural establishments",
+          "Description and relationship": "Number of agricultural establishments per unit area of the municipality, resulting from the ratio between the number of agricultural establishments and the area of these establishments in the municipality, multiplied by the weight attributed by experts considering the regional relevance of the same to the threat of drought. These characteristics are associated with regions that produce basic foods: predominance of small properties and with a high density of these. Data obtained from the Agricultural Census made available by the Brazilian Institute of Geography and Statistics (IBGE) for 2017, on a municipal scale.",
+          "Attribute": "Exposition",
+          "Kind": "Agriculture"
+        },
+        {
+          "Index": "Nutrition and Basic Medical Care",
+          "Description and relationship": "This index includes Vaccination Coverage, Hospitalizations for Primary Care-Sensitive Conditions (number of hospitalizations per 100,000 inhabitants), Adjusted Mortality for Primary Care-Sensitive Conditions (deaths per 100,000 inhabitants), Infant Mortality up to 5 years of age (deaths per thousand live births), Malnutrition (% of the population), Water Supply via Distribution Network (% of households), Adequate Sanitation (% of households), Water Supply Index (% of the population), Water Loss Index in Distribution (% of the volume of water supplied lost in distribution)",
+          "Attribute": "People exposition",
+          "Kind": "Socioeconomic"
+        }
+      ]
+    },
+    "Floods": {
+      "Hazard": [
+        {
+          "Index": "Maximum Precipitation 5 days (Rx5day)",
+          "Description and relationship": "Maximum annual precipitation in 5 (five) consecutive days (mm). Maximum accumulated precipitation in 5 days, occurring in one year.",
+          "Attribute": "Intensity",
+          "Kind": "Climatic"
+        },
+        {
+          "Index": "Maximum Precipitation 5 days (Rx5day) 2030",
+          "Description and relationship": "Maximum annual precipitation in 5 (five) consecutive days (mm). Maximum accumulated precipitation in 5 days, occurring in one year.",
+          "Attribute": "Intensity",
+          "Kind": "Climatic"
+        },
+        {
+          "Index": "Maximum Precipitation 5 days (Rx5day) 2050",
+          "Description and relationship": "Maximum annual precipitation in 5 (five) consecutive days (mm). Maximum accumulated precipitation in 5 days, occurring in one year.",
+          "Attribute": "Intensity",
+          "Kind": "Climatic"
+        },
+        {
+          "Index": "Total precipitation Present",
+          "Description and relationship": "Total annual precipitation considering days in which 95% of the rainfall is greater than or equal to 1.0 millimeter. Indicates precipitation of extreme intensity. The indicator is the result of multiplying the total annual precipitation above the 95th percentile and the weight assigned by experts considering its relative importance to the problem of heavy rainfall.",
+          "Attribute": "Intensity",
+          "Kind": "Climatic"
+        },
+        {
+          "Index": "Total precipitation 2030",
+          "Description and relationship": "Total annual precipitation considering days in which 95% of the rainfall is greater than or equal to 1.0 millimeter. Indicates precipitation of extreme intensity. The indicator is the result of climate projections for 2030",
+          "Attribute": "Intensity",
+          "Kind": "Climatic"
+        },
+        {
+          "Index": "Total precipitation 2050",
+          "Description and relationship": "Total annual precipitation considering days in which 95% of the rainfall is greater than or equal to 1.0 millimeter. Indicates precipitation of extreme intensity. The indicator is the result of climate projections for 2050",
+          "Attribute": "Intensity",
+          "Kind": "Climatic"
+        }
+      ],
+      "Vulnerability": [
+        {
+          "Index": "Income",
+          "Description and relationship": "Low-income population are often more vulnerable and sensible due to lack of resources to face increasing food prices",
+          "Attribute": "Socioeconomic",
+          "Kind": "Sensibility"
+        },
+        {
+          "Index": "Food production and marketing",
+          "Description and relationship": "This information is the result of the composition of the indicators: low production of basic foods and lack of diversification of local production.",
+          "Attribute": "Socioeconomic",
+          "Kind": "Agriculture"
+        }
+      ],
+      "Exposure": [
+        {
+          "Index": "Economic factor (Dependency on Agriculture)",
+          "Description and relationship": "Share of Municipal Agriculture GDP on Total GDP (2020-2021)",
+          "Attribute": "Exposition",
+          "Kind": "Demographics"
+        },
+        {
+          "Index": "Population density",
+          "Description and relationship": "A higher population density means more people and infrastructure are concentrated in a given area, increasing the potential for greater harm when exposed to adverse events. This indicator reflects the likelihood that a large number of individuals will be affected by environmental or climate hazards, as densely populated regions often have higher demand for resources like water and food, and less capacity for adaptation or recovery in the face of disasters.",
+          "Attribute": "People exposition",
+          "Kind": "Agriculture"
+        },
+        {
+          "Index": "Municipal Agricultural Area",
+          "Description and relationship": "Municipal area dedicated to agriculture",
+          "Attribute": "Exposition",
+          "Kind": "Agriculture"
+        },
+        {
+          "Index": "Density of agricultural establishments",
+          "Description and relationship": "Number of agricultural establishments per unit area of the municipality, resulting from the ratio between the number of agricultural establishments and the area of these establishments in the municipality, multiplied by the weight attributed by experts considering the regional relevance of the same to the threat of drought. These characteristics are associated with regions that produce basic foods: predominance of small properties and with a high density of these. Data obtained from the Agricultural Census made available by the Brazilian Institute of Geography and Statistics (IBGE) for 2017, on a municipal scale.",
+          "Attribute": "Exposition",
+          "Kind": "Agriculture"
+        },
+        {
+          "Index": "Nutrition and Basic Medical Care",
+          "Description and relationship": "This index includes Vaccination Coverage, Hospitalizations for Primary Care-Sensitive Conditions (number of hospitalizations per 100,000 inhabitants), Adjusted Mortality for Primary Care-Sensitive Conditions (deaths per 100,000 inhabitants), Infant Mortality up to 5 years of age (deaths per thousand live births), Malnutrition (% of the population), Water Supply via Distribution Network (% of households), Adequate Sanitation (% of households), Water Supply Index (% of the population), Water Loss Index in Distribution (% of the volume of water supplied lost in distribution)",
+          "Attribute": "People exposition",
+          "Kind": "Socioeconomic"
+        }
+      ]
+    }
+  },
+  "Biodiversity": {
+    "Droughts": {
+      "Hazard": [
+        {
+          "Index": "Standardized Precipitation Evapotranspiration Index (SPEI)",
+          "Description and relationship": "Provide a more nuanced understanding of drought by accounting for precipitation and temperature to assess drought by determining water balance",
+          "Attribute": "Duration/Severity/Frequency",
+          "Kind": "Climatic"
+        },
+        {
+          "Index": "Standardized Precipitation Evapotranspiration Index (SPEI) 2030",
+          "Description and relationship": "Provide a more nuanced understanding of drought by accounting for precipitation and temperature to assess drought by determining water balance",
+          "Attribute": "Duration/Severity/Frequency",
+          "Kind": "Climatic"
+        },
+        {
+          "Index": "Standardized Precipitation Evapotranspiration Index (SPEI) 2050",
+          "Description and relationship": "Provide a more nuanced understanding of drought by accounting for precipitation and temperature to assess drought by determining water balance",
+          "Attribute": "Duration/Severity/Frequency",
+          "Kind": "Climatic"
+        },
+        {
+          "Index": "Maximum Consecutive Dry Days (CDD)",
+          "Description and relationship": "Determine the maximum period of days without rains in a year",
+          "Attribute": "Duration",
+          "Kind": "Climatic"
+        },
+        {
+          "Index": "Maximum Consecutive Dry Days 2030 (CDD)",
+          "Description and relationship": "Determine the maximum period of days without rains in a year",
+          "Attribute": "Duration",
+          "Kind": "Climatic"
+        },
+        {
+          "Index": "Maximum Consecutive Dry Days 2050 (CDD)",
+          "Description and relationship": "Determine the maximum period of days without rains in a year",
+          "Attribute": "Duration",
+          "Kind": "Climatic"
+        }
+      ],
+      "Vulnerability": [
+        {
+          "Index": "Biodiversity Intactness Index (BII)",
+          "Description and relationship": "The Biodiversity Intactness Index (BII) measures biodiversity change using abundance data on plants, fungi and animals worldwide. The Index shows how local terrestrial biodiversity responds to human pressures such as land use change and intensification.",
+          "Attribute": "Sensibility",
+          "Kind": "Biological"
+        },
+        {
+          "Index": "Areas of global conservation value",
+          "Description and relationship": "Areas of global conservation importance based on three main attributes of conserving biodiversity, carbon and water assets under different area-based conservation targets",
+          "Attribute": "Sensibility",
+          "Kind": "Biological"
+        }
+      ],
+      "Exposure": [
+        {
+          "Index": "Protected Area",
+          "Description and relationship": "Legally established areas that preserve nature, manage natural resources, and restore natural environments.",
+          "Attribute": "Exposition",
+          "Kind": "Physical"
+        },
+        {
+          "Index": "Forest and non-forest natural cover",
+          "Description and relationship": "Percentage of the municipal area covered by forest or non-forest natural formation.",
+          "Attribute": "Exposition",
+          "Kind": "Physical"
+        }
+      ]
+    },
+    "Heatwaves": {
+      "Hazard": [
+        {
+          "Index": "Maximum temperature Present",
+          "Description and relationship": "This indicator is based on annual averages of maximum temperatures per municipality. This indicator represents the magnitude and sign of variation in maximum temperatures based on reference values obtained in the historical period, that is, between 1986 and 2005. This indicator allows us to assess whether there will be an indication of a reduction or increase in temperature for the chosen location.",
+          "Attribute": "Intensity",
+          "Kind": "Climatic"
+        },
+        {
+          "Index": "Maximum temperature 2030",
+          "Description and relationship": "This indicator is based on projections for 2030",
+          "Attribute": "Intensity",
+          "Kind": "Climatic"
+        },
+        {
+          "Index": "Maximum temperature 2060",
+          "Description and relationship": "This indicator is based on projections for 2050",
+          "Attribute": "Intensity",
+          "Kind": "Climatic"
+        }
+      ],
+      "Vulnerability": [
+        {
+          "Index": "Biodiversity Intactness Index (BII)",
+          "Description and relationship": "The Biodiversity Intactness Index (BII) measures biodiversity change using abundance data on plants, fungi and animals worldwide. The Index shows how local terrestrial biodiversity responds to human pressures such as land use change and intensification.",
+          "Attribute": "Sensibility",
+          "Kind": "Biological"
+        },
+        {
+          "Index": "Areas of global conservation value",
+          "Description and relationship": "Areas of global conservation importance based on three main attributes of conserving biodiversity, carbon and water assets under different area-based conservation targets",
+          "Attribute": "Sensibility",
+          "Kind": "Biological"
+        }
+      ],
+      "Exposure": [
+        {
+          "Index": "Protected Area (MMA)",
+          "Description and relationship": "Legally established areas that preserve nature, manage natural resources, and restore natural environments.",
+          "Attribute": "Exposition",
+          "Kind": "Physical"
+        },
+        {
+          "Index": "Forest and non-forest natural cover",
+          "Description and relationship": "Percentage of the municipal area covered by forest or non-forest natural formation.",
+          "Attribute": "Exposition",
+          "Kind": "Physical"
+        }
+      ]
+    }
+  },
+  "Public Health": {
+    "Diseases": {
+      "Hazard": [
+        {
+          "Index": "Mean Max  Temperature (Atual, 2030 e 2050)",
+          "Description and relationship": "Higher means of max and min temperature implicates conditions to vector born diseases spread",
+          "Attribute": "Intensity",
+          "Kind": "Bioclimatic"
+        },
+        {
+          "Index": "Humidity (Relative Humidity) (Atual, 2030 e 2050)",
+          "Description and relationship": "Humidity is critical for vectors breeding and survival.",
+          "Attribute": "Intensity",
+          "Kind": "Bioclimatic"
+        },
+        {
+          "Index": "Rx5day (Atual, 2030 e 2050)",
+          "Description and relationship": "Measures the maximum rain over the specified range of days. Heavy rainfall over a short period is one of the primary triggers of landslides",
+          "Attribute": "Intensity",
+          "Kind": "Bioclimatic"
+        }
+      ],
+      "Vulnerability": [
+        {
+          "Index": "Confirmed cases of diseases by municipality",
+          "Description and relationship": "Confirmed cases of diseases by municipality from 2013",
+          "Attribute": "Sensibility",
+          "Kind": "Socioeconomic"
+        },
+        {
+          "Index": "Health Establishments by municipality",
+          "Description and relationship": "Health establishments by municipality from 2005.",
+          "Attribute": "Sensibility",
+          "Kind": "Socioeconomic"
+        },
+        {
+          "Index": "Inadequate Sanitation",
+          "Description and relationship": "Basic sanitation has a direct impact on public health. A population with widespread access to water, sanitation and waste collection is less susceptible to disease.",
+          "Attribute": "Sensibility",
+          "Kind": "Socioeconomic"
+        },
+        {
+          "Index": "Inadequate Water Access",
+          "Description and relationship": "Percentage of population with lack of adequate water access are more vulnerable to suffer with impacts of droughts on the water resources availability",
+          "Attribute": "Sensibility",
+          "Kind": "Socioeconomic"
+        },
+        {
+          "Index": "Income",
+          "Description and relationship": "The percentage of individuals with a per capita household income at or below half the minimum wage.",
+          "Attribute": "Sensibility",
+          "Kind": "Socioeconomic"
+        },
+        {
+          "Index": "Age Distribution",
+          "Description and relationship": "Percentage of population older than 60 and younger than 5. Both the elderly (60 and older) and young children (under 5) are among the most vulnerable populations in the face of natural disasters due to factors that impact their ability to prepare for, respond to, and recover from these events",
+          "Attribute": "Sensibility",
+          "Kind": "Demographic"
+        },
+        {
+          "Index": "Waste Collection",
+          "Description and relationship": "Areas of global conservation importance based on three main attributes of conserving biodiversity, carbon and water assets under different area-based conservation targets",
+          "Attribute": "Sensibility",
+          "Kind": "Socioeconomic"
+        }
+      ],
+      "Exposure": [
+        {
+          "Index": "Deforested area",
+          "Description and relationship": "Reduction of native forest area in the municipality bounds",
+          "Attribute": "Exposition",
+          "Kind": "Physical"
+        },
+        {
+          "Index": "Population density",
+          "Description and relationship": "A higher population density means more people and infrastructure are concentrated in a given area, increasing the potential for greater harm when exposed to adverse events. This indicator reflects the likelihood that a large number of individuals will be affected by environmental or climate hazards, as densely populated regions often have higher demand for resources like water and food, and less capacity for adaptation or recovery in the face of disasters.",
+          "Attribute": "People exposition",
+          "Kind": "Physical"
+        },
+        {
+          "Index": "Nutrition and Basic Medical Care",
+          "Description and relationship": "This index includes Vaccination Coverage, Hospitalizations for Primary Care-Sensitive Conditions (number of hospitalizations per 100,000 inhabitants), Adjusted Mortality for Primary Care-Sensitive Conditions (deaths per 100,000 inhabitants), Infant Mortality up to 5 years of age (deaths per thousand live births), Malnutrition (% of the population), Water Supply via Distribution Network (% of households), Adequate Sanitation (% of households), Water Supply Index (% of the population), Water Loss Index in Distribution (% of the volume of water supplied lost in distribution)",
+          "Attribute": "People exposition",
+          "Kind": "Socioeconomic"
+        }
+      ]
+    },
+    "Heatwaves": {
+      "Hazard": [
+        {
+          "Index": "Maximum temperature Present",
+          "Description and relationship": "This indicator is based on annual averages of maximum temperatures per municipality. This indicator represents the magnitude and sign of variation in maximum temperatures based on reference values obtained in the historical period, that is, between 1986 and 2005. This indicator allows us to assess whether there will be an indication of a reduction or increase in temperature for the chosen location.",
+          "Attribute": "Intensity",
+          "Kind": "Climatic"
+        },
+        {
+          "Index": "Maximum temperature 2030",
+          "Description and relationship": "This indicator is based on projections for 2030",
+          "Attribute": "Intensity",
+          "Kind": "Climatic"
+        },
+        {
+          "Index": "Maximum temperature 2060",
+          "Description and relationship": "This indicator is based on projections for 2050",
+          "Attribute": "Intensity",
+          "Kind": "Climatic"
+        }
+      ],
+      "Vulnerability": [
+        {
+          "Index": "Health Establishments by municipality",
+          "Description and relationship": "Health establishments by municipality from 2005.",
+          "Attribute": "Sensibility",
+          "Kind": "Socioeconomic"
+        },
+        {
+          "Index": "Income",
+          "Description and relationship": "The percentage of individuals with a per capita household income at or below half the minimum wage.",
+          "Attribute": "Sensibility",
+          "Kind": "Socioeconomic"
+        },
+        {
+          "Index": "Age Distribution",
+          "Description and relationship": "Percentage of population older than 60 and younger than 5. Both the elderly (60 and older) and young children (under 5) are among the most vulnerable populations in the face of natural disasters due to factors that impact their ability to prepare for, respond to, and recover from these events",
+          "Attribute": "Sensibility",
+          "Kind": "Socioeconomic"
+        }
+      ],
+      "Exposure": [
+        {
+          "Index": "Population density",
+          "Description and relationship": "A higher population density means more people and infrastructure are concentrated in a given area, increasing the potential for greater harm when exposed to adverse events. This indicator reflects the likelihood that a large number of individuals will be affected by environmental or climate hazards, as densely populated regions often have higher demand for resources like water and food, and less capacity for adaptation or recovery in the face of disasters.",
+          "Attribute": "People exposition",
+          "Kind": "Physical"
+        },
+        {
+          "Index": "Nutrition and Basic Medical Care",
+          "Description and relationship": "This index includes Vaccination Coverage, Hospitalizations for Primary Care-Sensitive Conditions (number of hospitalizations per 100,000 inhabitants), Adjusted Mortality for Primary Care-Sensitive Conditions (deaths per 100,000 inhabitants), Infant Mortality up to 5 years of age (deaths per thousand live births), Malnutrition (% of the population), Water Supply via Distribution Network (% of households), Adequate Sanitation (% of households), Water Supply Index (% of the population), Water Loss Index in Distribution (% of the volume of water supplied lost in distribution)",
+          "Attribute": "People exposition",
+          "Kind": "Socioeconomic"
+        }
+      ]
+    }
+  },
+  "Infrastructures": {
+    "Sea level rise": {
+      "Hazard": [
+        {
+          "Index": "Sea Level change (present)",
+          "Description and relationship": "Median projections of global and regional sea level rise, relative to a 1995-2014 baseline. IPCC AR6",
+          "Attribute": "Intensity",
+          "Kind": "Climate"
+        },
+        {
+          "Index": "Sea Level change (2030)",
+          "Description and relationship": "Median projections of global and regional sea level rise, relative to a 1995-2014 baseline. IPCC AR6",
+          "Attribute": "Intensity",
+          "Kind": "Climate"
+        },
+        {
+          "Index": "Sea Level change (2050)",
+          "Description and relationship": "Median projections of global and regional sea level rise, relative to a 1995-2014 baseline. IPCC AR6",
+          "Attribute": "Intensity",
+          "Kind": "Climate"
+        }
+      ],
+      "Vulnerability": [
+        {
+          "Index": "GDP BY Industrial",
+          "Description and relationship": "GDP by industry shows the contribution of each industry to the economy, as well as other information about the industry, such as employee compensation, taxes, and gross operating surplus",
+          "Attribute": "Adaptative",
+          "Kind": "Economic"
+        }
+      ],
+      "Exposure": [
+        {
+          "Index": "Port infrastructures",
+          "Description and relationship": "Number of existing port infrastructures exposed to climate change from sea level rise",
+          "Attribute": "Infraestructure exposition",
+          "Kind": "Physical"
+        },
+        {
+          "Index": "Population density",
+          "Description and relationship": "A higher population density means more people and infrastructure are concentrated in a given area, increasing the potential for greater harm when exposed to adverse events. This indicator reflects the likelihood that a large number of individuals will be affected by environmental or climate hazards, as densely populated regions often have higher demand for resources like water and food, and less capacity for adaptation or recovery in the face of disasters.",
+          "Attribute": "People exposition in coastal areas",
+          "Kind": "Demographic"
+        },
+        {
+          "Index": "Social Vulnerability Index - Urban Infraestructure",
+          "Description and relationship": "The index includes urban infraestrucure related to sanitation services and mobility",
+          "Attribute": "Infraestructure exposition",
+          "Kind": "Physical"
+        }
+      ]
+    },
+    "Landslides": {
+      "Hazard": [
+        {
+          "Index": "Landslide Threat Index Present",
+          "Description and relationship": "Modeled based on the interaction between climate events related to landslides, such as topographic characteristics (altitude, slope, aspect, vertical curvature, horizontal curvature, flow accumulation), geological characteristics (soil type, distance from rivers), human factors (land cover and use) and meteorological characteristics (climate indices Rx1day and Rx5day).",
+          "Attribute": "Susceptibility",
+          "Kind": "Bioclimatic"
+        },
+        {
+          "Index": "Landslide Threat Index 2030",
+          "Description and relationship": "Modeled based on the interaction between climate events related to landslides, such as topographic characteristics (altitude, slope, aspect, vertical curvature, horizontal curvature, flow accumulation), geological characteristics (soil type, distance from rivers), human factors (land cover and use) and meteorological characteristics (climate indices Rx1day and Rx5day).",
+          "Attribute": "Susceptibility",
+          "Kind": "Bioclimatic"
+        },
+        {
+          "Index": "Landslide Threat Index 2050",
+          "Description and relationship": "Modeled based on the interaction between climate events related to landslides, such as topographic characteristics (altitude, slope, aspect, vertical curvature, horizontal curvature, flow accumulation), geological characteristics (soil type, distance from rivers), human factors (land cover and use) and meteorological characteristics (climate indices Rx1day and Rx5day).",
+          "Attribute": "Susceptibility",
+          "Kind": "Bioclimatic"
+        }
+      ],
+      "Vulnerability": [
+        {
+          "Index": "Landslide Susceptibility",
+          "Description and relationship": "Landslides happen around the world and have devastating impacts on people and the built environment.",
+          "Attribute": "Sensibility",
+          "Kind": "Physical"
+        },
+        {
+          "Index": "GDP BY Industrial",
+          "Description and relationship": "GDP by industry shows the contribution of each industry to the economy, as well as other information about the industry, such as employee compensation, taxes, and gross operating surplus",
+          "Attribute": "Adaptative",
+          "Kind": "Economic"
+        }
+      ],
+      "Exposure": [
+        {
+          "Index": "Road density",
+          "Description and relationship": "Average density of highways per municipality.",
+          "Attribute": "Infraestructure exposition",
+          "Kind": "Physical"
+        },
+        {
+          "Index": "Railroad density",
+          "Description and relationship": "Railway extension by municipality",
+          "Attribute": "Infraestructure exposition",
+          "Kind": "Physical"
+        },
+        {
+          "Index": "Social Vulnerability Index - Urban Infraestructure",
+          "Description and relationship": "The index includes urban infraestrucure related to sanitation services and mobility",
+          "Attribute": "Infraestructure exposition",
+          "Kind": "Physical"
+        }
+      ]
+    },
+    "Erosions": {
+      "Hazard": [
+        {
+          "Index": "Maximum Precipitation 5 days present (Rx5day)",
+          "Description and relationship": "Maximum annual precipitation in 5 (five) consecutive days (mm). Maximum accumulated precipitation in 5 days, occurring in one year.",
+          "Attribute": "Intensity",
+          "Kind": "Climatic"
+        },
+        {
+          "Index": "Maximum Precipitation 5 days (Rx5day) 2030",
+          "Description and relationship": "Maximum annual precipitation in 5 (five) consecutive days (mm). Maximum accumulated precipitation in 5 days, occurring in one year.",
+          "Attribute": "Intensity",
+          "Kind": "Climatic"
+        },
+        {
+          "Index": "Maximum Precipitation 5 days (Rx5day) 2050",
+          "Description and relationship": "Maximum annual precipitation in 5 (five) consecutive days (mm). Maximum accumulated precipitation in 5 days, occurring in one year.",
+          "Attribute": "Intensity",
+          "Kind": "Climatic"
+        }
+      ],
+      "Vulnerability": [
+        {
+          "Index": "Forest cover",
+          "Description and relationship": "Forests minimize the soil erosion as tree crowns provide a surface cover which is able to reduce rainfall kinetic energy by intercepting precipitation",
+          "Attribute": "Sensibility",
+          "Kind": "Physical"
+        },
+        {
+          "Index": "GDP BY Industrial",
+          "Description and relationship": "GDP by industry shows the contribution of each industry to the economy, as well as other information about the industry, such as employee compensation, taxes, and gross operating surplus",
+          "Attribute": "Adaptative",
+          "Kind": "economic"
+        }
+      ],
+      "Exposure": [
+        {
+          "Index": "Road density",
+          "Description and relationship": "Average density of highways per municipality.",
+          "Attribute": "Infraestructure exposition",
+          "Kind": "Physical"
+        },
+        {
+          "Index": "Railroad density",
+          "Description and relationship": "Railway extension by municipality",
+          "Attribute": "Infraestructure exposition",
+          "Kind": "Physical"
+        },
+        {
+          "Index": "Social Vulnerability Index - Urban Infraestructure",
+          "Description and relationship": "The index includes urban infraestrucure related to sanitation services and mobility",
+          "Attribute": "Infraestructure exposition",
+          "Kind": "Physical"
+        }
+      ]
+    },
+    "Heatwave": {
+      "Hazard": [
+        {
+          "Index": "Maximum temperature present",
+          "Description and relationship": "This indicator is based on annual averages of maximum temperatures per municipality. This indicator represents the magnitude and sign of variation in maximum temperatures based on reference values obtained in the historical period, that is, between 1986 and 2005. This indicator allows us to assess whether there will be an indication of a reduction or increase in temperature for the chosen location.",
+          "Attribute": "Intensity",
+          "Kind": "Climatic"
+        },
+        {
+          "Index": "Maximum temperature 2030",
+          "Description and relationship": "This indicator is based on projections for 2030",
+          "Attribute": "Intensity",
+          "Kind": "Climatic"
+        },
+        {
+          "Index": "Maximum temperature 2050",
+          "Description and relationship": "This indicator is based on projections for 2050",
+          "Attribute": "Intensity",
+          "Kind": "Climatic"
+        }
+      ],
+      "Vulnerability": [
+        {
+          "Index": "GDP BY Industrial",
+          "Description and relationship": "GDP by industry shows the contribution of each industry to the economy, as well as other information about the industry, such as employee compensation, taxes, and gross operating surplus",
+          "Attribute": "Adaptative",
+          "Kind": "Economic"
+        },
+        {
+          "Index": "Forest cover",
+          "Description and relationship": "Forests minimize the soil erosion as tree crowns provide a surface cover which is able to reduce rainfall kinetic energy by intercepting precipitation",
+          "Attribute": "Sensibility",
+          "Kind": "Physical"
+        }
+      ],
+      "Exposure": [
+        {
+          "Index": "Road density",
+          "Description and relationship": "Average density of highways per municipality.",
+          "Attribute": "Infraestructure exposition",
+          "Kind": "Physical"
+        },
+        {
+          "Index": "Railroad density",
+          "Description and relationship": "Railway extension by municipality",
+          "Attribute": "Infraestructure exposition",
+          "Kind": "Physical"
+        },
+        {
+          "Index": "Social Vulnerability Index - Urban Infraestructure",
+          "Description and relationship": "The index includes urban infraestrucure related to sanitation services and mobility",
+          "Attribute": "Infraestructure exposition",
+          "Kind": "Physical"
+        }
+      ]
+    }
+  }
+}
