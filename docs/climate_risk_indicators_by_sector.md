@@ -29,4 +29,5 @@ Each indicator has:
 2. P1 Flood: Households in hazard-prone areas  
 3. Broader sector backlog from this JSON  
 
-See companion mapping notes when added under `docs/mn_exposure_candidates_*.md`.
+Operational mapping (candidates, multi-risk reuse):  
+[`mn_exposure_candidates_plymouth.md`](mn_exposure_candidates_plymouth.md)

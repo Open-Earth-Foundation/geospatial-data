@@ -1,0 +1,16 @@
+# Flood risk (H×E×V) — Plymouth, MN
+site_slug: plymouth
+display_name: Plymouth
+
+hazard_tif: ../flood_hazard/sites/plymouth/data/output/flood_hazard_score_idw_plymouth.tif
+acs_ev_gpkg: ../acs_ev/sites/plymouth/data/output/acs_ev_block_groups.gpkg
+
+exposure_field: exposure_score
+vulnerability_field: vulnerability_score
+
+# Publish (COG / XYZ tiles / S3 / catalog)
+s3_prefix: oef_calculation/release/v1/plymouth/climate_hazards/floods
+shared_s3_prefix: oef_calculation/release/v1/plymouth/shared
+tile_zoom: "8-15"
+publish:
+  tile_zoom: "8-15"
