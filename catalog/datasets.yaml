@@ -2932,3 +2932,218 @@ datasets:
       composite). Computed by `transformation/landslide_risk/compute_landslide_risk.py`. Block-group
       vector (`bairro_gpkg_url`): zonal mean hazard, exposure, vulnerability, and risk per ACS block
       group.
+
+  - dataset_id: apple_valley_flood_hazard
+    dataset_name: Flood Hazard Score (Apple Valley)
+    publisher: Open Earth Foundation (derived processing)
+    license: CC BY 4.0
+    resolution: ~250m
+    crs: EPSG:3857
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/JRC_GLOFLOR_V2_1
+    dataset_type: flood
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "Static hazard layers (JRC, Aqueduct, GFD, GFPLAIN ensemble)"
+      accuracy: "Weighted ensemble of normalized global fluvial hazard products; partial coverage rule (>=3/4 layers + fluvial); IDW gap-fill"
+      limitations: "Hazard screening only (no exposure/vulnerability); not event-specific observed depth"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 10000
+      offset: 0.0
+      unit: "score"
+      decode_formula: "value = (R + 256*G + 65536*B) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/apple_valley/climate_hazards/floods/hazard/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/apple_valley/climate_hazards/floods/hazard/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/apple_valley/climate_hazards/floods/hazard/flood_hazard_score_idw_cog.tif
+      metadata:
+        url: []
+    description: >
+      OEF flood hazard susceptibility index (0–1) for Apple Valley. Ensemble of JRC GLOFLO v2.1, Global
+      Flood Database, WRI Aqueduct, and GFPLAIN250m on a common ~250 m grid (IDW distance-capped fill).
+      Methodology in `models/flood_hazard/model_card.md`; defaults in `models/flood_hazard/config.yaml`;
+      score CLI `transformation/flood_hazard/compute_flood_hazard.py`.
+
+  - dataset_id: apple_valley_flood_risk
+    dataset_name: Flood Risk Score H×E×V (Apple Valley)
+    publisher: Open Earth Foundation (derived processing)
+    license: CC BY 4.0
+    resolution: ~250m
+    crs: EPSG:4326
+    access_type: internal_storage
+    source_url: https://www.census.gov/programs-surveys/acs
+    dataset_type: flood
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "Static composite from flood hazard IDW + ACS block-group E/V rasterization"
+      accuracy: "R = (H × E × V)^(1/3) on cells where all three components are finite"
+      limitations: "Screening-level composite; E/V constant per ACS block group; not IPCC full risk or loss modeling"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 10000
+      offset: 0.0
+      unit: "score"
+      decode_formula: "value = (R + 256*G + 65536*B) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/apple_valley/climate_hazards/floods/risk/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/apple_valley/climate_hazards/floods/risk/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/apple_valley/climate_hazards/floods/risk/flood_risk_score_cog.tif
+        bairro_gpkg_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/apple_valley/climate_hazards/floods/vector/flood_risk_score_apple_valley.gpkg
+      metadata:
+        url: []
+    description: >
+      OEF flood risk screening index (0–1) for Apple Valley: geometric mean of hazard (OEF flood ensemble
+      IDW), exposure (ACS population density score), and vulnerability (ACS age/income/poverty composite).
+      Computed by `transformation/flood_risk/compute_flood_risk.py`. Block-group vector
+      (`bairro_gpkg_url`): zonal mean hazard, exposure, vulnerability, and risk per ACS block group.
+
+  - dataset_id: apple_valley_heat_hazard
+    dataset_name: Heat Hazard Score (Apple Valley)
+    publisher: Open Earth Foundation (derived processing)
+    license: CC BY 4.0
+    resolution: ~250m
+    crs: EPSG:4326
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/LANDSAT_LC08_C02_T1_L2
+    dataset_type: heat
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "JJA 2015–2024 (Landsat 8, MODIS MOD11A2)"
+      accuracy: "Arithmetic mean of normalized LST layers: Landsat 8 P90, MODIS LST daytime P90, MODIS LST nighttime P90 (ERA5 optional per site config)"
+      limitations: "LST is a surface temperature proxy, not air temperature; values reflect land cover and albedo. Season-specific composite; cloud masking may reduce coverage in some years."
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 10000
+      offset: 0.0
+      unit: "score"
+      decode_formula: "value = (R + 256*G + 65536*B) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/apple_valley/climate_hazards/heat/hazard/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/apple_valley/climate_hazards/heat/hazard/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/apple_valley/climate_hazards/heat/hazard/heat_hazard_score_cog.tif
+      metadata:
+        url: []
+    description: >
+      OEF heat hazard susceptibility index (0–1) for Apple Valley. Ensemble of Landsat 8 LST P90, MODIS
+      MOD11A2 daytime LST P90, and MODIS MOD11A2 nighttime LST P90 on a common ~250 m grid. Arithmetic
+      mean of normalized layers. Methodology in `models/heat_hazard/model_card.md`; defaults in
+      `models/heat_hazard/config.yaml`; score CLI `transformation/heat_hazard/compute_heat_hazard.py`.
+
+  - dataset_id: apple_valley_heat_risk
+    dataset_name: Heat Risk Score H×E×V (Apple Valley)
+    publisher: Open Earth Foundation (derived processing)
+    license: CC BY 4.0
+    resolution: ~250m
+    crs: EPSG:4326
+    access_type: internal_storage
+    source_url: https://www.census.gov/programs-surveys/acs
+    dataset_type: heat
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "Static composite from heat hazard ensemble + ACS block-group E/V rasterization"
+      accuracy: "R = (H × E × V)^(1/3) on cells where all three components are finite"
+      limitations: "Screening-level composite; E/V constant per ACS block group; not IPCC full risk or loss modeling"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 10000
+      offset: 0.0
+      unit: "score"
+      decode_formula: "value = (R + 256*G + 65536*B) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/apple_valley/climate_hazards/heat/risk/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/apple_valley/climate_hazards/heat/risk/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/apple_valley/climate_hazards/heat/risk/heat_risk_score_cog.tif
+        bairro_gpkg_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/apple_valley/climate_hazards/heat/vector/heat_risk_score_apple_valley.gpkg
+      metadata:
+        url: []
+    description: >
+      OEF heat risk screening index (0–1) for Apple Valley: geometric mean of hazard (OEF heat LST
+      ensemble), exposure (ACS population density score), and vulnerability (ACS age/income/poverty
+      composite). Computed by `transformation/heat_risk/compute_heat_risk.py`. Block-group vector
+      (`bairro_gpkg_url`): zonal mean hazard, exposure, vulnerability, and risk per ACS block group.
+
+  - dataset_id: apple_valley_landslide_hazard
+    dataset_name: Landslide Hazard Score (Apple Valley)
+    publisher: Open Earth Foundation (derived processing)
+    license: CC BY 4.0
+    resolution: ~90m
+    crs: EPSG:4326
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/COPERNICUS_DEM_GLO30
+    dataset_type: landslide
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "Static terrain (Copernicus GLO-30 slope, MERIT HAND, clay); CHIRPS R90p + MODIS NDVI P10 JJA 2015–2024; Dynamic World mode 2023"
+      accuracy: "Weighted ensemble of slope/precip/clay/NDVI/HAND on a 90 m grid with Dynamic World land-cover modifier; slope < 15° gates H to 0"
+      limitations: "Susceptibility index only — not failure probability or event frequency; CHIRPS R90p ~5 km nearest-neighbour to 90 m; not inventory-validated"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 10000
+      offset: 0.0
+      unit: "score"
+      decode_formula: "value = (R + 256*G + 65536*B) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/apple_valley/climate_hazards/landslides/hazard/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/apple_valley/climate_hazards/landslides/hazard/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/apple_valley/climate_hazards/landslides/hazard/landslide_hazard_score_90m_cog.tif
+      metadata:
+        url: []
+    description: >
+      OEF landslide susceptibility index (0–1) for Apple Valley on a 90 m grid. Ensemble of Copernicus
+      GLO-30 slope, CHIRPS R90p, SoilGrids clay %, MODIS NDVI P10, and MERIT Hydro HAND, with Dynamic
+      World land cover modifier. Slope < 15° gates all components to zero. Methodology in
+      `models/landslide_hazard/model_card.md`. Score CLI
+      `transformation/landslide_hazard/compute_landslide_hazard.py`.
+
+  - dataset_id: apple_valley_landslide_risk
+    dataset_name: Landslide Risk Score H×E×V (Apple Valley)
+    publisher: Open Earth Foundation (derived processing)
+    license: CC BY 4.0
+    resolution: ~90m
+    crs: EPSG:4326
+    access_type: internal_storage
+    source_url: https://www.census.gov/programs-surveys/acs
+    dataset_type: landslide
+    type: numeric_raster
+    data_quality:
+      temporal_coverage: "Static composite from landslide hazard score + ACS block-group E/V rasterization"
+      accuracy: "R = (H × E × V)^(1/3) on cells where all three components are finite"
+      limitations: "Screening-level composite; E/V constant per ACS block group; not IPCC full risk or loss modeling"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 10000
+      offset: 0.0
+      unit: "score"
+      decode_formula: "value = (R + 256*G + 65536*B) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/apple_valley/climate_hazards/landslides/risk/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/apple_valley/climate_hazards/landslides/risk/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/apple_valley/climate_hazards/landslides/risk/landslide_risk_score_cog.tif
+        bairro_gpkg_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/apple_valley/climate_hazards/landslides/vector/landslide_risk_score_apple_valley.gpkg
+      metadata:
+        url: []
+    description: >
+      OEF landslide risk screening index (0–1) for Apple Valley: geometric mean of hazard (OEF landslide
+      hazard score), exposure (ACS population density score), and vulnerability (ACS age/income/poverty
+      composite). Computed by `transformation/landslide_risk/compute_landslide_risk.py`. Block-group
+      vector (`bairro_gpkg_url`): zonal mean hazard, exposure, vulnerability, and risk per ACS block
+      group.
