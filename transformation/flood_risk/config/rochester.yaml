@@ -1,0 +1,16 @@
+# Flood risk (H×E×V) — Rochester, MN
+site_slug: rochester
+display_name: Rochester
+
+hazard_tif: ../flood_hazard/sites/rochester/data/output/flood_hazard_score_idw_rochester.tif
+acs_ev_gpkg: ../acs_ev/sites/rochester/data/output/acs_ev_block_groups.gpkg
+
+exposure_field: exposure_score
+vulnerability_field: vulnerability_score
+
+# Publish (COG / XYZ tiles / S3 / catalog)
+s3_prefix: oef_calculation/release/v1/rochester/climate_hazards/floods
+shared_s3_prefix: oef_calculation/release/v1/rochester/shared
+tile_zoom: "8-15"
+publish:
+  tile_zoom: "8-15"

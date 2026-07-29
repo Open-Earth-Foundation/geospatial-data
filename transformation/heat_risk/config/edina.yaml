@@ -1,0 +1,16 @@
+# Heat risk (H×E×V) — Edina, MN
+site_slug: edina
+display_name: Edina
+
+hazard_tif: ../heat_hazard/sites/edina/data/output/heat_hazard_score_edina.tif
+acs_ev_gpkg: ../acs_ev/sites/edina/data/output/acs_ev_block_groups.gpkg
+
+exposure_field: exposure_score
+vulnerability_field: vulnerability_score
+
+# Publish (COG / XYZ tiles / S3 / catalog)
+s3_prefix: oef_calculation/release/v1/edina/climate_hazards/heat
+shared_s3_prefix: oef_calculation/release/v1/edina/shared
+tile_zoom: "8-15"
+publish:
+  tile_zoom: "8-15"

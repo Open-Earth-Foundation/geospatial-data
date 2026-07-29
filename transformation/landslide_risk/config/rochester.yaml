@@ -1,0 +1,16 @@
+# Landslide risk (H×E×V) — Rochester, MN
+site_slug: rochester
+display_name: Rochester
+
+hazard_tif: ../landslide_hazard/sites/rochester/data/output/landslide_hazard_score_rochester_90m.tif
+acs_ev_gpkg: ../acs_ev/sites/rochester/data/output/acs_ev_block_groups.gpkg
+
+exposure_field: exposure_score
+vulnerability_field: vulnerability_score
+
+# Publish (COG / XYZ tiles / S3 / catalog)
+s3_prefix: oef_calculation/release/v1/rochester/climate_hazards/landslides
+shared_s3_prefix: oef_calculation/release/v1/rochester/shared
+tile_zoom: "8-15"
+publish:
+  tile_zoom: "8-15"

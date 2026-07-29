@@ -1,0 +1,16 @@
+# ACS E/V extract — Edina, MN
+site_slug: edina
+display_name: Edina
+state_fips: "27"
+county_fips: "053"  # Hennepin
+acs_year: 2023
+# Prefer flood_hazard boundary (same AOI as hazard scores); fallback heat_hazard
+boundary_candidates:
+  - ../flood_hazard/sites/edina/boundary/site.geojson
+  - ../heat_hazard/sites/edina/boundary/site.geojson
+  - sites/edina/boundary/site.geojson
+
+# Minimum fraction of block-group area intersecting the city to keep
+min_overlap_frac: 0.05
+
+tiger_year: 2023

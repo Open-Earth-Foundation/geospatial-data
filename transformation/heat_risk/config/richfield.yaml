@@ -1,0 +1,16 @@
+# Heat risk (H×E×V) — Richfield, MN
+site_slug: richfield
+display_name: Richfield
+
+hazard_tif: ../heat_hazard/sites/richfield/data/output/heat_hazard_score_richfield.tif
+acs_ev_gpkg: ../acs_ev/sites/richfield/data/output/acs_ev_block_groups.gpkg
+
+exposure_field: exposure_score
+vulnerability_field: vulnerability_score
+
+# Publish (COG / XYZ tiles / S3 / catalog)
+s3_prefix: oef_calculation/release/v1/richfield/climate_hazards/heat
+shared_s3_prefix: oef_calculation/release/v1/richfield/shared
+tile_zoom: "8-15"
+publish:
+  tile_zoom: "8-15"

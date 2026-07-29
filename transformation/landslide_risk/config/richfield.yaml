@@ -1,0 +1,16 @@
+# Landslide risk (H×E×V) — Richfield, MN
+site_slug: richfield
+display_name: Richfield
+
+hazard_tif: ../landslide_hazard/sites/richfield/data/output/landslide_hazard_score_richfield_90m.tif
+acs_ev_gpkg: ../acs_ev/sites/richfield/data/output/acs_ev_block_groups.gpkg
+
+exposure_field: exposure_score
+vulnerability_field: vulnerability_score
+
+# Publish (COG / XYZ tiles / S3 / catalog)
+s3_prefix: oef_calculation/release/v1/richfield/climate_hazards/landslides
+shared_s3_prefix: oef_calculation/release/v1/richfield/shared
+tile_zoom: "8-15"
+publish:
+  tile_zoom: "8-15"

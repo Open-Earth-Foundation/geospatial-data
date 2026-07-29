@@ -1,0 +1,16 @@
+# Flood risk (H×E×V) — Apple Valley, MN
+site_slug: apple_valley
+display_name: Apple Valley
+
+hazard_tif: ../flood_hazard/sites/apple_valley/data/output/flood_hazard_score_idw_apple_valley.tif
+acs_ev_gpkg: ../acs_ev/sites/apple_valley/data/output/acs_ev_block_groups.gpkg
+
+exposure_field: exposure_score
+vulnerability_field: vulnerability_score
+
+# Publish (COG / XYZ tiles / S3 / catalog)
+s3_prefix: oef_calculation/release/v1/apple_valley/climate_hazards/floods
+shared_s3_prefix: oef_calculation/release/v1/apple_valley/shared
+tile_zoom: "8-15"
+publish:
+  tile_zoom: "8-15"
