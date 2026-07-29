@@ -133,6 +133,7 @@ Small city boundary GeoJSON files under `sites/{city_slug}/boundary/` may be ver
 ## Minnesota note
 
 Early multi-site experiments used a statewide `minnesota` slug. That approach is superseded by city-level configs below.
+Normalization policy (city AOI only; pros/cons): `docs/ccra_normalization_decision.md`.
 
 ## Minnesota cities (PR-F)
 

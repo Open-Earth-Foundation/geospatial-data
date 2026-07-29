@@ -57,6 +57,8 @@ transformation/{score}/config/sites/{city_slug}.yaml
 ```
 
 Use **city-level** slugs only (e.g. `porto_alegre`, `minneapolis`), not statewide regions.
+Domain min–max (where used) is computed **inside each city AOI**; state/country/global normalization is not implemented yet.
+See `docs/ccra_normalization_decision.md` for the decision, advantages, and limitations.
 
 See `docs/cougar-migration.md` for the migration plan and PR sequence.
 
