@@ -17,6 +17,13 @@ paths:
   cache: sites/plymouth/cache
   styles: styles
 
+# Score CLI (`compute_flood_hazard.py`) requires these weight keys under data/input/
+required_inputs:
+  - jrc_norm
+  - gfd_count_norm
+  - aqueduct_norm
+  - gfplain_250m
+
 layers:
   aqueduct_depth: aqueduct_depth_rp100_plymouth.tif
   aqueduct_norm: aqueduct_depth_rp100_norm_plymouth.tif

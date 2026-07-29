@@ -22,6 +22,15 @@ paths:
   cache: sites/plymouth/cache
   styles: styles
 
+# Score CLI (`compute_landslide_hazard.py`) requires these keys under data/input/
+required_inputs:
+  - slope_deg
+  - r90p
+  - clay_pct
+  - ndvi_p10
+  - hand
+  - dw_mode
+
 layers:
   slope_deg: plymouth_slope_deg_30m.tif
   r90p: plymouth_r90p_climatology.tif

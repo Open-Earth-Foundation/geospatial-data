@@ -21,6 +21,12 @@ paths:
   cache: sites/plymouth/cache
   styles: styles
 
+# Score CLI (`compute_heat_hazard.py`) requires these keys under data/input/
+required_inputs:
+  - landsat_norm
+  - modis_day_norm
+  - modis_night_norm
+
 layers:
   landsat_p90: lst_lc08_p90_jja_2015_2024_plymouth.tif
   landsat_obs_count: lst_lc08_obs_count_jja_2015_2024_plymouth.tif

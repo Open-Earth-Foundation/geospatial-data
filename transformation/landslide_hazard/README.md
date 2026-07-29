@@ -5,26 +5,70 @@ Multi-city landslide susceptibility score (`H`) on a 90 m grid.
 ## Run
 
 ```bash
-export LANDSLIDES_SITE=porto_alegre   # or plymouth, edina, richfield, rochester, apple_valley
-# optional (POA neighbourhoods):
-# export LANDSLIDE_BAIRRO_GPKG=/path/to/brazil_neighbourhood_geometries.gpkg
+export LANDSLIDES_SITE=plymouth   # or porto_alegre, edina, richfield, rochester, apple_valley
+# optional: export EE_PROJECT=eecc-maureen
+# optional: export GEE_EXPORT_MODE=drive
 
-# 1) Inputs (GEE exports → sites/<city>/data/input/)
-# transformation/copernicus_dem/release/v1/slope_from_dem.ipynb
-# transformation/chirps_r90p/release/v1/chirps_r90p_climatology.ipynb
-# transformation/soilgrids/release/v1/clay_soilgrids.ipynb
-# transformation/modis_ndvi/release/v1/ndvi_modis_landslide.ipynb
-# transformation/merit_hydro/release/v1/hand_merit_landslide.ipynb
-# transformation/dynamic_world/release/v1/dynamic_world_landslide.ipynb
+# 1) Extract all input GeoTIFFs → sites/<city>/data/input/
+#    (+ SVG QA under sites/<city>/data/intermediate/qa_inputs/)
+python transformation/landslide_hazard/extract_landslide_inputs.py --site plymouth
+# subset:          ... --only slope,hand,clay
+# rebuild QA only: ... --qa-only
+# skip QA:         ... --no-qa
 
-# 2) Score
-# transformation/landslide_hazard/landslide_hazard_score.ipynb
+# 2) Score + SVG QA
+python transformation/landslide_hazard/compute_landslide_hazard.py --site plymouth
+#   --no-qa to skip SVG maps
+
+# 3) COG + tiles (+ optional S3 + catalog)
+python transformation/landslide_hazard/landslide_hazard_publish.py --site plymouth
+# upload + write catalog:
+#   ... --upload --write-catalog
 ```
+
+### Per-layer extract CLIs
+
+| Layer key | CLI |
+|-----------|-----|
+| `slope_deg` | `../copernicus_dem/extract_slope.py` |
+| `hand` | `../merit_hydro/extract_hand.py` |
+| `clay_pct` | `../soilgrids/extract_clay.py` |
+| `r90p` | `../chirps_r90p/extract_chirps_r90p.py` |
+| `ndvi_p10` | `../modis_ndvi/extract_ndvi_p10.py` |
+| `dw_mode` | `../dynamic_world/extract_dw_mode.py` |
+
+Legacy notebooks remain under each dataset’s `release/v1/` for interactive QA.
+
+### Score outputs (`sites/<city>/data/output/`)
+
+| File | Content |
+|------|---------|
+| `landslide_hazard_score_*_90m.tif` | Gated weighted score 0–1 |
+| `map_landslide_hazard_score.svg` | QA grid map |
+| `map_landslide_slope_deg.svg` | Slope QA |
+| `map_landslide_{slope_risk,precip_risk,...}.svg` | Component QA |
+| `metadata.json` | Provenance |
+
+### Publish outputs (`sites/<city>/out/landslide_hazard_score/`)
+
+| File / dir | Content |
+|------------|---------|
+| `landslide_hazard_score_90m_cog.tif` | Cloud-optimized float score |
+| `tiles_visual/` | Colorized XYZ PNG tiles |
+| `tiles_values/` | RGB-encoded value XYZ tiles |
+| `landslide_hazard_90m_colorized.tif` | Intermediate color-relief |
+| `landslide_hazard_90m_value_encoded_rgb.tif` | Intermediate value RGB |
+
+S3 layout: `s3://geo-test-api/{s3_prefix}/hazard/`. Catalog id: `{site}_landslide_hazard` (`poa_landslide_hazard` for Porto Alegre).
 
 ## Layout
 
 | Path | Role |
 |------|------|
+| `extract_landslide_inputs.py` | Orchestrates input extracts |
+| `compute_landslide_hazard.py` | Preferred score CLI |
+| `landslide_hazard_publish.py` | COG + tiles + S3 + catalog |
+| `input_common.py` | ROI / EE / season helpers |
 | `config/sites/{city}.yaml` | City bbox, season, filenames |
 | `sites/{city}/boundary/` | Tracked city polygon |
 | `sites/{city}/data|cache|out/` | Runtime (gitignored) |
@@ -37,6 +81,5 @@ Defaults and methodology: `models/landslide_hazard/`.
 
 ## GEE export
 
-Input notebooks write GeoTIFFs to `sites/<city>/data/input/` by default (gitignored).
-Optional: `export GEE_EXPORT_MODE=drive`. Shared helper: `gee_local_export.py` (via `LANDSLIDES_SITE` site package path).
-
+Input CLIs write GeoTIFFs to `sites/<city>/data/input/` by default (gitignored).
+Optional: `export GEE_EXPORT_MODE=drive`. Shared helper: `gee_local_export.py`.

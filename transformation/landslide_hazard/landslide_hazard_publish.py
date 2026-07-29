@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
-"""Build heat hazard COG + XYZ tiles, upload to S3, upsert catalog.
+"""Build landslide hazard COG + XYZ tiles, upload to S3, upsert catalog.
 
-Pipeline (after ``compute_heat_hazard.py``):
+Pipeline (after ``compute_landslide_hazard.py``):
 
   1. COG + colorized visual tiles + RGB value tiles
   2. Optional upload to ``s3://geo-test-api/{s3_prefix}/hazard/``
-  3. Optional upsert of ``{site}_heat_hazard`` in ``catalog/datasets.yaml``
+  3. Optional upsert of ``{site}_landslide_hazard`` in ``catalog/datasets.yaml``
+     (``poa_landslide_hazard`` for porto_alegre)
 
 Example:
-  python transformation/heat_hazard/heat_hazard_publish.py --site plymouth
-  python transformation/heat_hazard/heat_hazard_publish.py --site plymouth --upload --write-catalog
+  python transformation/landslide_hazard/landslide_hazard_publish.py --site plymouth
+  python transformation/landslide_hazard/landslide_hazard_publish.py --site plymouth --upload --write-catalog
 """
 
 from __future__ import annotations
@@ -23,20 +24,24 @@ import sys
 from pathlib import Path
 from typing import Any
 
-HEAT_HAZARD_ROOT = Path(__file__).resolve().parent
-if str(HEAT_HAZARD_ROOT) not in sys.path:
-    sys.path.insert(0, str(HEAT_HAZARD_ROOT))
+LANDSLIDE_HAZARD_ROOT = Path(__file__).resolve().parent
+if str(LANDSLIDE_HAZARD_ROOT) not in sys.path:
+    sys.path.insert(0, str(LANDSLIDE_HAZARD_ROOT))
+
+from input_common import reexec_with_repo_venv_if_needed  # noqa: E402
+
+reexec_with_repo_venv_if_needed("numpy", "rasterio")
 
 from site_config import load_site_config  # noqa: E402
 
 S3_BUCKET = "geo-test-api"
 S3_PUBLIC_BASE = f"https://{S3_BUCKET}.s3.us-east-1.amazonaws.com"
 VALUE_SCALE = 10000
-COG_FILENAME = "heat_hazard_score_cog.tif"
-COLORIZED_FILENAME = "heat_hazard_score_colorized.tif"
-VALUE_RGB_FILENAME = "heat_hazard_score_value_encoded_rgb.tif"
-PUBLISH_SUBDIR = "heat_hazard_score"
-COLORS_TXT = "heat_hazard_colors.txt"
+COG_FILENAME = "landslide_hazard_score_90m_cog.tif"
+COLORIZED_FILENAME = "landslide_hazard_90m_colorized.tif"
+VALUE_RGB_FILENAME = "landslide_hazard_90m_value_encoded_rgb.tif"
+PUBLISH_SUBDIR = "landslide_hazard_score"
+COLORS_TXT = "landslide_hazard_colors.txt"
 
 
 def _ensure_common_cli_paths() -> None:
@@ -77,10 +82,6 @@ def resolve_aws_cli() -> str:
     return aws
 
 
-def require_aws_cli() -> str:
-    return resolve_aws_cli()
-
-
 def gdal2tiles_python(gdal2tiles_path: str) -> str:
     with open(gdal2tiles_path, "r", encoding="utf-8", errors="ignore") as f:
         first_line = f.readline().strip()
@@ -95,11 +96,19 @@ def gdal2tiles_python(gdal2tiles_path: str) -> str:
     return shutil.which("python3") or shutil.which("python") or "python3"
 
 
+def public_url(key: str) -> str:
+    return f"{S3_PUBLIC_BASE}/{key.lstrip('/')}"
+
+
+def _s3_uri(key: str) -> str:
+    return f"s3://{S3_BUCKET}/{key.lstrip('/')}"
+
+
 def dataset_id_for_site(site_config: dict[str, Any]) -> str:
     slug = str(site_config.get("site_slug") or "")
     if slug == "porto_alegre":
-        return "poa_heat_hazard"
-    return f"{slug}_heat_hazard"
+        return "poa_landslide_hazard"
+    return f"{slug}_landslide_hazard"
 
 
 def hazard_s3_prefix(site_config: dict[str, Any]) -> str:
@@ -108,14 +117,6 @@ def hazard_s3_prefix(site_config: dict[str, Any]) -> str:
 
 def vector_s3_prefix(site_config: dict[str, Any]) -> str:
     return f"{str(site_config['s3_prefix']).rstrip('/')}/vector"
-
-
-def public_url(key: str) -> str:
-    return f"{S3_PUBLIC_BASE}/{key.lstrip('/')}"
-
-
-def _s3_uri(key: str) -> str:
-    return f"s3://{S3_BUCKET}/{key.lstrip('/')}"
 
 
 def normalize_publish_cfg(site_config: dict[str, Any]) -> dict[str, Any]:
@@ -130,12 +131,12 @@ def normalize_publish_cfg(site_config: dict[str, Any]) -> dict[str, Any]:
 
 def resolve_score_tif(site_config: dict[str, Any]) -> Path:
     out_dir = Path(site_config["paths_abs"]["data_output"])
-    name = site_config["outputs"]["heat_hazard_score"]
+    name = site_config["outputs"]["landslide_hazard_score"]
     path = out_dir / name
     if not path.is_file():
         raise FileNotFoundError(
             f"Missing score GeoTIFF: {path}. "
-            f"Run compute_heat_hazard.py --site {site_config.get('site_slug')} first."
+            f"Run compute_landslide_hazard.py --site {site_config.get('site_slug')} first."
         )
     return path
 
@@ -145,7 +146,7 @@ def resolve_gpkg(site_config: dict[str, Any]) -> Path | None:
     if not bairro.get("enabled"):
         return None
     out_dir = Path(site_config["paths_abs"]["data_output"])
-    name = site_config["outputs"].get("heat_hazard_vector")
+    name = site_config["outputs"].get("landslide_hazard_vector")
     if not name:
         return None
     path = out_dir / name
@@ -153,7 +154,8 @@ def resolve_gpkg(site_config: dict[str, Any]) -> Path | None:
 
 
 def publish_dir_for(site_config: dict[str, Any]) -> Path:
-    return Path(site_config["paths_abs"]["out"]) / PUBLISH_SUBDIR
+    out_root = Path(site_config["paths_abs"]["out"])
+    return out_root / PUBLISH_SUBDIR
 
 
 def resolve_publish_paths(publish_dir: Path) -> dict[str, Path]:
@@ -170,7 +172,7 @@ def resolve_publish_paths(publish_dir: Path) -> dict[str, Path]:
 def validate_publish_dir(publish_dir: Path) -> dict[str, Path]:
     paths = resolve_publish_paths(publish_dir)
     if not paths["cog"].is_file():
-        raise FileNotFoundError(f"Missing heat COG: {paths['cog']}. Run with --build first.")
+        raise FileNotFoundError(f"Missing COG: {paths['cog']}. Run with --build first.")
     for name in ("tiles_visual", "tiles_values"):
         if not paths[name].is_dir():
             raise FileNotFoundError(
@@ -194,9 +196,6 @@ def expected_urls(
     }
     if gpkg_name:
         urls["bairro_gpkg"] = public_url(f"{vector_s3_prefix(site_config)}/{gpkg_name}")
-    elif (site_config.get("bairro") or {}).get("enabled"):
-        gpkg = Path(str(site_config["outputs"]["heat_hazard_vector"])).name
-        urls["bairro_gpkg"] = public_url(f"{vector_s3_prefix(site_config)}/{gpkg}")
     return urls
 
 
@@ -207,7 +206,8 @@ def build_cog_and_tiles(
     tile_zoom: str = "8-15",
     colors_txt: Path | None = None,
 ) -> dict[str, Path]:
-    colors = colors_txt or (HEAT_HAZARD_ROOT / "styles" / COLORS_TXT)
+    """Create COG + visual XYZ + value XYZ tiles (notebook §11)."""
+    colors = colors_txt or (LANDSLIDE_HAZARD_ROOT / "styles" / COLORS_TXT)
     if not colors.is_file():
         raise FileNotFoundError(f"Missing color table: {colors}")
 
@@ -219,6 +219,7 @@ def build_cog_and_tiles(
     subprocess.run([gdal2tiles_py, "-c", "import numpy"], check=True, capture_output=True)
 
     if publish_dir.exists():
+        # Keep other siblings under out/; only clear this publish package.
         for child in ("tiles_visual", "tiles_values"):
             d = publish_dir / child
             if d.is_dir():
@@ -324,7 +325,7 @@ def build_cog_and_tiles(
     return paths
 
 
-def upload_heat_hazard_to_s3(
+def upload_landslide_hazard_to_s3(
     site_config: dict[str, Any],
     publish_dir: Path,
     *,
@@ -342,7 +343,7 @@ def upload_heat_hazard_to_s3(
             print(f"  {k}: {v}")
         return urls
 
-    aws = require_aws_cli()
+    aws = resolve_aws_cli()
     cog_key = f"{prefix}/{COG_FILENAME}"
     subprocess.run([aws, "s3", "cp", str(paths["cog"]), _s3_uri(cog_key)], check=True)
     print(f"Uploaded COG → {urls['cog']}")
@@ -355,15 +356,10 @@ def upload_heat_hazard_to_s3(
         )
         print(f"Uploaded {tiles_name} → {urls[tiles_name]}")
 
-    bairro = site_config.get("bairro") or {}
-    if bairro.get("enabled") and "bairro_gpkg" in urls:
-        local_gpkg = Path(gpkg_path) if gpkg_path else resolve_gpkg(site_config)
-        if local_gpkg and local_gpkg.is_file():
-            gpkg_key = f"{vector_s3_prefix(site_config)}/{local_gpkg.name}"
-            subprocess.run([aws, "s3", "cp", str(local_gpkg), _s3_uri(gpkg_key)], check=True)
-            print(f"Uploaded bairro GPKG → {urls['bairro_gpkg']}")
-        else:
-            print(f"Skipping bairro GPKG upload (missing: {local_gpkg})")
+    if gpkg_name and gpkg_path and gpkg_path.is_file() and "bairro_gpkg" in urls:
+        gpkg_key = f"{vector_s3_prefix(site_config)}/{gpkg_name}"
+        subprocess.run([aws, "s3", "cp", str(gpkg_path), _s3_uri(gpkg_key)], check=True)
+        print(f"Uploaded bairro GPKG → {urls['bairro_gpkg']}")
 
     return urls
 
@@ -375,11 +371,12 @@ def build_catalog_entry(
     urls = urls or expected_urls(site_config)
     display = str(site_config.get("display_name") or site_config.get("site_slug"))
     dataset_id = dataset_id_for_site(site_config)
-    short = "POA" if dataset_id == "poa_heat_hazard" else display
+    short = "POA" if dataset_id == "poa_landslide_hazard" else display
     season = str(site_config.get("season_label") or site_config.get("season") or "").upper()
     start_year = site_config.get("start_year", "")
     end_year = site_config.get("end_year", "")
     year_span = f"{start_year}–{end_year}" if start_year and end_year else "configured years"
+    dw_year = site_config.get("dw_year", "")
 
     download: dict[str, Any] = {"cog_url": urls["cog"]}
     if urls.get("bairro_gpkg"):
@@ -387,26 +384,28 @@ def build_catalog_entry(
 
     return {
         "dataset_id": dataset_id,
-        "dataset_name": f"Heat Hazard Score ({short})",
+        "dataset_name": f"Landslide Hazard Score ({short})",
         "publisher": "Open Earth Foundation (derived processing)",
         "license": "CC BY 4.0",
-        "resolution": "~250m",
+        "resolution": "~90m",
         "crs": "EPSG:4326",
         "access_type": "internal_storage",
-        "source_url": "https://developers.google.com/earth-engine/datasets/catalog/LANDSAT_LC08_C02_T1_L2",
-        "dataset_type": "heat",
+        "source_url": "https://developers.google.com/earth-engine/datasets/catalog/COPERNICUS_DEM_GLO30",
+        "dataset_type": "landslide",
         "type": "numeric_raster",
         "data_quality": {
-            "temporal_coverage": f"{season} {year_span} (Landsat 8, MODIS MOD11A2)".strip(),
+            "temporal_coverage": (
+                f"Static terrain (Copernicus GLO-30 slope, MERIT HAND, clay); "
+                f"CHIRPS R90p + MODIS NDVI P10 {season} {year_span}; "
+                f"Dynamic World mode {dw_year}".strip()
+            ),
             "accuracy": (
-                "Arithmetic mean of normalized LST layers: Landsat 8 P90, "
-                "MODIS LST daytime P90, MODIS LST nighttime P90 "
-                "(ERA5 optional per site config)"
+                "Weighted ensemble of slope/precip/clay/NDVI/HAND on a 90 m grid with "
+                "Dynamic World land-cover modifier; slope < 15° gates H to 0"
             ),
             "limitations": (
-                "LST is a surface temperature proxy, not air temperature; "
-                "values reflect land cover and albedo. Season-specific composite; "
-                "cloud masking may reduce coverage in some years."
+                "Susceptibility index only — not failure probability or event frequency; "
+                "CHIRPS R90p ~5 km nearest-neighbour to 90 m; not inventory-validated"
             ),
         },
         "value_encoding": {
@@ -423,11 +422,12 @@ def build_catalog_entry(
             "metadata": {"url": []},
         },
         "description": (
-            f"OEF heat hazard susceptibility index (0–1) for {display}. Ensemble of Landsat 8 LST P90, "
-            "MODIS MOD11A2 daytime LST P90, and MODIS MOD11A2 nighttime LST P90 on a common ~250 m grid. "
-            "Arithmetic mean of normalized layers. Methodology in `models/heat_hazard/model_card.md`; "
-            "defaults in `models/heat_hazard/config.yaml`; score CLI "
-            "`transformation/heat_hazard/compute_heat_hazard.py`."
+            f"OEF landslide susceptibility index (0–1) for {display} on a 90 m grid. "
+            "Ensemble of Copernicus GLO-30 slope, CHIRPS R90p, SoilGrids clay %, "
+            "MODIS NDVI P10, and MERIT Hydro HAND, with Dynamic World land cover modifier. "
+            "Slope < 15° gates all components to zero. Methodology in "
+            "`models/landslide_hazard/model_card.md`. Score CLI "
+            "`transformation/landslide_hazard/compute_landslide_hazard.py`."
         ),
     }
 
@@ -569,7 +569,7 @@ def run_publish(
     upload: bool = False,
     write_catalog: bool = False,
 ) -> dict[str, str]:
-    site_config = load_site_config(site, HEAT_HAZARD_ROOT)
+    site_config = load_site_config(site, LANDSLIDE_HAZARD_ROOT)
     publish_cfg = normalize_publish_cfg(site_config)
     tile_zoom = str(publish_cfg.get("tile_zoom", "8-15"))
     publish_dir = publish_dir_for(site_config)
@@ -586,14 +586,14 @@ def run_publish(
     else:
         print(f"Skipping build; using existing artifacts in {publish_dir}")
 
-    urls = upload_heat_hazard_to_s3(
+    urls = upload_landslide_hazard_to_s3(
         site_config,
         publish_dir,
         upload=upload,
         gpkg_path=gpkg,
     )
     entry = build_catalog_entry(site_config, urls)
-    catalog_path = find_catalog_path(HEAT_HAZARD_ROOT)
+    catalog_path = find_catalog_path(LANDSLIDE_HAZARD_ROOT)
     upsert_datasets_yaml(entry, catalog_path, dry_run=not write_catalog)
     print(f"UPLOAD={upload} | WRITE_CATALOG={write_catalog}")
     print(f"Publish dir: {publish_dir}")
@@ -602,17 +602,35 @@ def run_publish(
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--site", default=None, help="City slug (default: HEAT_SITE)")
-    parser.add_argument("--build", action="store_true", default=True)
-    parser.add_argument("--no-build", action="store_false", dest="build")
-    parser.add_argument("--upload", action="store_true", help="Upload COG + tiles to S3")
+    parser.add_argument("--site", default=None, help="City slug (default: LANDSLIDES_SITE)")
+    parser.add_argument(
+        "--build",
+        action="store_true",
+        default=True,
+        help="Build COG + tiles (default: True)",
+    )
+    parser.add_argument(
+        "--no-build",
+        action="store_false",
+        dest="build",
+        help="Skip COG/tiles build; upload/catalog existing out/",
+    )
+    parser.add_argument(
+        "--upload",
+        action="store_true",
+        help="Upload COG + tiles (+ GPKG if bairro enabled) to S3",
+    )
     parser.add_argument(
         "--write-catalog",
         action="store_true",
         help="Write catalog/datasets.yaml (default: dry-run print)",
     )
     args = parser.parse_args(argv)
-    site = args.site or os.environ.get("HEAT_SITE") or os.environ.get("FLOODS_SITE", "porto_alegre")
+    site = (
+        args.site
+        or os.environ.get("LANDSLIDES_SITE")
+        or os.environ.get("FLOODS_SITE", "porto_alegre")
+    )
     try:
         run_publish(
             site,
