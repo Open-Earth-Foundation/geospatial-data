@@ -13,6 +13,8 @@ open_water:
   transition_layer: jrc_surface_water_transition
   occurrence_layer: jrc_surface_water_occurrence
 
+# POA uses NBS_SAMPLE_DATA/porto-alegre-rivers.json when no local file is set.
+
 reference_hazard:            # catalog layer id used as the 250 m reference grid
   flood: flood_hazard
   heat: heat_hazard
@@ -32,6 +34,16 @@ catalog:
 
 Each layer entry is either a URL string or a mapping with optional `local` and `url`.
 `local` paths are relative to the **geospatial-data** repo root unless absolute.
+
+Optional top-level **`osm_waterways`** (Minnesota cities):
+
+```yaml
+osm_waterways:
+  local: transformation/nbs_screening/sites/richfield/data/input/osm_waterways_richfield.json
+```
+
+Generate with `python transformation/nbs_screening/extract_osm_rivers.py --site richfield`.
+POA falls back to `NBS_SAMPLE_DATA/porto-alegre-rivers.json` when unset.
 
 ## Runtime
 

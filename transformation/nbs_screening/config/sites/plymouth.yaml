@@ -16,6 +16,9 @@ open_water:
   enabled: false
   # When JRC GSW is extracted, enable and wire transition + occurrence layers below.
 
+osm_waterways:
+  local: transformation/nbs_screening/sites/plymouth/data/input/osm_waterways_plymouth.json  # extract_osm_rivers.py
+
 reference_hazard:
   flood: flood_hazard
   heat: heat_hazard

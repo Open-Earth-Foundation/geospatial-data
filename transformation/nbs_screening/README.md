@@ -31,6 +31,20 @@ python transformation/nbs_screening/nbs_mechanism_publish.py \\
 Publish staging: `transformation/nbs_screening/sites/<site>/out/flood_mechanism_type/`  
 Catalog dataset id: `{site}_flood_mechanism_type` (POA keeps `poa_flood_mechanism_type`).
 
+## OSM waterways (N4 — riverine distance)
+
+Grid screening uses local OSM river/stream/canal linework for `dist_nearest_m` / riverine mechanism flags. Extract per city (Overpass API):
+
+```bash
+python transformation/nbs_screening/extract_osm_rivers.py --site richfield
+python transformation/nbs_screening/extract_osm_rivers.py --all-mn
+```
+
+Output: `transformation/nbs_screening/sites/<site>/data/input/osm_waterways_<site>.json`  
+(`geoJson` wrapper compatible with POA `porto-alegre-rivers.json`).
+
+Override path: `NBS_RIVERS_GEOJSON` or `osm_waterways.local` in site YAML.
+
 ## Run (POA defaults / legacy)
 
 ```bash
@@ -112,5 +126,6 @@ See `docs/` in this folder, `config/sites/README.md`, and
 |----|---------|
 | **N1** | `site_config.py`, site YAMLs, `catalog_layers` refactor |
 | **N2** | `compute_nbs_mechanism.py` flood grid CLI |
-| **N3** (this) | `nbs_mechanism_publish.py` flood COG/tiles + catalog |
-| N4+ | DEM diagnostics CLI, OSM rivers, MN cities batch |
+| **N3** | `nbs_mechanism_publish.py` flood COG/tiles + catalog |
+| **N4** (this) | `extract_osm_rivers.py` + site-aware waterways in screening |
+| N5+ | MN batch compute/publish, DEM diagnostics CLI |

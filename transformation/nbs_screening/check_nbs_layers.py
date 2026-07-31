@@ -37,6 +37,7 @@ from site_config import (  # noqa: E402
     load_site_config,
     merged_catalog_entries,
     reference_hazard_layer,
+    resolve_osm_rivers_path,
 )
 
 LayerStatus = Literal["ready_local", "ready_url", "missing_local", "unconfigured"]
@@ -170,6 +171,11 @@ def audit_site(
         if c.used_in_grid_screening and c.status == "missing_local"
     ]
 
+    osm_cfg = config.get("osm_waterways") or {}
+    osm_local = osm_cfg.get("local")
+    osm_resolved = resolve_osm_rivers_path(site)
+    osm_ready = osm_resolved is not None
+
     return {
         "site": site,
         "display_name": config.get("display_name"),
@@ -178,12 +184,18 @@ def audit_site(
         "by_section": by_section,
         "reference_hazard": ref_layer,
         "reference_hazard_ready": ref_ready,
+        "osm_waterways": {
+            "configured_local": str(osm_local) if osm_local else None,
+            "resolved": str(osm_resolved) if osm_resolved else None,
+            "ready": osm_ready,
+        },
         "summary": {
             "total": len(checks),
             "ready": len(ready),
             "missing_local": len(missing),
             "required_missing": len(required_missing),
             "grid_screening_missing": len(grid_missing),
+            "osm_waterways_ready": osm_ready,
         },
         "layers": [asdict(c) for c in checks],
         "missing_local": [asdict(c) for c in missing],
@@ -213,6 +225,14 @@ def _print_report(report: dict[str, Any], *, verbose: bool) -> None:
     for hz, layer_id in report["reference_hazard"].items():
         status = report["reference_hazard_ready"][hz]
         print(f"  ref grid {hz}: {layer_id} → {status}")
+
+    osm = report.get("osm_waterways") or {}
+    osm_status = "ready" if osm.get("ready") else "MISSING (run extract_osm_rivers.py)"
+    print(f"  osm_waterways: {osm_status}")
+    if osm.get("configured_local") and not osm.get("ready"):
+        print(f"    expected: {osm['configured_local']}")
+    elif osm.get("resolved"):
+        print(f"    path: {osm['resolved']}")
 
     if verbose:
         print("\n  layer_id                          status  section   grid  req")
