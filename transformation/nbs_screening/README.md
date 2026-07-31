@@ -134,12 +134,21 @@ Optional env:
 | `NBS_RIVERS_GEOJSON` | Local OSM rivers GeoJSON for riverine distance |
 | `NBS_SAMPLE_DATA` | Directory containing `porto-alegre-rivers.json` |
 
-## DEM diagnostics (flood low-lying)
+## DEM diagnostics (N6 — flood low-lying)
+
+Relative elevation, depression mask, and depression depth from Copernicus DEM GLO-30 (30 m):
 
 ```bash
-export FLOODS_SITE=porto_alegre
-# transformation/copernicus_dem/release/v1/relative_elevation_depression_from_dem.ipynb
+python transformation/copernicus_dem/compute_dem_diagnostics.py --site richfield
+python transformation/copernicus_dem/compute_dem_diagnostics.py --country "United States"
+python transformation/copernicus_dem/compute_dem_diagnostics.py --all-configured --continue-on-error
 ```
+
+Optional GEE export when DEM is missing locally: `--export-dem` (see notebook
+`transformation/copernicus_dem/release/v1/relative_elevation_depression_from_dem.ipynb`).
+
+Outputs: `transformation/flood_hazard/sites/<site>/data/output/{prefix}_relative_elevation_30m.tif`
+(and depression mask/depth). Wired in NBS site YAML as `poa_relative_elevation`, etc.
 
 ## Docs
 
@@ -154,5 +163,5 @@ See `docs/` in this folder, `config/sites/README.md`, and
 | **N2** | `compute_nbs_mechanism.py` flood grid CLI |
 | **N3** | `nbs_mechanism_publish.py` flood COG/tiles + catalog |
 | **N4** | `extract_osm_rivers.py` + site-aware waterways in screening |
-| **N5** (this) | `batch_flood_mechanism.py` multi-city batch pipeline |
-| N6+ | DEM diagnostics CLI |
+| **N5** | `batch_flood_mechanism.py` multi-city batch pipeline |
+| **N6** (this) | `compute_dem_diagnostics.py` relative elevation + depression |

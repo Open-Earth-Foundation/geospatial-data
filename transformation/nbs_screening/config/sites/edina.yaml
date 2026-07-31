@@ -69,11 +69,11 @@ catalog:
     gfplain250m:
       local: transformation/flood_hazard/sites/edina/data/input/gfplain_250m_edina.tif  # [CCRA]
     poa_relative_elevation:
-      local: transformation/flood_hazard/sites/edina/data/input/edina_relative_elevation_30m.tif  # [CCRA]
+      local: transformation/flood_hazard/sites/edina/data/output/edina_relative_elevation_30m.tif  # compute_dem_diagnostics.py
     poa_depression_mask:
-      local: transformation/flood_hazard/sites/edina/data/input/edina_depression_mask_30m.tif  # [CCRA]
+      local: transformation/flood_hazard/sites/edina/data/output/edina_depression_mask_30m.tif  # compute_dem_diagnostics.py
     poa_depression_depth:
-      local: transformation/flood_hazard/sites/edina/data/input/edina_depression_depth_30m.tif  # [CCRA]
+      local: transformation/flood_hazard/sites/edina/data/output/edina_depression_depth_30m.tif  # compute_dem_diagnostics.py
     poa_slope:
       local: transformation/copernicus_dem/sites/edina/data/output/edina_slope_deg_30m.tif  # [CCRA]
     soilgrids_clay:

@@ -69,11 +69,11 @@ catalog:
     gfplain250m:
       local: transformation/flood_hazard/sites/rochester/data/input/gfplain_250m_rochester.tif  # [CCRA]
     poa_relative_elevation:
-      local: transformation/flood_hazard/sites/rochester/data/input/rochester_relative_elevation_30m.tif  # [CCRA]
+      local: transformation/flood_hazard/sites/rochester/data/output/rochester_relative_elevation_30m.tif  # compute_dem_diagnostics.py
     poa_depression_mask:
-      local: transformation/flood_hazard/sites/rochester/data/input/rochester_depression_mask_30m.tif  # [CCRA]
+      local: transformation/flood_hazard/sites/rochester/data/output/rochester_depression_mask_30m.tif  # compute_dem_diagnostics.py
     poa_depression_depth:
-      local: transformation/flood_hazard/sites/rochester/data/input/rochester_depression_depth_30m.tif  # [CCRA]
+      local: transformation/flood_hazard/sites/rochester/data/output/rochester_depression_depth_30m.tif  # compute_dem_diagnostics.py
     poa_slope:
       local: transformation/copernicus_dem/sites/rochester/data/output/rochester_slope_deg_30m.tif  # [CCRA]
     soilgrids_clay:
