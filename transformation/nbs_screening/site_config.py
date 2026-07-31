@@ -25,7 +25,65 @@ HazardKind = Literal["flood", "heat", "landslide"]
 
 DEFAULT_SITE = "porto_alegre"
 SITE_ENV_VAR = "NBS_SITE"
+# Legacy alias — prefer ``sites_for_country("United States")`` or ``list_configured_sites()``.
 MN_SITES = ("apple_valley", "edina", "plymouth", "richfield", "rochester")
+
+
+def list_configured_sites(nbs_root: Path | None = None) -> tuple[str, ...]:
+    """All city slugs with ``config/sites/{slug}.yaml``."""
+    root = Path(nbs_root or find_nbs_screening_root()).resolve()
+    sites_dir = root / "config" / "sites"
+    if not sites_dir.is_dir():
+        return ()
+    return tuple(sorted(p.stem for p in sites_dir.glob("*.yaml") if p.is_file()))
+
+
+def sites_for_country(country: str, nbs_root: Path | None = None) -> tuple[str, ...]:
+    """Configured sites whose YAML ``country`` field matches (case-insensitive)."""
+    target = country.strip().lower()
+    if not target:
+        return ()
+    out: list[str] = []
+    for slug in list_configured_sites(nbs_root):
+        cfg = load_site_config(slug, str(nbs_root) if nbs_root else None)
+        if str(cfg.get("country", "")).strip().lower() == target:
+            out.append(slug)
+    return tuple(out)
+
+
+def resolve_site_slugs(
+    *,
+    site: str | None = None,
+    sites_csv: str | None = None,
+    all_configured: bool = False,
+    country: str | None = None,
+    exclude: tuple[str, ...] = (),
+    nbs_root: Path | None = None,
+) -> list[str]:
+    """Resolve a site list from CLI flags; validates against configured YAMLs."""
+    if sites_csv:
+        selected = [s.strip() for s in sites_csv.split(",") if s.strip()]
+    elif site:
+        selected = [site.strip()]
+    elif country:
+        selected = list(sites_for_country(country, nbs_root))
+    elif all_configured:
+        selected = list(list_configured_sites(nbs_root))
+    else:
+        selected = list(list_configured_sites(nbs_root))
+
+    configured = set(list_configured_sites(nbs_root))
+    unknown = [s for s in selected if s not in configured]
+    if unknown:
+        raise ValueError(
+            f"Unknown site(s): {unknown}. "
+            f"Configured: {', '.join(sorted(configured))}"
+        )
+
+    if exclude:
+        skip = set(exclude)
+        selected = [s for s in selected if s not in skip]
+    return selected
 
 
 def find_nbs_screening_root(start: Path | None = None) -> Path:

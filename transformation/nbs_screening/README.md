@@ -37,7 +37,8 @@ Grid screening uses local OSM river/stream/canal linework for `dist_nearest_m` /
 
 ```bash
 python transformation/nbs_screening/extract_osm_rivers.py --site richfield
-python transformation/nbs_screening/extract_osm_rivers.py --all-mn
+python transformation/nbs_screening/extract_osm_rivers.py --all-configured
+python transformation/nbs_screening/extract_osm_rivers.py --country "United States"
 ```
 
 Output: `transformation/nbs_screening/sites/<site>/data/input/osm_waterways_<site>.json`  
@@ -45,27 +46,29 @@ Output: `transformation/nbs_screening/sites/<site>/data/input/osm_waterways_<sit
 
 Override path: `NBS_RIVERS_GEOJSON` or `osm_waterways.local` in site YAML.
 
-## Batch Minnesota (N5)
+## Batch multi-city (N5)
 
-End-to-end flood mechanism for all MN cities:
+End-to-end flood mechanism for any configured city (`config/sites/{slug}.yaml`):
 
 ```bash
-# Extract missing rivers + compute + build COG/tiles (local)
-python transformation/nbs_screening/batch_mn_flood_mechanism.py
+# All configured sites (add a YAML to onboard a new city)
+python transformation/nbs_screening/batch_flood_mechanism.py --all-configured
 
-# Full publish to S3 + catalog
-python transformation/nbs_screening/batch_mn_flood_mechanism.py \\
-  --upload --write-catalog --continue-on-error
+# Filter by country field in site YAML (current MN cohort)
+python transformation/nbs_screening/batch_flood_mechanism.py --country "United States"
 
-# Plan only
-python transformation/nbs_screening/batch_mn_flood_mechanism.py --dry-run
+# Explicit list
+python transformation/nbs_screening/batch_flood_mechanism.py --sites richfield,edina
 
-# Subset
-python transformation/nbs_screening/batch_mn_flood_mechanism.py --sites richfield,edina
+# Exclude POA from a full run
+python transformation/nbs_screening/batch_flood_mechanism.py --all-configured --exclude porto_alegre
+
+# Upload + catalog
+python transformation/nbs_screening/batch_flood_mechanism.py \\
+  --country "United States" --upload --write-catalog --continue-on-error
 ```
 
-Sites: `apple_valley`, `edina`, `plymouth`, `richfield`, `rochester`.  
-Skips cities missing required `flood_hazard` (see `check_nbs_layers.py`).
+Legacy alias: `batch_mn_flood_mechanism.py` → same as `--country "United States"`.
 
 ## Run (POA defaults / legacy)
 
@@ -107,7 +110,8 @@ Check which layers exist on disk vs still pending extraction:
 
 ```bash
 python transformation/nbs_screening/check_nbs_layers.py --site richfield
-python transformation/nbs_screening/check_nbs_layers.py --all-mn
+python transformation/nbs_screening/check_nbs_layers.py --all-configured
+python transformation/nbs_screening/check_nbs_layers.py --country "United States"
 python transformation/nbs_screening/check_nbs_layers.py --site plymouth --hazard flood -v
 ```
 
@@ -150,5 +154,5 @@ See `docs/` in this folder, `config/sites/README.md`, and
 | **N2** | `compute_nbs_mechanism.py` flood grid CLI |
 | **N3** | `nbs_mechanism_publish.py` flood COG/tiles + catalog |
 | **N4** | `extract_osm_rivers.py` + site-aware waterways in screening |
-| **N5** (this) | `batch_mn_flood_mechanism.py` MN batch pipeline |
+| **N5** (this) | `batch_flood_mechanism.py` multi-city batch pipeline |
 | N6+ | DEM diagnostics CLI |
