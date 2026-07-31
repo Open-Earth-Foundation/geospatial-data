@@ -4,7 +4,20 @@ Rule-based Nature-based Solutions **grid** screening and dominant-mechanism laye
 (flood / heat / landslide). The primary unit is the **250 m cell**; bairro/AOI queries
 are legacy and out of scope for the multi-city pipeline.
 
-## Run (POA defaults)
+## Run (grid mechanism — N2)
+
+```bash
+# Flood mechanism type on city boundary (Minnesota pilot)
+python transformation/nbs_screening/compute_nbs_mechanism.py --site richfield
+
+# Full hazard grid extent (POA-style)
+python transformation/nbs_screening/compute_nbs_mechanism.py --site porto_alegre --aoi full
+```
+
+Outputs: `transformation/nbs_screening/sites/<site>/data/output/`  
+(`flood_mechanism_type_<site>_250m.tif`, observed + IDW mask, GeoJSON, `metadata.json`).
+
+## Run (POA defaults / legacy)
 
 ```bash
 # From geospatial-data repo root (with deps: geopandas, rasterio, pyyaml, …)
@@ -83,7 +96,7 @@ See `docs/` in this folder, `config/sites/README.md`, and
 
 | PR | Content |
 |----|---------|
-| **N1** (this) | `site_config.py`, site YAMLs, `catalog_layers` refactor |
-| N2 | `compute_nbs_mechanism.py` (grid CLI, flood pilot) |
+| **N1** | `site_config.py`, site YAMLs, `catalog_layers` refactor |
+| **N2** (this) | `compute_nbs_mechanism.py` flood grid CLI |
 | N3 | Mechanism publish + catalog registration |
 | N4+ | DEM diagnostics CLI, OSM rivers, MN cities batch |

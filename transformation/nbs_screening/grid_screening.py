@@ -822,6 +822,35 @@ def poa_flood_reference_bounds_geom():
     return site_reference_bounds_geom("flood", DEFAULT_SITE)
 
 
+def screen_site_flood_mechanism_grid(
+    site: str,
+    aoi_geom=None,
+    **kwargs: Any,
+) -> GridScreeningResult:
+    """Screen hazard-valid 250 m cells for *site*; default AOI is city boundary."""
+    if aoi_geom is None:
+        from site_config import site_boundary_path
+
+        boundary_path = site_boundary_path(site)
+        if not boundary_path.is_file():
+            raise FileNotFoundError(f"Missing city boundary: {boundary_path}")
+        gdf = gpd.read_file(boundary_path)
+        if gdf.crs is None:
+            gdf = gdf.set_crs(4326)
+        aoi_geom = gdf.to_crs(4326).union_all()
+
+    return screen_grid(
+        aoi_geom,
+        hazard="flood",
+        site=site,
+        aoi_label=site,
+        require_hazard_valid=kwargs.pop("require_hazard_valid", True),
+        preload_layers=kwargs.pop("preload_layers", True),
+        zonal_fallback=kwargs.pop("zonal_fallback", False),
+        **kwargs,
+    )
+
+
 def screen_poa_flood_mechanism_grid(**kwargs: Any) -> GridScreeningResult:
     """Screen hazard-valid 250 m cells on the POA flood grid; export IDW-fills gaps."""
     return screen_grid(
@@ -1022,58 +1051,84 @@ def _apply_filled_classifications_to_cells(
         cell.is_interpolated = True
 
 
+def flood_mechanism_layer_stem(site: str) -> str:
+    """Raster basename stem for flood mechanism exports (POA keeps legacy ``poa`` slug)."""
+    slug = "poa" if site == DEFAULT_SITE else site
+    return f"flood_mechanism_type_{slug}_250m"
+
+
 def export_flood_mechanism_geotiff(
     result: GridScreeningResult,
     out_path: Path,
     *,
     ref_path: RasterRef | None = None,
+    site: str | None = None,
     observed_only: bool = False,
 ) -> Path:
     """Rasterize dominant flood mechanism codes onto the 250 m reference grid."""
     if result.hazard != "flood":
         raise ValueError("export_flood_mechanism_geotiff requires hazard='flood'")
 
-    ref_path = ref_path or REF_RASTER["flood"]
+    ref_path = ref_path or get_reference_hazard_raster("flood", site)
     code_grid, _, _ = _flood_mechanism_grids_from_result(
         result, ref_path, observed_only=observed_only
     )
     return _write_uint8_geotiff(code_grid, out_path, ref_path=ref_path)
 
 
-def export_poa_flood_mechanism_layers(
+def export_flood_mechanism_layers(
     result: GridScreeningResult,
     out_dir: Path,
     *,
+    site: str,
     ref_path: RasterRef | None = None,
+    apply_open_water_mask: bool | None = None,
 ) -> dict[str, Path]:
-    """Export observed, IDW-filled, and interpolation-mask rasters for POA flood mechanism."""
+    """Export observed, IDW-filled, and interpolation-mask rasters for flood mechanism."""
     if result.hazard != "flood":
-        raise ValueError("export_poa_flood_mechanism_layers requires hazard='flood'")
+        raise ValueError("export_flood_mechanism_layers requires hazard='flood'")
 
-    ref_path = ref_path or REF_RASTER["flood"]
+    from site_config import load_site_config, open_water_enabled
+
+    ref_path = ref_path or get_reference_hazard_raster("flood", site)
     out_dir = Path(out_dir)
-    observed_path = out_dir / "flood_mechanism_type_poa_250m_observed.tif"
-    filled_path = out_dir / "flood_mechanism_type_poa_250m.tif"
-    interp_path = out_dir / "flood_mechanism_is_interpolated_poa_250m.tif"
+    stem = flood_mechanism_layer_stem(site)
+    observed_path = out_dir / f"{stem}_observed.tif"
+    filled_path = out_dir / f"{stem}.tif"
+    if site == DEFAULT_SITE:
+        interp_path = out_dir / "flood_mechanism_is_interpolated_poa_250m.tif"
+    else:
+        interp_path = out_dir / f"flood_mechanism_is_interpolated_{site}_250m.tif"
 
     observed_grid, strength_grids, transform = _flood_mechanism_grids_from_result(
         result, ref_path, observed_only=True
     )
-    water_mask = poa_permanent_open_water_mask(ref_path)
-    _exclude_open_water_from_observed(
-        observed_grid, strength_grids, water_mask, FLOOD_STRENGTH_KEYS
+    mask_water = (
+        apply_open_water_mask
+        if apply_open_water_mask is not None
+        else open_water_enabled(load_site_config(site))
     )
+    water_px = 0
+    if mask_water:
+        water_mask = poa_permanent_open_water_mask(ref_path, site=site)
+        _exclude_open_water_from_observed(
+            observed_grid, strength_grids, water_mask, FLOOD_STRENGTH_KEYS
+        )
+    else:
+        water_mask = np.zeros(observed_grid.shape, dtype=bool)
+
     filled_grid, is_interp_grid, filled_mechs = _idw_fill_flood_mechanism_grid(
         observed_grid, strength_grids, transform
     )
     _apply_filled_classifications_to_cells(result, filled_mechs)
 
-    water_px = _mask_open_water_pixels(
-        observed_grid,
-        filled_grid,
-        is_interp_grid,
-        water_mask,
-    )
+    if mask_water:
+        water_px = _mask_open_water_pixels(
+            observed_grid,
+            filled_grid,
+            is_interp_grid,
+            water_mask,
+        )
 
     paths = {
         "observed": _write_uint8_geotiff(observed_grid, observed_path, ref_path=ref_path),
@@ -1085,11 +1140,27 @@ def export_poa_flood_mechanism_layers(
     filled_n = int((filled_grid != MECHANISM_RASTER_NODATA).sum())
     interp_n = int(is_interp_grid.sum())
     print(
-        f"POA mechanism rasters: observed={observed_n} px, "
+        f"{site} flood mechanism rasters: observed={observed_n} px, "
         f"filled={filled_n} px (+{filled_n - observed_n} IDW), interpolated={interp_n} px, "
         f"open_water_masked={water_px} px"
     )
     return paths
+
+
+def export_poa_flood_mechanism_layers(
+    result: GridScreeningResult,
+    out_dir: Path,
+    *,
+    ref_path: RasterRef | None = None,
+) -> dict[str, Path]:
+    """Export observed, IDW-filled, and interpolation-mask rasters for POA flood mechanism."""
+    return export_flood_mechanism_layers(
+        result,
+        out_dir,
+        site=DEFAULT_SITE,
+        ref_path=ref_path,
+        apply_open_water_mask=True,
+    )
 
 
 def _heat_mechanism_grids_from_result(
