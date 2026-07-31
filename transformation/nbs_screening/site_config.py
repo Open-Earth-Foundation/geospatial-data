@@ -204,3 +204,22 @@ def reference_hazard_layer(hazard: HazardKind, config: dict[str, Any] | None = N
         "landslide": "landslide_hazard",
     }
     return str(refs.get(hazard) or defaults[hazard])
+
+
+def open_water_enabled(config: dict[str, Any] | None = None, site: str | None = None) -> bool:
+    """Whether permanent open-water masking runs on mechanism exports."""
+    cfg = config or load_site_config(site)
+    open_water = cfg.get("open_water") or {}
+    return bool(open_water.get("enabled", False))
+
+
+def site_output_dir(site: str, nbs_root: Path | None = None) -> Path:
+    """Default grid mechanism outputs: ``sites/{site}/data/output``."""
+    root = Path(nbs_root or find_nbs_screening_root()).resolve()
+    return root / "sites" / site / "data" / "output"
+
+
+def site_boundary_path(site: str, repo_root: Path | None = None) -> Path:
+    """City boundary GeoJSON shared with flood_hazard site layouts."""
+    root = Path(repo_root or find_repo_root()).resolve()
+    return root / "transformation" / "flood_hazard" / "sites" / site / "boundary" / "site.geojson"
