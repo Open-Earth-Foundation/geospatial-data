@@ -30,14 +30,13 @@ if str(NBS_ROOT) not in sys.path:
 
 from catalog_layers import clear_rivers_cache  # noqa: E402
 from site_config import (  # noqa: E402
+    MN_SITES,
     find_repo_root,
     load_site_config,
     resolve_osm_rivers_path,
     site_boundary_path,
     site_osm_rivers_path,
 )
-
-MN_SITES = ("apple_valley", "edina", "plymouth", "richfield", "rochester")
 DEFAULT_OVERPASS = "https://overpass-api.de/api/interpreter"
 WATERWAY_REGEX = "river|stream|canal"
 USER_AGENT = "OEF-NBS-Screening/1.0 (geospatial-data extract_osm_rivers.py)"

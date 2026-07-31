@@ -45,6 +45,28 @@ Output: `transformation/nbs_screening/sites/<site>/data/input/osm_waterways_<sit
 
 Override path: `NBS_RIVERS_GEOJSON` or `osm_waterways.local` in site YAML.
 
+## Batch Minnesota (N5)
+
+End-to-end flood mechanism for all MN cities:
+
+```bash
+# Extract missing rivers + compute + build COG/tiles (local)
+python transformation/nbs_screening/batch_mn_flood_mechanism.py
+
+# Full publish to S3 + catalog
+python transformation/nbs_screening/batch_mn_flood_mechanism.py \\
+  --upload --write-catalog --continue-on-error
+
+# Plan only
+python transformation/nbs_screening/batch_mn_flood_mechanism.py --dry-run
+
+# Subset
+python transformation/nbs_screening/batch_mn_flood_mechanism.py --sites richfield,edina
+```
+
+Sites: `apple_valley`, `edina`, `plymouth`, `richfield`, `rochester`.  
+Skips cities missing required `flood_hazard` (see `check_nbs_layers.py`).
+
 ## Run (POA defaults / legacy)
 
 ```bash
@@ -127,5 +149,6 @@ See `docs/` in this folder, `config/sites/README.md`, and
 | **N1** | `site_config.py`, site YAMLs, `catalog_layers` refactor |
 | **N2** | `compute_nbs_mechanism.py` flood grid CLI |
 | **N3** | `nbs_mechanism_publish.py` flood COG/tiles + catalog |
-| **N4** (this) | `extract_osm_rivers.py` + site-aware waterways in screening |
-| N5+ | MN batch compute/publish, DEM diagnostics CLI |
+| **N4** | `extract_osm_rivers.py` + site-aware waterways in screening |
+| **N5** (this) | `batch_mn_flood_mechanism.py` MN batch pipeline |
+| N6+ | DEM diagnostics CLI |

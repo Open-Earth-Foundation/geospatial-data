@@ -33,16 +33,13 @@ from catalog_layers import (  # noqa: E402
 )
 from site_config import (  # noqa: E402
     DEFAULT_SITE,
+    MN_SITES,
     _layer_entry,
     load_site_config,
     merged_catalog_entries,
     reference_hazard_layer,
     resolve_osm_rivers_path,
 )
-
-LayerStatus = Literal["ready_local", "ready_url", "missing_local", "unconfigured"]
-
-MN_SITES = ("apple_valley", "edina", "plymouth", "richfield", "rochester")
 HAZARDS: tuple[HazardKind, ...] = ("flood", "heat", "landslide")
 CATALOG_SECTIONS = ("shared", *HAZARDS)
 

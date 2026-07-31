@@ -25,6 +25,7 @@ HazardKind = Literal["flood", "heat", "landslide"]
 
 DEFAULT_SITE = "porto_alegre"
 SITE_ENV_VAR = "NBS_SITE"
+MN_SITES = ("apple_valley", "edina", "plymouth", "richfield", "rochester")
 
 
 def find_nbs_screening_root(start: Path | None = None) -> Path:
