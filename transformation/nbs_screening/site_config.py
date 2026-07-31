@@ -219,6 +219,12 @@ def site_output_dir(site: str, nbs_root: Path | None = None) -> Path:
     return root / "sites" / site / "data" / "output"
 
 
+def site_publish_dir(site: str, hazard: HazardKind = "flood", nbs_root: Path | None = None) -> Path:
+    """COG/tiles publish staging: ``sites/{site}/out/{hazard}_mechanism_type``."""
+    root = Path(nbs_root or find_nbs_screening_root()).resolve()
+    return root / "sites" / site / "out" / f"{hazard}_mechanism_type"
+
+
 def site_boundary_path(site: str, repo_root: Path | None = None) -> Path:
     """City boundary GeoJSON shared with flood_hazard site layouts."""
     root = Path(repo_root or find_repo_root()).resolve()
