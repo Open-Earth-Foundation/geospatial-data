@@ -6,7 +6,8 @@ Fetches river/stream/canal ways from the Overpass API inside the city boundary
 
 Example:
   python transformation/nbs_screening/extract_osm_rivers.py --site richfield
-  python transformation/nbs_screening/extract_osm_rivers.py --all-mn
+  python transformation/nbs_screening/extract_osm_rivers.py --all-configured
+  python transformation/nbs_screening/extract_osm_rivers.py --country "United States"
   python transformation/nbs_screening/extract_osm_rivers.py --site edina --buffer-m 1500
 """
 
@@ -33,11 +34,10 @@ from site_config import (  # noqa: E402
     find_repo_root,
     load_site_config,
     resolve_osm_rivers_path,
+    resolve_site_slugs,
     site_boundary_path,
     site_osm_rivers_path,
 )
-
-MN_SITES = ("apple_valley", "edina", "plymouth", "richfield", "rochester")
 DEFAULT_OVERPASS = "https://overpass-api.de/api/interpreter"
 WATERWAY_REGEX = "river|stream|canal"
 USER_AGENT = "OEF-NBS-Screening/1.0 (geospatial-data extract_osm_rivers.py)"
@@ -253,7 +253,20 @@ def extract_osm_rivers(
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--site", help="City slug (e.g. richfield)")
-    parser.add_argument("--all-mn", action="store_true", help="Extract all Minnesota cities")
+    parser.add_argument(
+        "--all-configured",
+        action="store_true",
+        help="Extract all cities with config/sites/{slug}.yaml",
+    )
+    parser.add_argument(
+        "--country",
+        help='Extract cities whose YAML country matches (e.g. "United States")',
+    )
+    parser.add_argument(
+        "--all-mn",
+        action="store_true",
+        help='Alias for --country "United States" (legacy)',
+    )
     parser.add_argument(
         "--buffer-m",
         type=float,
@@ -270,11 +283,24 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     if args.all_mn:
-        sites = list(MN_SITES)
-    elif args.site:
-        sites = [args.site]
-    else:
-        parser.error("Provide --site or --all-mn")
+        args.country = args.country or "United States"
+
+    selection_flags = sum(bool(x) for x in (args.site, args.all_configured, args.country))
+    if selection_flags > 1:
+        parser.error("Use only one of --site, --all-configured, --country")
+    if selection_flags == 0:
+        parser.error("Provide --site, --all-configured, or --country")
+
+    try:
+        if args.site:
+            sites = resolve_site_slugs(site=args.site)
+        elif args.all_configured:
+            sites = resolve_site_slugs(all_configured=True)
+        else:
+            sites = resolve_site_slugs(country=args.country)
+    except ValueError as exc:
+        print(f"ERROR: {exc}", file=sys.stderr)
+        return 1
 
     try:
         for site in sites:

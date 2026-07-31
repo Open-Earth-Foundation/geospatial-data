@@ -7,7 +7,8 @@ Use before running grid mechanism screening to see what still needs extraction.
 Examples:
   python transformation/nbs_screening/check_nbs_layers.py --site richfield
   python transformation/nbs_screening/check_nbs_layers.py --site plymouth --hazard flood
-  python transformation/nbs_screening/check_nbs_layers.py --all-mn
+  python transformation/nbs_screening/check_nbs_layers.py --all-configured
+  python transformation/nbs_screening/check_nbs_layers.py --country "United States"
   python transformation/nbs_screening/check_nbs_layers.py --site richfield --json
 """
 
@@ -38,11 +39,8 @@ from site_config import (  # noqa: E402
     merged_catalog_entries,
     reference_hazard_layer,
     resolve_osm_rivers_path,
+    resolve_site_slugs,
 )
-
-LayerStatus = Literal["ready_local", "ready_url", "missing_local", "unconfigured"]
-
-MN_SITES = ("apple_valley", "edina", "plymouth", "richfield", "rochester")
 HAZARDS: tuple[HazardKind, ...] = ("flood", "heat", "landslide")
 CATALOG_SECTIONS = ("shared", *HAZARDS)
 
@@ -274,9 +272,18 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--site", default=None, help=f"City slug (default: {DEFAULT_SITE} or NBS_SITE)")
     parser.add_argument(
+        "--all-configured",
+        action="store_true",
+        help="Check all cities with config/sites/{slug}.yaml",
+    )
+    parser.add_argument(
+        "--country",
+        help='Check cities whose YAML country matches (e.g. "United States")',
+    )
+    parser.add_argument(
         "--all-mn",
         action="store_true",
-        help=f"Check all Minnesota sites: {', '.join(MN_SITES)}",
+        help='Alias for --country "United States" (legacy)',
     )
     parser.add_argument(
         "--hazard",
@@ -294,9 +301,22 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     if args.all_mn:
-        sites = list(MN_SITES)
-    else:
-        sites = [args.site or os.environ.get("NBS_SITE", DEFAULT_SITE)]
+        args.country = args.country or "United States"
+
+    selection_flags = sum(bool(x) for x in (args.site, args.all_configured, args.country))
+    if selection_flags > 1:
+        parser.error("Use only one of --site, --all-configured, --country")
+
+    try:
+        if args.all_configured:
+            sites = resolve_site_slugs(all_configured=True)
+        elif args.country:
+            sites = resolve_site_slugs(country=args.country)
+        else:
+            sites = resolve_site_slugs(site=args.site or os.environ.get("NBS_SITE", DEFAULT_SITE))
+    except ValueError as exc:
+        print(f"ERROR: {exc}", file=sys.stderr)
+        return 1
 
     hazard = None if args.hazard == "all" else args.hazard
     reports = [audit_site(site, hazard=hazard, by_section=args.by_section) for site in sites]

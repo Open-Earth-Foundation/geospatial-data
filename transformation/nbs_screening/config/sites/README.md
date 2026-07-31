@@ -45,6 +45,10 @@ osm_waterways:
 Generate with `python transformation/nbs_screening/extract_osm_rivers.py --site richfield`.
 POA falls back to `NBS_SAMPLE_DATA/porto-alegre-rivers.json` when unset.
 
+**Onboarding a new city:** add `config/sites/{slug}.yaml` (+ boundary under
+`transformation/flood_hazard/sites/{slug}/boundary/site.geojson`). Batch/extract
+CLIs discover sites from that directory automatically.
+
 ## Runtime
 
 ```python
@@ -84,5 +88,6 @@ Audit readiness:
 
 ```bash
 python transformation/nbs_screening/check_nbs_layers.py --site richfield
-python transformation/nbs_screening/check_nbs_layers.py --all-mn --json
+python transformation/nbs_screening/check_nbs_layers.py --all-configured --json
+python transformation/nbs_screening/check_nbs_layers.py --country "United States"
 ```
