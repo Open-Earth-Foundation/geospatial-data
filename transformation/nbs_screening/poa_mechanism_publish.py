@@ -1,11 +1,22 @@
-"""Upload POA mechanism-type COG, XYZ tiles, and screened-cell GeoJSON to S3."""
+"""Upload POA mechanism-type COG, XYZ tiles, and screened-cell GeoJSON to S3.
+
+Legacy notebook layout (``output/flood_mechanism_type_poa_250m/``) is still
+supported. Multi-city sites should use ``nbs_mechanism_publish.py`` instead.
+"""
 
 from __future__ import annotations
 
 import shutil
 import subprocess
+import sys
 from pathlib import Path
 from typing import Literal
+
+NBS_ROOT = Path(__file__).resolve().parent
+if str(NBS_ROOT) not in sys.path:
+    sys.path.insert(0, str(NBS_ROOT))
+
+from nbs_mechanism_publish import upload_flood_mechanism_to_s3  # noqa: E402
 
 HazardKind = Literal["flood", "heat", "landslide"]
 
@@ -63,6 +74,14 @@ def upload_poa_mechanism_to_s3(
     upload_geojson: bool = True,
 ) -> dict[str, str]:
     """Upload COG, tile pyramids, and GeoJSON. Returns public HTTPS URLs."""
+    if hazard == "flood":
+        return upload_flood_mechanism_to_s3(
+            "porto_alegre",
+            publish_dir=publish_dir,
+            geojson_path=geojson_path,
+            upload=True,
+        )
+
     require_aws_cli()
     cfg = _PUBLISH_CONFIG[hazard]
     out_dir = Path(out_dir)

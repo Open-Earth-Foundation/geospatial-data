@@ -17,6 +17,20 @@ python transformation/nbs_screening/compute_nbs_mechanism.py --site porto_alegre
 Outputs: `transformation/nbs_screening/sites/<site>/data/output/`  
 (`flood_mechanism_type_<site>_250m.tif`, observed + IDW mask, GeoJSON, `metadata.json`).
 
+## Publish (N3 — flood mechanism COG + tiles)
+
+```bash
+# Build COG + XYZ tiles locally (Richfield pilot)
+python transformation/nbs_screening/nbs_mechanism_publish.py --site richfield --build
+
+# Upload to S3 and register in catalog/datasets.yaml
+python transformation/nbs_screening/nbs_mechanism_publish.py \\
+  --site richfield --build --upload --write-catalog
+```
+
+Publish staging: `transformation/nbs_screening/sites/<site>/out/flood_mechanism_type/`  
+Catalog dataset id: `{site}_flood_mechanism_type` (POA keeps `poa_flood_mechanism_type`).
+
 ## Run (POA defaults / legacy)
 
 ```bash
@@ -97,6 +111,6 @@ See `docs/` in this folder, `config/sites/README.md`, and
 | PR | Content |
 |----|---------|
 | **N1** | `site_config.py`, site YAMLs, `catalog_layers` refactor |
-| **N2** (this) | `compute_nbs_mechanism.py` flood grid CLI |
-| N3 | Mechanism publish + catalog registration |
+| **N2** | `compute_nbs_mechanism.py` flood grid CLI |
+| **N3** (this) | `nbs_mechanism_publish.py` flood COG/tiles + catalog |
 | N4+ | DEM diagnostics CLI, OSM rivers, MN cities batch |

@@ -27,6 +27,14 @@ FLOOD_MECHANISM_TYPE_CODES: dict[FloodMechanismType, int] = {
     "drainage_constrained": 4,
     "mixed": 5,
 }
+FLOOD_MECHANISM_COLORS: dict[FloodMechanismType, str] = {
+    "none": "#e0e0e0",
+    "riverine": "#2166ac",
+    "pluvial": "#fdae61",
+    "low_lying": "#abd9e9",
+    "drainage_constrained": "#7b3294",
+    "mixed": MECHANISM_MIXED_COLOR,
+}
 FLOOD_MECHANISM_CODE_TO_TYPE: dict[int, FloodMechanismType] = {
     v: k for k, v in FLOOD_MECHANISM_TYPE_CODES.items()
 }
