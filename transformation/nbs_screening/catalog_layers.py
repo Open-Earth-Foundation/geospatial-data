@@ -54,21 +54,72 @@ BARIO_VECTOR_URLS: dict[str, str] = {
 }
 
 _GDF_CACHE: dict[str, gpd.GeoDataFrame] = {}
-_RIVERS_FEATURE_CACHE: list[tuple[Any, dict]] | None = None
-_RIVERS_RTREE_CACHE: Any | None = None
+_RIVERS_FEATURE_CACHE: dict[str, list[tuple[Any, dict]]] = {}
+_RIVERS_RTREE_CACHE: dict[str, Any] = {}
 
 
-def _river_features() -> list[tuple[Any, dict]]:
-    """Load OSM river geometries once (grid screening calls this per cell)."""
-    global _RIVERS_FEATURE_CACHE
-    if _RIVERS_FEATURE_CACHE is None:
-        rivers_path = Path(__import__("os").environ["NBS_RIVERS_GEOJSON"]).expanduser() if __import__("os").environ.get("NBS_RIVERS_GEOJSON") else (SAMPLE_DATA / "porto-alegre-rivers.json")
-        rivers = json.loads(rivers_path.read_text())
-        _RIVERS_FEATURE_CACHE = [
+def clear_rivers_cache() -> None:
+    """Drop cached OSM waterway geometries (e.g. after extract or site switch)."""
+    _RIVERS_FEATURE_CACHE.clear()
+    _RIVERS_RTREE_CACHE.clear()
+
+
+def _resolve_rivers_path(site: str | None = None) -> Path:
+    """Pick OSM waterways JSON: env override → site config → POA sample."""
+    import os
+
+    env_path = os.environ.get("NBS_RIVERS_GEOJSON")
+    if env_path:
+        path = Path(env_path).expanduser()
+        if not path.is_file():
+            raise FileNotFoundError(f"NBS_RIVERS_GEOJSON not found: {path}")
+        return path.resolve()
+
+    if site:
+        from site_config import DEFAULT_SITE, resolve_osm_rivers_path
+
+        resolved = resolve_osm_rivers_path(site)
+        if resolved is not None:
+            return resolved
+        if site == DEFAULT_SITE:
+            sample = SAMPLE_DATA / "porto-alegre-rivers.json"
+            if sample.is_file():
+                return sample.resolve()
+        raise FileNotFoundError(
+            f"Missing OSM waterways for site={site!r}. "
+            f"Run: python transformation/nbs_screening/extract_osm_rivers.py --site {site}"
+        )
+
+    sample = SAMPLE_DATA / "porto-alegre-rivers.json"
+    if sample.is_file():
+        return sample.resolve()
+    raise FileNotFoundError(
+        "No OSM waterways configured. Set NBS_RIVERS_GEOJSON or pass site= to screening."
+    )
+
+
+def _load_rivers_document(path: Path) -> dict[str, Any]:
+    """Support POA wrapper JSON or plain GeoJSON FeatureCollection."""
+    doc = json.loads(path.read_text(encoding="utf-8"))
+    if "geoJson" in doc:
+        return doc
+    if doc.get("type") == "FeatureCollection":
+        return {"geoJson": doc}
+    raise ValueError(f"Unrecognized OSM waterways format: {path}")
+
+
+def _river_features(site: str | None = None) -> list[tuple[Any, dict]]:
+    """Load OSM river geometries once per waterways file (grid screening per cell)."""
+    path = _resolve_rivers_path(site)
+    cache_key = str(path)
+    if cache_key not in _RIVERS_FEATURE_CACHE:
+        doc = _load_rivers_document(path)
+        _RIVERS_FEATURE_CACHE[cache_key] = [
             (shape(feat["geometry"]), feat.get("properties") or {})
-            for feat in rivers["geoJson"]["features"]
+            for feat in doc["geoJson"]["features"]
         ]
-    return _RIVERS_FEATURE_CACHE
+        _RIVERS_RTREE_CACHE.pop(cache_key, None)
+    return _RIVERS_FEATURE_CACHE[cache_key]
 
 
 def _bounds_for_crs(
@@ -96,14 +147,15 @@ def _rowcol_for_lonlat(
     return int(row), int(col)
 
 
-def _river_strtree() -> Any:
+def _river_strtree(site: str | None = None) -> Any:
     """Spatial index over OSM waterways (nearest-feature lookup per grid cell)."""
-    global _RIVERS_RTREE_CACHE
-    if _RIVERS_RTREE_CACHE is None:
+    path = _resolve_rivers_path(site)
+    cache_key = str(path)
+    if cache_key not in _RIVERS_RTREE_CACHE:
         from shapely import STRtree
 
-        _RIVERS_RTREE_CACHE = STRtree([line for line, _ in _river_features()])
-    return _RIVERS_RTREE_CACHE
+        _RIVERS_RTREE_CACHE[cache_key] = STRtree([line for line, _ in _river_features(site)])
+    return _RIVERS_RTREE_CACHE[cache_key]
 
 
 class RasterPointSampler:
@@ -1016,17 +1068,17 @@ def nearest_waterway(site_geom) -> LayerSample:
     return _water_stats_at_lonlat(pt.x, pt.y)
 
 
-def water_stats_at_point(lon: float, lat: float) -> dict[str, float | int | str]:
+def water_stats_at_point(lon: float, lat: float, site: str | None = None) -> dict[str, float | int | str]:
     """Per-point water proximity (for grid-cell screening)."""
-    sample = _water_stats_at_lonlat(lon, lat)
+    sample = _water_stats_at_lonlat(lon, lat, site=site)
     return {**sample.stats, "_note": sample.note}
 
 
-def _water_stats_at_lonlat(lon: float, lat: float) -> LayerSample:
-    rivers_path = Path(__import__("os").environ["NBS_RIVERS_GEOJSON"]).expanduser() if __import__("os").environ.get("NBS_RIVERS_GEOJSON") else (SAMPLE_DATA / "porto-alegre-rivers.json")
-    features = _river_features()
+def _water_stats_at_lonlat(lon: float, lat: float, site: str | None = None) -> LayerSample:
+    rivers_path = _resolve_rivers_path(site)
+    features = _river_features(site)
     pt = shape({"type": "Point", "coordinates": [lon, lat]})
-    idx = int(_river_strtree().nearest(pt))
+    idx = int(_river_strtree(site).nearest(pt))
     line, props = features[idx]
     min_dist_deg = pt.distance(line)
     nearest = props.get("name") or props.get("waterway")

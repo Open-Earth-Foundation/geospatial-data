@@ -225,6 +225,31 @@ def site_publish_dir(site: str, hazard: HazardKind = "flood", nbs_root: Path | N
     return root / "sites" / site / "out" / f"{hazard}_mechanism_type"
 
 
+def site_osm_rivers_path(site: str, nbs_root: Path | None = None) -> Path:
+    """Default OSM waterways extract: ``sites/{site}/data/input/osm_waterways_{site}.json``."""
+    root = Path(nbs_root or find_nbs_screening_root()).resolve()
+    return root / "sites" / site / "data" / "input" / f"osm_waterways_{site}.json"
+
+
+def resolve_osm_rivers_path(site: str, nbs_root: Path | None = None) -> Path | None:
+    """Resolved OSM waterways JSON for riverine distance (``None`` if not on disk)."""
+    cfg = load_site_config(site, str(nbs_root) if nbs_root else None)
+    repo_root = Path(cfg["repo_root"])
+    osm_cfg = cfg.get("osm_waterways") or {}
+    local_rel = osm_cfg.get("local")
+    if local_rel:
+        path = Path(str(local_rel)).expanduser()
+        if not path.is_absolute():
+            path = repo_root / path
+        if path.is_file():
+            return path.resolve()
+
+    default = site_osm_rivers_path(str(cfg["site_slug"]), nbs_root)
+    if default.is_file():
+        return default.resolve()
+    return None
+
+
 def site_boundary_path(site: str, repo_root: Path | None = None) -> Path:
     """City boundary GeoJSON shared with flood_hazard site layouts."""
     root = Path(repo_root or find_repo_root()).resolve()

@@ -563,7 +563,7 @@ def screen_grid(
                 zonal_fallback=zonal_fallback,
             )
             ctx = _ctx_from_grid_stats(grid_stats, hazard)
-            water = water_stats_at_point(lon, lat)
+            water = water_stats_at_point(lon, lat, site=site)
 
             if hazard == "flood":
                 mechanism = infer_flood_mechanism(ctx, grid_stats, water)
