@@ -1,0 +1,117 @@
+# NBS grid screening — Richfield, MN
+# Full layer inventory aligned with config/sites/porto_alegre.yaml.
+# Local paths are extraction targets; runtime skips layers whose files are missing.
+#
+# Status key (inline):
+#   [CCRA]  hazard/risk/DEM from CCRA pipeline (may already exist)
+#   [INPUT] landslide_hazard / heat_hazard / flood_hazard data/input
+#   [PUB]   flood_risk publish (exposure / vulnerability COG source)
+#   [TODO]  extract CLI or notebook not yet run for MN
+
+site_slug: richfield
+display_name: Richfield
+country: United States
+
+open_water:
+  enabled: false
+  # When JRC GSW is extracted, enable and wire transition + occurrence layers below.
+
+reference_hazard:
+  flood: flood_hazard
+  heat: heat_hazard
+  landslide: landslide_hazard
+
+catalog:
+  shared:
+    exposure:
+      local: transformation/flood_risk/sites/richfield/data/output/flood_exposure_score_richfield.tif  # [PUB] flood_risk_publish --product exposure
+    vulnerability:
+      local: transformation/flood_risk/sites/richfield/data/output/flood_vulnerability_score_richfield.tif  # [PUB] flood_risk_publish --product vulnerability
+    ghsl_built_up:
+      local: transformation/ghsl_built_up/sites/richfield/data/output/richfield_ghsl_built_up_100m.tif  # [TODO]
+    dynamic_world:
+      local: transformation/dynamic_world/sites/richfield/data/output/richfield_dynamicworld_2023.tif  # [TODO] annual mode composite
+    dynamic_world_mode_250m:
+      local: transformation/dynamic_world/sites/richfield/data/output/richfield_dw_mode_250m_2023.tif  # [TODO] 250 m mode (NBS grid)
+    modis_ndvi:
+      local: transformation/modis_ndvi/sites/richfield/data/output/richfield_modis_ndvi_mean.tif  # [TODO] heat screening NDVI mean
+    copernicus_dem:
+      local: transformation/flood_hazard/sites/richfield/data/input/richfield_dem_glo30_30m.tif  # [CCRA]
+    merit_hand:
+      local: transformation/landslide_hazard/sites/richfield/data/input/richfield_hand_90m.tif  # [INPUT] merit_hydro/extract_hand.py
+
+  flood:
+    flood_hazard:
+      local: transformation/flood_hazard/sites/richfield/data/output/flood_hazard_score_idw_richfield.tif  # [CCRA]
+    flood_risk:
+      local: transformation/flood_risk/sites/richfield/data/output/flood_risk_score_richfield.tif  # [CCRA]
+    merit_upa:
+      local: transformation/merit_hydro/sites/richfield/data/output/richfield_merit_hydro_upa_90m.tif  # [TODO]
+    merit_elv:
+      local: transformation/merit_hydro/sites/richfield/data/output/richfield_merit_hydro_elv_90m.tif  # [TODO]
+    jrc_surface_water_transition:
+      local: transformation/jrc_global_surface_water/sites/richfield/data/output/richfield_gsw_transition_30m.tif  # [TODO]
+    jrc_surface_water_occurrence:
+      local: transformation/jrc_global_surface_water/sites/richfield/data/output/richfield_gsw_occurrence_30m.tif  # [TODO]
+    jrc_surface_water_seasonality:
+      local: transformation/jrc_global_surface_water/sites/richfield/data/output/richfield_gsw_seasonality_30m.tif  # [TODO]
+    copernicus_emsn194:
+      local: transformation/copernicus_emsn194/sites/richfield/data/output/richfield_maxwaterdepth.tif  # [TODO] POA-only event product; optional for MN
+    chirps_rx1day_2024:
+      local: transformation/chirps_daily/sites/richfield/data/output/richfield_rx1day_2024.tif  # [TODO] pluvial / heavy-rain proxy
+    chirps_rx5day_2024:
+      local: transformation/chirps_daily/sites/richfield/data/output/richfield_rx5day_2024.tif  # [TODO]
+    chirps_r90p_2024:
+      local: transformation/chirps_daily/sites/richfield/data/output/richfield_r90p_2024.tif  # [TODO]
+    gfplain250m:
+      local: transformation/flood_hazard/sites/richfield/data/input/gfplain_250m_richfield.tif  # [CCRA]
+    poa_relative_elevation:
+      local: transformation/flood_hazard/sites/richfield/data/input/richfield_relative_elevation_30m.tif  # [CCRA]
+    poa_depression_mask:
+      local: transformation/flood_hazard/sites/richfield/data/input/richfield_depression_mask_30m.tif  # [CCRA]
+    poa_depression_depth:
+      local: transformation/flood_hazard/sites/richfield/data/input/richfield_depression_depth_30m.tif  # [CCRA]
+    poa_slope:
+      local: transformation/copernicus_dem/sites/richfield/data/output/richfield_slope_deg_30m.tif  # [CCRA]
+    soilgrids_clay:
+      local: transformation/landslide_hazard/sites/richfield/data/input/richfield_clay_pct_250m.tif  # [INPUT] soilgrids/extract_clay.py
+
+  heat:
+    heat_hazard:
+      local: transformation/heat_hazard/sites/richfield/data/output/heat_hazard_score_richfield.tif  # [CCRA]
+    heat_risk:
+      local: transformation/heat_risk/sites/richfield/data/output/heat_risk_score_richfield.tif  # [CCRA]
+    hansen_treecover2000:
+      local: transformation/hansen_forest_change/sites/richfield/data/output/richfield_hansen_treecover2000_30m.tif  # [TODO]
+    landsat8_lst_djf:
+      local: transformation/heat_hazard/sites/richfield/data/input/lst_lc08_p90_jja_2015_2024_richfield.tif  # [INPUT] MN uses JJA (not POA DJF)
+    modis_lst_day_p90:
+      local: transformation/heat_hazard/sites/richfield/data/input/mod11a2_lst_day_p90_jja_2015_2024_richfield.tif  # [INPUT]
+    modis_lst_night_p90:
+      local: transformation/heat_hazard/sites/richfield/data/input/mod11a2_lst_night_p90_jja_2015_2024_richfield.tif  # [INPUT]
+    poa_slope:
+      local: transformation/copernicus_dem/sites/richfield/data/output/richfield_slope_deg_30m.tif  # [CCRA]
+    soilgrids_clay:
+      local: transformation/landslide_hazard/sites/richfield/data/input/richfield_clay_pct_250m.tif  # [INPUT]
+
+  landslide:
+    landslide_hazard:
+      local: transformation/landslide_hazard/sites/richfield/data/output/landslide_hazard_score_richfield_90m.tif  # [CCRA]
+    landslide_risk:
+      local: transformation/landslide_risk/sites/richfield/data/output/landslide_risk_score_richfield.tif  # [CCRA]
+    chirps_r90p_climatology:
+      local: transformation/landslide_hazard/sites/richfield/data/input/richfield_r90p_climatology.tif  # [INPUT] chirps_r90p/extract_chirps_r90p.py
+    hansen_treecover2000:
+      local: transformation/hansen_forest_change/sites/richfield/data/output/richfield_hansen_treecover2000_30m.tif  # [TODO]
+    dynamic_world_mode_250m:
+      local: transformation/dynamic_world/sites/richfield/data/output/richfield_dw_mode_250m_2023.tif  # [TODO] see also landslide input dw_mode
+    merit_upa:
+      local: transformation/merit_hydro/sites/richfield/data/output/richfield_merit_hydro_upa_90m.tif  # [TODO]
+    poa_slope:
+      local: transformation/copernicus_dem/sites/richfield/data/output/richfield_slope_deg_30m.tif  # [CCRA]
+    soilgrids_clay:
+      local: transformation/landslide_hazard/sites/richfield/data/input/richfield_clay_pct_250m.tif  # [INPUT]
+    ndvi_p10_djf:
+      local: transformation/landslide_hazard/sites/richfield/data/input/richfield_ndvi_p10_jja_2015_2024.tif  # [INPUT] MN uses JJA (not POA DJF)
+    merit_hand:
+      local: transformation/landslide_hazard/sites/richfield/data/input/richfield_hand_90m.tif  # [INPUT]

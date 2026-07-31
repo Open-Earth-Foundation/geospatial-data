@@ -283,155 +283,18 @@ def dw_mode_fractions_cached(cache: RasterLayerCache, key: str, geom) -> dict[st
         return {}
 
 
-SHARED_CATALOG_COGS: dict[str, str] = {
-    "exposure": (
-        f"{S3}/oef_calculation/release/v1/porto_alegre/shared/exposure/exposure_cog.tif"
-    ),
-    "vulnerability": (
-        f"{S3}/oef_calculation/release/v1/porto_alegre/shared/vulnerability/vulnerability_cog.tif"
-    ),
-    "ghsl_built_up": (
-        f"{S3}/ghsl_built_up/release/v1/2025/porto_alegre/poa_ghsl_built_up_100m_p2023a_2025_cog.tif"
-    ),
-    "dynamic_world": (
-        f"{S3}/dynamic_world/release/v1/2023/porto_alegre/poa_dynamicworld_cog.tif"
-    ),
-    "dynamic_world_mode_250m": (
-        f"{S3}/dynamic_world/release/v1/2023/porto_alegre/dw_mode_250m/poa_dw_mode_250m_cog.tif"
-    ),
-    "modis_ndvi": f"{S3}/modis_ndvi/release/v1/2024/ndvi_cog.tif",
-    "copernicus_dem": (
-        f"{S3}/copernicus_dem/release/v1/2024/porto_alegre/poa_dem_glo30m_cog.tif"
-    ),
-    "merit_hand": (
-        f"{S3}/merit_hydro/release/v1/porto_alegre/hnd/poa_merit_hydro_hnd_90m_v1_0_1_cog.tif"
-    ),
-}
+from site_config import (  # noqa: E402 — after path constants
+    DEFAULT_SITE,
+    get_catalog_urls,
+    get_layer_sources as _resolve_layer_sources,
+    get_local_layers,
+    reference_hazard_layer,
+)
 
-FLOOD_CATALOG_COGS: dict[str, str] = {
-    **SHARED_CATALOG_COGS,
-    "flood_hazard": (
-        f"{S3}/oef_calculation/release/v1/porto_alegre/climate_hazards/floods/hazard/"
-        "flood_hazard_score_idw_cog.tif"
-    ),
-    "flood_risk": (
-        f"{S3}/oef_calculation/release/v1/porto_alegre/climate_hazards/floods/risk/"
-        "flood_risk_score_cog.tif"
-    ),
-    "merit_upa": (
-        f"{S3}/merit_hydro/release/v1/porto_alegre/upa/poa_merit_hydro_upa_90m_v1_0_1_cog.tif"
-    ),
-    "jrc_surface_water_transition": (
-        f"{S3}/jrc_global_surface_water/release/v1/porto_alegre/transition/"
-        "poa_gsw_transition_30m_v1_4_cog.tif"
-    ),
-    "jrc_surface_water_occurrence": (
-        f"{S3}/jrc_global_surface_water/release/v1/porto_alegre/occurrence/"
-        "poa_gsw_occurrence_30m_v1_4_cog.tif"
-    ),
-    "jrc_surface_water_seasonality": (
-        f"{S3}/jrc_global_surface_water/release/v1/porto_alegre/seasonality/"
-        "poa_gsw_seasonality_30m_v1_4_cog.tif"
-    ),
-    "copernicus_emsn194": (
-        f"{S3}/copernicus_emsn194/release/v1/2024/porto_alegre/maxwaterdepth_cog.tif"
-    ),
-    "chirps_rx1day_2024": (
-        f"{S3}/nbs/porto_alegre/climate_hazards/extreme_precipitation/chirps/V2_0/2024/"
-        "rx1day/RX1day_2024_pot_cog.tif"
-    ),
-    "chirps_rx5day_2024": (
-        f"{S3}/nbs/porto_alegre/climate_hazards/extreme_precipitation/chirps/V2_0/2024/"
-        "rx5day/RX5day_2024_pot_cog.tif"
-    ),
-    # Temporary local override to compare S3 COG behavior against the source climatology raster.
-    "chirps_r90p_2024": (
-        f"{S3}/nbs/porto_alegre/climate_hazards/extreme_precipitation/chirps/V2_0/2024/"
-        "r90p/R90p_2024_cog.tif"
-    ),
-    "merit_elv": (
-        f"{S3}/merit_hydro/release/v1/porto_alegre/elv/poa_merit_hydro_elv_90m_v1_0_1_cog.tif"
-    ),
-    "gfplain250m": (
-        f"{S3}/gfplain/release/v1/porto_alegre/gfplain_250m/gfplain_250m_cog.tif"
-    ),
-    "poa_relative_elevation": (
-        f"{S3}/copernicus_dem/release/v1/2024/porto_alegre/"
-        "relative_elevation_30m/poa_relative_elevation_30m_cog.tif"
-    ),
-    "poa_depression_mask": (
-        f"{S3}/copernicus_dem/release/v1/2024/porto_alegre/"
-        "depression_mask_30m/poa_depression_mask_30m_cog.tif"
-    ),
-    "poa_depression_depth": (
-        f"{S3}/copernicus_dem/release/v1/2024/porto_alegre/"
-        "depression_depth_30m/poa_depression_depth_30m_cog.tif"
-    ),
-    "poa_slope": (
-        f"{S3}/copernicus_dem/release/v1/2024/porto_alegre/slope_deg_30m/poa_slope_deg_30m_cog.tif"
-    ),
-    "soilgrids_clay": (
-        f"{S3}/soilgrids/release/2006/porto_alegre/clay_pct_250m/poa_clay_pct_250m_cog.tif"
-    ),
-}
-
-HEAT_CATALOG_COGS: dict[str, str] = {
-    **SHARED_CATALOG_COGS,
-    "heat_hazard": (
-        f"{S3}/oef_calculation/release/v1/porto_alegre/climate_hazards/heat/hazard/"
-        "heat_hazard_score_cog.tif"
-    ),
-    "heat_risk": (
-        f"{S3}/oef_calculation/release/v1/porto_alegre/climate_hazards/heat/risk/"
-        "heat_risk_score_cog.tif"
-    ),
-    "hansen_treecover2000": (
-        f"{S3}/hansen_forest_change/release/v1/2024/porto_alegre/tree_cover_2000/"
-        "poa_hansen_treecover2000_30m_v1_12_cog.tif"
-    ),
-    "landsat8_lst_djf": (
-        f"{S3}/landsat8/release/v1/porto_alegre/lst_p90/djf_2015_2024/"
-        "lst_lc08_p90_djf_2015_2024_poa_cog.tif"
-    ),
-    "modis_lst_day_p90": (
-        f"{S3}/modis_11a2/release/v1/porto_alegre/lst_day_p90/djf_2015_2024/"
-        "mod11a2_lst_day_p90_djf_2015_2024_poa_cog.tif"
-    ),
-    "modis_lst_night_p90": (
-        f"{S3}/modis_11a2/release/v1/porto_alegre/lst_night_p90/djf_2015_2024/"
-        "mod11a2_lst_night_p90_djf_2015_2024_poa_cog.tif"
-    ),
-    "poa_slope": FLOOD_CATALOG_COGS["poa_slope"],
-    "soilgrids_clay": FLOOD_CATALOG_COGS["soilgrids_clay"],
-}
-
-LANDSLIDE_CATALOG_COGS: dict[str, str] = {
-    **SHARED_CATALOG_COGS,
-    "landslide_hazard": (
-        f"{S3}/oef_calculation/release/v1/porto_alegre/climate_hazards/landslides/hazard/"
-        "landslide_hazard_score_90m_cog.tif"
-    ),
-    "landslide_risk": (
-        f"{S3}/oef_calculation/release/v1/porto_alegre/climate_hazards/landslides/risk/"
-        "landslide_risk_score_cog.tif"
-    ),
-    "chirps_r90p_climatology": (
-        f"{S3}/nbs/porto_alegre/climate_hazards/extreme_precipitation/chirps/V2_0/"
-        "annual_climatology/r90p/R90p_climatology_cog.tif"
-    ),
-    "hansen_treecover2000": (
-        f"{S3}/hansen_forest_change/release/v1/2024/porto_alegre/tree_cover_2000/"
-        "poa_hansen_treecover2000_30m_v1_12_cog.tif"
-    ),
-    "dynamic_world_mode_250m": FLOOD_CATALOG_COGS["dynamic_world_mode_250m"],
-    "merit_upa": FLOOD_CATALOG_COGS["merit_upa"],
-    "poa_slope": FLOOD_CATALOG_COGS["poa_slope"],
-    "soilgrids_clay": FLOOD_CATALOG_COGS["soilgrids_clay"],
-    "ndvi_p10_djf": (
-        f"{S3}/modis/release/v1/porto_alegre/MOD13Q1_061/ndvi_p10/djf_2015_2024/"
-        "poa_ndvi_p10_djf_2015_2024_cog.tif"
-    ),
-}
+# Porto Alegre defaults (from config/sites/porto_alegre.yaml) — backward-compatible aliases.
+FLOOD_CATALOG_COGS: dict[str, str] = get_catalog_urls("flood", DEFAULT_SITE)
+HEAT_CATALOG_COGS: dict[str, str] = get_catalog_urls("heat", DEFAULT_SITE)
+LANDSLIDE_CATALOG_COGS: dict[str, str] = get_catalog_urls("landslide", DEFAULT_SITE)
 
 # Backward-compatible alias for flood E2E notebook / run_e2e.py
 CATALOG_COGS = FLOOD_CATALOG_COGS
@@ -543,15 +406,104 @@ HAZARD_OPTIONAL_LAYERS: dict[HazardKind, tuple[str, ...]] = {
 # Step 0 bairro vectors: catalog S3 gpkgs for POA; override locally for other cities.
 
 
-def get_catalog_cogs(hazard: HazardKind = "flood") -> dict[str, str]:
-    return HAZARD_CATALOG[hazard]
+def get_catalog_cogs(hazard: HazardKind = "flood", site: str | None = None) -> dict[str, str]:
+    """Catalog layer URLs (or local path strings when a local file exists)."""
+    if site is None:
+        return HAZARD_CATALOG[hazard]
+    return get_catalog_urls(hazard, site)
 
 
-def get_local_rasters(hazard: HazardKind = "flood") -> dict[str, Path]:
-    return HAZARD_LOCAL_RASTERS[hazard]
+def get_local_rasters(hazard: HazardKind = "flood", site: str | None = None) -> dict[str, Path]:
+    if site is None:
+        return HAZARD_LOCAL_RASTERS[hazard]
+    return get_local_layers(hazard, site)
 
 
-def poa_permanent_open_water_mask(ref_path: str | Path) -> np.ndarray:
+def get_layer_sources(hazard: HazardKind = "flood", site: str | None = None) -> dict[str, str | Path]:
+    """Resolved raster paths for grid screening (local preferred over URL)."""
+    return _resolve_layer_sources(hazard, site or DEFAULT_SITE)
+
+
+def get_reference_hazard_raster(hazard: HazardKind = "flood", site: str | None = None) -> str | Path:
+    sources = get_layer_sources(hazard, site)
+    layer_id = reference_hazard_layer(hazard)
+    if layer_id not in sources:
+        raise KeyError(f"Reference hazard layer {layer_id!r} missing for site={site or DEFAULT_SITE}")
+    return sources[layer_id]
+
+
+GRID_VALUE_LAYER_KEYS: dict[HazardKind, dict[str, str]] = {
+    "flood": {
+        "flood_score_mean": "flood_hazard",
+        "exposure_score_mean": "exposure",
+        "vulnerability_score_mean": "vulnerability",
+        "risk_score_mean": "flood_risk",
+        "floodplain_adj_pct_mean": "gfplain250m",
+        "depression_pct_mean": "poa_depression_mask",
+    },
+    "heat": {
+        "heat_score_mean": "heat_hazard",
+        "exposure_score_mean": "exposure",
+        "vulnerability_score_mean": "vulnerability",
+        "heat_risk_score_mean": "heat_risk",
+    },
+    "landslide": {
+        "landslide_score_mean": "landslide_hazard",
+        "exposure_score_mean": "exposure",
+        "vulnerability_score_mean": "vulnerability",
+        "landslide_risk_score_mean": "landslide_risk",
+        "slope_mean": "poa_slope",
+        "clay_pct_mean": "soilgrids_clay",
+        "merit_hand_mean": "merit_hand",
+    },
+}
+
+GRID_OPTIONAL_LAYER_KEYS: dict[HazardKind, dict[str, str]] = {
+    "flood": {
+        "merit_hand_mean": "merit_hand",
+        "imperv_pct_mean": "ghsl_built_up",
+        "dw_built_pct_mean": "dynamic_world_mode_250m",
+        "surface_water_occurrence_mean": "jrc_surface_water_occurrence",
+        "surface_water_seasonality_mean": "jrc_surface_water_seasonality",
+    },
+    "heat": {
+        "imperv_pct_mean": "ghsl_built_up",
+        "treecover2000_mean": "hansen_treecover2000",
+        "ndvi_mean": "modis_ndvi",
+        "landsat_lst_norm_mean": "landsat8_lst_djf",
+        "modis_lst_day_norm_mean": "modis_lst_day_p90",
+        "modis_lst_night_norm_mean": "modis_lst_night_p90",
+    },
+    "landslide": {
+        "upstream_area_km2_mean": "merit_upa",
+        "r90p_climatology_mean": "chirps_r90p_climatology",
+        "ndvi_p10_mean": "ndvi_p10_djf",
+        "treecover2000_mean": "hansen_treecover2000",
+        "dw_built_pct_mean": "dynamic_world_mode_250m",
+    },
+}
+
+
+def build_grid_layer_urls(
+    hazard: HazardKind,
+    *,
+    site: str | None = None,
+    sample_catalog: bool = True,
+) -> dict[str, str | Path]:
+    """Stat-key → raster path map used by grid_screening sampling."""
+    sources = get_layer_sources(hazard, site)
+    urls: dict[str, str | Path] = {}
+    for stat_key, layer_id in GRID_VALUE_LAYER_KEYS[hazard].items():
+        if layer_id in sources:
+            urls[stat_key] = sources[layer_id]
+    if sample_catalog:
+        for stat_key, layer_id in GRID_OPTIONAL_LAYER_KEYS.get(hazard, {}).items():
+            if stat_key not in urls and layer_id in sources:
+                urls[stat_key] = sources[layer_id]
+    return urls
+
+
+def poa_permanent_open_water_mask(ref_path: str | Path, site: str | None = None) -> np.ndarray:
     """Boolean mask (True = permanent open water) aligned to a POA 250 m reference grid.
 
     Combines JRC GSW transition class 1 (permanent water) with occurrence >= 90%,
@@ -574,7 +526,8 @@ def poa_permanent_open_water_mask(ref_path: str | Path) -> np.ndarray:
                 lambda band: band >= JRC_PERMANENT_WATER_OCCURRENCE_MIN,
             ),
         ):
-            cog_path = FLOOD_CATALOG_COGS[layer_key]
+            flood_sources = get_layer_sources("flood", site)
+            cog_path = flood_sources[layer_key]
             with rasterio.open(cog_path) as src:
                 aligned = np.zeros(shape, dtype=src.dtypes[0])
                 reproject(
@@ -803,14 +756,17 @@ def zonal_stats_cog(layer_id: str, url: str, site_geom) -> LayerSample:
         return LayerSample(layer_id, url, "error", note=str(exc))
 
 
-def flood_grid_shared_context(site_geom) -> dict[str, float]:
-    """Lightweight bairro context for grid screening (CHIRPS only — not full catalog)."""
+def flood_grid_shared_context(site_geom, site: str | None = None) -> dict[str, float]:
+    """Lightweight AOI context for grid screening (CHIRPS only — not full catalog)."""
+    catalog = get_catalog_cogs("flood", site)
     shared: dict[str, float] = {}
     for layer_id, stat_key in (
         ("chirps_rx1day_2024", "rx1day_2024_mean"),
         ("chirps_rx5day_2024", "rx5day_2024_mean"),
     ):
-        sample = zonal_stats_cog(layer_id, FLOOD_CATALOG_COGS[layer_id], site_geom)
+        if layer_id not in catalog:
+            continue
+        sample = zonal_stats_cog(layer_id, catalog[layer_id], site_geom)
         if sample.status == "ok" and sample.stats.get("mean") is not None:
             shared[stat_key] = float(sample.stats["mean"])
     return shared
@@ -968,9 +924,9 @@ def sample_grid_metrics(site_geom) -> LayerSample:
     )
 
 
-def grid_metrics(site_geom, hazard: HazardKind = "flood") -> LayerSample:
+def grid_metrics(site_geom, hazard: HazardKind = "flood", site: str | None = None) -> LayerSample:
     """Diagnostic proxies aggregated from catalog COGs for the hazard profile."""
-    catalog = get_catalog_cogs(hazard)
+    catalog = get_catalog_cogs(hazard, site)
     grid_keys = HAZARD_GRID_KEYS[hazard]
 
     stats: dict[str, float | int | None] = {}
@@ -1126,12 +1082,12 @@ def sample_raster_zonal_mean(path_or_url: str | Path, geom) -> float | None:
         return None
 
 
-def query_layers(site_geom, hazard: HazardKind = "flood") -> list[LayerSample]:
+def query_layers(site_geom, hazard: HazardKind = "flood", site: str | None = None) -> list[LayerSample]:
     """Query catalog COGs, aggregated grid metrics, and waterways."""
     results: list[LayerSample] = []
-    for layer_id, url in get_catalog_cogs(hazard).items():
+    for layer_id, url in get_catalog_cogs(hazard, site).items():
         results.append(zonal_stats_cog(layer_id, url, site_geom))
-    results.append(grid_metrics(site_geom, hazard=hazard))
+    results.append(grid_metrics(site_geom, hazard=hazard, site=site))
     # Riparian buffer (flood) and riparian cooling corridor (heat) need water proximity.
     results.append(nearest_waterway(site_geom))
     return results

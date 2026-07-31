@@ -1,0 +1,102 @@
+# NBS grid screening — Porto Alegre (catalog COGs on S3)
+site_slug: porto_alegre
+display_name: Porto Alegre
+country: Brazil
+
+open_water:
+  enabled: true
+  transition_layer: jrc_surface_water_transition
+  occurrence_layer: jrc_surface_water_occurrence
+
+reference_hazard:
+  flood: flood_hazard
+  heat: heat_hazard
+  landslide: landslide_hazard
+
+catalog:
+  shared:
+    exposure:
+      url: 'https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/shared/exposure/exposure_cog.tif'
+    vulnerability:
+      url: 'https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/shared/vulnerability/vulnerability_cog.tif'
+    ghsl_built_up:
+      url: 'https://geo-test-api.s3.us-east-1.amazonaws.com/ghsl_built_up/release/v1/2025/porto_alegre/poa_ghsl_built_up_100m_p2023a_2025_cog.tif'
+    dynamic_world:
+      url: 'https://geo-test-api.s3.us-east-1.amazonaws.com/dynamic_world/release/v1/2023/porto_alegre/poa_dynamicworld_cog.tif'
+    dynamic_world_mode_250m:
+      url: 'https://geo-test-api.s3.us-east-1.amazonaws.com/dynamic_world/release/v1/2023/porto_alegre/dw_mode_250m/poa_dw_mode_250m_cog.tif'
+    modis_ndvi:
+      url: 'https://geo-test-api.s3.us-east-1.amazonaws.com/modis_ndvi/release/v1/2024/ndvi_cog.tif'
+    copernicus_dem:
+      url: 'https://geo-test-api.s3.us-east-1.amazonaws.com/copernicus_dem/release/v1/2024/porto_alegre/poa_dem_glo30m_cog.tif'
+    merit_hand:
+      url: 'https://geo-test-api.s3.us-east-1.amazonaws.com/merit_hydro/release/v1/porto_alegre/hnd/poa_merit_hydro_hnd_90m_v1_0_1_cog.tif'
+  flood:
+    flood_hazard:
+      url: 'https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/floods/hazard/flood_hazard_score_idw_cog.tif'
+    flood_risk:
+      url: 'https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/floods/risk/flood_risk_score_cog.tif'
+    merit_upa:
+      url: 'https://geo-test-api.s3.us-east-1.amazonaws.com/merit_hydro/release/v1/porto_alegre/upa/poa_merit_hydro_upa_90m_v1_0_1_cog.tif'
+    jrc_surface_water_transition:
+      url: 'https://geo-test-api.s3.us-east-1.amazonaws.com/jrc_global_surface_water/release/v1/porto_alegre/transition/poa_gsw_transition_30m_v1_4_cog.tif'
+    jrc_surface_water_occurrence:
+      url: 'https://geo-test-api.s3.us-east-1.amazonaws.com/jrc_global_surface_water/release/v1/porto_alegre/occurrence/poa_gsw_occurrence_30m_v1_4_cog.tif'
+    jrc_surface_water_seasonality:
+      url: 'https://geo-test-api.s3.us-east-1.amazonaws.com/jrc_global_surface_water/release/v1/porto_alegre/seasonality/poa_gsw_seasonality_30m_v1_4_cog.tif'
+    copernicus_emsn194:
+      url: 'https://geo-test-api.s3.us-east-1.amazonaws.com/copernicus_emsn194/release/v1/2024/porto_alegre/maxwaterdepth_cog.tif'
+    chirps_rx1day_2024:
+      url: 'https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_precipitation/chirps/V2_0/2024/rx1day/RX1day_2024_pot_cog.tif'
+    chirps_rx5day_2024:
+      url: 'https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_precipitation/chirps/V2_0/2024/rx5day/RX5day_2024_pot_cog.tif'
+    chirps_r90p_2024:
+      url: 'https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_precipitation/chirps/V2_0/2024/r90p/R90p_2024_cog.tif'
+    merit_elv:
+      url: 'https://geo-test-api.s3.us-east-1.amazonaws.com/merit_hydro/release/v1/porto_alegre/elv/poa_merit_hydro_elv_90m_v1_0_1_cog.tif'
+    gfplain250m:
+      url: 'https://geo-test-api.s3.us-east-1.amazonaws.com/gfplain/release/v1/porto_alegre/gfplain_250m/gfplain_250m_cog.tif'
+    poa_relative_elevation:
+      url: 'https://geo-test-api.s3.us-east-1.amazonaws.com/copernicus_dem/release/v1/2024/porto_alegre/relative_elevation_30m/poa_relative_elevation_30m_cog.tif'
+    poa_depression_mask:
+      url: 'https://geo-test-api.s3.us-east-1.amazonaws.com/copernicus_dem/release/v1/2024/porto_alegre/depression_mask_30m/poa_depression_mask_30m_cog.tif'
+    poa_depression_depth:
+      url: 'https://geo-test-api.s3.us-east-1.amazonaws.com/copernicus_dem/release/v1/2024/porto_alegre/depression_depth_30m/poa_depression_depth_30m_cog.tif'
+    poa_slope:
+      url: 'https://geo-test-api.s3.us-east-1.amazonaws.com/copernicus_dem/release/v1/2024/porto_alegre/slope_deg_30m/poa_slope_deg_30m_cog.tif'
+    soilgrids_clay:
+      url: 'https://geo-test-api.s3.us-east-1.amazonaws.com/soilgrids/release/2006/porto_alegre/clay_pct_250m/poa_clay_pct_250m_cog.tif'
+  heat:
+    heat_hazard:
+      url: 'https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/heat/hazard/heat_hazard_score_cog.tif'
+    heat_risk:
+      url: 'https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/heat/risk/heat_risk_score_cog.tif'
+    hansen_treecover2000:
+      url: 'https://geo-test-api.s3.us-east-1.amazonaws.com/hansen_forest_change/release/v1/2024/porto_alegre/tree_cover_2000/poa_hansen_treecover2000_30m_v1_12_cog.tif'
+    landsat8_lst_djf:
+      url: 'https://geo-test-api.s3.us-east-1.amazonaws.com/landsat8/release/v1/porto_alegre/lst_p90/djf_2015_2024/lst_lc08_p90_djf_2015_2024_poa_cog.tif'
+    modis_lst_day_p90:
+      url: 'https://geo-test-api.s3.us-east-1.amazonaws.com/modis_11a2/release/v1/porto_alegre/lst_day_p90/djf_2015_2024/mod11a2_lst_day_p90_djf_2015_2024_poa_cog.tif'
+    modis_lst_night_p90:
+      url: 'https://geo-test-api.s3.us-east-1.amazonaws.com/modis_11a2/release/v1/porto_alegre/lst_night_p90/djf_2015_2024/mod11a2_lst_night_p90_djf_2015_2024_poa_cog.tif'
+    poa_slope:
+      url: 'https://geo-test-api.s3.us-east-1.amazonaws.com/copernicus_dem/release/v1/2024/porto_alegre/slope_deg_30m/poa_slope_deg_30m_cog.tif'
+    soilgrids_clay:
+      url: 'https://geo-test-api.s3.us-east-1.amazonaws.com/soilgrids/release/2006/porto_alegre/clay_pct_250m/poa_clay_pct_250m_cog.tif'
+  landslide:
+    landslide_hazard:
+      url: 'https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/landslides/hazard/landslide_hazard_score_90m_cog.tif'
+    landslide_risk:
+      url: 'https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/porto_alegre/climate_hazards/landslides/risk/landslide_risk_score_cog.tif'
+    chirps_r90p_climatology:
+      url: 'https://geo-test-api.s3.us-east-1.amazonaws.com/nbs/porto_alegre/climate_hazards/extreme_precipitation/chirps/V2_0/annual_climatology/r90p/R90p_climatology_cog.tif'
+    hansen_treecover2000:
+      url: 'https://geo-test-api.s3.us-east-1.amazonaws.com/hansen_forest_change/release/v1/2024/porto_alegre/tree_cover_2000/poa_hansen_treecover2000_30m_v1_12_cog.tif'
+    merit_upa:
+      url: 'https://geo-test-api.s3.us-east-1.amazonaws.com/merit_hydro/release/v1/porto_alegre/upa/poa_merit_hydro_upa_90m_v1_0_1_cog.tif'
+    poa_slope:
+      url: 'https://geo-test-api.s3.us-east-1.amazonaws.com/copernicus_dem/release/v1/2024/porto_alegre/slope_deg_30m/poa_slope_deg_30m_cog.tif'
+    soilgrids_clay:
+      url: 'https://geo-test-api.s3.us-east-1.amazonaws.com/soilgrids/release/2006/porto_alegre/clay_pct_250m/poa_clay_pct_250m_cog.tif'
+    ndvi_p10_djf:
+      url: 'https://geo-test-api.s3.us-east-1.amazonaws.com/modis/release/v1/porto_alegre/MOD13Q1_061/ndvi_p10/djf_2015_2024/poa_ndvi_p10_djf_2015_2024_cog.tif'
