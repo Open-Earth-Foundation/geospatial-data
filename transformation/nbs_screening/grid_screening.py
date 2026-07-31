@@ -30,9 +30,11 @@ from catalog_layers import (
     RasterLayerCache,
     RasterPointSampler,
     barrio_context,
+    build_grid_layer_urls,
     dw_built_pct_from_class_value,
     dw_mode_fractions_cached,
     flood_grid_shared_context,
+    get_reference_hazard_raster,
     grid_metrics,
     poa_permanent_open_water_mask,
     sample_raster_at_point,
@@ -41,6 +43,7 @@ from catalog_layers import (
     water_stats_at_point,
     zonal_stats_cog,
 )
+from site_config import DEFAULT_SITE
 
 RasterRef = Union[str, Path]
 
@@ -248,27 +251,27 @@ def enumerate_raster_cells(
     return cells
 
 
-def _aoi_shared_grid_context(aoi_geom, hazard: HazardKind) -> dict[str, Any]:
+def _aoi_shared_grid_context(aoi_geom, hazard: HazardKind, site: str | None = None) -> dict[str, Any]:
     """AOI-level diagnostics shared across cells (e.g. CHIRPS heavy-rain proxy)."""
     if hazard == "flood":
-        return flood_grid_shared_context(aoi_geom)
+        return flood_grid_shared_context(aoi_geom, site=site)
     if hazard == "heat":
         return {}
     if hazard == "landslide":
         return {}
-    sample = grid_metrics(aoi_geom, hazard=hazard)
+    sample = grid_metrics(aoi_geom, hazard=hazard, site=site)
     if sample.status == "error" and not sample.stats:
         return {}
     return dict(sample.stats)
 
 
-def _grid_layer_urls(hazard: HazardKind, *, sample_catalog: bool) -> dict[str, RasterRef]:
-    urls: dict[str, RasterRef] = dict(VALUE_RASTERS[hazard])
-    if sample_catalog:
-        for key, url in OPTIONAL_COG_SAMPLES.get(hazard, {}).items():
-            if key not in urls:
-                urls[key] = url
-    return urls
+def _grid_layer_urls(
+    hazard: HazardKind,
+    *,
+    sample_catalog: bool,
+    site: str | None = None,
+) -> dict[str, RasterRef]:
+    return build_grid_layer_urls(hazard, site=site, sample_catalog=sample_catalog)
 
 
 def _landslide_dw_fractions_from_class_value(class_val: float) -> dict[str, float]:
@@ -510,6 +513,7 @@ def screen_grid(
     hazard: HazardKind = "flood",
     aoi_label: str = "aoi",
     *,
+    site: str | None = None,
     sample_catalog: bool = True,
     include_nbs: bool = True,
     require_hazard_valid: bool = True,
@@ -518,11 +522,11 @@ def screen_grid(
     zonal_fallback: bool = True,
 ) -> GridScreeningResult:
     """Screen each 250 m cell in the AOI; mechanism flags are per cell."""
-    ref_path = REF_RASTER[hazard]
+    ref_path = get_reference_hazard_raster(hazard, site)
     with rasterio.open(ref_path) as src:
         cell_size_m = abs(src.res[0]) * 111_000
 
-    shared = _aoi_shared_grid_context(aoi_geom, hazard)
+    shared = _aoi_shared_grid_context(aoi_geom, hazard, site=site)
     raw_cells = enumerate_raster_cells(
         aoi_geom,
         ref_path,
@@ -531,7 +535,7 @@ def screen_grid(
     )
     screened: list[GridCellScreening] = []
     n_raw = len(raw_cells)
-    layer_urls = _grid_layer_urls(hazard, sample_catalog=sample_catalog)
+    layer_urls = _grid_layer_urls(hazard, sample_catalog=sample_catalog, site=site)
     use_preload = preload_layers if preload_layers is not None else n_raw >= 500
     bounds = aoi_geom.bounds
 
@@ -804,13 +808,18 @@ def result_to_report_dict(result: GridScreeningResult) -> dict[str, Any]:
     }
 
 
-def poa_flood_reference_bounds_geom():
-    """Full POA extent of the 250 m flood hazard reference grid."""
+def site_reference_bounds_geom(hazard: HazardKind, site: str | None = None):
+    """Full extent of the hazard reference grid for *site*."""
     from shapely.geometry import box
 
-    with rasterio.open(REF_RASTER["flood"]) as src:
+    with rasterio.open(get_reference_hazard_raster(hazard, site)) as src:
         b = src.bounds
         return box(b.left, b.bottom, b.right, b.top)
+
+
+def poa_flood_reference_bounds_geom():
+    """Full POA extent of the 250 m flood hazard reference grid."""
+    return site_reference_bounds_geom("flood", DEFAULT_SITE)
 
 
 def screen_poa_flood_mechanism_grid(**kwargs: Any) -> GridScreeningResult:
@@ -828,11 +837,7 @@ def screen_poa_flood_mechanism_grid(**kwargs: Any) -> GridScreeningResult:
 
 def poa_heat_reference_bounds_geom():
     """Full POA extent of the 250 m heat hazard reference grid."""
-    from shapely.geometry import box
-
-    with rasterio.open(REF_RASTER["heat"]) as src:
-        b = src.bounds
-        return box(b.left, b.bottom, b.right, b.top)
+    return site_reference_bounds_geom("heat", DEFAULT_SITE)
 
 
 def screen_poa_heat_mechanism_grid(**kwargs: Any) -> GridScreeningResult:
@@ -1281,11 +1286,7 @@ def export_heat_mechanism_geotiff(
 
 def poa_landslide_reference_bounds_geom():
     """Full POA extent of the 90 m landslide hazard reference grid."""
-    from shapely.geometry import box
-
-    with rasterio.open(REF_RASTER["landslide"]) as src:
-        b = src.bounds
-        return box(b.left, b.bottom, b.right, b.top)
+    return site_reference_bounds_geom("landslide", DEFAULT_SITE)
 
 
 def screen_poa_landslide_mechanism_grid(**kwargs: Any) -> GridScreeningResult:

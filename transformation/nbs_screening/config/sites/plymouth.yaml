@@ -1,0 +1,117 @@
+# NBS grid screening — Plymouth, MN
+# Full layer inventory aligned with config/sites/porto_alegre.yaml.
+# Local paths are extraction targets; runtime skips layers whose files are missing.
+#
+# Status key (inline):
+#   [CCRA]  hazard/risk/DEM from CCRA pipeline (may already exist)
+#   [INPUT] landslide_hazard / heat_hazard / flood_hazard data/input
+#   [PUB]   flood_risk publish (exposure / vulnerability COG source)
+#   [TODO]  extract CLI or notebook not yet run for MN
+
+site_slug: plymouth
+display_name: Plymouth
+country: United States
+
+open_water:
+  enabled: false
+  # When JRC GSW is extracted, enable and wire transition + occurrence layers below.
+
+reference_hazard:
+  flood: flood_hazard
+  heat: heat_hazard
+  landslide: landslide_hazard
+
+catalog:
+  shared:
+    exposure:
+      local: transformation/flood_risk/sites/plymouth/data/output/flood_exposure_score_plymouth.tif  # [PUB] flood_risk_publish --product exposure
+    vulnerability:
+      local: transformation/flood_risk/sites/plymouth/data/output/flood_vulnerability_score_plymouth.tif  # [PUB] flood_risk_publish --product vulnerability
+    ghsl_built_up:
+      local: transformation/ghsl_built_up/sites/plymouth/data/output/plymouth_ghsl_built_up_100m.tif  # [TODO]
+    dynamic_world:
+      local: transformation/dynamic_world/sites/plymouth/data/output/plymouth_dynamicworld_2023.tif  # [TODO] annual mode composite
+    dynamic_world_mode_250m:
+      local: transformation/dynamic_world/sites/plymouth/data/output/plymouth_dw_mode_250m_2023.tif  # [TODO] 250 m mode (NBS grid)
+    modis_ndvi:
+      local: transformation/modis_ndvi/sites/plymouth/data/output/plymouth_modis_ndvi_mean.tif  # [TODO] heat screening NDVI mean
+    copernicus_dem:
+      local: transformation/flood_hazard/sites/plymouth/data/input/plymouth_dem_glo30_30m.tif  # [CCRA]
+    merit_hand:
+      local: transformation/landslide_hazard/sites/plymouth/data/input/plymouth_hand_90m.tif  # [INPUT] merit_hydro/extract_hand.py
+
+  flood:
+    flood_hazard:
+      local: transformation/flood_hazard/sites/plymouth/data/output/flood_hazard_score_idw_plymouth.tif  # [CCRA]
+    flood_risk:
+      local: transformation/flood_risk/sites/plymouth/data/output/flood_risk_score_plymouth.tif  # [CCRA]
+    merit_upa:
+      local: transformation/merit_hydro/sites/plymouth/data/output/plymouth_merit_hydro_upa_90m.tif  # [TODO]
+    merit_elv:
+      local: transformation/merit_hydro/sites/plymouth/data/output/plymouth_merit_hydro_elv_90m.tif  # [TODO]
+    jrc_surface_water_transition:
+      local: transformation/jrc_global_surface_water/sites/plymouth/data/output/plymouth_gsw_transition_30m.tif  # [TODO]
+    jrc_surface_water_occurrence:
+      local: transformation/jrc_global_surface_water/sites/plymouth/data/output/plymouth_gsw_occurrence_30m.tif  # [TODO]
+    jrc_surface_water_seasonality:
+      local: transformation/jrc_global_surface_water/sites/plymouth/data/output/plymouth_gsw_seasonality_30m.tif  # [TODO]
+    copernicus_emsn194:
+      local: transformation/copernicus_emsn194/sites/plymouth/data/output/plymouth_maxwaterdepth.tif  # [TODO] POA-only event product; optional for MN
+    chirps_rx1day_2024:
+      local: transformation/chirps_daily/sites/plymouth/data/output/plymouth_rx1day_2024.tif  # [TODO] pluvial / heavy-rain proxy
+    chirps_rx5day_2024:
+      local: transformation/chirps_daily/sites/plymouth/data/output/plymouth_rx5day_2024.tif  # [TODO]
+    chirps_r90p_2024:
+      local: transformation/chirps_daily/sites/plymouth/data/output/plymouth_r90p_2024.tif  # [TODO]
+    gfplain250m:
+      local: transformation/flood_hazard/sites/plymouth/data/input/gfplain_250m_plymouth.tif  # [CCRA]
+    poa_relative_elevation:
+      local: transformation/flood_hazard/sites/plymouth/data/input/plymouth_relative_elevation_30m.tif  # [CCRA]
+    poa_depression_mask:
+      local: transformation/flood_hazard/sites/plymouth/data/input/plymouth_depression_mask_30m.tif  # [CCRA]
+    poa_depression_depth:
+      local: transformation/flood_hazard/sites/plymouth/data/input/plymouth_depression_depth_30m.tif  # [CCRA]
+    poa_slope:
+      local: transformation/copernicus_dem/sites/plymouth/data/output/plymouth_slope_deg_30m.tif  # [CCRA]
+    soilgrids_clay:
+      local: transformation/landslide_hazard/sites/plymouth/data/input/plymouth_clay_pct_250m.tif  # [INPUT] soilgrids/extract_clay.py
+
+  heat:
+    heat_hazard:
+      local: transformation/heat_hazard/sites/plymouth/data/output/heat_hazard_score_plymouth.tif  # [CCRA]
+    heat_risk:
+      local: transformation/heat_risk/sites/plymouth/data/output/heat_risk_score_plymouth.tif  # [CCRA]
+    hansen_treecover2000:
+      local: transformation/hansen_forest_change/sites/plymouth/data/output/plymouth_hansen_treecover2000_30m.tif  # [TODO]
+    landsat8_lst_djf:
+      local: transformation/heat_hazard/sites/plymouth/data/input/lst_lc08_p90_jja_2015_2024_plymouth.tif  # [INPUT] MN uses JJA (not POA DJF)
+    modis_lst_day_p90:
+      local: transformation/heat_hazard/sites/plymouth/data/input/mod11a2_lst_day_p90_jja_2015_2024_plymouth.tif  # [INPUT]
+    modis_lst_night_p90:
+      local: transformation/heat_hazard/sites/plymouth/data/input/mod11a2_lst_night_p90_jja_2015_2024_plymouth.tif  # [INPUT]
+    poa_slope:
+      local: transformation/copernicus_dem/sites/plymouth/data/output/plymouth_slope_deg_30m.tif  # [CCRA]
+    soilgrids_clay:
+      local: transformation/landslide_hazard/sites/plymouth/data/input/plymouth_clay_pct_250m.tif  # [INPUT]
+
+  landslide:
+    landslide_hazard:
+      local: transformation/landslide_hazard/sites/plymouth/data/output/landslide_hazard_score_plymouth_90m.tif  # [CCRA]
+    landslide_risk:
+      local: transformation/landslide_risk/sites/plymouth/data/output/landslide_risk_score_plymouth.tif  # [CCRA]
+    chirps_r90p_climatology:
+      local: transformation/landslide_hazard/sites/plymouth/data/input/plymouth_r90p_climatology.tif  # [INPUT] chirps_r90p/extract_chirps_r90p.py
+    hansen_treecover2000:
+      local: transformation/hansen_forest_change/sites/plymouth/data/output/plymouth_hansen_treecover2000_30m.tif  # [TODO]
+    dynamic_world_mode_250m:
+      local: transformation/dynamic_world/sites/plymouth/data/output/plymouth_dw_mode_250m_2023.tif  # [TODO] see also landslide input dw_mode
+    merit_upa:
+      local: transformation/merit_hydro/sites/plymouth/data/output/plymouth_merit_hydro_upa_90m.tif  # [TODO]
+    poa_slope:
+      local: transformation/copernicus_dem/sites/plymouth/data/output/plymouth_slope_deg_30m.tif  # [CCRA]
+    soilgrids_clay:
+      local: transformation/landslide_hazard/sites/plymouth/data/input/plymouth_clay_pct_250m.tif  # [INPUT]
+    ndvi_p10_djf:
+      local: transformation/landslide_hazard/sites/plymouth/data/input/plymouth_ndvi_p10_jja_2015_2024.tif  # [INPUT] MN uses JJA (not POA DJF)
+    merit_hand:
+      local: transformation/landslide_hazard/sites/plymouth/data/input/plymouth_hand_90m.tif  # [INPUT]
