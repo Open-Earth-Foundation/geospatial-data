@@ -37,7 +37,7 @@ catalog:
     dynamic_world_mode_250m:
       local: transformation/dynamic_world/sites/edina/data/output/edina_dw_mode_250m_2023.tif  # dynamic_world/extract_dw_mode.py
     modis_ndvi:
-      local: transformation/modis_ndvi/sites/edina/data/output/edina_modis_ndvi_mean.tif  # [TODO] heat screening NDVI mean
+      local: transformation/modis_ndvi/sites/edina/data/output/edina_modis_ndvi_mean.tif  # modis_ndvi/extract_ndvi_mean.py
     copernicus_dem:
       local: transformation/flood_hazard/sites/edina/data/input/edina_dem_glo30_30m.tif  # [CCRA]
     merit_hand:
@@ -61,11 +61,11 @@ catalog:
     copernicus_emsn194:
       local: transformation/copernicus_emsn194/sites/edina/data/output/edina_maxwaterdepth.tif  # [TODO] POA-only event product; optional for MN
     chirps_rx1day_2024:
-      local: transformation/chirps_daily/sites/edina/data/output/edina_rx1day_2024.tif  # [TODO] pluvial / heavy-rain proxy
+      local: transformation/chirps_daily/sites/edina/data/output/edina_rx1day_2024.tif  # chirps_daily/extract_chirps_daily.py
     chirps_rx5day_2024:
-      local: transformation/chirps_daily/sites/edina/data/output/edina_rx5day_2024.tif  # [TODO]
+      local: transformation/chirps_daily/sites/edina/data/output/edina_rx5day_2024.tif  # chirps_daily/extract_chirps_daily.py
     chirps_r90p_2024:
-      local: transformation/chirps_daily/sites/edina/data/output/edina_r90p_2024.tif  # [TODO]
+      local: transformation/chirps_daily/sites/edina/data/output/edina_r90p_2024.tif  # chirps_daily/extract_chirps_daily.py
     gfplain250m:
       local: transformation/flood_hazard/sites/edina/data/input/gfplain_250m_edina.tif  # [CCRA]
     poa_relative_elevation:
@@ -85,7 +85,7 @@ catalog:
     heat_risk:
       local: transformation/heat_risk/sites/edina/data/output/heat_risk_score_edina.tif  # [CCRA]
     hansen_treecover2000:
-      local: transformation/hansen_forest_change/sites/edina/data/output/edina_hansen_treecover2000_30m.tif  # [TODO]
+      local: transformation/hansen_forest_change/sites/edina/data/output/edina_hansen_treecover2000_30m.tif  # hansen_forest_change/extract_treecover2000.py
     landsat8_lst_djf:
       local: transformation/heat_hazard/sites/edina/data/input/lst_lc08_p90_jja_2015_2024_edina.tif  # [INPUT] MN uses JJA (not POA DJF)
     modis_lst_day_p90:
@@ -105,7 +105,7 @@ catalog:
     chirps_r90p_climatology:
       local: transformation/landslide_hazard/sites/edina/data/input/edina_r90p_climatology.tif  # [INPUT] chirps_r90p/extract_chirps_r90p.py
     hansen_treecover2000:
-      local: transformation/hansen_forest_change/sites/edina/data/output/edina_hansen_treecover2000_30m.tif  # [TODO]
+      local: transformation/hansen_forest_change/sites/edina/data/output/edina_hansen_treecover2000_30m.tif  # hansen_forest_change/extract_treecover2000.py
     dynamic_world_mode_250m:
       local: transformation/dynamic_world/sites/edina/data/output/edina_dw_mode_250m_2023.tif  # dynamic_world/extract_dw_mode.py
     merit_upa:
