@@ -49,9 +49,9 @@ catalog:
     flood_risk:
       local: transformation/flood_risk/sites/plymouth/data/output/flood_risk_score_plymouth.tif  # [CCRA]
     merit_upa:
-      local: transformation/merit_hydro/sites/plymouth/data/output/plymouth_merit_hydro_upa_90m.tif  # [TODO]
+      local: transformation/merit_hydro/sites/plymouth/data/output/plymouth_merit_hydro_upa_90m.tif  # merit_hydro/extract_merit_hydro.py
     merit_elv:
-      local: transformation/merit_hydro/sites/plymouth/data/output/plymouth_merit_hydro_elv_90m.tif  # [TODO]
+      local: transformation/merit_hydro/sites/plymouth/data/output/plymouth_merit_hydro_elv_90m.tif  # merit_hydro/extract_merit_hydro.py
     jrc_surface_water_transition:
       local: transformation/jrc_global_surface_water/sites/plymouth/data/output/plymouth_gsw_transition_30m.tif  # jrc_global_surface_water/extract_gsw.py
     jrc_surface_water_occurrence:
@@ -109,7 +109,7 @@ catalog:
     dynamic_world_mode_250m:
       local: transformation/dynamic_world/sites/plymouth/data/output/plymouth_dw_mode_250m_2023.tif  # dynamic_world/extract_dw_mode.py
     merit_upa:
-      local: transformation/merit_hydro/sites/plymouth/data/output/plymouth_merit_hydro_upa_90m.tif  # [TODO]
+      local: transformation/merit_hydro/sites/plymouth/data/output/plymouth_merit_hydro_upa_90m.tif  # merit_hydro/extract_merit_hydro.py
     poa_slope:
       local: transformation/copernicus_dem/sites/plymouth/data/output/plymouth_slope_deg_30m.tif  # [CCRA]
     soilgrids_clay:
