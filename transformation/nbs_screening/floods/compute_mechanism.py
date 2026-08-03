@@ -6,8 +6,8 @@ dominant flood mechanism, IDW-fills gaps, and writes GeoTIFF + GeoJSON exports.
 Also writes a categorical QA SVG for the filled mechanism raster.
 
 Example:
-  python transformation/nbs_screening/compute_nbs_mechanism.py --site richfield
-  python transformation/nbs_screening/compute_nbs_mechanism.py --site porto_alegre --aoi full
+  python transformation/nbs_screening/floods/compute_mechanism.py --site richfield
+  python transformation/nbs_screening/floods/compute_mechanism.py --site porto_alegre --aoi full
   python transformation/nbs_screening/check_nbs_layers.py --site richfield --hazard flood
 """
 
@@ -23,9 +23,11 @@ from typing import Any
 
 import numpy as np
 
-NBS_ROOT = Path(__file__).resolve().parent
-if str(NBS_ROOT) not in sys.path:
-    sys.path.insert(0, str(NBS_ROOT))
+FLOODS_ROOT = Path(__file__).resolve().parent
+NBS_ROOT = FLOODS_ROOT.parent
+for _path in (FLOODS_ROOT, NBS_ROOT):
+    if str(_path) not in sys.path:
+        sys.path.insert(0, str(_path))
 
 from catalog_layers import (  # noqa: E402
     HAZARD_REQUIRED_LAYERS,
@@ -206,7 +208,7 @@ def compute_flood_mechanism(
 
     _require_layers(site, "flood")
     ref_path = get_reference_hazard_raster("flood", site)
-    out_dir = Path(out_dir or site_output_dir(site))
+    out_dir = Path(out_dir or site_output_dir(site, "flood"))
     out_dir.mkdir(parents=True, exist_ok=True)
 
     aoi_geom = _resolve_aoi(site, aoi)
@@ -300,7 +302,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--out-dir",
         default=None,
-        help="Override output directory (default: nbs_screening/sites/<site>/data/output)",
+        help="Override output directory (default: sites/<site>/floods/data/output)",
     )
     parser.add_argument(
         "--no-qa",

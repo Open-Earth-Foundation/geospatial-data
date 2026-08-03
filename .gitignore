@@ -30,7 +30,10 @@ transformation/*/sites/*/data/
 transformation/*/sites/*/out/
 transformation/*/sites/*/intermediate/
 
-# NbS screening runtime outputs
+# NbS screening runtime outputs (hazard-scoped under sites/)
+transformation/nbs_screening/sites/**/data/
+transformation/nbs_screening/sites/**/out/
+transformation/nbs_screening/sites/**/cache/
 transformation/nbs_screening/output/*
 !transformation/nbs_screening/output/.gitkeep
 

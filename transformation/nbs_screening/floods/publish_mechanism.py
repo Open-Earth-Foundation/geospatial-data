@@ -4,10 +4,10 @@
 Pilot hazard: flood only (heat/landslide later).
 
 Example (Richfield, build only):
-  python transformation/nbs_screening/nbs_mechanism_publish.py --site richfield --build
+  python transformation/nbs_screening/floods/publish_mechanism.py --site richfield --build
 
 Example (upload + catalog):
-  python transformation/nbs_screening/nbs_mechanism_publish.py \\
+  python transformation/nbs_screening/floods/publish_mechanism.py \\
     --site richfield --build --upload --write-catalog
 """
 
@@ -22,9 +22,11 @@ import sys
 from pathlib import Path
 from typing import Any
 
-NBS_ROOT = Path(__file__).resolve().parent
-if str(NBS_ROOT) not in sys.path:
-    sys.path.insert(0, str(NBS_ROOT))
+FLOODS_ROOT = Path(__file__).resolve().parent
+NBS_ROOT = FLOODS_ROOT.parent
+for _path in (FLOODS_ROOT, NBS_ROOT):
+    if str(_path) not in sys.path:
+        sys.path.insert(0, str(_path))
 
 from grid_screening import MECHANISM_RASTER_NODATA, flood_mechanism_layer_stem  # noqa: E402
 from nbs_rules import FLOOD_MECHANISM_COLORS, FLOOD_MECHANISM_TYPE_CODES  # noqa: E402
@@ -129,22 +131,22 @@ def s3_prefix_for_site(site_slug: str) -> str:
 
 def resolve_input_tif(site: str) -> Path:
     stem = flood_mechanism_layer_stem(site)
-    path = site_output_dir(site) / f"{stem}.tif"
+    path = site_output_dir(site, "flood") / f"{stem}.tif"
     if not path.is_file():
         raise FileNotFoundError(
             f"Missing filled mechanism raster: {path}. "
-            f"Run: python transformation/nbs_screening/compute_nbs_mechanism.py --site {site}"
+            f"Run: python transformation/nbs_screening/floods/compute_mechanism.py --site {site}"
         )
     return path
 
 
 def resolve_geojson(site: str) -> Path:
     stem = flood_mechanism_layer_stem(site)
-    path = site_output_dir(site) / f"{stem}.geojson"
+    path = site_output_dir(site, "flood") / f"{stem}.geojson"
     if not path.is_file():
         raise FileNotFoundError(
             f"Missing mechanism GeoJSON: {path}. "
-            f"Run compute_nbs_mechanism.py --site {site} first."
+            f"Run floods/compute_mechanism.py --site {site} first."
         )
     return path
 
@@ -486,7 +488,7 @@ def build_catalog_entry(
             f"OEF dominant flood mechanism type per 250 m cell for {display}. Integer codes: "
             "0 none, 1 riverine, 2 pluvial, 3 low_lying, 4 drainage_constrained, 5 mixed. "
             "Rules in `transformation/nbs_screening/nbs_rules.py`; produced by "
-            "`transformation/nbs_screening/compute_nbs_mechanism.py`. Methodology: "
+            "`transformation/nbs_screening/floods/compute_mechanism.py`. Methodology: "
             "`models/nbs_flood_mechanism_type/`. Rasterized on the OEF flood hazard 250 m grid. "
             "Value tiles use Terrain RGB with +1 offset (`mechanism_code = encoded - 1`; "
             "encoded 0 = nodata). GeoJSON (`geojson_url`) lists screened cells with mechanism "

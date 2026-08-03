@@ -17,7 +17,7 @@ open_water:
   # When JRC GSW is extracted, enable and wire transition + occurrence layers below.
 
 osm_waterways:
-  local: transformation/nbs_screening/sites/edina/data/input/osm_waterways_edina.json  # extract_osm_rivers.py
+  local: transformation/nbs_screening/sites/edina/floods/data/input/osm_waterways_edina.json  # floods/extract_osm_rivers.py
 
 reference_hazard:
   flood: flood_hazard

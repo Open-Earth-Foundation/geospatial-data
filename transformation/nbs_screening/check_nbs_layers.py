@@ -225,7 +225,7 @@ def _print_report(report: dict[str, Any], *, verbose: bool) -> None:
         print(f"  ref grid {hz}: {layer_id} → {status}")
 
     osm = report.get("osm_waterways") or {}
-    osm_status = "ready" if osm.get("ready") else "MISSING (run extract_osm_rivers.py)"
+    osm_status = "ready" if osm.get("ready") else "MISSING (run floods/extract_osm_rivers.py)"
     print(f"  osm_waterways: {osm_status}")
     if osm.get("configured_local") and not osm.get("ready"):
         print(f"    expected: {osm['configured_local']}")

@@ -5,10 +5,10 @@ Fetches river/stream/canal ways from the Overpass API inside the city boundary
 (+ buffer) and writes POA-compatible JSON for ``catalog_layers.water_stats_at_point``.
 
 Example:
-  python transformation/nbs_screening/extract_osm_rivers.py --site richfield
-  python transformation/nbs_screening/extract_osm_rivers.py --all-configured
-  python transformation/nbs_screening/extract_osm_rivers.py --country "United States"
-  python transformation/nbs_screening/extract_osm_rivers.py --site edina --buffer-m 1500
+  python transformation/nbs_screening/floods/extract_osm_rivers.py --site richfield
+  python transformation/nbs_screening/floods/extract_osm_rivers.py --all-configured
+  python transformation/nbs_screening/floods/extract_osm_rivers.py --country "United States"
+  python transformation/nbs_screening/floods/extract_osm_rivers.py --site edina --buffer-m 1500
 """
 
 from __future__ import annotations
@@ -25,9 +25,11 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
-NBS_ROOT = Path(__file__).resolve().parent
-if str(NBS_ROOT) not in sys.path:
-    sys.path.insert(0, str(NBS_ROOT))
+FLOODS_ROOT = Path(__file__).resolve().parent
+NBS_ROOT = FLOODS_ROOT.parent
+for _path in (FLOODS_ROOT, NBS_ROOT):
+    if str(_path) not in sys.path:
+        sys.path.insert(0, str(_path))
 
 from catalog_layers import clear_rivers_cache  # noqa: E402
 from site_config import (  # noqa: E402

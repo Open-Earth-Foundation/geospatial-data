@@ -12,18 +12,18 @@ Per configured city, runs in order:
 Delegates to existing CLIs/modules (N4–N8).
 
 Example (single city, local build):
-  python transformation/nbs_screening/run_nbs_flood_pipeline.py --site richfield
+  python transformation/nbs_screening/floods/run_pipeline.py --site richfield
 
 Example (Minnesota cohort, skip DEM when already computed):
-  python transformation/nbs_screening/run_nbs_flood_pipeline.py \\
+  python transformation/nbs_screening/floods/run_pipeline.py \\
     --country "United States" --skip-dem
 
 Example (prep only — DEM + rivers, no mechanism):
-  python transformation/nbs_screening/run_nbs_flood_pipeline.py \\
+  python transformation/nbs_screening/floods/run_pipeline.py \\
     --sites richfield --skip-compute --skip-publish
 
 Example (upload + catalog):
-  python transformation/nbs_screening/run_nbs_flood_pipeline.py \\
+  python transformation/nbs_screening/floods/run_pipeline.py \\
     --all-configured --upload --write-catalog --continue-on-error
 """
 
@@ -37,13 +37,15 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Literal
 
-NBS_ROOT = Path(__file__).resolve().parent
+FLOODS_ROOT = Path(__file__).resolve().parent
+NBS_ROOT = FLOODS_ROOT.parent
 COPERNICUS_DEM_ROOT = NBS_ROOT.parent / "copernicus_dem"
 
-if str(NBS_ROOT) not in sys.path:
-    sys.path.insert(0, str(NBS_ROOT))
+for _path in (FLOODS_ROOT, NBS_ROOT):
+    if str(_path) not in sys.path:
+        sys.path.insert(0, str(_path))
 
-from batch_flood_mechanism import (  # noqa: E402
+from batch_mechanism import (  # noqa: E402
     _preflight,
     _resolve_batch_sites,
     run_site_pipeline,

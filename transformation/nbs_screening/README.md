@@ -1,34 +1,50 @@
 # NbS screening
 
 Rule-based Nature-based Solutions **grid** screening and dominant-mechanism layers
-(flood / heat / landslide). The primary unit is the **250 m cell**; bairro/AOI queries
-are legacy and out of scope for the multi-city pipeline.
+(flood / heat / landslide). The primary unit is the **250 m cell** (90 m for landslide);
+bairro/AOI queries are legacy and out of scope for the multi-city pipeline.
 
-## Run (grid mechanism — N2)
+## Layout (N9)
+
+Hazard-specific CLIs and runtime outputs are scoped by hazard under `sites/<city>/`:
+
+```
+transformation/nbs_screening/
+├── site_config.py, catalog_layers.py, grid_screening.py, nbs_rules.py  # shared
+├── config/sites/{city}.yaml                                             # multi-hazard
+├── floods/          flood mechanism CLIs (N2–N7)
+├── heat/            heat mechanism CLIs (planned H1–H4)
+├── landslide/       landslide mechanism CLIs (planned L1–L4)
+└── sites/{city}/{hazard}/data/{input,output}  +  out/
+```
+
+See `floods/README.md`, `heat/README.md`, `landslide/README.md`.
+
+## Run (grid mechanism — N2, flood)
 
 ```bash
 # Flood mechanism type on city boundary (Minnesota pilot)
-python transformation/nbs_screening/compute_nbs_mechanism.py --site richfield
+python transformation/nbs_screening/floods/compute_mechanism.py --site richfield
 
 # Full hazard grid extent (POA-style)
-python transformation/nbs_screening/compute_nbs_mechanism.py --site porto_alegre --aoi full
+python transformation/nbs_screening/floods/compute_mechanism.py --site porto_alegre --aoi full
 ```
 
-Outputs: `transformation/nbs_screening/sites/<site>/data/output/`  
-(`flood_mechanism_type_<site>_250m.tif`, observed + IDW mask, GeoJSON, `metadata.json`).
+Outputs: `transformation/nbs_screening/sites/<site>/floods/data/output/`  
+(`flood_mechanism_type_<site>_250m.tif`, observed + IDW mask, GeoJSON, QA SVG, `metadata.json`).
 
 ## Publish (N3 — flood mechanism COG + tiles)
 
 ```bash
 # Build COG + XYZ tiles locally (Richfield pilot)
-python transformation/nbs_screening/nbs_mechanism_publish.py --site richfield --build
+python transformation/nbs_screening/floods/publish_mechanism.py --site richfield --build
 
 # Upload to S3 and register in catalog/datasets.yaml
-python transformation/nbs_screening/nbs_mechanism_publish.py \\
+python transformation/nbs_screening/floods/publish_mechanism.py \\
   --site richfield --build --upload --write-catalog
 ```
 
-Publish staging: `transformation/nbs_screening/sites/<site>/out/flood_mechanism_type/`  
+Publish staging: `transformation/nbs_screening/sites/<site>/floods/out/flood_mechanism_type/`  
 Catalog dataset id: `{site}_flood_mechanism_type` (POA keeps `poa_flood_mechanism_type`).
 
 ## OSM waterways (N4 — riverine distance)
@@ -36,12 +52,12 @@ Catalog dataset id: `{site}_flood_mechanism_type` (POA keeps `poa_flood_mechanis
 Grid screening uses local OSM river/stream/canal linework for `dist_nearest_m` / riverine mechanism flags. Extract per city (Overpass API):
 
 ```bash
-python transformation/nbs_screening/extract_osm_rivers.py --site richfield
-python transformation/nbs_screening/extract_osm_rivers.py --all-configured
-python transformation/nbs_screening/extract_osm_rivers.py --country "United States"
+python transformation/nbs_screening/floods/extract_osm_rivers.py --site richfield
+python transformation/nbs_screening/floods/extract_osm_rivers.py --all-configured
+python transformation/nbs_screening/floods/extract_osm_rivers.py --country "United States"
 ```
 
-Output: `transformation/nbs_screening/sites/<site>/data/input/osm_waterways_<site>.json`  
+Output: `transformation/nbs_screening/sites/<site>/floods/data/input/osm_waterways_<site>.json`  
 (`geoJson` wrapper compatible with POA `porto-alegre-rivers.json`).
 
 Override path: `NBS_RIVERS_GEOJSON` or `osm_waterways.local` in site YAML.
@@ -51,52 +67,29 @@ Override path: `NBS_RIVERS_GEOJSON` or `osm_waterways.local` in site YAML.
 End-to-end flood mechanism for any configured city (`config/sites/{slug}.yaml`):
 
 ```bash
-# All configured sites (add a YAML to onboard a new city)
-python transformation/nbs_screening/batch_flood_mechanism.py --all-configured
-
-# Filter by country field in site YAML (current MN cohort)
-python transformation/nbs_screening/batch_flood_mechanism.py --country "United States"
-
-# Explicit list
-python transformation/nbs_screening/batch_flood_mechanism.py --sites richfield,edina
-
-# Exclude POA from a full run
-python transformation/nbs_screening/batch_flood_mechanism.py --all-configured --exclude porto_alegre
-
-# Upload + catalog
-python transformation/nbs_screening/batch_flood_mechanism.py \\
+python transformation/nbs_screening/floods/batch_mechanism.py --all-configured
+python transformation/nbs_screening/floods/batch_mechanism.py --country "United States"
+python transformation/nbs_screening/floods/batch_mechanism.py --sites richfield,edina
+python transformation/nbs_screening/floods/batch_mechanism.py --all-configured --exclude porto_alegre
+python transformation/nbs_screening/floods/batch_mechanism.py \\
   --country "United States" --upload --write-catalog --continue-on-error
 ```
 
-Legacy alias: `batch_mn_flood_mechanism.py` → same as `--country "United States"`.
+Minnesota cohort shortcut: `floods/batch_mn_mechanism.py` (defaults to `--country "United States"`).
 
 ## Full flood pipeline (N7)
 
-Single entry point: DEM diagnostics → OSM rivers → mechanism compute → publish.
-Optional `--publish-dem` runs N8 after DEM compute. Delegates to N4–N8 modules.
-
 ```bash
-# One city (all steps, local build)
-python transformation/nbs_screening/run_nbs_flood_pipeline.py --site richfield
-
-# Minnesota cohort, skip DEM when already computed
-python transformation/nbs_screening/run_nbs_flood_pipeline.py \\
+python transformation/nbs_screening/floods/run_pipeline.py --site richfield
+python transformation/nbs_screening/floods/run_pipeline.py \\
   --country "United States" --skip-dem
-
-# Include DEM COG/tiles publish (N8)
-python transformation/nbs_screening/run_nbs_flood_pipeline.py \\
+python transformation/nbs_screening/floods/run_pipeline.py \\
   --site richfield --publish-dem --upload --write-catalog
-
-# Prep only (DEM + rivers)
-python transformation/nbs_screening/run_nbs_flood_pipeline.py \\
-  --sites richfield --skip-compute --skip-publish
-
-# Upload + catalog
-python transformation/nbs_screening/run_nbs_flood_pipeline.py \\
+python transformation/nbs_screening/floods/run_pipeline.py \\
   --all-configured --upload --write-catalog --continue-on-error
 ```
 
-Legacy alias: `run_mn_flood_pipeline.py` → same as `--country "United States"`.
+Minnesota cohort shortcut: `floods/run_mn_pipeline.py` (defaults to `--country "United States"`).
 
 ## Run (POA defaults / legacy)
 
@@ -188,10 +181,11 @@ See `docs/` in this folder, `config/sites/README.md`, and
 | PR | Content |
 |----|---------|
 | **N1** | `site_config.py`, site YAMLs, `catalog_layers` refactor |
-| **N2** | `compute_nbs_mechanism.py` flood grid CLI |
-| **N3** | `nbs_mechanism_publish.py` flood COG/tiles + catalog |
-| **N4** | `extract_osm_rivers.py` + site-aware waterways in screening |
-| **N5** | `batch_flood_mechanism.py` multi-city batch pipeline |
+| **N2** | `floods/compute_mechanism.py` flood grid CLI |
+| **N3** | `floods/publish_mechanism.py` flood COG/tiles + catalog |
+| **N4** | `floods/extract_osm_rivers.py` + site-aware waterways in screening |
+| **N5** | `floods/batch_mechanism.py` multi-city batch pipeline |
 | **N6** | `compute_dem_diagnostics.py` relative elevation + depression |
-| **N7** | `run_nbs_flood_pipeline.py` end-to-end flood orchestrator |
+| **N7** | `floods/run_pipeline.py` end-to-end flood orchestrator |
 | **N8** | `publish_dem_diagnostics.py` DEM COG/tiles + catalog |
+| **N9** | Hazard-scoped layout (`floods/`, `heat/`, `landslide/` + `sites/{city}/{hazard}/`) |
