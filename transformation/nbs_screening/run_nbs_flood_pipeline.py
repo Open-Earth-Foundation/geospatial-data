@@ -4,11 +4,12 @@
 Per configured city, runs in order:
 
   1. DEM diagnostics (relative elevation + depression layers) — optional
-  2. OSM waterways extract — optional
-  3. Flood mechanism grid compute
-  4. COG/tiles publish
+  2. DEM diagnostics publish (COG/tiles/catalog) — optional (N8)
+  3. OSM waterways extract — optional
+  4. Flood mechanism grid compute
+  5. COG/tiles publish
 
-Delegates to existing CLIs/modules (N4–N6). Does not upload DEM layers (see N8).
+Delegates to existing CLIs/modules (N4–N8).
 
 Example (single city, local build):
   python transformation/nbs_screening/run_nbs_flood_pipeline.py --site richfield
@@ -49,7 +50,7 @@ from batch_flood_mechanism import (  # noqa: E402
 )
 from site_config import list_configured_sites  # noqa: E402
 
-StepName = Literal["dem", "rivers", "compute", "publish"]
+StepName = Literal["dem", "dem_publish", "rivers", "compute", "publish"]
 StepStatus = Literal["ok", "skipped", "failed"]
 
 
@@ -94,10 +95,41 @@ def _run_dem_step(
     return ("skipped" if dry_run else "ok"), None
 
 
+def _run_dem_publish_step(
+    site: str,
+    *,
+    upload: bool,
+    write_catalog: bool,
+    publish_build: bool,
+    dry_run: bool,
+) -> tuple[StepStatus, str | None]:
+    cmd = [
+        sys.executable,
+        str(COPERNICUS_DEM_ROOT / "publish_dem_diagnostics.py"),
+        "--site",
+        site,
+    ]
+    if dry_run:
+        print(f"  [dry-run] publish_dem_diagnostics --site {site}")
+        return "skipped", None
+    if not publish_build:
+        cmd.append("--no-build")
+    if upload:
+        cmd.append("--upload")
+    if write_catalog:
+        cmd.append("--write-catalog")
+
+    proc = subprocess.run(cmd, text=True)
+    if proc.returncode != 0:
+        return "failed", f"dem publish exited {proc.returncode}"
+    return "ok", None
+
+
 def run_site_flood_pipeline(
     site: str,
     *,
     skip_dem: bool,
+    publish_dem: bool,
     export_dem: bool,
     authenticate: bool,
     dem_path: Path | None,
@@ -117,6 +149,23 @@ def run_site_flood_pipeline(
 
     if skip_dem:
         result.steps["dem"] = "skipped"
+        if publish_dem:
+            pub_status, pub_error = _run_dem_publish_step(
+                site,
+                upload=upload,
+                write_catalog=write_catalog,
+                publish_build=publish_build,
+                dry_run=dry_run,
+            )
+            result.steps["dem_publish"] = pub_status
+            if pub_status == "failed":
+                result.error = pub_error
+                result.steps["rivers"] = "skipped"
+                result.steps["compute"] = "skipped"
+                result.steps["publish"] = "skipped"
+                return result
+        else:
+            result.steps["dem_publish"] = "skipped"
     else:
         dem_status, dem_error = _run_dem_step(
             site,
@@ -128,10 +177,29 @@ def run_site_flood_pipeline(
         result.steps["dem"] = dem_status
         if dem_status == "failed":
             result.error = dem_error
+            result.steps["dem_publish"] = "skipped"
             result.steps["rivers"] = "skipped"
             result.steps["compute"] = "skipped"
             result.steps["publish"] = "skipped"
             return result
+
+        if publish_dem:
+            pub_status, pub_error = _run_dem_publish_step(
+                site,
+                upload=upload,
+                write_catalog=write_catalog,
+                publish_build=publish_build,
+                dry_run=dry_run,
+            )
+            result.steps["dem_publish"] = pub_status
+            if pub_status == "failed":
+                result.error = pub_error
+                result.steps["rivers"] = "skipped"
+                result.steps["compute"] = "skipped"
+                result.steps["publish"] = "skipped"
+                return result
+        else:
+            result.steps["dem_publish"] = "skipped"
 
     mechanism = run_site_pipeline(
         site,
@@ -155,12 +223,13 @@ def run_site_flood_pipeline(
 
 def _print_summary(results: list[PipelineSiteResult]) -> None:
     print("\n=== Flood pipeline summary ===")
-    print(f"{'Site':<14} {'DEM':<8} {'Rivers':<8} {'Compute':<8} {'Publish':<8} Status")
+    print(f"{'Site':<14} {'DEM':<8} {'DEM pub':<8} {'Rivers':<8} {'Compute':<8} {'Publish':<8} Status")
     for row in results:
         status = "OK" if row.ok else f"FAIL ({row.error})"
         print(
             f"{row.site:<14} "
             f"{row.steps.get('dem', '?'):<8} "
+            f"{row.steps.get('dem_publish', '?'):<8} "
             f"{row.steps.get('rivers', '?'):<8} "
             f"{row.steps.get('compute', '?'):<8} "
             f"{row.steps.get('publish', '?'):<8} "
@@ -174,6 +243,7 @@ def run_pipeline(
     sites: list[str],
     *,
     skip_dem: bool,
+    publish_dem: bool,
     export_dem: bool,
     authenticate: bool,
     dem_path: Path | None,
@@ -206,6 +276,7 @@ def run_pipeline(
             result = run_site_flood_pipeline(
                 site,
                 skip_dem=skip_dem,
+                publish_dem=publish_dem,
                 export_dem=export_dem,
                 authenticate=authenticate,
                 dem_path=dem_path,
@@ -226,6 +297,7 @@ def run_pipeline(
                 display_name=pre["display_name"],
                 steps={
                     "dem": "failed",
+                    "dem_publish": "failed",
                     "rivers": "failed",
                     "compute": "failed",
                     "publish": "failed",
@@ -268,6 +340,11 @@ def main(argv: list[str] | None = None) -> int:
         help="Skip site slug(s); repeat or comma-separate (e.g. --exclude porto_alegre)",
     )
     parser.add_argument("--skip-dem", action="store_true", help="Skip DEM diagnostics step")
+    parser.add_argument(
+        "--publish-dem",
+        action="store_true",
+        help="Publish DEM diagnostic COGs/tiles/catalog after diagnostics (N8)",
+    )
     parser.add_argument(
         "--export-dem",
         action="store_true",
@@ -352,6 +429,7 @@ def main(argv: list[str] | None = None) -> int:
     results = run_pipeline(
         sites,
         skip_dem=args.skip_dem,
+        publish_dem=args.publish_dem,
         export_dem=args.export_dem,
         authenticate=args.authenticate,
         dem_path=args.dem_path,
