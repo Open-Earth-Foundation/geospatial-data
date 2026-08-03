@@ -54,11 +54,17 @@ def ensure_flood_hazard_on_path() -> None:
 
 
 def load_flood_site(site: str | None = None) -> dict[str, Any]:
-    ensure_flood_hazard_on_path()
-    from site_config import load_site_config
+    import importlib.util
+
+    path = FLOOD_HAZARD_ROOT / "site_config.py"
+    spec = importlib.util.spec_from_file_location("_flood_site_config", path)
+    if spec is None or spec.loader is None:  # pragma: no cover
+        raise ImportError(f"Could not load flood site_config from {path}")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
 
     slug = site or os.environ.get("FLOODS_SITE") or os.environ.get("NBS_SITE", "porto_alegre")
-    return load_site_config(slug, FLOOD_HAZARD_ROOT)
+    return module.load_site_config(slug, FLOOD_HAZARD_ROOT)
 
 
 def init_ee(*, project: str | None = None, authenticate: bool = False) -> Any:
@@ -76,10 +82,15 @@ def init_ee(*, project: str | None = None, authenticate: bool = False) -> Any:
 
 
 def load_site_roi(site_config: dict[str, Any], ee: Any) -> Any:
-    ensure_flood_hazard_on_path()
-    from input_common import load_site_roi as _load_site_roi
+    import importlib.util
 
-    return _load_site_roi(site_config, ee)
+    path = FLOOD_HAZARD_ROOT / "input_common.py"
+    spec = importlib.util.spec_from_file_location("_flood_input_common", path)
+    if spec is None or spec.loader is None:  # pragma: no cover
+        raise ImportError(f"Could not load flood input_common from {path}")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module.load_site_roi(site_config, ee)
 
 
 def ghsl_output_path(site: str, *, prefix: str | None = None) -> Path:
