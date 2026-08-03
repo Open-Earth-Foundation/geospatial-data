@@ -31,7 +31,7 @@ catalog:
     vulnerability:
       local: transformation/flood_risk/sites/rochester/data/output/flood_vulnerability_score_rochester.tif  # [PUB] flood_risk_publish --product vulnerability
     ghsl_built_up:
-      local: transformation/ghsl_built_up/sites/rochester/data/output/rochester_ghsl_built_up_100m.tif  # [TODO]
+      local: transformation/ghsl_built_up/sites/rochester/data/output/rochester_ghsl_built_up_100m.tif  # ghsl_built_up/extract_ghsl_built_up.py
     dynamic_world:
       local: transformation/dynamic_world/sites/rochester/data/output/rochester_dynamicworld_2023.tif  # [TODO] annual mode composite
     dynamic_world_mode_250m:
