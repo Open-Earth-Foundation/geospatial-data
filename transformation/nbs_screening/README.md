@@ -70,6 +70,30 @@ python transformation/nbs_screening/batch_flood_mechanism.py \\
 
 Legacy alias: `batch_mn_flood_mechanism.py` → same as `--country "United States"`.
 
+## Full flood pipeline (N7)
+
+Single entry point: DEM diagnostics → OSM rivers → mechanism compute → publish.
+Delegates to N4–N6 modules; does not publish DEM COGs (N8).
+
+```bash
+# One city (all steps, local build)
+python transformation/nbs_screening/run_nbs_flood_pipeline.py --site richfield
+
+# Minnesota cohort, skip DEM when already computed
+python transformation/nbs_screening/run_nbs_flood_pipeline.py \\
+  --country "United States" --skip-dem
+
+# Prep only (DEM + rivers)
+python transformation/nbs_screening/run_nbs_flood_pipeline.py \\
+  --sites richfield --skip-compute --skip-publish
+
+# Upload + catalog
+python transformation/nbs_screening/run_nbs_flood_pipeline.py \\
+  --all-configured --upload --write-catalog --continue-on-error
+```
+
+Legacy alias: `run_mn_flood_pipeline.py` → same as `--country "United States"`.
+
 ## Run (POA defaults / legacy)
 
 ```bash
@@ -164,4 +188,5 @@ See `docs/` in this folder, `config/sites/README.md`, and
 | **N3** | `nbs_mechanism_publish.py` flood COG/tiles + catalog |
 | **N4** | `extract_osm_rivers.py` + site-aware waterways in screening |
 | **N5** | `batch_flood_mechanism.py` multi-city batch pipeline |
-| **N6** (this) | `compute_dem_diagnostics.py` relative elevation + depression |
+| **N6** | `compute_dem_diagnostics.py` relative elevation + depression |
+| **N7** | `run_nbs_flood_pipeline.py` end-to-end flood orchestrator |
