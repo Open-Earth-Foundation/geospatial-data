@@ -85,7 +85,7 @@ catalog:
     heat_risk:
       local: transformation/heat_risk/sites/rochester/data/output/heat_risk_score_rochester.tif  # [CCRA]
     hansen_treecover2000:
-      local: transformation/hansen_forest_change/sites/rochester/data/output/rochester_hansen_treecover2000_30m.tif  # [TODO]
+      local: transformation/hansen_forest_change/sites/rochester/data/output/rochester_hansen_treecover2000_30m.tif  # hansen_forest_change/extract_treecover2000.py
     landsat8_lst_djf:
       local: transformation/heat_hazard/sites/rochester/data/input/lst_lc08_p90_jja_2015_2024_rochester.tif  # [INPUT] MN uses JJA (not POA DJF)
     modis_lst_day_p90:
@@ -105,7 +105,7 @@ catalog:
     chirps_r90p_climatology:
       local: transformation/landslide_hazard/sites/rochester/data/input/rochester_r90p_climatology.tif  # [INPUT] chirps_r90p/extract_chirps_r90p.py
     hansen_treecover2000:
-      local: transformation/hansen_forest_change/sites/rochester/data/output/rochester_hansen_treecover2000_30m.tif  # [TODO]
+      local: transformation/hansen_forest_change/sites/rochester/data/output/rochester_hansen_treecover2000_30m.tif  # hansen_forest_change/extract_treecover2000.py
     dynamic_world_mode_250m:
       local: transformation/dynamic_world/sites/rochester/data/output/rochester_dw_mode_250m_2023.tif  # dynamic_world/extract_dw_mode.py
     merit_upa:
