@@ -75,7 +75,7 @@ catalog:
     poa_depression_depth:
       local: transformation/flood_hazard/sites/plymouth/data/output/plymouth_depression_depth_30m.tif  # compute_dem_diagnostics.py
     poa_slope:
-      local: transformation/copernicus_dem/sites/plymouth/data/output/plymouth_slope_deg_30m.tif  # [CCRA]
+      local: transformation/landslide_hazard/sites/plymouth/data/input/plymouth_slope_deg_30m.tif  # copernicus_dem/extract_slope.py
     soilgrids_clay:
       local: transformation/landslide_hazard/sites/plymouth/data/input/plymouth_clay_pct_250m.tif  # [INPUT] soilgrids/extract_clay.py
 
@@ -93,7 +93,7 @@ catalog:
     modis_lst_night_p90:
       local: transformation/heat_hazard/sites/plymouth/data/input/mod11a2_lst_night_p90_jja_2015_2024_plymouth.tif  # [INPUT]
     poa_slope:
-      local: transformation/copernicus_dem/sites/plymouth/data/output/plymouth_slope_deg_30m.tif  # [CCRA]
+      local: transformation/landslide_hazard/sites/plymouth/data/input/plymouth_slope_deg_30m.tif  # copernicus_dem/extract_slope.py
     soilgrids_clay:
       local: transformation/landslide_hazard/sites/plymouth/data/input/plymouth_clay_pct_250m.tif  # [INPUT]
 
@@ -111,7 +111,7 @@ catalog:
     merit_upa:
       local: transformation/merit_hydro/sites/plymouth/data/output/plymouth_merit_hydro_upa_90m.tif  # merit_hydro/extract_merit_hydro.py
     poa_slope:
-      local: transformation/copernicus_dem/sites/plymouth/data/output/plymouth_slope_deg_30m.tif  # [CCRA]
+      local: transformation/landslide_hazard/sites/plymouth/data/input/plymouth_slope_deg_30m.tif  # copernicus_dem/extract_slope.py
     soilgrids_clay:
       local: transformation/landslide_hazard/sites/plymouth/data/input/plymouth_clay_pct_250m.tif  # [INPUT]
     ndvi_p10_djf:
