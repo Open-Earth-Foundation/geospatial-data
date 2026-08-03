@@ -1,22 +1,45 @@
-# Global Surface Water
+# JRC Global Surface Water
 
-Transformation pipeline for JRC Global Surface Water (occurrence, seasonality, transition) → Porto Alegre clipped rasters, COGs, and map tiles.
-
-**Release convention:** `release/{version}/{period}/` — see `transformation/README.md`.
+Site-scoped export of JRC GSW v1.4 layers for NBS flood mechanism screening.
 
 ## Source
 
 **Dataset:** JRC Global Surface Water v1.4  
-**Publisher:** JRC  
-**License:** CC BY 4.0
+**GEE:** `JRC/GSW1_4/GlobalSurfaceWater`  
+**Bands:** `occurrence` (%), `seasonality` (months 0–12), `transition` (class 0–10)
 
-## Outputs
+## CLI (D4)
 
-| Output | Description |
-|-------|-------------|
-| `output/` | COGs, tiles, metadata |
+Export to paths referenced in `nbs_screening/config/sites/{city}.yaml`:
 
-## Usage
+```bash
+# Single MN city (all three layers)
+python transformation/jrc_global_surface_water/extract_gsw.py --site richfield
 
-1. Run notebooks in `release/v1/2024/` (requires `earthengine-api`, GDAL).
-2. Color files live in `release/v1/2024/data/`.
+# All Minnesota cities
+python transformation/jrc_global_surface_water/extract_gsw.py --country "United States"
+
+# Occurrence + seasonality only (grid-critical for flood mechanism)
+python transformation/jrc_global_surface_water/extract_gsw.py --site richfield --only occurrence,seasonality
+
+# Dry-run
+python transformation/jrc_global_surface_water/extract_gsw.py --site richfield --dry-run
+```
+
+**Outputs**
+
+| Layer | NBS catalog key | Path |
+|-------|-----------------|------|
+| occurrence | `jrc_surface_water_occurrence` | `sites/{site}/data/output/{prefix}_gsw_occurrence_30m.tif` |
+| seasonality | `jrc_surface_water_seasonality` | `.../{prefix}_gsw_seasonality_30m.tif` |
+| transition | `jrc_surface_water_transition` | `.../{prefix}_gsw_transition_30m.tif` |
+
+**QA SVGs:** `sites/{site}/data/intermediate/qa_inputs/`
+
+## NBS usage
+
+Flood low-lying mechanism uses `surface_water_occurrence_mean` (≥ 10%) and `surface_water_seasonality_mean` (≥ 1 month). Transition supports open-water masking when enabled.
+
+## Notebooks
+
+Legacy Porto Alegre workflows: `release/v1/GSW_*_30m_v1_4.ipynb`

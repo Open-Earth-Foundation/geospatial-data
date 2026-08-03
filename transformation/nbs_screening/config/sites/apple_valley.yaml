@@ -53,11 +53,11 @@ catalog:
     merit_elv:
       local: transformation/merit_hydro/sites/apple_valley/data/output/apple_valley_merit_hydro_elv_90m.tif  # [TODO]
     jrc_surface_water_transition:
-      local: transformation/jrc_global_surface_water/sites/apple_valley/data/output/apple_valley_gsw_transition_30m.tif  # [TODO]
+      local: transformation/jrc_global_surface_water/sites/apple_valley/data/output/apple_valley_gsw_transition_30m.tif  # jrc_global_surface_water/extract_gsw.py
     jrc_surface_water_occurrence:
-      local: transformation/jrc_global_surface_water/sites/apple_valley/data/output/apple_valley_gsw_occurrence_30m.tif  # [TODO]
+      local: transformation/jrc_global_surface_water/sites/apple_valley/data/output/apple_valley_gsw_occurrence_30m.tif  # jrc_global_surface_water/extract_gsw.py
     jrc_surface_water_seasonality:
-      local: transformation/jrc_global_surface_water/sites/apple_valley/data/output/apple_valley_gsw_seasonality_30m.tif  # [TODO]
+      local: transformation/jrc_global_surface_water/sites/apple_valley/data/output/apple_valley_gsw_seasonality_30m.tif  # jrc_global_surface_water/extract_gsw.py
     copernicus_emsn194:
       local: transformation/copernicus_emsn194/sites/apple_valley/data/output/apple_valley_maxwaterdepth.tif  # [TODO] POA-only event product; optional for MN
     chirps_rx1day_2024:
