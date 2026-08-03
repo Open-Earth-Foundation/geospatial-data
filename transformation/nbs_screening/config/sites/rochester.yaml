@@ -61,11 +61,11 @@ catalog:
     copernicus_emsn194:
       local: transformation/copernicus_emsn194/sites/rochester/data/output/rochester_maxwaterdepth.tif  # [TODO] POA-only event product; optional for MN
     chirps_rx1day_2024:
-      local: transformation/chirps_daily/sites/rochester/data/output/rochester_rx1day_2024.tif  # [TODO] pluvial / heavy-rain proxy
+      local: transformation/chirps_daily/sites/rochester/data/output/rochester_rx1day_2024.tif  # chirps_daily/extract_chirps_daily.py
     chirps_rx5day_2024:
-      local: transformation/chirps_daily/sites/rochester/data/output/rochester_rx5day_2024.tif  # [TODO]
+      local: transformation/chirps_daily/sites/rochester/data/output/rochester_rx5day_2024.tif  # chirps_daily/extract_chirps_daily.py
     chirps_r90p_2024:
-      local: transformation/chirps_daily/sites/rochester/data/output/rochester_r90p_2024.tif  # [TODO]
+      local: transformation/chirps_daily/sites/rochester/data/output/rochester_r90p_2024.tif  # chirps_daily/extract_chirps_daily.py
     gfplain250m:
       local: transformation/flood_hazard/sites/rochester/data/input/gfplain_250m_rochester.tif  # [CCRA]
     poa_relative_elevation:
