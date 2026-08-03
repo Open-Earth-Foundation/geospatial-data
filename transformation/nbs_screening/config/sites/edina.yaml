@@ -37,7 +37,7 @@ catalog:
     dynamic_world_mode_250m:
       local: transformation/dynamic_world/sites/edina/data/output/edina_dw_mode_250m_2023.tif  # dynamic_world/extract_dw_mode.py
     modis_ndvi:
-      local: transformation/modis_ndvi/sites/edina/data/output/edina_modis_ndvi_mean.tif  # [TODO] heat screening NDVI mean
+      local: transformation/modis_ndvi/sites/edina/data/output/edina_modis_ndvi_mean.tif  # modis_ndvi/extract_ndvi_mean.py
     copernicus_dem:
       local: transformation/flood_hazard/sites/edina/data/input/edina_dem_glo30_30m.tif  # [CCRA]
     merit_hand:
