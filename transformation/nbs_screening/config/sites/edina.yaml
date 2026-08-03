@@ -33,9 +33,9 @@ catalog:
     ghsl_built_up:
       local: transformation/ghsl_built_up/sites/edina/data/output/edina_ghsl_built_up_100m.tif  # ghsl_built_up/extract_ghsl_built_up.py
     dynamic_world:
-      local: transformation/dynamic_world/sites/edina/data/output/edina_dynamicworld_2023.tif  # [TODO] annual mode composite
+      local: transformation/dynamic_world/sites/edina/data/output/edina_dynamicworld_2023.tif  # dynamic_world/extract_dw_mode.py
     dynamic_world_mode_250m:
-      local: transformation/dynamic_world/sites/edina/data/output/edina_dw_mode_250m_2023.tif  # [TODO] 250 m mode (NBS grid)
+      local: transformation/dynamic_world/sites/edina/data/output/edina_dw_mode_250m_2023.tif  # dynamic_world/extract_dw_mode.py
     modis_ndvi:
       local: transformation/modis_ndvi/sites/edina/data/output/edina_modis_ndvi_mean.tif  # [TODO] heat screening NDVI mean
     copernicus_dem:
@@ -53,11 +53,11 @@ catalog:
     merit_elv:
       local: transformation/merit_hydro/sites/edina/data/output/edina_merit_hydro_elv_90m.tif  # [TODO]
     jrc_surface_water_transition:
-      local: transformation/jrc_global_surface_water/sites/edina/data/output/edina_gsw_transition_30m.tif  # [TODO]
+      local: transformation/jrc_global_surface_water/sites/edina/data/output/edina_gsw_transition_30m.tif  # jrc_global_surface_water/extract_gsw.py
     jrc_surface_water_occurrence:
-      local: transformation/jrc_global_surface_water/sites/edina/data/output/edina_gsw_occurrence_30m.tif  # [TODO]
+      local: transformation/jrc_global_surface_water/sites/edina/data/output/edina_gsw_occurrence_30m.tif  # jrc_global_surface_water/extract_gsw.py
     jrc_surface_water_seasonality:
-      local: transformation/jrc_global_surface_water/sites/edina/data/output/edina_gsw_seasonality_30m.tif  # [TODO]
+      local: transformation/jrc_global_surface_water/sites/edina/data/output/edina_gsw_seasonality_30m.tif  # jrc_global_surface_water/extract_gsw.py
     copernicus_emsn194:
       local: transformation/copernicus_emsn194/sites/edina/data/output/edina_maxwaterdepth.tif  # [TODO] POA-only event product; optional for MN
     chirps_rx1day_2024:
@@ -107,7 +107,7 @@ catalog:
     hansen_treecover2000:
       local: transformation/hansen_forest_change/sites/edina/data/output/edina_hansen_treecover2000_30m.tif  # [TODO]
     dynamic_world_mode_250m:
-      local: transformation/dynamic_world/sites/edina/data/output/edina_dw_mode_250m_2023.tif  # [TODO] see also landslide input dw_mode
+      local: transformation/dynamic_world/sites/edina/data/output/edina_dw_mode_250m_2023.tif  # dynamic_world/extract_dw_mode.py
     merit_upa:
       local: transformation/merit_hydro/sites/edina/data/output/edina_merit_hydro_upa_90m.tif  # [TODO]
     poa_slope:

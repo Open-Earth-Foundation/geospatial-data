@@ -1,25 +1,26 @@
-"""Shared helpers for GHSL built-up site extract CLIs."""
+"""Shared helpers for JRC Global Surface Water site extract CLIs."""
 
 from __future__ import annotations
 
 import os
 import sys
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
 
-GHSL_BUILT_UP_ROOT = Path(__file__).resolve().parent
-REPO_ROOT = GHSL_BUILT_UP_ROOT.parent.parent
-FLOOD_HAZARD_ROOT = GHSL_BUILT_UP_ROOT.parent / "flood_hazard"
-NBS_ROOT = GHSL_BUILT_UP_ROOT.parent / "nbs_screening"
+GSW_ROOT = Path(__file__).resolve().parent
+REPO_ROOT = GSW_ROOT.parent.parent
+FLOOD_HAZARD_ROOT = GSW_ROOT.parent / "flood_hazard"
+NBS_ROOT = GSW_ROOT.parent / "nbs_screening"
 
-DEFAULT_GHSL_YEAR = 2025
-SCALE_M = 100
 CRS = "EPSG:4326"
-EE_IMAGE = "JRC/GHSL/P2023A/GHS_BUILT_S"
+SCALE_M = 30
+EE_IMAGE = "JRC/GSW1_4/GlobalSurfaceWater"
+
+GswLayer = Literal["occurrence", "seasonality", "transition"]
+GSW_LAYERS: tuple[GswLayer, ...] = ("occurrence", "seasonality", "transition")
 
 
 def reexec_with_repo_venv_if_needed(*modules: str) -> None:
-    """If required packages are missing, re-launch under ``geospatial-data/.venv``."""
     needed = modules or ("numpy", "rasterio")
     missing = []
     for name in needed:
@@ -46,11 +47,6 @@ def reexec_with_repo_venv_if_needed(*modules: str) -> None:
         file=sys.stderr,
     )
     raise SystemExit(1)
-
-
-def ensure_flood_hazard_on_path() -> None:
-    if str(FLOOD_HAZARD_ROOT) not in sys.path:
-        sys.path.insert(0, str(FLOOD_HAZARD_ROOT))
 
 
 def load_flood_site(site: str | None = None) -> dict[str, Any]:
@@ -93,36 +89,32 @@ def load_site_roi(site_config: dict[str, Any], ee: Any) -> Any:
     return module.load_site_roi(site_config, ee)
 
 
-def ghsl_output_path(site: str, *, prefix: str | None = None) -> Path:
-    """NBS catalog target: ``sites/{site}/data/output/{prefix}_ghsl_built_up_100m.tif``."""
-    stem = prefix or site
+def gsw_output_path(site: str, *, prefix: str, layer: GswLayer) -> Path:
     return (
-        GHSL_BUILT_UP_ROOT
+        GSW_ROOT
         / "sites"
         / site
         / "data"
         / "output"
-        / f"{stem}_ghsl_built_up_100m.tif"
+        / f"{prefix}_gsw_{layer}_30m.tif"
     )
 
 
-def ghsl_qa_dir(site: str) -> Path:
-    return GHSL_BUILT_UP_ROOT / "sites" / site / "data" / "intermediate" / "qa_inputs"
+def gsw_qa_dir(site: str) -> Path:
+    return GSW_ROOT / "sites" / site / "data" / "intermediate" / "qa_inputs"
 
 
-def load_ghsl_site(site: str | None = None, *, ghsl_year: int = DEFAULT_GHSL_YEAR) -> dict[str, Any]:
-    """Flood-hazard site config plus GHSL output paths (NBS catalog layout)."""
+def load_gsw_site(site: str | None = None) -> dict[str, Any]:
     flood_cfg = load_flood_site(site)
     slug = str(flood_cfg.get("site_slug") or site or "porto_alegre")
     prefix = str(flood_cfg.get("output_prefix") or slug)
-    out_path = ghsl_output_path(slug, prefix=prefix)
-    qa_dir = ghsl_qa_dir(slug)
+    paths = {layer: gsw_output_path(slug, prefix=prefix, layer=layer) for layer in GSW_LAYERS}
+    qa_dir = gsw_qa_dir(slug)
     return {
         **flood_cfg,
-        "ghsl_year": int(ghsl_year),
-        "ghsl_output_path": out_path,
-        "ghsl_output_path_abs": str(out_path.resolve()),
-        "ghsl_qa_dir_abs": str(qa_dir.resolve()),
+        "gsw_paths": paths,
+        "gsw_paths_abs": {k: str(v.resolve()) for k, v in paths.items()},
+        "gsw_qa_dir_abs": str(qa_dir.resolve()),
     }
 
 
@@ -134,7 +126,6 @@ def resolve_site_slugs(
     country: str | None = None,
     exclude: tuple[str, ...] = (),
 ) -> list[str]:
-    """Resolve site list from NBS registry (``config/sites/{slug}.yaml``)."""
     if str(NBS_ROOT) not in sys.path:
         sys.path.insert(0, str(NBS_ROOT))
     from site_config import resolve_site_slugs as _resolve
