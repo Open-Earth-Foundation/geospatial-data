@@ -87,7 +87,7 @@ def _resolve_rivers_path(site: str | None = None) -> Path:
                 return sample.resolve()
         raise FileNotFoundError(
             f"Missing OSM waterways for site={site!r}. "
-            f"Run: python transformation/nbs_screening/extract_osm_rivers.py --site {site}"
+            f"Run: python transformation/nbs_screening/floods/extract_osm_rivers.py --site {site}"
         )
 
     sample = SAMPLE_DATA / "porto-alegre-rivers.json"

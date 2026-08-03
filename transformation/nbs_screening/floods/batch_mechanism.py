@@ -5,17 +5,17 @@ Runs per site: OSM waterways extract (optional) → grid compute → COG/tiles p
 Site list comes from ``config/sites/*.yaml`` — add a YAML to onboard a new city.
 
 Example (all configured sites, local build):
-  python transformation/nbs_screening/batch_flood_mechanism.py --all-configured
+  python transformation/nbs_screening/floods/batch_mechanism.py --all-configured
 
 Example (United States cohort — current Minnesota cities):
-  python transformation/nbs_screening/batch_flood_mechanism.py --country "United States"
+  python transformation/nbs_screening/floods/batch_mechanism.py --country "United States"
 
 Example (upload + catalog, continue on failure):
-  python transformation/nbs_screening/batch_flood_mechanism.py \\
+  python transformation/nbs_screening/floods/batch_mechanism.py \\
     --all-configured --upload --write-catalog --continue-on-error
 
 Example (explicit subset):
-  python transformation/nbs_screening/batch_flood_mechanism.py --sites richfield,edina
+  python transformation/nbs_screening/floods/batch_mechanism.py --sites richfield,edina
 """
 
 from __future__ import annotations
@@ -27,14 +27,16 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Literal
 
-NBS_ROOT = Path(__file__).resolve().parent
-if str(NBS_ROOT) not in sys.path:
-    sys.path.insert(0, str(NBS_ROOT))
+FLOODS_ROOT = Path(__file__).resolve().parent
+NBS_ROOT = FLOODS_ROOT.parent
+for _path in (FLOODS_ROOT, NBS_ROOT):
+    if str(_path) not in sys.path:
+        sys.path.insert(0, str(_path))
 
 from catalog_layers import HAZARD_REQUIRED_LAYERS, get_layer_sources  # noqa: E402
-from compute_nbs_mechanism import compute_flood_mechanism  # noqa: E402
+from compute_mechanism import compute_flood_mechanism  # noqa: E402
 from extract_osm_rivers import extract_osm_rivers  # noqa: E402
-from nbs_mechanism_publish import run_publish  # noqa: E402
+from publish_mechanism import run_publish  # noqa: E402
 from site_config import (  # noqa: E402
     list_configured_sites,
     load_site_config,
@@ -141,7 +143,7 @@ def run_site_pipeline(
             flags.append("--upload")
         if write_catalog:
             flags.append("--write-catalog")
-        print(f"  [dry-run] nbs_mechanism_publish --site {site} {' '.join(flags)}".strip())
+        print(f"  [dry-run] publish_mechanism --site {site} {' '.join(flags)}".strip())
         result.steps["publish"] = "skipped"
     else:
         try:

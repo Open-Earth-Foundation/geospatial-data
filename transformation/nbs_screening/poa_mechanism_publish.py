@@ -1,7 +1,7 @@
 """Upload POA mechanism-type COG, XYZ tiles, and screened-cell GeoJSON to S3.
 
 Legacy notebook layout (``output/flood_mechanism_type_poa_250m/``) is still
-supported. Multi-city sites should use ``nbs_mechanism_publish.py`` instead.
+supported. Multi-city sites should use ``floods/publish_mechanism.py`` instead.
 """
 
 from __future__ import annotations
@@ -15,8 +15,10 @@ from typing import Literal
 NBS_ROOT = Path(__file__).resolve().parent
 if str(NBS_ROOT) not in sys.path:
     sys.path.insert(0, str(NBS_ROOT))
+if str(NBS_ROOT / "floods") not in sys.path:
+    sys.path.insert(0, str(NBS_ROOT / "floods"))
 
-from nbs_mechanism_publish import upload_flood_mechanism_to_s3  # noqa: E402
+from publish_mechanism import upload_flood_mechanism_to_s3  # noqa: E402
 
 HazardKind = Literal["flood", "heat", "landslide"]
 
