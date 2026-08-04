@@ -11,8 +11,6 @@ flood/sites/<city>/
 └── out/            COG + tiles publish staging
 ```
 
-Pre-N9 paths (`sites/<city>/data/…`, `sites/<city>/floods/…`) still resolve for reads when N10 data is absent.
-
 ## CLIs
 
 | Script | Purpose |
