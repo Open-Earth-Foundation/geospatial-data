@@ -1,0 +1,10 @@
+# Dominant flood mechanism type. GDAL color-relief for visual tiles.
+# Codes from FLOOD_MECHANISM_TYPE_CODES in nbs_rules.py
+# Raster nodata = 255 (outside screened grid); code 0 = none
+nv 0 0 0 0
+0 224 224 224
+1 33 102 172
+2 253 174 97
+3 171 217 233
+4 123 50 148
+5 142 1 82

@@ -272,21 +272,24 @@ def open_water_enabled(config: dict[str, Any] | None = None, site: str | None = 
     return bool(open_water.get("enabled", False))
 
 
-def hazard_site_dir(hazard: HazardKind) -> str:
-    """Filesystem segment under ``sites/{site}/`` (``flood`` → ``floods``)."""
-    if hazard == "flood":
-        return "floods"
-    return hazard
+def hazard_module_root(hazard: HazardKind, nbs_root: Path | None = None) -> Path:
+    """N10 hazard CLI module root: ``nbs_screening/{hazard}/``."""
+    root = Path(nbs_root or find_nbs_screening_root()).resolve()
+    return root / hazard
 
 
-def site_hazard_root(
+def site_module_root(
     site: str,
     hazard: HazardKind = "flood",
     nbs_root: Path | None = None,
 ) -> Path:
-    """Per-hazard site workspace: ``sites/{site}/{hazard_dir}/``."""
-    root = Path(nbs_root or find_nbs_screening_root()).resolve()
-    return root / "sites" / site / hazard_site_dir(hazard)
+    """N10 per-site runtime root: ``{hazard}/sites/{site}/`` (flat, like flood_hazard)."""
+    return hazard_module_root(hazard, nbs_root) / "sites" / site
+
+
+def _legacy_n9_flood_site_root(site: str, nbs_root: Path) -> Path:
+    """N9 intermediate: ``sites/{site}/floods/`` (deprecated)."""
+    return nbs_root / "sites" / site / "floods"
 
 
 def _legacy_flood_output_dir(site: str, nbs_root: Path) -> Path:
@@ -302,30 +305,56 @@ def _legacy_flood_osm_path(site: str, nbs_root: Path) -> Path:
     return nbs_root / "sites" / site / "data" / "input" / f"osm_waterways_{site}.json"
 
 
+def _legacy_n9_flood_osm_path(site: str, nbs_root: Path) -> Path:
+    return _legacy_n9_flood_site_root(site, nbs_root) / "data" / "input" / f"osm_waterways_{site}.json"
+
+
+def _first_existing_dir(*candidates: Path) -> Path:
+    for path in candidates:
+        if path.is_dir():
+            return path
+    return candidates[0]
+
+
 def site_output_dir(
     site: str,
     hazard: HazardKind = "flood",
     nbs_root: Path | None = None,
 ) -> Path:
-    """Grid mechanism outputs: ``sites/{site}/{hazard}/data/output``."""
+    """N10 write path: ``{hazard}/sites/{site}/data/output``."""
+    return site_module_root(site, hazard, nbs_root) / "data" / "output"
+
+
+def resolve_site_output_dir(
+    site: str,
+    hazard: HazardKind = "flood",
+    nbs_root: Path | None = None,
+) -> Path:
+    """Resolve existing mechanism outputs (N10 → N9 → legacy flat)."""
     root = Path(nbs_root or find_nbs_screening_root()).resolve()
-    scoped = site_hazard_root(site, hazard, root) / "data" / "output"
+    candidates = [site_output_dir(site, hazard, root)]
     if hazard == "flood":
-        legacy = _legacy_flood_output_dir(site, root)
-        if legacy.is_dir() and not scoped.is_dir():
-            return legacy
-    return scoped
+        candidates.append(_legacy_n9_flood_site_root(site, root) / "data" / "output")
+        candidates.append(_legacy_flood_output_dir(site, root))
+    return _first_existing_dir(*candidates)
 
 
 def site_publish_dir(site: str, hazard: HazardKind = "flood", nbs_root: Path | None = None) -> Path:
-    """COG/tiles publish staging: ``sites/{site}/{hazard}/out/{hazard}_mechanism_type``."""
+    """N10 publish staging: ``{hazard}/sites/{site}/out/{hazard}_mechanism_type``."""
+    return site_module_root(site, hazard, nbs_root) / "out" / f"{hazard}_mechanism_type"
+
+
+def resolve_site_publish_dir(
+    site: str,
+    hazard: HazardKind = "flood",
+    nbs_root: Path | None = None,
+) -> Path:
+    """Resolve existing publish staging (N10 → legacy flat)."""
     root = Path(nbs_root or find_nbs_screening_root()).resolve()
-    scoped = site_hazard_root(site, hazard, root) / "out" / f"{hazard}_mechanism_type"
+    candidates = [site_publish_dir(site, hazard, root)]
     if hazard == "flood":
-        legacy = _legacy_flood_publish_dir(site, root, hazard)
-        if legacy.is_dir() and not scoped.is_dir():
-            return legacy
-    return scoped
+        candidates.append(_legacy_flood_publish_dir(site, root, hazard))
+    return _first_existing_dir(*candidates)
 
 
 def site_input_dir(
@@ -333,15 +362,13 @@ def site_input_dir(
     hazard: HazardKind = "flood",
     nbs_root: Path | None = None,
 ) -> Path:
-    """Hazard-scoped inputs: ``sites/{site}/{hazard_dir}/data/input`` (N9 write path)."""
-    root = Path(nbs_root or find_nbs_screening_root()).resolve()
-    return site_hazard_root(site, hazard, root) / "data" / "input"
+    """N10 input path: ``{hazard}/sites/{site}/data/input``."""
+    return site_module_root(site, hazard, nbs_root) / "data" / "input"
 
 
 def site_osm_rivers_path(site: str, nbs_root: Path | None = None) -> Path:
-    """N9 default OSM extract target: ``sites/{site}/floods/data/input/osm_waterways_{site}.json``."""
-    root = Path(nbs_root or find_nbs_screening_root()).resolve()
-    return site_input_dir(site, "flood", root) / f"osm_waterways_{site}.json"
+    """N10 default OSM extract target: ``flood/sites/{site}/data/input/osm_waterways_{site}.json``."""
+    return site_input_dir(site, "flood", nbs_root) / f"osm_waterways_{site}.json"
 
 
 def osm_rivers_write_path(site: str, nbs_root: Path | None = None) -> Path:
@@ -375,7 +402,11 @@ def resolve_osm_rivers_path(site: str, nbs_root: Path | None = None) -> Path | N
         return default.resolve()
 
     root = Path(nbs_root or find_nbs_screening_root()).resolve()
-    legacy = _legacy_flood_osm_path(str(cfg["site_slug"]), root)
+    slug = str(cfg["site_slug"])
+    n9 = _legacy_n9_flood_osm_path(slug, root)
+    if n9.is_file():
+        return n9.resolve()
+    legacy = _legacy_flood_osm_path(slug, root)
     if legacy.is_file():
         return legacy.resolve()
     return None

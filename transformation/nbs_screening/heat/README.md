@@ -5,7 +5,7 @@ Placeholder for hazard-specific CLIs (H1–H4). Shared screening logic already e
 ## Planned layout
 
 ```
-sites/<city>/heat/
+heat/sites/<city>/
 ├── data/output/    mechanism GeoTIFF, GeoJSON, QA SVG (250 m)
 └── out/            COG + tiles publish staging
 ```

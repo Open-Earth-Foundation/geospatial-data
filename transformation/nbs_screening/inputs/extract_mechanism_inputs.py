@@ -70,7 +70,7 @@ def _step(key: str, rel: str, *extra_args: str, note: str = "") -> ExtractStep:
 
 HAZARD_STEPS: dict[HazardKind, tuple[ExtractStep, ...]] = {
     "flood": (
-        _step("osm_rivers", "nbs_screening/floods/extract_osm_rivers.py", note="riverine distance"),
+        _step("osm_rivers", "nbs_screening/flood/extract_osm_rivers.py", note="riverine distance"),
         _step(
             "dem_diagnostics",
             "copernicus_dem/compute_dem_diagnostics.py",

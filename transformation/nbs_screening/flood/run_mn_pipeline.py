@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
-"""Deprecated — use ``transformation/nbs_screening/flood/run_mn_pipeline.py``."""
+"""Backward-compatible entry point — prefer ``flood/run_pipeline.py``.
+
+Defaults to United States configured sites (current Minnesota cohort).
+"""
 
 from __future__ import annotations
 
 import sys
 
-from _redirect import exec_flood_script
+from run_pipeline import main
 
 if __name__ == "__main__":
     argv = list(sys.argv[1:])
@@ -15,5 +18,4 @@ if __name__ == "__main__":
         for flag in ("--sites", "--site", "--country", "--all-configured", "--exclude")
     ):
         argv = ["--country", "United States", *argv]
-    sys.argv = [sys.argv[0], *argv]
-    exec_flood_script("run_mn_pipeline.py")
+    raise SystemExit(main(argv))

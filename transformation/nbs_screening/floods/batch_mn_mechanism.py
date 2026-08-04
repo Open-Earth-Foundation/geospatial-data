@@ -1,14 +1,11 @@
 #!/usr/bin/env python3
-"""Backward-compatible entry point — prefer ``floods/batch_mechanism.py``.
-
-Defaults to United States configured sites (current Minnesota cohort).
-"""
+"""Deprecated — use ``transformation/nbs_screening/flood/batch_mn_mechanism.py``."""
 
 from __future__ import annotations
 
 import sys
 
-from batch_mechanism import main
+from _redirect import exec_flood_script
 
 if __name__ == "__main__":
     argv = list(sys.argv[1:])
@@ -18,4 +15,5 @@ if __name__ == "__main__":
         for flag in ("--sites", "--site", "--country", "--all-configured", "--exclude")
     ):
         argv = ["--country", "United States", *argv]
-    raise SystemExit(main(argv))
+    sys.argv = [sys.argv[0], *argv]
+    exec_flood_script("batch_mn_mechanism.py")
