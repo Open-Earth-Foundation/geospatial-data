@@ -49,7 +49,8 @@ Typical workflow per city:
 1. **Input layers** — `{hazard}/extract_mechanism_inputs.py` (GEE extractors, OSM, DEM diagnostics)
 2. **Mechanism grid** — `{hazard}/compute_mechanism.py` (requires upstream hazard score COGs in site YAML)
 3. **Publish** — `{hazard}/publish_mechanism.py` (COG/tiles + catalog)
-4. **Orchestrators** — `flood/run_pipeline.py`, `flood/batch_mechanism.py` for end-to-end / batch
+4. **Orchestrators** — `flood/run_pipeline.py`, `heat/run_pipeline.py`, `landslide/run_pipeline.py`
+   (inputs → compute → publish; Minnesota shortcuts: `*/run_mn_pipeline.py`)
 
 Layer readiness: `python transformation/nbs_screening/check_nbs_layers.py --site {city} --hazard flood`
 

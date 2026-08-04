@@ -1,0 +1,19 @@
+{
+  "exercise": "nbs_grid_screening",
+  "hazard": "landslide",
+  "aoi_label": "richfield",
+  "cell_size_m": 89.74128638160259,
+  "generated_at": "2026-08-04T18:29:23.199949+00:00",
+  "mechanism_summary": {
+    "n_cells": 0
+  },
+  "aoi_context": {},
+  "cells": [],
+  "site": "richfield",
+  "outputs": {
+    "observed": "/Users/admin/Desktop/OEF/geospatial-data/transformation/nbs_screening/landslide/sites/richfield/data/output/landslide_mechanism_type_richfield_90m_observed.tif",
+    "filled": "/Users/admin/Desktop/OEF/geospatial-data/transformation/nbs_screening/landslide/sites/richfield/data/output/landslide_mechanism_type_richfield_90m.tif",
+    "is_interpolated": "/Users/admin/Desktop/OEF/geospatial-data/transformation/nbs_screening/landslide/sites/richfield/data/output/landslide_mechanism_is_interpolated_richfield_90m.tif"
+  },
+  "geojson": "/Users/admin/Desktop/OEF/geospatial-data/transformation/nbs_screening/landslide/sites/richfield/data/output/landslide_mechanism_type_richfield_90m.geojson"
+}

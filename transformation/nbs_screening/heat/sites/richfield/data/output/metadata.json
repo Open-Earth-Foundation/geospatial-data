@@ -1,0 +1,47 @@
+{
+  "site_slug": "richfield",
+  "display_name": "Richfield",
+  "hazard": "heat",
+  "layer_id": "nbs_heat_mechanism_type",
+  "model_version": "v1",
+  "generated_at": "2026-08-04T18:28:57.142947+00:00",
+  "aoi_mode": "boundary",
+  "reference_hazard_raster": "/Users/admin/Desktop/OEF/geospatial-data/transformation/heat_hazard/sites/richfield/data/output/heat_hazard_score_richfield.tif",
+  "mechanism_summary": {
+    "n_cells": 417,
+    "pct_uhi_built_up": 19.4,
+    "pct_shade_deficit": 43.4,
+    "pct_high_daytime_lst": 100.0,
+    "pct_limited_nocturnal_cooling": 0.0,
+    "pct_high_social_exposure": 30.2,
+    "count_uhi_built_up": 81,
+    "count_shade_deficit": 181,
+    "count_high_daytime_lst": 417,
+    "count_limited_nocturnal_cooling": 0,
+    "count_high_social_exposure": 126,
+    "pct_multi_mechanism": 67.1,
+    "count_multi_mechanism": 280,
+    "dominant_mechanism_type_counts": {
+      "mixed": 123,
+      "high_daytime_lst": 280,
+      "uhi_built_up": 8,
+      "shade_deficit": 3,
+      "without_clear_dominant": 3
+    },
+    "pct_by_dominant_type": {
+      "high_daytime_lst": 67.1,
+      "mixed": 29.5,
+      "shade_deficit": 0.7,
+      "uhi_built_up": 1.9,
+      "without_clear_dominant": 0.7
+    }
+  },
+  "outputs": {
+    "observed": "/Users/admin/Desktop/OEF/geospatial-data/transformation/nbs_screening/heat/sites/richfield/data/output/heat_mechanism_type_richfield_250m_observed.tif",
+    "filled": "/Users/admin/Desktop/OEF/geospatial-data/transformation/nbs_screening/heat/sites/richfield/data/output/heat_mechanism_type_richfield_250m.tif",
+    "is_interpolated": "/Users/admin/Desktop/OEF/geospatial-data/transformation/nbs_screening/heat/sites/richfield/data/output/heat_mechanism_is_interpolated_richfield_250m.tif",
+    "geojson": "/Users/admin/Desktop/OEF/geospatial-data/transformation/nbs_screening/heat/sites/richfield/data/output/heat_mechanism_type_richfield_250m.geojson",
+    "report_json": "/Users/admin/Desktop/OEF/geospatial-data/transformation/nbs_screening/heat/sites/richfield/data/output/nbs_grid_heat_richfield.json",
+    "qa_map": "/Users/admin/Desktop/OEF/geospatial-data/transformation/nbs_screening/heat/sites/richfield/data/output/map_heat_mechanism_type_richfield_250m.svg"
+  }
+}
