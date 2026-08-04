@@ -36,6 +36,16 @@ from typing import Literal
 INPUTS_ROOT = Path(__file__).resolve().parent
 NBS_ROOT = INPUTS_ROOT.parent
 TRANSFORMATION = NBS_ROOT.parent
+REPO_ROOT = TRANSFORMATION.parent
+VENV_PYTHON = REPO_ROOT / ".venv" / "bin" / "python"
+
+
+def _runner_python() -> str:
+    """Prefer repo venv (earthengine-api, rasterio) for child extract CLIs."""
+    if VENV_PYTHON.is_file():
+        return str(VENV_PYTHON)
+    return sys.executable
+
 
 if str(NBS_ROOT) not in sys.path:
     sys.path.insert(0, str(NBS_ROOT))
@@ -154,7 +164,7 @@ def _build_cmd(
     qa_only: bool,
     dry_run: bool,
 ) -> list[str]:
-    cmd = [sys.executable, str(step.script), "--site", site]
+    cmd = [_runner_python(), str(step.script), "--site", site]
     cmd.extend(step.extra_args)
     if authenticate:
         cmd.append("--authenticate")
@@ -341,7 +351,7 @@ def main(argv: list[str] | None = None) -> int:
         print("ERROR: --only requires exactly one --hazard.", file=sys.stderr)
         return 1
 
-    print(f"Using Python: {sys.executable}")
+    print(f"Using Python: {_runner_python()}")
     print(f"Sites ({len(sites)}): {', '.join(sites)}")
     print(f"Hazards: {', '.join(hazards)}")
 
