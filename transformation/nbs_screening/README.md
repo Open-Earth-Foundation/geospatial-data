@@ -16,7 +16,6 @@ transformation/nbs_screening/
 ├── heat/           heat mechanism CLIs + sites/{city}/ (planned H1–H4)
 ├── landslide/      landslide mechanism CLIs + sites/{city}/ (planned L1–L4)
 ├── inputs/         cross-hazard input orchestrator (D10)
-└── floods/         deprecated shims → flood/ (N10a)
 ```
 
 See `flood/README.md`, `heat/README.md`, `landslide/README.md`.

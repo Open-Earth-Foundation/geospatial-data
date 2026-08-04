@@ -30,5 +30,3 @@ python transformation/nbs_screening/flood/batch_mechanism.py --country "United S
 ```
 
 Minnesota cohort: `flood/batch_mn_mechanism.py` · full pipeline: `flood/run_mn_pipeline.py`.
-
-Deprecated shims: `floods/` re-execs matching `flood/` scripts (remove after one release).
