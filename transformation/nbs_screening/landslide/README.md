@@ -1,8 +1,8 @@
 # Landslide NBS mechanism screening
 
-Placeholder for hazard-specific CLIs (L1–L4). Shared screening logic already exists in `grid_screening.py` (POA exports); multi-city compute/publish/batch will land here.
+Grid-cell dominant **landslide** mechanism type (90 m). Shared config and rules live in the parent `nbs_screening/` folder.
 
-## Planned layout
+## Layout
 
 ```
 landslide/sites/<city>/
@@ -11,3 +11,25 @@ landslide/sites/<city>/
 ```
 
 Reference grid: OEF landslide hazard 90 m (`require_positive_hazard=True`).
+
+## CLIs
+
+| Script | Purpose |
+|--------|---------|
+| `extract_mechanism_inputs.py` | All landslide screening input layers (GEE extractors) |
+| `compute_mechanism.py` | Grid screening + exports (L2) |
+| `publish_mechanism.py` | COG/tiles + catalog (L3) |
+
+```bash
+# 1. Extract catalog input layers
+python transformation/nbs_screening/landslide/extract_mechanism_inputs.py --site richfield
+
+# 2. Compute mechanism grid
+python transformation/nbs_screening/landslide/compute_mechanism.py --site richfield
+
+# 3. Publish (optional)
+python transformation/nbs_screening/landslide/publish_mechanism.py --site richfield --build
+python transformation/nbs_screening/check_nbs_layers.py --site richfield --hazard landslide
+```
+
+Batch by country: `extract_mechanism_inputs.py --country "United States"`.

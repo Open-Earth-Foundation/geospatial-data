@@ -12,10 +12,10 @@ Each hazard module owns its runtime data (same flat `sites/{city}/` pattern as `
 transformation/nbs_screening/
 ├── site_config.py, catalog_layers.py, grid_screening.py, nbs_rules.py  # shared
 ├── config/sites/{city}.yaml                                             # multi-hazard index
-├── flood/          flood mechanism CLIs + sites/{city}/ (N2–N7)
-├── heat/           heat mechanism CLIs + sites/{city}/ (planned H1–H4)
-├── landslide/      landslide mechanism CLIs + sites/{city}/ (planned L1–L4)
-├── inputs/         cross-hazard input orchestrator (D10)
+├── flood/          flood mechanism CLIs + sites/{city}/ (N2–N7, D10 inputs)
+├── heat/           heat mechanism CLIs + sites/{city}/ (H2–H3, D10 inputs)
+├── landslide/      landslide mechanism CLIs + sites/{city}/ (L2–L3, D10 inputs)
+├── extract_common.py   shared input-orchestrator helpers
 ```
 
 See `flood/README.md`, `heat/README.md`, `landslide/README.md`.
@@ -46,6 +46,24 @@ python transformation/nbs_screening/flood/publish_mechanism.py \\
 
 Publish staging: `transformation/nbs_screening/flood/sites/<site>/out/flood_mechanism_type/`  
 Catalog dataset id: `{site}_flood_mechanism_type` (POA keeps `poa_flood_mechanism_type`).
+
+## Run (grid mechanism — H2, heat)
+
+```bash
+python transformation/nbs_screening/heat/compute_mechanism.py --site richfield
+python transformation/nbs_screening/heat/publish_mechanism.py --site richfield --build
+```
+
+Outputs: `transformation/nbs_screening/heat/sites/<site>/data/output/` (250 m grid).
+
+## Run (grid mechanism — L2, landslide)
+
+```bash
+python transformation/nbs_screening/landslide/compute_mechanism.py --site richfield
+python transformation/nbs_screening/landslide/publish_mechanism.py --site richfield --build
+```
+
+Outputs: `transformation/nbs_screening/landslide/sites/<site>/data/output/` (90 m grid).
 
 ## OSM waterways (N4 — riverine distance)
 
@@ -90,6 +108,17 @@ python transformation/nbs_screening/flood/run_pipeline.py \\
 ```
 
 Minnesota cohort shortcut: `flood/run_mn_pipeline.py` (defaults to `--country "United States"`).
+
+## Mechanism input layers (D10 / N10b)
+
+Extract catalog rasters used by grid screening (GEE + OSM + DEM diagnostics). Run **before** `run_pipeline` / `compute_mechanism` when layers are missing:
+
+```bash
+python transformation/nbs_screening/flood/extract_mechanism_inputs.py --site richfield
+python transformation/nbs_screening/heat/extract_mechanism_inputs.py --country "United States"
+python transformation/nbs_screening/landslide/extract_mechanism_inputs.py --site richfield
+python transformation/nbs_screening/check_nbs_layers.py --site richfield --hazard flood
+```
 
 ## Run (POA defaults / legacy)
 
@@ -189,4 +218,8 @@ See `docs/` in this folder, `config/sites/README.md`, and
 | **N7** | `flood/run_pipeline.py` end-to-end flood orchestrator |
 | **N8** | `publish_dem_diagnostics.py` DEM COG/tiles + catalog |
 | **N9** | Hazard-scoped layout (superseded by N10) |
-| **N10** | Per-hazard module owns `sites/{city}/` (`flood/`, not `floods/` + root `sites/`) |
+| **N10** | Per-hazard module owns `sites/{city}/` (`flood/`, not root `sites/`) |
+| **N10b** | Per-hazard `extract_mechanism_inputs.py` (replaces `inputs/`) |
+| **N10c** | Drop legacy `sites/{city}/` read fallbacks in `site_config.py` |
+| **N10d** | Document NBS layout in `transformation/README.md` |
+| **N10e** | `heat/` + `landslide/` compute/publish CLIs (H2/L2, H3/L3) |

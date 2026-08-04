@@ -88,6 +88,15 @@ HEAT_MECHANISM_DISPLAY_LABELS: dict[HeatMechanismType, str] = {
     "high_social_exposure": "high_social_exposure",
     "mixed": "mixed",
 }
+HEAT_MECHANISM_COLORS: dict[HeatMechanismType, str] = {
+    "without_clear_dominant": "#e0e0e0",
+    "uhi_built_up": "#d73027",
+    "shade_deficit": "#fee08b",
+    "high_daytime_lst": "#fc8d59",
+    "limited_nocturnal_cooling": "#9970ab",
+    "high_social_exposure": "#636363",
+    "mixed": MECHANISM_MIXED_COLOR,
+}
 
 HEAT_MECHANISM_CATALOG_DOCS = """
 | Code | Type | Meaning | Primary proxies |
@@ -146,6 +155,18 @@ LANDSLIDE_MECHANISM_DISPLAY_LABELS: dict[LandslideMechanismType, str] = {
     "upslope_convergence": "upslope_convergence",
     "high_social_exposure": "high_social_exposure",
     "mixed": "mixed",
+}
+LANDSLIDE_MECHANISM_COLORS: dict[LandslideMechanismType, str] = {
+    "without_clear_dominant": "#e0e0e0",
+    "steep_activatable_slope": "#b2182b",
+    "rainfall_trigger": "#2166ac",
+    "low_cohesion_wet": "#8c510a",
+    "vegetation_deficit": "#d8b365",
+    "drainage_saturation": "#4393c3",
+    "disturbed_bare_slope": "#a6611a",
+    "upslope_convergence": "#5e3c99",
+    "high_social_exposure": "#636363",
+    "mixed": MECHANISM_MIXED_COLOR,
 }
 
 LANDSLIDE_MECHANISM_CATALOG_DOCS = """

@@ -882,6 +882,35 @@ def screen_poa_heat_mechanism_grid(**kwargs: Any) -> GridScreeningResult:
     )
 
 
+def screen_site_heat_mechanism_grid(
+    site: str,
+    aoi_geom=None,
+    **kwargs: Any,
+) -> GridScreeningResult:
+    """Screen hazard-valid 250 m cells for *site*; default AOI is city boundary."""
+    if aoi_geom is None:
+        from site_config import site_boundary_path
+
+        boundary_path = site_boundary_path(site)
+        if not boundary_path.is_file():
+            raise FileNotFoundError(f"Missing city boundary: {boundary_path}")
+        gdf = gpd.read_file(boundary_path)
+        if gdf.crs is None:
+            gdf = gdf.set_crs(4326)
+        aoi_geom = gdf.to_crs(4326).union_all()
+
+    return screen_grid(
+        aoi_geom,
+        hazard="heat",
+        site=site,
+        aoi_label=site,
+        require_hazard_valid=kwargs.pop("require_hazard_valid", True),
+        preload_layers=kwargs.pop("preload_layers", True),
+        zonal_fallback=kwargs.pop("zonal_fallback", False),
+        **kwargs,
+    )
+
+
 def _write_uint8_geotiff(
     out_arr: np.ndarray,
     out_path: Path,
@@ -1055,6 +1084,18 @@ def flood_mechanism_layer_stem(site: str) -> str:
     """Raster basename stem for flood mechanism exports (POA keeps legacy ``poa`` slug)."""
     slug = "poa" if site == DEFAULT_SITE else site
     return f"flood_mechanism_type_{slug}_250m"
+
+
+def heat_mechanism_layer_stem(site: str) -> str:
+    """Raster basename stem for heat mechanism exports (POA keeps legacy ``poa`` slug)."""
+    slug = "poa" if site == DEFAULT_SITE else site
+    return f"heat_mechanism_type_{slug}_250m"
+
+
+def landslide_mechanism_layer_stem(site: str) -> str:
+    """Raster basename stem for landslide mechanism exports (POA keeps legacy ``poa`` slug)."""
+    slug = "poa" if site == DEFAULT_SITE else site
+    return f"landslide_mechanism_type_{slug}_90m"
 
 
 def export_flood_mechanism_geotiff(
@@ -1292,33 +1333,68 @@ def export_poa_heat_mechanism_layers(
     ref_path: RasterRef | None = None,
 ) -> dict[str, Path]:
     """Export observed, IDW-filled, and interpolation-mask rasters for POA heat mechanism."""
-    if result.hazard != "heat":
-        raise ValueError("export_poa_heat_mechanism_layers requires hazard='heat'")
+    return export_heat_mechanism_layers(
+        result,
+        out_dir,
+        site=DEFAULT_SITE,
+        ref_path=ref_path,
+        apply_open_water_mask=True,
+    )
 
-    ref_path = ref_path or REF_RASTER["heat"]
+
+def export_heat_mechanism_layers(
+    result: GridScreeningResult,
+    out_dir: Path,
+    *,
+    site: str,
+    ref_path: RasterRef | None = None,
+    apply_open_water_mask: bool | None = None,
+) -> dict[str, Path]:
+    """Export observed, IDW-filled, and interpolation-mask rasters for heat mechanism."""
+    if result.hazard != "heat":
+        raise ValueError("export_heat_mechanism_layers requires hazard='heat'")
+
+    from site_config import load_site_config, open_water_enabled
+
+    ref_path = ref_path or get_reference_hazard_raster("heat", site)
     out_dir = Path(out_dir)
-    observed_path = out_dir / "heat_mechanism_type_poa_250m_observed.tif"
-    filled_path = out_dir / "heat_mechanism_type_poa_250m.tif"
-    interp_path = out_dir / "heat_mechanism_is_interpolated_poa_250m.tif"
+    stem = heat_mechanism_layer_stem(site)
+    observed_path = out_dir / f"{stem}_observed.tif"
+    filled_path = out_dir / f"{stem}.tif"
+    if site == DEFAULT_SITE:
+        interp_path = out_dir / "heat_mechanism_is_interpolated_poa_250m.tif"
+    else:
+        interp_path = out_dir / f"heat_mechanism_is_interpolated_{site}_250m.tif"
 
     observed_grid, strength_grids, transform = _heat_mechanism_grids_from_result(
         result, ref_path, observed_only=True
     )
-    water_mask = poa_permanent_open_water_mask(ref_path)
-    _exclude_open_water_from_observed(
-        observed_grid, strength_grids, water_mask, HEAT_STRENGTH_KEYS
+    mask_water = (
+        apply_open_water_mask
+        if apply_open_water_mask is not None
+        else open_water_enabled(load_site_config(site))
     )
+    water_px = 0
+    if mask_water:
+        water_mask = poa_permanent_open_water_mask(ref_path, site=site)
+        _exclude_open_water_from_observed(
+            observed_grid, strength_grids, water_mask, HEAT_STRENGTH_KEYS
+        )
+    else:
+        water_mask = np.zeros(observed_grid.shape, dtype=bool)
+
     filled_grid, is_interp_grid, filled_mechs = _idw_fill_heat_mechanism_grid(
         observed_grid, strength_grids, transform
     )
     _apply_filled_heat_classifications_to_cells(result, filled_mechs)
 
-    water_px = _mask_open_water_pixels(
-        observed_grid,
-        filled_grid,
-        is_interp_grid,
-        water_mask,
-    )
+    if mask_water:
+        water_px = _mask_open_water_pixels(
+            observed_grid,
+            filled_grid,
+            is_interp_grid,
+            water_mask,
+        )
 
     paths = {
         "observed": _write_uint8_geotiff(observed_grid, observed_path, ref_path=ref_path),
@@ -1330,7 +1406,7 @@ def export_poa_heat_mechanism_layers(
     filled_n = int((filled_grid != MECHANISM_RASTER_NODATA).sum())
     interp_n = int(is_interp_grid.sum())
     print(
-        f"POA heat mechanism rasters: observed={observed_n} px, "
+        f"{site} heat mechanism rasters: observed={observed_n} px, "
         f"filled={filled_n} px (+{filled_n - observed_n} IDW), interpolated={interp_n} px, "
         f"open_water_masked={water_px} px"
     )
@@ -1366,6 +1442,36 @@ def screen_poa_landslide_mechanism_grid(**kwargs: Any) -> GridScreeningResult:
         poa_landslide_reference_bounds_geom(),
         hazard="landslide",
         aoi_label="porto_alegre",
+        require_hazard_valid=kwargs.pop("require_hazard_valid", True),
+        require_positive_hazard=kwargs.pop("require_positive_hazard", True),
+        preload_layers=kwargs.pop("preload_layers", True),
+        zonal_fallback=kwargs.pop("zonal_fallback", False),
+        **kwargs,
+    )
+
+
+def screen_site_landslide_mechanism_grid(
+    site: str,
+    aoi_geom=None,
+    **kwargs: Any,
+) -> GridScreeningResult:
+    """Screen hazard-valid 90 m cells for *site*; default AOI is city boundary."""
+    if aoi_geom is None:
+        from site_config import site_boundary_path
+
+        boundary_path = site_boundary_path(site)
+        if not boundary_path.is_file():
+            raise FileNotFoundError(f"Missing city boundary: {boundary_path}")
+        gdf = gpd.read_file(boundary_path)
+        if gdf.crs is None:
+            gdf = gdf.set_crs(4326)
+        aoi_geom = gdf.to_crs(4326).union_all()
+
+    return screen_grid(
+        aoi_geom,
+        hazard="landslide",
+        site=site,
+        aoi_label=site,
         require_hazard_valid=kwargs.pop("require_hazard_valid", True),
         require_positive_hazard=kwargs.pop("require_positive_hazard", True),
         preload_layers=kwargs.pop("preload_layers", True),
@@ -1501,33 +1607,68 @@ def export_poa_landslide_mechanism_layers(
     ref_path: RasterRef | None = None,
 ) -> dict[str, Path]:
     """Export observed, IDW-filled, and interpolation-mask rasters for POA landslide mechanism."""
-    if result.hazard != "landslide":
-        raise ValueError("export_poa_landslide_mechanism_layers requires hazard='landslide'")
+    return export_landslide_mechanism_layers(
+        result,
+        out_dir,
+        site=DEFAULT_SITE,
+        ref_path=ref_path,
+        apply_open_water_mask=True,
+    )
 
-    ref_path = ref_path or REF_RASTER["landslide"]
+
+def export_landslide_mechanism_layers(
+    result: GridScreeningResult,
+    out_dir: Path,
+    *,
+    site: str,
+    ref_path: RasterRef | None = None,
+    apply_open_water_mask: bool | None = None,
+) -> dict[str, Path]:
+    """Export observed, IDW-filled, and interpolation-mask rasters for landslide mechanism."""
+    if result.hazard != "landslide":
+        raise ValueError("export_landslide_mechanism_layers requires hazard='landslide'")
+
+    from site_config import load_site_config, open_water_enabled
+
+    ref_path = ref_path or get_reference_hazard_raster("landslide", site)
     out_dir = Path(out_dir)
-    observed_path = out_dir / "landslide_mechanism_type_poa_90m_observed.tif"
-    filled_path = out_dir / "landslide_mechanism_type_poa_90m.tif"
-    interp_path = out_dir / "landslide_mechanism_is_interpolated_poa_90m.tif"
+    stem = landslide_mechanism_layer_stem(site)
+    observed_path = out_dir / f"{stem}_observed.tif"
+    filled_path = out_dir / f"{stem}.tif"
+    if site == DEFAULT_SITE:
+        interp_path = out_dir / "landslide_mechanism_is_interpolated_poa_90m.tif"
+    else:
+        interp_path = out_dir / f"landslide_mechanism_is_interpolated_{site}_90m.tif"
 
     observed_grid, strength_grids, transform = _landslide_mechanism_grids_from_result(
         result, ref_path, observed_only=True
     )
-    water_mask = poa_permanent_open_water_mask(ref_path)
-    _exclude_open_water_from_observed(
-        observed_grid, strength_grids, water_mask, LANDSLIDE_STRENGTH_KEYS
+    mask_water = (
+        apply_open_water_mask
+        if apply_open_water_mask is not None
+        else open_water_enabled(load_site_config(site))
     )
+    water_px = 0
+    if mask_water:
+        water_mask = poa_permanent_open_water_mask(ref_path, site=site)
+        _exclude_open_water_from_observed(
+            observed_grid, strength_grids, water_mask, LANDSLIDE_STRENGTH_KEYS
+        )
+    else:
+        water_mask = np.zeros(observed_grid.shape, dtype=bool)
+
     filled_grid, is_interp_grid, filled_mechs = _idw_fill_landslide_mechanism_grid(
         observed_grid, strength_grids, transform
     )
     _apply_filled_landslide_classifications_to_cells(result, filled_mechs)
 
-    water_px = _mask_open_water_pixels(
-        observed_grid,
-        filled_grid,
-        is_interp_grid,
-        water_mask,
-    )
+    if mask_water:
+        water_px = _mask_open_water_pixels(
+            observed_grid,
+            filled_grid,
+            is_interp_grid,
+            water_mask,
+        )
 
     paths = {
         "observed": _write_uint8_geotiff(observed_grid, observed_path, ref_path=ref_path),
@@ -1539,7 +1680,7 @@ def export_poa_landslide_mechanism_layers(
     filled_n = int((filled_grid != MECHANISM_RASTER_NODATA).sum())
     interp_n = int(is_interp_grid.sum())
     print(
-        f"POA landslide mechanism rasters: observed={observed_n} px, "
+        f"{site} landslide mechanism rasters: observed={observed_n} px, "
         f"filled={filled_n} px (+{filled_n - observed_n} IDW), interpolated={interp_n} px, "
         f"open_water_masked={water_px} px"
     )
