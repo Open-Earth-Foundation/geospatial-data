@@ -272,14 +272,21 @@ def open_water_enabled(config: dict[str, Any] | None = None, site: str | None = 
     return bool(open_water.get("enabled", False))
 
 
+def hazard_site_dir(hazard: HazardKind) -> str:
+    """Filesystem segment under ``sites/{site}/`` (``flood`` → ``floods``)."""
+    if hazard == "flood":
+        return "floods"
+    return hazard
+
+
 def site_hazard_root(
     site: str,
     hazard: HazardKind = "flood",
     nbs_root: Path | None = None,
 ) -> Path:
-    """Per-hazard site workspace: ``sites/{site}/{hazard}/``."""
+    """Per-hazard site workspace: ``sites/{site}/{hazard_dir}/``."""
     root = Path(nbs_root or find_nbs_screening_root()).resolve()
-    return root / "sites" / site / hazard
+    return root / "sites" / site / hazard_site_dir(hazard)
 
 
 def _legacy_flood_output_dir(site: str, nbs_root: Path) -> Path:
@@ -326,24 +333,28 @@ def site_input_dir(
     hazard: HazardKind = "flood",
     nbs_root: Path | None = None,
 ) -> Path:
-    """Hazard-scoped inputs: ``sites/{site}/{hazard}/data/input``."""
+    """Hazard-scoped inputs: ``sites/{site}/{hazard_dir}/data/input`` (N9 write path)."""
     root = Path(nbs_root or find_nbs_screening_root()).resolve()
-    scoped = site_hazard_root(site, hazard, root) / "data" / "input"
-    if hazard == "flood":
-        legacy = root / "sites" / site / "data" / "input"
-        if legacy.is_dir() and not scoped.is_dir():
-            return legacy
-    return scoped
+    return site_hazard_root(site, hazard, root) / "data" / "input"
 
 
 def site_osm_rivers_path(site: str, nbs_root: Path | None = None) -> Path:
-    """Default OSM waterways extract (flood): ``sites/{site}/floods/data/input/osm_waterways_{site}.json``."""
+    """N9 default OSM extract target: ``sites/{site}/floods/data/input/osm_waterways_{site}.json``."""
     root = Path(nbs_root or find_nbs_screening_root()).resolve()
-    scoped = site_input_dir(site, "flood", root) / f"osm_waterways_{site}.json"
-    legacy = _legacy_flood_osm_path(site, root)
-    if legacy.is_file() and not scoped.is_file():
-        return legacy
-    return scoped
+    return site_input_dir(site, "flood", root) / f"osm_waterways_{site}.json"
+
+
+def osm_rivers_write_path(site: str, nbs_root: Path | None = None) -> Path:
+    """OSM extract write path: YAML ``osm_waterways.local`` when set, else N9 default."""
+    cfg = load_site_config(site, str(nbs_root) if nbs_root else None)
+    repo_root = Path(cfg["repo_root"])
+    local_rel = (cfg.get("osm_waterways") or {}).get("local")
+    if local_rel:
+        path = Path(str(local_rel)).expanduser()
+        if not path.is_absolute():
+            path = repo_root / path
+        return path
+    return site_osm_rivers_path(str(cfg["site_slug"]), nbs_root)
 
 
 def resolve_osm_rivers_path(site: str, nbs_root: Path | None = None) -> Path | None:
@@ -362,6 +373,11 @@ def resolve_osm_rivers_path(site: str, nbs_root: Path | None = None) -> Path | N
     default = site_osm_rivers_path(str(cfg["site_slug"]), nbs_root)
     if default.is_file():
         return default.resolve()
+
+    root = Path(nbs_root or find_nbs_screening_root()).resolve()
+    legacy = _legacy_flood_osm_path(str(cfg["site_slug"]), root)
+    if legacy.is_file():
+        return legacy.resolve()
     return None
 
 
