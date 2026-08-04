@@ -11,3 +11,8 @@ landslide/sites/<city>/
 ```
 
 Reference grid: OEF landslide hazard 90 m (`require_positive_hazard=True`).
+
+```bash
+python transformation/nbs_screening/landslide/extract_mechanism_inputs.py --site richfield
+python transformation/nbs_screening/landslide/extract_mechanism_inputs.py --country "United States"
+```

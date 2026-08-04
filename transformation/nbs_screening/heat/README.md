@@ -11,3 +11,8 @@ heat/sites/<city>/
 ```
 
 Reference grid: OEF heat hazard 250 m. Seasonal LST inputs are configured per city in `config/sites/*.yaml`.
+
+```bash
+python transformation/nbs_screening/heat/extract_mechanism_inputs.py --site richfield
+python transformation/nbs_screening/heat/extract_mechanism_inputs.py --country "United States"
+```

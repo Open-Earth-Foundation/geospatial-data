@@ -17,16 +17,20 @@ Pre-N9 paths (`sites/<city>/data/…`, `sites/<city>/floods/…`) still resolve 
 
 | Script | Purpose |
 |--------|---------|
+| `extract_mechanism_inputs.py` | All flood screening input layers (GEE + OSM + DEM diagnostics) |
 | `compute_mechanism.py` | Grid screening + exports (N2) |
 | `publish_mechanism.py` | COG/tiles + catalog (N3) |
-| `extract_osm_rivers.py` | OSM waterways for riverine proxy (N4) |
+| `extract_osm_rivers.py` | OSM waterways only (N4) |
 | `batch_mechanism.py` | Multi-city rivers → compute → publish (N5) |
-| `run_pipeline.py` | End-to-end DEM + rivers + mechanism (N7) |
+| `run_pipeline.py` | DEM + rivers + mechanism (+ optional publish) (N7) |
 
 ```bash
+# 1. Extract catalog input layers (before mechanism)
+python transformation/nbs_screening/flood/extract_mechanism_inputs.py --site richfield
+
+# 2. Compute + publish mechanism
+python transformation/nbs_screening/flood/run_pipeline.py --site richfield
 python transformation/nbs_screening/flood/compute_mechanism.py --site richfield
-python transformation/nbs_screening/flood/run_pipeline.py --site richfield --publish-dem
-python transformation/nbs_screening/flood/batch_mechanism.py --country "United States"
 ```
 
 Minnesota cohort: `flood/batch_mn_mechanism.py` · full pipeline: `flood/run_mn_pipeline.py`.
