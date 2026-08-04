@@ -203,3 +203,4 @@ See `docs/` in this folder, `config/sites/README.md`, and
 | **N10** | Per-hazard module owns `sites/{city}/` (`flood/`, not root `sites/`) |
 | **N10b** | Per-hazard `extract_mechanism_inputs.py` (replaces `inputs/`) |
 | **N10c** | Drop legacy `sites/{city}/` read fallbacks in `site_config.py` |
+| **N10d** | Document NBS layout in `transformation/README.md` |
