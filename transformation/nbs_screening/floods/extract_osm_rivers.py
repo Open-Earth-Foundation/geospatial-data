@@ -35,10 +35,10 @@ from catalog_layers import clear_rivers_cache  # noqa: E402
 from site_config import (  # noqa: E402
     find_repo_root,
     load_site_config,
+    osm_rivers_write_path,
     resolve_osm_rivers_path,
     resolve_site_slugs,
     site_boundary_path,
-    site_osm_rivers_path,
 )
 DEFAULT_OVERPASS = "https://overpass-api.de/api/interpreter"
 WATERWAY_REGEX = "river|stream|canal"
@@ -212,7 +212,7 @@ def extract_osm_rivers(
     cfg = load_site_config(site)
     site_slug = str(cfg["site_slug"])
     display_name = str(cfg.get("display_name") or site_slug)
-    out_path = Path(out_path or site_osm_rivers_path(site_slug))
+    out_path = Path(out_path or osm_rivers_write_path(site_slug))
     boundary = _load_boundary(site_slug)
     bounds = _buffered_bounds(boundary, buffer_m)
     query = build_overpass_query(bounds)
