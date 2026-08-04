@@ -13,8 +13,8 @@ transformation/nbs_screening/
 ├── site_config.py, catalog_layers.py, grid_screening.py, nbs_rules.py  # shared
 ├── config/sites/{city}.yaml                                             # multi-hazard index
 ├── flood/          flood mechanism CLIs + sites/{city}/ (N2–N7, D10 inputs)
-├── heat/           heat mechanism CLIs + sites/{city}/ (planned H1–H4, D10 inputs)
-├── landslide/      landslide mechanism CLIs + sites/{city}/ (planned L1–L4, D10 inputs)
+├── heat/           heat mechanism CLIs + sites/{city}/ (H2–H3, D10 inputs)
+├── landslide/      landslide mechanism CLIs + sites/{city}/ (L2–L3, D10 inputs)
 ├── extract_common.py   shared input-orchestrator helpers
 ```
 
@@ -46,6 +46,24 @@ python transformation/nbs_screening/flood/publish_mechanism.py \\
 
 Publish staging: `transformation/nbs_screening/flood/sites/<site>/out/flood_mechanism_type/`  
 Catalog dataset id: `{site}_flood_mechanism_type` (POA keeps `poa_flood_mechanism_type`).
+
+## Run (grid mechanism — H2, heat)
+
+```bash
+python transformation/nbs_screening/heat/compute_mechanism.py --site richfield
+python transformation/nbs_screening/heat/publish_mechanism.py --site richfield --build
+```
+
+Outputs: `transformation/nbs_screening/heat/sites/<site>/data/output/` (250 m grid).
+
+## Run (grid mechanism — L2, landslide)
+
+```bash
+python transformation/nbs_screening/landslide/compute_mechanism.py --site richfield
+python transformation/nbs_screening/landslide/publish_mechanism.py --site richfield --build
+```
+
+Outputs: `transformation/nbs_screening/landslide/sites/<site>/data/output/` (90 m grid).
 
 ## OSM waterways (N4 — riverine distance)
 
@@ -204,3 +222,4 @@ See `docs/` in this folder, `config/sites/README.md`, and
 | **N10b** | Per-hazard `extract_mechanism_inputs.py` (replaces `inputs/`) |
 | **N10c** | Drop legacy `sites/{city}/` read fallbacks in `site_config.py` |
 | **N10d** | Document NBS layout in `transformation/README.md` |
+| **N10e** | `heat/` + `landslide/` compute/publish CLIs (H2/L2, H3/L3) |
