@@ -39,10 +39,10 @@ Optional top-level **`osm_waterways`** (Minnesota cities):
 
 ```yaml
 osm_waterways:
-  local: transformation/nbs_screening/sites/richfield/floods/data/input/osm_waterways_richfield.json
+  local: transformation/nbs_screening/flood/sites/richfield/data/input/osm_waterways_richfield.json
 ```
 
-Generate with `python transformation/nbs_screening/floods/extract_osm_rivers.py --site richfield`.
+Generate with `python transformation/nbs_screening/flood/extract_osm_rivers.py --site richfield`.
 POA falls back to `NBS_SAMPLE_DATA/porto-alegre-rivers.json` when unset.
 
 **Onboarding a new city:** add `config/sites/{slug}.yaml` (+ boundary under

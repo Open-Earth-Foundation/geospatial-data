@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Backward-compatible entry point — prefer ``floods/run_pipeline.py``.
+"""Backward-compatible entry point — prefer ``flood/batch_mechanism.py``.
 
 Defaults to United States configured sites (current Minnesota cohort).
 """
@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import sys
 
-from run_pipeline import main
+from batch_mechanism import main
 
 if __name__ == "__main__":
     argv = list(sys.argv[1:])

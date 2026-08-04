@@ -5,10 +5,10 @@ Fetches river/stream/canal ways from the Overpass API inside the city boundary
 (+ buffer) and writes POA-compatible JSON for ``catalog_layers.water_stats_at_point``.
 
 Example:
-  python transformation/nbs_screening/floods/extract_osm_rivers.py --site richfield
-  python transformation/nbs_screening/floods/extract_osm_rivers.py --all-configured
-  python transformation/nbs_screening/floods/extract_osm_rivers.py --country "United States"
-  python transformation/nbs_screening/floods/extract_osm_rivers.py --site edina --buffer-m 1500
+  python transformation/nbs_screening/flood/extract_osm_rivers.py --site richfield
+  python transformation/nbs_screening/flood/extract_osm_rivers.py --all-configured
+  python transformation/nbs_screening/flood/extract_osm_rivers.py --country "United States"
+  python transformation/nbs_screening/flood/extract_osm_rivers.py --site edina --buffer-m 1500
 """
 
 from __future__ import annotations
@@ -25,9 +25,9 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
-FLOODS_ROOT = Path(__file__).resolve().parent
-NBS_ROOT = FLOODS_ROOT.parent
-for _path in (FLOODS_ROOT, NBS_ROOT):
+FLOOD_ROOT = Path(__file__).resolve().parent
+NBS_ROOT = FLOOD_ROOT.parent
+for _path in (FLOOD_ROOT, NBS_ROOT):
     if str(_path) not in sys.path:
         sys.path.insert(0, str(_path))
 

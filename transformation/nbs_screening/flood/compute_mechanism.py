@@ -6,8 +6,8 @@ dominant flood mechanism, IDW-fills gaps, and writes GeoTIFF + GeoJSON exports.
 Also writes a categorical QA SVG for the filled mechanism raster.
 
 Example:
-  python transformation/nbs_screening/floods/compute_mechanism.py --site richfield
-  python transformation/nbs_screening/floods/compute_mechanism.py --site porto_alegre --aoi full
+  python transformation/nbs_screening/flood/compute_mechanism.py --site richfield
+  python transformation/nbs_screening/flood/compute_mechanism.py --site porto_alegre --aoi full
   python transformation/nbs_screening/check_nbs_layers.py --site richfield --hazard flood
 """
 
@@ -23,9 +23,9 @@ from typing import Any
 
 import numpy as np
 
-FLOODS_ROOT = Path(__file__).resolve().parent
-NBS_ROOT = FLOODS_ROOT.parent
-for _path in (FLOODS_ROOT, NBS_ROOT):
+FLOOD_ROOT = Path(__file__).resolve().parent
+NBS_ROOT = FLOOD_ROOT.parent
+for _path in (FLOOD_ROOT, NBS_ROOT):
     if str(_path) not in sys.path:
         sys.path.insert(0, str(_path))
 
@@ -302,7 +302,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--out-dir",
         default=None,
-        help="Override output directory (default: sites/<site>/floods/data/output)",
+        help="Override output directory (default: flood/sites/<site>/data/output)",
     )
     parser.add_argument(
         "--no-qa",

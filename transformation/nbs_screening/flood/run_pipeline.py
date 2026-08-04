@@ -12,18 +12,18 @@ Per configured city, runs in order:
 Delegates to existing CLIs/modules (N4–N8).
 
 Example (single city, local build):
-  python transformation/nbs_screening/floods/run_pipeline.py --site richfield
+  python transformation/nbs_screening/flood/run_pipeline.py --site richfield
 
 Example (Minnesota cohort, skip DEM when already computed):
-  python transformation/nbs_screening/floods/run_pipeline.py \\
+  python transformation/nbs_screening/flood/run_pipeline.py \\
     --country "United States" --skip-dem
 
 Example (prep only — DEM + rivers, no mechanism):
-  python transformation/nbs_screening/floods/run_pipeline.py \\
+  python transformation/nbs_screening/flood/run_pipeline.py \\
     --sites richfield --skip-compute --skip-publish
 
 Example (upload + catalog):
-  python transformation/nbs_screening/floods/run_pipeline.py \\
+  python transformation/nbs_screening/flood/run_pipeline.py \\
     --all-configured --upload --write-catalog --continue-on-error
 """
 
@@ -37,11 +37,11 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Literal
 
-FLOODS_ROOT = Path(__file__).resolve().parent
-NBS_ROOT = FLOODS_ROOT.parent
+FLOOD_ROOT = Path(__file__).resolve().parent
+NBS_ROOT = FLOOD_ROOT.parent
 COPERNICUS_DEM_ROOT = NBS_ROOT.parent / "copernicus_dem"
 
-for _path in (FLOODS_ROOT, NBS_ROOT):
+for _path in (FLOOD_ROOT, NBS_ROOT):
     if str(_path) not in sys.path:
         sys.path.insert(0, str(_path))
 
