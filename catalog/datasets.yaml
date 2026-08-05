@@ -3757,3 +3757,653 @@ datasets:
       composite). Computed by `transformation/landslide_risk/compute_landslide_risk.py`. Block-group
       vector (`bairro_gpkg_url`): zonal mean hazard, exposure, vulnerability, and risk per ACS block
       group.
+
+  - dataset_id: apple_valley_flood_mechanism_type
+    dataset_name: Flood Mechanism Type (Apple Valley, 250 m)
+    publisher: Open Earth Foundation (derived processing)
+    license: CC BY 4.0
+    resolution: ~250m
+    crs: EPSG:3857
+    access_type: internal_storage
+    source_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/apple_valley/climate_hazards/floods/hazard/flood_hazard_score_idw_cog.tif
+    dataset_type: flood
+    type: categorical_raster
+    data_quality:
+      temporal_coverage: "Static screening layer from current catalog COGs and OSM waterways"
+      accuracy: "Per-cell dominant mechanism from rule-based NBS screening (riverine, pluvial, low-lying, drainage proxy)"
+      limitations: "Screening-level classification only; drainage_constrained is a proxy until municipal drainage data exists; not event-specific depth"
+    value_encoding:
+      type: class_lookup
+      decode_formula: "encoded = R + 256*G + 65536*B; if encoded == 0 then nodata else mechanism_code = encoded - 1"
+      classes:
+        0: { name: None, color: "#e0e0e0" }
+        1: { name: Riverine, color: "#2166ac" }
+        2: { name: Pluvial, color: "#fdae61" }
+        3: { name: Low-lying, color: "#abd9e9" }
+        4: { name: Drainage constrained, color: "#7b3294" }
+        5: { name: Mixed, color: "#8e0152" }
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/apple_valley/climate_hazards/floods/flood_mechanism/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/apple_valley/climate_hazards/floods/flood_mechanism/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/apple_valley/climate_hazards/floods/flood_mechanism/flood_mechanism_type_apple_valley_250m_cog.tif
+        geojson_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/apple_valley/climate_hazards/floods/flood_mechanism/flood_mechanism_type_apple_valley_250m.geojson
+      metadata:
+        url: []
+    description: >
+      OEF dominant flood mechanism type per 250 m cell for Apple Valley. Integer codes: 0 none, 1
+      riverine, 2 pluvial, 3 low_lying, 4 drainage_constrained, 5 mixed. Rules in
+      `transformation/nbs_screening/nbs_rules.py`; produced by
+      `transformation/nbs_screening/flood/compute_mechanism.py`. Methodology:
+      `models/nbs_flood_mechanism_type/`. Rasterized on the OEF flood hazard 250 m grid. Value tiles use
+      Terrain RGB with +1 offset (`mechanism_code = encoded - 1`; encoded 0 = nodata). GeoJSON
+      (`geojson_url`) lists screened cells with mechanism strengths, boolean flags, and `is_interpolated`
+      for analytical QA (not a map tile layer).
+
+  - dataset_id: edina_flood_mechanism_type
+    dataset_name: Flood Mechanism Type (Edina, 250 m)
+    publisher: Open Earth Foundation (derived processing)
+    license: CC BY 4.0
+    resolution: ~250m
+    crs: EPSG:3857
+    access_type: internal_storage
+    source_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/edina/climate_hazards/floods/hazard/flood_hazard_score_idw_cog.tif
+    dataset_type: flood
+    type: categorical_raster
+    data_quality:
+      temporal_coverage: "Static screening layer from current catalog COGs and OSM waterways"
+      accuracy: "Per-cell dominant mechanism from rule-based NBS screening (riverine, pluvial, low-lying, drainage proxy)"
+      limitations: "Screening-level classification only; drainage_constrained is a proxy until municipal drainage data exists; not event-specific depth"
+    value_encoding:
+      type: class_lookup
+      decode_formula: "encoded = R + 256*G + 65536*B; if encoded == 0 then nodata else mechanism_code = encoded - 1"
+      classes:
+        0: { name: None, color: "#e0e0e0" }
+        1: { name: Riverine, color: "#2166ac" }
+        2: { name: Pluvial, color: "#fdae61" }
+        3: { name: Low-lying, color: "#abd9e9" }
+        4: { name: Drainage constrained, color: "#7b3294" }
+        5: { name: Mixed, color: "#8e0152" }
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/edina/climate_hazards/floods/flood_mechanism/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/edina/climate_hazards/floods/flood_mechanism/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/edina/climate_hazards/floods/flood_mechanism/flood_mechanism_type_edina_250m_cog.tif
+        geojson_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/edina/climate_hazards/floods/flood_mechanism/flood_mechanism_type_edina_250m.geojson
+      metadata:
+        url: []
+    description: >
+      OEF dominant flood mechanism type per 250 m cell for Edina. Integer codes: 0 none, 1 riverine, 2
+      pluvial, 3 low_lying, 4 drainage_constrained, 5 mixed. Rules in
+      `transformation/nbs_screening/nbs_rules.py`; produced by
+      `transformation/nbs_screening/flood/compute_mechanism.py`. Methodology:
+      `models/nbs_flood_mechanism_type/`. Rasterized on the OEF flood hazard 250 m grid. Value tiles use
+      Terrain RGB with +1 offset (`mechanism_code = encoded - 1`; encoded 0 = nodata). GeoJSON
+      (`geojson_url`) lists screened cells with mechanism strengths, boolean flags, and `is_interpolated`
+      for analytical QA (not a map tile layer).
+
+  - dataset_id: plymouth_flood_mechanism_type
+    dataset_name: Flood Mechanism Type (Plymouth, 250 m)
+    publisher: Open Earth Foundation (derived processing)
+    license: CC BY 4.0
+    resolution: ~250m
+    crs: EPSG:3857
+    access_type: internal_storage
+    source_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/plymouth/climate_hazards/floods/hazard/flood_hazard_score_idw_cog.tif
+    dataset_type: flood
+    type: categorical_raster
+    data_quality:
+      temporal_coverage: "Static screening layer from current catalog COGs and OSM waterways"
+      accuracy: "Per-cell dominant mechanism from rule-based NBS screening (riverine, pluvial, low-lying, drainage proxy)"
+      limitations: "Screening-level classification only; drainage_constrained is a proxy until municipal drainage data exists; not event-specific depth"
+    value_encoding:
+      type: class_lookup
+      decode_formula: "encoded = R + 256*G + 65536*B; if encoded == 0 then nodata else mechanism_code = encoded - 1"
+      classes:
+        0: { name: None, color: "#e0e0e0" }
+        1: { name: Riverine, color: "#2166ac" }
+        2: { name: Pluvial, color: "#fdae61" }
+        3: { name: Low-lying, color: "#abd9e9" }
+        4: { name: Drainage constrained, color: "#7b3294" }
+        5: { name: Mixed, color: "#8e0152" }
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/plymouth/climate_hazards/floods/flood_mechanism/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/plymouth/climate_hazards/floods/flood_mechanism/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/plymouth/climate_hazards/floods/flood_mechanism/flood_mechanism_type_plymouth_250m_cog.tif
+        geojson_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/plymouth/climate_hazards/floods/flood_mechanism/flood_mechanism_type_plymouth_250m.geojson
+      metadata:
+        url: []
+    description: >
+      OEF dominant flood mechanism type per 250 m cell for Plymouth. Integer codes: 0 none, 1 riverine, 2
+      pluvial, 3 low_lying, 4 drainage_constrained, 5 mixed. Rules in
+      `transformation/nbs_screening/nbs_rules.py`; produced by
+      `transformation/nbs_screening/flood/compute_mechanism.py`. Methodology:
+      `models/nbs_flood_mechanism_type/`. Rasterized on the OEF flood hazard 250 m grid. Value tiles use
+      Terrain RGB with +1 offset (`mechanism_code = encoded - 1`; encoded 0 = nodata). GeoJSON
+      (`geojson_url`) lists screened cells with mechanism strengths, boolean flags, and `is_interpolated`
+      for analytical QA (not a map tile layer).
+
+  - dataset_id: richfield_flood_mechanism_type
+    dataset_name: Flood Mechanism Type (Richfield, 250 m)
+    publisher: Open Earth Foundation (derived processing)
+    license: CC BY 4.0
+    resolution: ~250m
+    crs: EPSG:3857
+    access_type: internal_storage
+    source_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/richfield/climate_hazards/floods/hazard/flood_hazard_score_idw_cog.tif
+    dataset_type: flood
+    type: categorical_raster
+    data_quality:
+      temporal_coverage: "Static screening layer from current catalog COGs and OSM waterways"
+      accuracy: "Per-cell dominant mechanism from rule-based NBS screening (riverine, pluvial, low-lying, drainage proxy)"
+      limitations: "Screening-level classification only; drainage_constrained is a proxy until municipal drainage data exists; not event-specific depth"
+    value_encoding:
+      type: class_lookup
+      decode_formula: "encoded = R + 256*G + 65536*B; if encoded == 0 then nodata else mechanism_code = encoded - 1"
+      classes:
+        0: { name: None, color: "#e0e0e0" }
+        1: { name: Riverine, color: "#2166ac" }
+        2: { name: Pluvial, color: "#fdae61" }
+        3: { name: Low-lying, color: "#abd9e9" }
+        4: { name: Drainage constrained, color: "#7b3294" }
+        5: { name: Mixed, color: "#8e0152" }
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/richfield/climate_hazards/floods/flood_mechanism/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/richfield/climate_hazards/floods/flood_mechanism/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/richfield/climate_hazards/floods/flood_mechanism/flood_mechanism_type_richfield_250m_cog.tif
+        geojson_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/richfield/climate_hazards/floods/flood_mechanism/flood_mechanism_type_richfield_250m.geojson
+      metadata:
+        url: []
+    description: >
+      OEF dominant flood mechanism type per 250 m cell for Richfield. Integer codes: 0 none, 1 riverine, 2
+      pluvial, 3 low_lying, 4 drainage_constrained, 5 mixed. Rules in
+      `transformation/nbs_screening/nbs_rules.py`; produced by
+      `transformation/nbs_screening/flood/compute_mechanism.py`. Methodology:
+      `models/nbs_flood_mechanism_type/`. Rasterized on the OEF flood hazard 250 m grid. Value tiles use
+      Terrain RGB with +1 offset (`mechanism_code = encoded - 1`; encoded 0 = nodata). GeoJSON
+      (`geojson_url`) lists screened cells with mechanism strengths, boolean flags, and `is_interpolated`
+      for analytical QA (not a map tile layer).
+
+  - dataset_id: rochester_flood_mechanism_type
+    dataset_name: Flood Mechanism Type (Rochester, 250 m)
+    publisher: Open Earth Foundation (derived processing)
+    license: CC BY 4.0
+    resolution: ~250m
+    crs: EPSG:3857
+    access_type: internal_storage
+    source_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/rochester/climate_hazards/floods/hazard/flood_hazard_score_idw_cog.tif
+    dataset_type: flood
+    type: categorical_raster
+    data_quality:
+      temporal_coverage: "Static screening layer from current catalog COGs and OSM waterways"
+      accuracy: "Per-cell dominant mechanism from rule-based NBS screening (riverine, pluvial, low-lying, drainage proxy)"
+      limitations: "Screening-level classification only; drainage_constrained is a proxy until municipal drainage data exists; not event-specific depth"
+    value_encoding:
+      type: class_lookup
+      decode_formula: "encoded = R + 256*G + 65536*B; if encoded == 0 then nodata else mechanism_code = encoded - 1"
+      classes:
+        0: { name: None, color: "#e0e0e0" }
+        1: { name: Riverine, color: "#2166ac" }
+        2: { name: Pluvial, color: "#fdae61" }
+        3: { name: Low-lying, color: "#abd9e9" }
+        4: { name: Drainage constrained, color: "#7b3294" }
+        5: { name: Mixed, color: "#8e0152" }
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/rochester/climate_hazards/floods/flood_mechanism/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/rochester/climate_hazards/floods/flood_mechanism/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/rochester/climate_hazards/floods/flood_mechanism/flood_mechanism_type_rochester_250m_cog.tif
+        geojson_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/rochester/climate_hazards/floods/flood_mechanism/flood_mechanism_type_rochester_250m.geojson
+      metadata:
+        url: []
+    description: >
+      OEF dominant flood mechanism type per 250 m cell for Rochester. Integer codes: 0 none, 1 riverine, 2
+      pluvial, 3 low_lying, 4 drainage_constrained, 5 mixed. Rules in
+      `transformation/nbs_screening/nbs_rules.py`; produced by
+      `transformation/nbs_screening/flood/compute_mechanism.py`. Methodology:
+      `models/nbs_flood_mechanism_type/`. Rasterized on the OEF flood hazard 250 m grid. Value tiles use
+      Terrain RGB with +1 offset (`mechanism_code = encoded - 1`; encoded 0 = nodata). GeoJSON
+      (`geojson_url`) lists screened cells with mechanism strengths, boolean flags, and `is_interpolated`
+      for analytical QA (not a map tile layer).
+
+  - dataset_id: apple_valley_heat_mechanism_type
+    dataset_name: Heat Mechanism Type (Apple Valley, 250 m)
+    publisher: Open Earth Foundation (derived processing)
+    license: CC BY 4.0
+    resolution: ~250m
+    crs: EPSG:3857
+    access_type: internal_storage
+    source_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/apple_valley/climate_hazards/heat/hazard/heat_hazard_score_cog.tif
+    dataset_type: heat
+    type: categorical_raster
+    data_quality:
+      temporal_coverage: "Static screening layer from current catalog COGs and LST inputs"
+      accuracy: "Per-cell dominant mechanism from rule-based NBS screening (UHI, shade deficit, daytime LST, nocturnal cooling, social exposure)"
+      limitations: "Screening-level classification only; LST proxies are surface temperature, not pedestrian thermal comfort"
+    value_encoding:
+      type: class_lookup
+      decode_formula: "encoded = R + 256*G + 65536*B; if encoded == 0 then nodata else mechanism_code = encoded - 1"
+      classes:
+        0: { name: without a clear dominant mechanism, color: "#e0e0e0" }
+        1: { name: uhi_built_up, color: "#d73027" }
+        2: { name: shade_deficit, color: "#fee08b" }
+        3: { name: high_daytime_lst, color: "#fc8d59" }
+        4: { name: limited_nocturnal_cooling, color: "#9970ab" }
+        5: { name: high_social_exposure, color: "#636363" }
+        6: { name: mixed, color: "#8e0152" }
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/apple_valley/climate_hazards/heat/heat_mechanism/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/apple_valley/climate_hazards/heat/heat_mechanism/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/apple_valley/climate_hazards/heat/heat_mechanism/heat_mechanism_type_apple_valley_250m_cog.tif
+        geojson_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/apple_valley/climate_hazards/heat/heat_mechanism/heat_mechanism_type_apple_valley_250m.geojson
+      metadata:
+        url: []
+    description: >
+      OEF dominant heat mechanism type per 250 m cell for Apple Valley. Integer codes 0–6 for
+      without_clear_dominant, uhi_built_up, shade_deficit, high_daytime_lst, limited_nocturnal_cooling,
+      high_social_exposure, mixed. Rules in `transformation/nbs_screening/nbs_rules.py`; produced by
+      `transformation/nbs_screening/heat/compute_mechanism.py`. Methodology:
+      `models/nbs_heat_mechanism_type/`. Rasterized on the OEF heat hazard 250 m grid.
+
+  - dataset_id: edina_heat_mechanism_type
+    dataset_name: Heat Mechanism Type (Edina, 250 m)
+    publisher: Open Earth Foundation (derived processing)
+    license: CC BY 4.0
+    resolution: ~250m
+    crs: EPSG:3857
+    access_type: internal_storage
+    source_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/edina/climate_hazards/heat/hazard/heat_hazard_score_cog.tif
+    dataset_type: heat
+    type: categorical_raster
+    data_quality:
+      temporal_coverage: "Static screening layer from current catalog COGs and LST inputs"
+      accuracy: "Per-cell dominant mechanism from rule-based NBS screening (UHI, shade deficit, daytime LST, nocturnal cooling, social exposure)"
+      limitations: "Screening-level classification only; LST proxies are surface temperature, not pedestrian thermal comfort"
+    value_encoding:
+      type: class_lookup
+      decode_formula: "encoded = R + 256*G + 65536*B; if encoded == 0 then nodata else mechanism_code = encoded - 1"
+      classes:
+        0: { name: without a clear dominant mechanism, color: "#e0e0e0" }
+        1: { name: uhi_built_up, color: "#d73027" }
+        2: { name: shade_deficit, color: "#fee08b" }
+        3: { name: high_daytime_lst, color: "#fc8d59" }
+        4: { name: limited_nocturnal_cooling, color: "#9970ab" }
+        5: { name: high_social_exposure, color: "#636363" }
+        6: { name: mixed, color: "#8e0152" }
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/edina/climate_hazards/heat/heat_mechanism/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/edina/climate_hazards/heat/heat_mechanism/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/edina/climate_hazards/heat/heat_mechanism/heat_mechanism_type_edina_250m_cog.tif
+        geojson_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/edina/climate_hazards/heat/heat_mechanism/heat_mechanism_type_edina_250m.geojson
+      metadata:
+        url: []
+    description: >
+      OEF dominant heat mechanism type per 250 m cell for Edina. Integer codes 0–6 for
+      without_clear_dominant, uhi_built_up, shade_deficit, high_daytime_lst, limited_nocturnal_cooling,
+      high_social_exposure, mixed. Rules in `transformation/nbs_screening/nbs_rules.py`; produced by
+      `transformation/nbs_screening/heat/compute_mechanism.py`. Methodology:
+      `models/nbs_heat_mechanism_type/`. Rasterized on the OEF heat hazard 250 m grid.
+
+  - dataset_id: plymouth_heat_mechanism_type
+    dataset_name: Heat Mechanism Type (Plymouth, 250 m)
+    publisher: Open Earth Foundation (derived processing)
+    license: CC BY 4.0
+    resolution: ~250m
+    crs: EPSG:3857
+    access_type: internal_storage
+    source_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/plymouth/climate_hazards/heat/hazard/heat_hazard_score_cog.tif
+    dataset_type: heat
+    type: categorical_raster
+    data_quality:
+      temporal_coverage: "Static screening layer from current catalog COGs and LST inputs"
+      accuracy: "Per-cell dominant mechanism from rule-based NBS screening (UHI, shade deficit, daytime LST, nocturnal cooling, social exposure)"
+      limitations: "Screening-level classification only; LST proxies are surface temperature, not pedestrian thermal comfort"
+    value_encoding:
+      type: class_lookup
+      decode_formula: "encoded = R + 256*G + 65536*B; if encoded == 0 then nodata else mechanism_code = encoded - 1"
+      classes:
+        0: { name: without a clear dominant mechanism, color: "#e0e0e0" }
+        1: { name: uhi_built_up, color: "#d73027" }
+        2: { name: shade_deficit, color: "#fee08b" }
+        3: { name: high_daytime_lst, color: "#fc8d59" }
+        4: { name: limited_nocturnal_cooling, color: "#9970ab" }
+        5: { name: high_social_exposure, color: "#636363" }
+        6: { name: mixed, color: "#8e0152" }
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/plymouth/climate_hazards/heat/heat_mechanism/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/plymouth/climate_hazards/heat/heat_mechanism/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/plymouth/climate_hazards/heat/heat_mechanism/heat_mechanism_type_plymouth_250m_cog.tif
+        geojson_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/plymouth/climate_hazards/heat/heat_mechanism/heat_mechanism_type_plymouth_250m.geojson
+      metadata:
+        url: []
+    description: >
+      OEF dominant heat mechanism type per 250 m cell for Plymouth. Integer codes 0–6 for
+      without_clear_dominant, uhi_built_up, shade_deficit, high_daytime_lst, limited_nocturnal_cooling,
+      high_social_exposure, mixed. Rules in `transformation/nbs_screening/nbs_rules.py`; produced by
+      `transformation/nbs_screening/heat/compute_mechanism.py`. Methodology:
+      `models/nbs_heat_mechanism_type/`. Rasterized on the OEF heat hazard 250 m grid.
+
+  - dataset_id: richfield_heat_mechanism_type
+    dataset_name: Heat Mechanism Type (Richfield, 250 m)
+    publisher: Open Earth Foundation (derived processing)
+    license: CC BY 4.0
+    resolution: ~250m
+    crs: EPSG:3857
+    access_type: internal_storage
+    source_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/richfield/climate_hazards/heat/hazard/heat_hazard_score_cog.tif
+    dataset_type: heat
+    type: categorical_raster
+    data_quality:
+      temporal_coverage: "Static screening layer from current catalog COGs and LST inputs"
+      accuracy: "Per-cell dominant mechanism from rule-based NBS screening (UHI, shade deficit, daytime LST, nocturnal cooling, social exposure)"
+      limitations: "Screening-level classification only; LST proxies are surface temperature, not pedestrian thermal comfort"
+    value_encoding:
+      type: class_lookup
+      decode_formula: "encoded = R + 256*G + 65536*B; if encoded == 0 then nodata else mechanism_code = encoded - 1"
+      classes:
+        0: { name: without a clear dominant mechanism, color: "#e0e0e0" }
+        1: { name: uhi_built_up, color: "#d73027" }
+        2: { name: shade_deficit, color: "#fee08b" }
+        3: { name: high_daytime_lst, color: "#fc8d59" }
+        4: { name: limited_nocturnal_cooling, color: "#9970ab" }
+        5: { name: high_social_exposure, color: "#636363" }
+        6: { name: mixed, color: "#8e0152" }
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/richfield/climate_hazards/heat/heat_mechanism/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/richfield/climate_hazards/heat/heat_mechanism/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/richfield/climate_hazards/heat/heat_mechanism/heat_mechanism_type_richfield_250m_cog.tif
+        geojson_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/richfield/climate_hazards/heat/heat_mechanism/heat_mechanism_type_richfield_250m.geojson
+      metadata:
+        url: []
+    description: >
+      OEF dominant heat mechanism type per 250 m cell for Richfield. Integer codes 0–6 for
+      without_clear_dominant, uhi_built_up, shade_deficit, high_daytime_lst, limited_nocturnal_cooling,
+      high_social_exposure, mixed. Rules in `transformation/nbs_screening/nbs_rules.py`; produced by
+      `transformation/nbs_screening/heat/compute_mechanism.py`. Methodology:
+      `models/nbs_heat_mechanism_type/`. Rasterized on the OEF heat hazard 250 m grid.
+
+  - dataset_id: rochester_heat_mechanism_type
+    dataset_name: Heat Mechanism Type (Rochester, 250 m)
+    publisher: Open Earth Foundation (derived processing)
+    license: CC BY 4.0
+    resolution: ~250m
+    crs: EPSG:3857
+    access_type: internal_storage
+    source_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/rochester/climate_hazards/heat/hazard/heat_hazard_score_idw_cog.tif
+    dataset_type: heat
+    type: categorical_raster
+    data_quality:
+      temporal_coverage: "Static screening layer from current catalog COGs and LST inputs"
+      accuracy: "Per-cell dominant mechanism from rule-based NBS screening (UHI, shade deficit, daytime LST, nocturnal cooling, social exposure)"
+      limitations: "Screening-level classification only; LST proxies are surface temperature, not pedestrian thermal comfort"
+    value_encoding:
+      type: class_lookup
+      decode_formula: "encoded = R + 256*G + 65536*B; if encoded == 0 then nodata else mechanism_code = encoded - 1"
+      classes:
+        0: { name: without a clear dominant mechanism, color: "#e0e0e0" }
+        1: { name: uhi_built_up, color: "#d73027" }
+        2: { name: shade_deficit, color: "#fee08b" }
+        3: { name: high_daytime_lst, color: "#fc8d59" }
+        4: { name: limited_nocturnal_cooling, color: "#9970ab" }
+        5: { name: high_social_exposure, color: "#636363" }
+        6: { name: mixed, color: "#8e0152" }
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/rochester/climate_hazards/heat/heat_mechanism/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/rochester/climate_hazards/heat/heat_mechanism/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/rochester/climate_hazards/heat/heat_mechanism/heat_mechanism_type_rochester_250m_cog.tif
+        geojson_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/rochester/climate_hazards/heat/heat_mechanism/heat_mechanism_type_rochester_250m.geojson
+      metadata:
+        url: []
+    description: >
+      OEF dominant heat mechanism type per 250 m cell for Rochester. Integer codes 0–6 for
+      without_clear_dominant, uhi_built_up, shade_deficit, high_daytime_lst, limited_nocturnal_cooling,
+      high_social_exposure, mixed. Rules in `transformation/nbs_screening/nbs_rules.py`; produced by
+      `transformation/nbs_screening/heat/compute_mechanism.py`. Methodology:
+      `models/nbs_heat_mechanism_type/`. Rasterized on the OEF heat hazard 250 m grid.
+
+  - dataset_id: apple_valley_landslide_mechanism_type
+    dataset_name: Landslide Mechanism Type (Apple Valley, 90 m)
+    publisher: Open Earth Foundation (derived processing)
+    license: CC BY 4.0
+    resolution: ~90m
+    crs: EPSG:3857
+    access_type: internal_storage
+    source_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/apple_valley/climate_hazards/landslides/hazard/landslide_hazard_score_90m_cog.tif
+    dataset_type: landslide
+    type: categorical_raster
+    data_quality:
+      temporal_coverage: "Static screening layer from current catalog COGs and terrain inputs"
+      accuracy: "Per-cell dominant mechanism from rule-based NBS screening (slope, rainfall, cohesion, vegetation, drainage, disturbance, upslope convergence)"
+      limitations: "Screening-level classification only; not event-specific landslide runout or depth"
+    value_encoding:
+      type: class_lookup
+      decode_formula: "encoded = R + 256*G + 65536*B; if encoded == 0 then nodata else mechanism_code = encoded - 1"
+      classes:
+        0: { name: without a clear dominant mechanism, color: "#e0e0e0" }
+        1: { name: steep_activatable_slope, color: "#b2182b" }
+        2: { name: rainfall_trigger, color: "#2166ac" }
+        3: { name: low_cohesion_wet, color: "#8c510a" }
+        4: { name: vegetation_deficit, color: "#d8b365" }
+        5: { name: drainage_saturation, color: "#4393c3" }
+        6: { name: disturbed_bare_slope, color: "#a6611a" }
+        7: { name: upslope_convergence, color: "#5e3c99" }
+        8: { name: high_social_exposure, color: "#636363" }
+        9: { name: mixed, color: "#8e0152" }
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/apple_valley/climate_hazards/landslides/landslide_mechanism/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/apple_valley/climate_hazards/landslides/landslide_mechanism/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/apple_valley/climate_hazards/landslides/landslide_mechanism/landslide_mechanism_type_apple_valley_90m_cog.tif
+        geojson_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/apple_valley/climate_hazards/landslides/landslide_mechanism/landslide_mechanism_type_apple_valley_90m.geojson
+      metadata:
+        url: []
+    description: >
+      OEF dominant landslide mechanism type per 90 m cell for Apple Valley. Integer codes 0–9 for
+      without_clear_dominant through mixed (see nbs_rules.py). Produced by
+      `transformation/nbs_screening/landslide/compute_mechanism.py`. Methodology:
+      `models/nbs_landslide_mechanism_type/`. Rasterized on the OEF landslide hazard 90 m grid.
+
+  - dataset_id: edina_landslide_mechanism_type
+    dataset_name: Landslide Mechanism Type (Edina, 90 m)
+    publisher: Open Earth Foundation (derived processing)
+    license: CC BY 4.0
+    resolution: ~90m
+    crs: EPSG:3857
+    access_type: internal_storage
+    source_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/edina/climate_hazards/landslides/hazard/landslide_hazard_score_90m_cog.tif
+    dataset_type: landslide
+    type: categorical_raster
+    data_quality:
+      temporal_coverage: "Static screening layer from current catalog COGs and terrain inputs"
+      accuracy: "Per-cell dominant mechanism from rule-based NBS screening (slope, rainfall, cohesion, vegetation, drainage, disturbance, upslope convergence)"
+      limitations: "Screening-level classification only; not event-specific landslide runout or depth"
+    value_encoding:
+      type: class_lookup
+      decode_formula: "encoded = R + 256*G + 65536*B; if encoded == 0 then nodata else mechanism_code = encoded - 1"
+      classes:
+        0: { name: without a clear dominant mechanism, color: "#e0e0e0" }
+        1: { name: steep_activatable_slope, color: "#b2182b" }
+        2: { name: rainfall_trigger, color: "#2166ac" }
+        3: { name: low_cohesion_wet, color: "#8c510a" }
+        4: { name: vegetation_deficit, color: "#d8b365" }
+        5: { name: drainage_saturation, color: "#4393c3" }
+        6: { name: disturbed_bare_slope, color: "#a6611a" }
+        7: { name: upslope_convergence, color: "#5e3c99" }
+        8: { name: high_social_exposure, color: "#636363" }
+        9: { name: mixed, color: "#8e0152" }
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/edina/climate_hazards/landslides/landslide_mechanism/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/edina/climate_hazards/landslides/landslide_mechanism/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/edina/climate_hazards/landslides/landslide_mechanism/landslide_mechanism_type_edina_90m_cog.tif
+        geojson_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/edina/climate_hazards/landslides/landslide_mechanism/landslide_mechanism_type_edina_90m.geojson
+      metadata:
+        url: []
+    description: >
+      OEF dominant landslide mechanism type per 90 m cell for Edina. Integer codes 0–9 for
+      without_clear_dominant through mixed (see nbs_rules.py). Produced by
+      `transformation/nbs_screening/landslide/compute_mechanism.py`. Methodology:
+      `models/nbs_landslide_mechanism_type/`. Rasterized on the OEF landslide hazard 90 m grid.
+
+  - dataset_id: plymouth_landslide_mechanism_type
+    dataset_name: Landslide Mechanism Type (Plymouth, 90 m)
+    publisher: Open Earth Foundation (derived processing)
+    license: CC BY 4.0
+    resolution: ~90m
+    crs: EPSG:3857
+    access_type: internal_storage
+    source_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/plymouth/climate_hazards/landslides/hazard/landslide_hazard_score_90m_cog.tif
+    dataset_type: landslide
+    type: categorical_raster
+    data_quality:
+      temporal_coverage: "Static screening layer from current catalog COGs and terrain inputs"
+      accuracy: "Per-cell dominant mechanism from rule-based NBS screening (slope, rainfall, cohesion, vegetation, drainage, disturbance, upslope convergence)"
+      limitations: "Screening-level classification only; not event-specific landslide runout or depth"
+    value_encoding:
+      type: class_lookup
+      decode_formula: "encoded = R + 256*G + 65536*B; if encoded == 0 then nodata else mechanism_code = encoded - 1"
+      classes:
+        0: { name: without a clear dominant mechanism, color: "#e0e0e0" }
+        1: { name: steep_activatable_slope, color: "#b2182b" }
+        2: { name: rainfall_trigger, color: "#2166ac" }
+        3: { name: low_cohesion_wet, color: "#8c510a" }
+        4: { name: vegetation_deficit, color: "#d8b365" }
+        5: { name: drainage_saturation, color: "#4393c3" }
+        6: { name: disturbed_bare_slope, color: "#a6611a" }
+        7: { name: upslope_convergence, color: "#5e3c99" }
+        8: { name: high_social_exposure, color: "#636363" }
+        9: { name: mixed, color: "#8e0152" }
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/plymouth/climate_hazards/landslides/landslide_mechanism/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/plymouth/climate_hazards/landslides/landslide_mechanism/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/plymouth/climate_hazards/landslides/landslide_mechanism/landslide_mechanism_type_plymouth_90m_cog.tif
+        geojson_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/plymouth/climate_hazards/landslides/landslide_mechanism/landslide_mechanism_type_plymouth_90m.geojson
+      metadata:
+        url: []
+    description: >
+      OEF dominant landslide mechanism type per 90 m cell for Plymouth. Integer codes 0–9 for
+      without_clear_dominant through mixed (see nbs_rules.py). Produced by
+      `transformation/nbs_screening/landslide/compute_mechanism.py`. Methodology:
+      `models/nbs_landslide_mechanism_type/`. Rasterized on the OEF landslide hazard 90 m grid.
+
+  - dataset_id: richfield_landslide_mechanism_type
+    dataset_name: Landslide Mechanism Type (Richfield, 90 m)
+    publisher: Open Earth Foundation (derived processing)
+    license: CC BY 4.0
+    resolution: ~90m
+    crs: EPSG:3857
+    access_type: internal_storage
+    source_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/richfield/climate_hazards/landslides/hazard/landslide_hazard_score_90m_cog.tif
+    dataset_type: landslide
+    type: categorical_raster
+    data_quality:
+      temporal_coverage: "Static screening layer from current catalog COGs and terrain inputs"
+      accuracy: "Per-cell dominant mechanism from rule-based NBS screening (slope, rainfall, cohesion, vegetation, drainage, disturbance, upslope convergence)"
+      limitations: "Screening-level classification only; not event-specific landslide runout or depth"
+    value_encoding:
+      type: class_lookup
+      decode_formula: "encoded = R + 256*G + 65536*B; if encoded == 0 then nodata else mechanism_code = encoded - 1"
+      classes:
+        0: { name: without a clear dominant mechanism, color: "#e0e0e0" }
+        1: { name: steep_activatable_slope, color: "#b2182b" }
+        2: { name: rainfall_trigger, color: "#2166ac" }
+        3: { name: low_cohesion_wet, color: "#8c510a" }
+        4: { name: vegetation_deficit, color: "#d8b365" }
+        5: { name: drainage_saturation, color: "#4393c3" }
+        6: { name: disturbed_bare_slope, color: "#a6611a" }
+        7: { name: upslope_convergence, color: "#5e3c99" }
+        8: { name: high_social_exposure, color: "#636363" }
+        9: { name: mixed, color: "#8e0152" }
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/richfield/climate_hazards/landslides/landslide_mechanism/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/richfield/climate_hazards/landslides/landslide_mechanism/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/richfield/climate_hazards/landslides/landslide_mechanism/landslide_mechanism_type_richfield_90m_cog.tif
+        geojson_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/richfield/climate_hazards/landslides/landslide_mechanism/landslide_mechanism_type_richfield_90m.geojson
+      metadata:
+        url: []
+    description: >
+      OEF dominant landslide mechanism type per 90 m cell for Richfield. Integer codes 0–9 for
+      without_clear_dominant through mixed (see nbs_rules.py). Produced by
+      `transformation/nbs_screening/landslide/compute_mechanism.py`. Methodology:
+      `models/nbs_landslide_mechanism_type/`. Rasterized on the OEF landslide hazard 90 m grid.
+
+  - dataset_id: rochester_landslide_mechanism_type
+    dataset_name: Landslide Mechanism Type (Rochester, 90 m)
+    publisher: Open Earth Foundation (derived processing)
+    license: CC BY 4.0
+    resolution: ~90m
+    crs: EPSG:3857
+    access_type: internal_storage
+    source_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/rochester/climate_hazards/landslides/hazard/landslide_hazard_score_90m_cog.tif
+    dataset_type: landslide
+    type: categorical_raster
+    data_quality:
+      temporal_coverage: "Static screening layer from current catalog COGs and terrain inputs"
+      accuracy: "Per-cell dominant mechanism from rule-based NBS screening (slope, rainfall, cohesion, vegetation, drainage, disturbance, upslope convergence)"
+      limitations: "Screening-level classification only; not event-specific landslide runout or depth"
+    value_encoding:
+      type: class_lookup
+      decode_formula: "encoded = R + 256*G + 65536*B; if encoded == 0 then nodata else mechanism_code = encoded - 1"
+      classes:
+        0: { name: without a clear dominant mechanism, color: "#e0e0e0" }
+        1: { name: steep_activatable_slope, color: "#b2182b" }
+        2: { name: rainfall_trigger, color: "#2166ac" }
+        3: { name: low_cohesion_wet, color: "#8c510a" }
+        4: { name: vegetation_deficit, color: "#d8b365" }
+        5: { name: drainage_saturation, color: "#4393c3" }
+        6: { name: disturbed_bare_slope, color: "#a6611a" }
+        7: { name: upslope_convergence, color: "#5e3c99" }
+        8: { name: high_social_exposure, color: "#636363" }
+        9: { name: mixed, color: "#8e0152" }
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/rochester/climate_hazards/landslides/landslide_mechanism/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/rochester/climate_hazards/landslides/landslide_mechanism/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/rochester/climate_hazards/landslides/landslide_mechanism/landslide_mechanism_type_rochester_90m_cog.tif
+        geojson_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/rochester/climate_hazards/landslides/landslide_mechanism/landslide_mechanism_type_rochester_90m.geojson
+      metadata:
+        url: []
+    description: >
+      OEF dominant landslide mechanism type per 90 m cell for Rochester. Integer codes 0–9 for
+      without_clear_dominant through mixed (see nbs_rules.py). Produced by
+      `transformation/nbs_screening/landslide/compute_mechanism.py`. Methodology:
+      `models/nbs_landslide_mechanism_type/`. Rasterized on the OEF landslide hazard 90 m grid.

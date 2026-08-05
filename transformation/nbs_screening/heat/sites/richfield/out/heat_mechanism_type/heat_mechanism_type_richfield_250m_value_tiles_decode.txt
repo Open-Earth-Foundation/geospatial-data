@@ -1,0 +1,20 @@
+Heat mechanism type value tiles (heat_mechanism_type_richfield_250m)
+
+Source raster: /Users/admin/Desktop/OEF/geospatial-data/transformation/nbs_screening/heat/sites/richfield/data/output/heat_mechanism_type_richfield_250m.tif
+COG (EPSG:3857): /Users/admin/Desktop/OEF/geospatial-data/transformation/nbs_screening/heat/sites/richfield/out/heat_mechanism_type/heat_mechanism_type_richfield_250m_cog.tif
+Visual tiles: /Users/admin/Desktop/OEF/geospatial-data/transformation/nbs_screening/heat/sites/richfield/out/heat_mechanism_type/tiles_visual/{z}/{x}/{y}.png
+Value tiles: /Users/admin/Desktop/OEF/geospatial-data/transformation/nbs_screening/heat/sites/richfield/out/heat_mechanism_type/tiles_values/{z}/{x}/{y}.png
+
+Value tile encoding (Terrain RGB style):
+encoded = R + 256 * G + 65536 * B
+if encoded == 0: nodata
+else: heat_mechanism_code = encoded - 1
+
+Mechanism codes:
+  0: without_clear_dominant
+  1: uhi_built_up
+  2: shade_deficit
+  3: high_daytime_lst
+  4: limited_nocturnal_cooling
+  5: high_social_exposure
+  6: mixed

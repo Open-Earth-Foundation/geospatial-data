@@ -4,7 +4,7 @@
   "hazard": "heat",
   "layer_id": "nbs_heat_mechanism_type",
   "model_version": "v1",
-  "generated_at": "2026-08-04T18:28:57.142947+00:00",
+  "generated_at": "2026-08-04T19:30:29.400418+00:00",
   "aoi_mode": "boundary",
   "reference_hazard_raster": "/Users/admin/Desktop/OEF/geospatial-data/transformation/heat_hazard/sites/richfield/data/output/heat_hazard_score_richfield.tif",
   "mechanism_summary": {

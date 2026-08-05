@@ -4,7 +4,7 @@
   "hazard": "landslide",
   "layer_id": "nbs_landslide_mechanism_type",
   "model_version": "v1",
-  "generated_at": "2026-08-04T18:29:23.206904+00:00",
+  "generated_at": "2026-08-04T19:30:34.801834+00:00",
   "aoi_mode": "boundary",
   "reference_hazard_raster": "/Users/admin/Desktop/OEF/geospatial-data/transformation/landslide_hazard/sites/richfield/data/output/landslide_hazard_score_richfield_90m.tif",
   "mechanism_summary": {
