@@ -1,0 +1,14 @@
+{
+  "type": "FeatureCollection",
+  "properties": {
+    "hazard": "landslide",
+    "aoi_label": "richfield",
+    "cell_size_m": 89.74128638160259,
+    "mechanism_summary": {
+      "n_cells": 0
+    },
+    "layer": "richfield_landslide_mechanism_type",
+    "site": "richfield"
+  },
+  "features": []
+}

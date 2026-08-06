@@ -1,0 +1,13 @@
+# Dominant landslide mechanism type. GDAL color-relief for visual tiles.
+# Raster nodata = 255; code 0 = without_clear_dominant
+nv 0 0 0 0
+0 224 224 224
+1 178 24 43
+2 33 102 172
+3 140 81 10
+4 216 179 101
+5 67 147 195
+6 166 97 26
+7 94 60 153
+8 99 99 99
+9 142 1 82

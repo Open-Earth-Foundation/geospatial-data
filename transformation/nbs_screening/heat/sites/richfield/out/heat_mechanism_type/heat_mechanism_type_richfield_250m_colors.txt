@@ -1,0 +1,10 @@
+# Dominant heat mechanism type. GDAL color-relief for visual tiles.
+# Raster nodata = 255; code 0 = without_clear_dominant
+nv 0 0 0 0
+0 224 224 224
+1 215 48 39
+2 254 224 139
+3 252 141 89
+4 153 112 171
+5 99 99 99
+6 142 1 82

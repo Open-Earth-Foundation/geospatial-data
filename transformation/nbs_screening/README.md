@@ -56,6 +56,8 @@ python transformation/nbs_screening/heat/publish_mechanism.py --site richfield -
 
 Outputs: `transformation/nbs_screening/heat/sites/<site>/data/output/` (250 m grid).
 
+Full pipeline: `heat/run_pipeline.py` · Minnesota: `heat/run_mn_pipeline.py`.
+
 ## Run (grid mechanism — L2, landslide)
 
 ```bash
@@ -64,6 +66,8 @@ python transformation/nbs_screening/landslide/publish_mechanism.py --site richfi
 ```
 
 Outputs: `transformation/nbs_screening/landslide/sites/<site>/data/output/` (90 m grid).
+
+Full pipeline: `landslide/run_pipeline.py` · Minnesota: `landslide/run_mn_pipeline.py`.
 
 ## OSM waterways (N4 — riverine distance)
 
@@ -223,3 +227,4 @@ See `docs/` in this folder, `config/sites/README.md`, and
 | **N10c** | Drop legacy `sites/{city}/` read fallbacks in `site_config.py` |
 | **N10d** | Document NBS layout in `transformation/README.md` |
 | **N10e** | `heat/` + `landslide/` compute/publish CLIs (H2/L2, H3/L3) |
+| **H4 / L4** | `heat/` + `landslide/` `run_pipeline.py` + batch orchestrators |

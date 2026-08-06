@@ -4,30 +4,33 @@
   "hazard": "flood",
   "layer_id": "nbs_flood_mechanism_type",
   "model_version": "v1",
-  "generated_at": "2026-07-31T21:35:25.322779+00:00",
+  "generated_at": "2026-08-04T19:30:19.315469+00:00",
   "aoi_mode": "boundary",
   "reference_hazard_raster": "/Users/admin/Desktop/OEF/geospatial-data/transformation/flood_hazard/sites/richfield/data/output/flood_hazard_score_idw_richfield.tif",
   "mechanism_summary": {
     "n_cells": 418,
     "pct_riverine": 0.0,
-    "pct_pluvial": 0.0,
+    "pct_pluvial": 93.8,
     "pct_low_lying": 100.0,
-    "pct_multi_mechanism": 0.0,
+    "pct_multi_mechanism": 93.8,
     "count_riverine": 0,
-    "count_pluvial": 0,
+    "count_pluvial": 392,
     "count_low_lying": 418,
     "dominant_mechanism_type_counts": {
-      "low_lying": 418
+      "mixed": 392,
+      "low_lying": 26
     },
     "pct_by_dominant_type": {
-      "low_lying": 100.0
+      "low_lying": 6.2,
+      "mixed": 93.8
     }
   },
   "outputs": {
-    "observed": "/Users/admin/Desktop/OEF/geospatial-data/transformation/nbs_screening/sites/richfield/data/output/flood_mechanism_type_richfield_250m_observed.tif",
-    "filled": "/Users/admin/Desktop/OEF/geospatial-data/transformation/nbs_screening/sites/richfield/data/output/flood_mechanism_type_richfield_250m.tif",
-    "is_interpolated": "/Users/admin/Desktop/OEF/geospatial-data/transformation/nbs_screening/sites/richfield/data/output/flood_mechanism_is_interpolated_richfield_250m.tif",
-    "geojson": "/Users/admin/Desktop/OEF/geospatial-data/transformation/nbs_screening/sites/richfield/data/output/flood_mechanism_type_richfield_250m.geojson",
-    "report_json": "/Users/admin/Desktop/OEF/geospatial-data/transformation/nbs_screening/sites/richfield/data/output/nbs_grid_flood_richfield.json"
+    "observed": "/Users/admin/Desktop/OEF/geospatial-data/transformation/nbs_screening/flood/sites/richfield/data/output/flood_mechanism_type_richfield_250m_observed.tif",
+    "filled": "/Users/admin/Desktop/OEF/geospatial-data/transformation/nbs_screening/flood/sites/richfield/data/output/flood_mechanism_type_richfield_250m.tif",
+    "is_interpolated": "/Users/admin/Desktop/OEF/geospatial-data/transformation/nbs_screening/flood/sites/richfield/data/output/flood_mechanism_is_interpolated_richfield_250m.tif",
+    "geojson": "/Users/admin/Desktop/OEF/geospatial-data/transformation/nbs_screening/flood/sites/richfield/data/output/flood_mechanism_type_richfield_250m.geojson",
+    "report_json": "/Users/admin/Desktop/OEF/geospatial-data/transformation/nbs_screening/flood/sites/richfield/data/output/nbs_grid_flood_richfield.json",
+    "qa_map": "/Users/admin/Desktop/OEF/geospatial-data/transformation/nbs_screening/flood/sites/richfield/data/output/map_flood_mechanism_type_richfield_250m.svg"
   }
 }

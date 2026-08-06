@@ -1,0 +1,23 @@
+Landslide mechanism type value tiles (landslide_mechanism_type_richfield_90m)
+
+Source raster: /Users/admin/Desktop/OEF/geospatial-data/transformation/nbs_screening/landslide/sites/richfield/data/output/landslide_mechanism_type_richfield_90m.tif
+COG (EPSG:3857): /Users/admin/Desktop/OEF/geospatial-data/transformation/nbs_screening/landslide/sites/richfield/out/landslide_mechanism_type/landslide_mechanism_type_richfield_90m_cog.tif
+Visual tiles: /Users/admin/Desktop/OEF/geospatial-data/transformation/nbs_screening/landslide/sites/richfield/out/landslide_mechanism_type/tiles_visual/{z}/{x}/{y}.png
+Value tiles: /Users/admin/Desktop/OEF/geospatial-data/transformation/nbs_screening/landslide/sites/richfield/out/landslide_mechanism_type/tiles_values/{z}/{x}/{y}.png
+
+Value tile encoding (Terrain RGB style):
+encoded = R + 256 * G + 65536 * B
+if encoded == 0: nodata
+else: landslide_mechanism_code = encoded - 1
+
+Mechanism codes:
+  0: without_clear_dominant
+  1: steep_activatable_slope
+  2: rainfall_trigger
+  3: low_cohesion_wet
+  4: vegetation_deficit
+  5: drainage_saturation
+  6: disturbed_bare_slope
+  7: upslope_convergence
+  8: high_social_exposure
+  9: mixed

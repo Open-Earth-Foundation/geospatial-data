@@ -1,0 +1,21 @@
+{
+  "site_slug": "richfield",
+  "display_name": "Richfield",
+  "hazard": "landslide",
+  "layer_id": "nbs_landslide_mechanism_type",
+  "model_version": "v1",
+  "generated_at": "2026-08-04T19:30:34.801834+00:00",
+  "aoi_mode": "boundary",
+  "reference_hazard_raster": "/Users/admin/Desktop/OEF/geospatial-data/transformation/landslide_hazard/sites/richfield/data/output/landslide_hazard_score_richfield_90m.tif",
+  "mechanism_summary": {
+    "n_cells": 0
+  },
+  "outputs": {
+    "observed": "/Users/admin/Desktop/OEF/geospatial-data/transformation/nbs_screening/landslide/sites/richfield/data/output/landslide_mechanism_type_richfield_90m_observed.tif",
+    "filled": "/Users/admin/Desktop/OEF/geospatial-data/transformation/nbs_screening/landslide/sites/richfield/data/output/landslide_mechanism_type_richfield_90m.tif",
+    "is_interpolated": "/Users/admin/Desktop/OEF/geospatial-data/transformation/nbs_screening/landslide/sites/richfield/data/output/landslide_mechanism_is_interpolated_richfield_90m.tif",
+    "geojson": "/Users/admin/Desktop/OEF/geospatial-data/transformation/nbs_screening/landslide/sites/richfield/data/output/landslide_mechanism_type_richfield_90m.geojson",
+    "report_json": "/Users/admin/Desktop/OEF/geospatial-data/transformation/nbs_screening/landslide/sites/richfield/data/output/nbs_grid_landslide_richfield.json",
+    "qa_map": "/Users/admin/Desktop/OEF/geospatial-data/transformation/nbs_screening/landslide/sites/richfield/data/output/map_landslide_mechanism_type_richfield_90m.svg"
+  }
+}

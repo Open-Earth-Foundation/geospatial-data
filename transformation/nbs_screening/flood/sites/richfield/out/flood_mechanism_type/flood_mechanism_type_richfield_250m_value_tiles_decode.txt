@@ -1,9 +1,9 @@
 Flood mechanism type value tiles (flood_mechanism_type_richfield_250m)
 
-Source raster: /Users/admin/Desktop/OEF/geospatial-data/transformation/nbs_screening/sites/richfield/data/output/flood_mechanism_type_richfield_250m.tif
-COG (EPSG:3857): /Users/admin/Desktop/OEF/geospatial-data/transformation/nbs_screening/sites/richfield/out/flood_mechanism_type/flood_mechanism_type_richfield_250m_cog.tif
-Visual tiles: /Users/admin/Desktop/OEF/geospatial-data/transformation/nbs_screening/sites/richfield/out/flood_mechanism_type/tiles_visual/{z}/{x}/{y}.png
-Value tiles: /Users/admin/Desktop/OEF/geospatial-data/transformation/nbs_screening/sites/richfield/out/flood_mechanism_type/tiles_values/{z}/{x}/{y}.png
+Source raster: /Users/admin/Desktop/OEF/geospatial-data/transformation/nbs_screening/flood/sites/richfield/data/output/flood_mechanism_type_richfield_250m.tif
+COG (EPSG:3857): /Users/admin/Desktop/OEF/geospatial-data/transformation/nbs_screening/flood/sites/richfield/out/flood_mechanism_type/flood_mechanism_type_richfield_250m_cog.tif
+Visual tiles: /Users/admin/Desktop/OEF/geospatial-data/transformation/nbs_screening/flood/sites/richfield/out/flood_mechanism_type/tiles_visual/{z}/{x}/{y}.png
+Value tiles: /Users/admin/Desktop/OEF/geospatial-data/transformation/nbs_screening/flood/sites/richfield/out/flood_mechanism_type/tiles_values/{z}/{x}/{y}.png
 
 Value tile encoding (Terrain RGB style):
 encoded = R + 256 * G + 65536 * B

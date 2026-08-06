@@ -749,6 +749,8 @@ def cells_to_geodataframe(result: GridScreeningResult) -> gpd.GeoDataFrame:
                 }
             )
         rows.append(row)
+    if not rows:
+        return gpd.GeoDataFrame(geometry=gpd.GeoSeries([], crs="EPSG:4326"), crs="EPSG:4326")
     return gpd.GeoDataFrame(rows, crs="EPSG:4326")
 
 
