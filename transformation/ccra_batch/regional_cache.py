@@ -45,11 +45,9 @@ def _acs_county_fips(slug: str) -> list[str]:
     path = repo_root() / "transformation" / "acs_ev" / "config" / f"{slug}.yaml"
     if not path.is_file():
         return []
-    try:
-        import yaml
-    except ImportError:
-        return []
-    cfg = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    from .resolve import _load_yaml
+
+    cfg = _load_yaml(path)
     # Common shapes: county_fips: "053" | counties: [...] | county_fips: ["053", ...]
     single = cfg.get("county_fips")
     if isinstance(single, (str, int)):
