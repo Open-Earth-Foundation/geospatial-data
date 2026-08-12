@@ -1,0 +1,19 @@
+{
+  "batch_id": "resolve-by-name-or-coords",
+  "region": "minnesota",
+  "stages": ["compute", "acs", "risk"],
+  "hazards": ["flood", "heat"],
+  "options": {
+    "continue_on_error": true,
+    "max_workers": 2,
+    "skip_existing": true,
+    "prepare_regional_cache": true
+  },
+  "cities": [
+    { "name": "Plymouth" },
+    { "name": "Edina, Minnesota" },
+    { "coordinates": { "lat": 44.8833, "lon": -93.2831 } },
+    { "id": "apple_valley" },
+    { "slug": "rochester" }
+  ]
+}

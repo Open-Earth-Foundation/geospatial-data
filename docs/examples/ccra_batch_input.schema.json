@@ -1,0 +1,139 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openearth.org/schemas/ccra_batch_input.schema.json",
+  "title": "CCRA multi-city batch input",
+  "type": "object",
+  "required": ["cities"],
+  "additionalProperties": false,
+  "properties": {
+    "batch_id": {
+      "type": "string",
+      "description": "Optional label for logs and regional cache folder names."
+    },
+    "region": {
+      "type": "string",
+      "description": "Optional shared region id (e.g. minnesota) for regional cache / future shared norms."
+    },
+    "stages": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["extract", "compute", "acs", "risk", "publish"]
+      },
+      "description": "Pipeline stages to run. Default: all."
+    },
+    "hazards": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["flood", "heat", "landslide"]
+      },
+      "description": "Hazard families. Default: flood, heat, landslide."
+    },
+    "options": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "continue_on_error": {
+          "type": "boolean",
+          "default": true,
+          "description": "If one city fails, continue remaining cities."
+        },
+        "max_workers": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 2,
+          "description": "Parallel city workers. Keep low for Earth Engine quota."
+        },
+        "skip_existing": {
+          "type": "boolean",
+          "default": false,
+          "description": "Skip a stage when its primary output already exists."
+        },
+        "upload": {
+          "type": "boolean",
+          "default": false,
+          "description": "Pass --upload to publish scripts."
+        },
+        "write_catalog": {
+          "type": "boolean",
+          "default": false,
+          "description": "Pass --write-catalog to publish scripts."
+        },
+        "prepare_regional_cache": {
+          "type": "boolean",
+          "default": true,
+          "description": "Write union bbox + city manifest under cache/regions/ before city runs."
+        },
+        "fetch_regional_layers": {
+          "type": "boolean",
+          "default": true,
+          "description": "One GEE fetch of GFPLAIN/JRC/Aqueduct for union_bbox into cache/.../layers/."
+        },
+        "regional_sources": {
+          "type": "array",
+          "items": { "type": "string", "enum": ["gfplain", "jrc", "aqueduct"] },
+          "description": "Fixed-transform flood sources to fetch regionally (not GFD)."
+        },
+        "materialize_from_regional": {
+          "type": "boolean",
+          "default": true,
+          "description": "Clip regional layers into each city's flood data/input before extract."
+        }
+      }
+    },
+    "cities": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Stable identifier (often same as site slug)."
+          },
+          "slug": {
+            "type": "string",
+            "description": "Configured site slug (preferred). Maps to config/sites/{slug}.yaml."
+          },
+          "name": {
+            "type": "string",
+            "description": "Human-readable city name. Used to resolve slug when slug/id omitted."
+          },
+          "coordinates": {
+            "type": "object",
+            "required": ["lat", "lon"],
+            "additionalProperties": false,
+            "properties": {
+              "lat": { "type": "number", "minimum": -90, "maximum": 90 },
+              "lon": { "type": "number", "minimum": -180, "maximum": 180 }
+            },
+            "description": "Point used to match the nearest configured site bbox centroid when slug unknown."
+          },
+          "stages": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["extract", "compute", "acs", "risk", "publish"]
+            },
+            "description": "Optional per-city stage override."
+          },
+          "hazards": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["flood", "heat", "landslide"]
+            }
+          }
+        },
+        "anyOf": [
+          { "required": ["slug"] },
+          { "required": ["id"] },
+          { "required": ["name"] },
+          { "required": ["coordinates"] }
+        ]
+      }
+    }
+  }
+}
