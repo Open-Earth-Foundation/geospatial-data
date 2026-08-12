@@ -1,0 +1,49 @@
+{
+  "batch_id": "minnesota-metro-5",
+  "region": "minnesota",
+  "stages": ["extract", "compute", "acs", "risk", "publish"],
+  "hazards": ["flood", "heat", "landslide"],
+  "options": {
+    "continue_on_error": true,
+    "max_workers": 2,
+    "skip_existing": false,
+    "upload": false,
+    "write_catalog": false,
+    "prepare_regional_cache": true,
+    "fetch_regional_layers": true,
+    "regional_sources": ["gfplain", "jrc", "aqueduct"],
+    "materialize_from_regional": true
+  },
+  "cities": [
+    {
+      "id": "plymouth",
+      "slug": "plymouth",
+      "name": "Plymouth, MN",
+      "coordinates": { "lat": 45.0105, "lon": -93.4555 }
+    },
+    {
+      "id": "edina",
+      "slug": "edina",
+      "name": "Edina, MN",
+      "coordinates": { "lat": 44.8897, "lon": -93.3499 }
+    },
+    {
+      "id": "richfield",
+      "slug": "richfield",
+      "name": "Richfield, MN",
+      "coordinates": { "lat": 44.8833, "lon": -93.2831 }
+    },
+    {
+      "id": "apple_valley",
+      "slug": "apple_valley",
+      "name": "Apple Valley, MN",
+      "coordinates": { "lat": 44.7319, "lon": -93.2177 }
+    },
+    {
+      "id": "rochester",
+      "slug": "rochester",
+      "name": "Rochester, MN",
+      "coordinates": { "lat": 44.0121, "lon": -92.4802 }
+    }
+  ]
+}

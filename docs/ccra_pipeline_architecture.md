@@ -10,9 +10,13 @@ Scale the Porto Alegre CCRA workflow from hand-built, single-city processing to 
 
 ```text
 input:  city_name + boundary (+ site YAML)
+        OR batch JSON with cities[] (slug / name / coordinates)
 output: screening hazard (H), exposure (E), vulnerability (V), risk (R)
         → COG + XYZ tiles → S3 + catalog/datasets.yaml
 ```
+
+Single-city CLI: `--site {slug}` (see `docs/demo_rochester.sh`).  
+Multi-city JSON: `transformation/ccra_batch/run_batch.py` (see `docs/ccra_batch_pipeline.md`).
 
 Hazard families in scope today: **flood · heat · landslide**.  
 NbS **mechanism** layers remain modeled under `models/nbs_*` / POA publish paths; they are **not** yet in the same multi-city CLI batch as H/E/V/R.
@@ -191,12 +195,30 @@ Products are registered in `catalog/datasets.yaml` with metadata (resolution, CR
 - GDAL CLI (`gdal_translate`, `gdaldem`, `gdal_calc.py`, `gdal2tiles.py`) for publish  
 - AWS CLI + credentials for `--upload`
 
-## 11. Related documents
+## 11. Multi-city batch (JSON)
+
+Beyond single `--site` runs, use the batch orchestrator:
+
+```bash
+python transformation/ccra_batch/run_batch.py \
+  --input docs/examples/ccra_batch_minnesota.json \
+  --jobs 2 --continue-on-error
+```
+
+- **Input:** JSON array of cities (`slug` / `name` / `coordinates` / `id`) — see `docs/examples/`  
+- **Efficiency:** parallel city workers + regional cache manifest (`cache/regions/…`)  
+- **Failures:** one city can fail while others complete (`continue_on_error`)  
+- **Docs:** `docs/ccra_batch_pipeline.md`
+
+Per-city H/E/V/R outputs stay identical to the single-city path.
+
+## 12. Related documents
 
 | Doc | Content |
 |-----|---------|
 | `architecture.md` | Platform-level catalog + S3 design |
 | `docs/ccra_normalization_decision.md` | City-domain normalization decision |
+| `docs/ccra_batch_pipeline.md` | Multi-city JSON batch + examples |
 | `docs/cougar-migration.md` | Migration from `projects/cougar` |
 | `models/*/model_card.md` | Per-hazard methodology |
 | Notion [pipeline](https://app.notion.com/p/3abeb557728b80b2ad12e81365978c60) | Copy-paste CLI with `city_name` |
