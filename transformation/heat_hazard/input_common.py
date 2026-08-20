@@ -83,21 +83,31 @@ def minmax_norm_roi(
     ee: Any,
     scale: int,
     out_name: str | None = None,
+    vmin: float | None = None,
+    vmax: float | None = None,
 ) -> Any:
-    """Min-max normalize an image to [0,1] using ROI stats at the given scale."""
-    roi_stats = image.reduceRegion(
-        reducer=ee.Reducer.mean()
-        .combine(ee.Reducer.min(), sharedInputs=True)
-        .combine(ee.Reducer.max(), sharedInputs=True),
-        geometry=roi,
-        scale=scale,
-        maxPixels=1e8,
-        bestEffort=True,
-    )
-    vmin = ee.Number(roi_stats.get(f"{band_name}_min"))
-    vmax = ee.Number(roi_stats.get(f"{band_name}_max"))
+    """Min-max normalize an image to [0,1].
+
+    If ``vmin``/``vmax`` are provided (regional dual-product), use those constants.
+    Otherwise compute min/max inside ``roi`` (city-domain default).
+    """
+    if vmin is None or vmax is None:
+        roi_stats = image.reduceRegion(
+            reducer=ee.Reducer.mean()
+            .combine(ee.Reducer.min(), sharedInputs=True)
+            .combine(ee.Reducer.max(), sharedInputs=True),
+            geometry=roi,
+            scale=scale,
+            maxPixels=1e8,
+            bestEffort=True,
+        )
+        vmin_ee = ee.Number(roi_stats.get(f"{band_name}_min"))
+        vmax_ee = ee.Number(roi_stats.get(f"{band_name}_max"))
+    else:
+        vmin_ee = ee.Number(float(vmin))
+        vmax_ee = ee.Number(float(vmax))
     name = out_name or f"{band_name}_norm"
-    return image.subtract(vmin).divide(vmax.subtract(vmin)).rename(name)
+    return image.subtract(vmin_ee).divide(vmax_ee.subtract(vmin_ee)).rename(name)
 
 
 def export_paths_summary(site_config: dict[str, Any], keys: list[str]) -> None:

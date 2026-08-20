@@ -1,0 +1,167 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openearth.org/schemas/ccra_normalization_stats.schema.json",
+  "title": "CCRA regional normalization stats",
+  "description": "Versioned vmin/vmax (and robust extras) for dual-product regional scoring. City AOI product remains default; this file supplies constants when normalization_domain is a region id.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "region_id",
+    "stats_version",
+    "created_at",
+    "roi",
+    "layers"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1",
+      "description": "Schema major version for this JSON shape."
+    },
+    "region_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_-]*$",
+      "description": "Must match transformation/_shared/regions/{region_id}.yaml (e.g. minnesota)."
+    },
+    "stats_version": {
+      "type": "string",
+      "pattern": "^v[0-9]+$",
+      "description": "Immutable tag for this stats snapshot (v1, v2, …). Bump when recomputing."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "UTC ISO-8601 timestamp when stats were computed."
+    },
+    "source_run": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Provenance for reproducibility.",
+      "properties": {
+        "tool": {
+          "type": "string",
+          "description": "Script or CLI that produced the stats (e.g. compute_regional_norm_stats.py)."
+        },
+        "ee_project": { "type": ["string", "null"] },
+        "git_sha": { "type": ["string", "null"] },
+        "notes": { "type": ["string", "null"] }
+      }
+    },
+    "roi": {
+      "type": "object",
+      "required": ["type", "id"],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["state_boundary"],
+          "description": "Regional norm ROI. Batch union_bbox is not used for scoring constants."
+        },
+        "id": {
+          "type": "string",
+          "description": "Stable ROI id (e.g. us-state-fips-27)."
+        },
+        "display_name": { "type": "string" },
+        "boundary_path": {
+          "type": ["string", "null"],
+          "description": "Repo-relative GeoJSON used for the reduce (if local)."
+        },
+        "gee_asset": {
+          "type": ["string", "null"],
+          "description": "Optional GEE FeatureCollection/filter expression used for ROI."
+        },
+        "bbox": {
+          "type": ["object", "null"],
+          "required": ["west", "south", "east", "north"],
+          "additionalProperties": false,
+          "properties": {
+            "west": { "type": "number" },
+            "south": { "type": "number" },
+            "east": { "type": "number" },
+            "north": { "type": "number" }
+          },
+          "description": "Optional envelope of the state polygon (export convenience only)."
+        }
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": ["pending", "partial", "ready"],
+      "default": "pending",
+      "description": "pending = placeholders only; partial = some layers filled; ready = safe for regional product runs."
+    },
+    "layers": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": { "$ref": "#/$defs/layer_stats" },
+      "description": "Keyed by canonical layer ids from the region YAML / pipeline (pre-norm physical or count fields)."
+    }
+  },
+  "$defs": {
+    "layer_stats": {
+      "type": "object",
+      "required": ["method", "unit"],
+      "additionalProperties": false,
+      "properties": {
+        "method": {
+          "type": "string",
+          "enum": ["minmax", "robust_p95_log1p_minmax"],
+          "description": "minmax: (x-vmin)/(vmax-vmin). robust_p95_log1p_minmax: GFD-style (zeros stay 0; positives vs P95 + log1p)."
+        },
+        "unit": {
+          "type": "string",
+          "description": "Native unit before 0–1 scaling (e.g. celsius, count, mm_day, ndvi, people_per_km2, usd)."
+        },
+        "vmin": {
+          "type": ["number", "null"],
+          "description": "Lower bound for minmax (null until computed)."
+        },
+        "vmax": {
+          "type": ["number", "null"],
+          "description": "Upper bound for minmax (null until computed)."
+        },
+        "p95": {
+          "type": ["number", "null"],
+          "description": "Required for robust_p95_log1p_minmax (P95 of positive counts in ROI)."
+        },
+        "scale_m": {
+          "type": ["number", "null"],
+          "description": "Reducer / native scale in meters used when computing stats."
+        },
+        "n_samples": {
+          "type": ["integer", "null"],
+          "minimum": 0,
+          "description": "Pixel or feature count contributing to stats (optional QA)."
+        },
+        "season": {
+          "type": ["string", "null"],
+          "description": "Season tag if applicable (e.g. jja, djf)."
+        },
+        "period": {
+          "type": ["string", "null"],
+          "description": "Temporal window of the source composite (e.g. 2015-2024)."
+        },
+        "notes": { "type": ["string", "null"] }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "method": { "const": "robust_p95_log1p_minmax" } }
+          },
+          "then": {
+            "required": ["p95"]
+          }
+        },
+        {
+          "if": {
+            "properties": { "method": { "const": "minmax" } }
+          },
+          "then": {
+            "required": ["vmin", "vmax"]
+          }
+        }
+      ]
+    }
+  }
+}

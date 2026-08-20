@@ -1,0 +1,132 @@
+{
+  "schema_version": "1",
+  "region_id": "minnesota",
+  "stats_version": "v1",
+  "created_at": "2026-08-18T00:00:00+00:00",
+  "status": "pending",
+  "source_run": {
+    "tool": "compute_regional_norm_stats.py",
+    "ee_project": null,
+    "git_sha": null,
+    "notes": "Placeholder only — fill via spike against state boundary (FIPS 27). Not ready for regional product runs."
+  },
+  "roi": {
+    "type": "state_boundary",
+    "id": "us-state-fips-27",
+    "display_name": "State of Minnesota",
+    "boundary_path": "transformation/_shared/regions/minnesota/boundary/state.geojson",
+    "gee_asset": "TIGER/2018/States",
+    "bbox": {
+      "west": -97.239209,
+      "south": 43.499356,
+      "east": -89.491739,
+      "north": 49.384358
+    }
+  },
+  "layers": {
+    "landsat_p90": {
+      "method": "minmax",
+      "unit": "celsius",
+      "vmin": null,
+      "vmax": null,
+      "scale_m": 30,
+      "season": "jja",
+      "period": "2015-2024",
+      "n_samples": null,
+      "notes": "P0 spike candidate"
+    },
+    "modis_day_p90": {
+      "method": "minmax",
+      "unit": "celsius",
+      "vmin": null,
+      "vmax": null,
+      "scale_m": 1000,
+      "season": "jja",
+      "period": "2015-2024",
+      "n_samples": null,
+      "notes": null
+    },
+    "modis_night_p90": {
+      "method": "minmax",
+      "unit": "celsius",
+      "vmin": null,
+      "vmax": null,
+      "scale_m": 1000,
+      "season": "jja",
+      "period": "2015-2024",
+      "n_samples": null,
+      "notes": null
+    },
+    "gfd_event_count": {
+      "method": "robust_p95_log1p_minmax",
+      "unit": "count",
+      "vmin": null,
+      "vmax": null,
+      "p95": null,
+      "scale_m": 250,
+      "n_samples": null,
+      "notes": "Zeros stay 0; positives use regional P95 + log1p then min–max"
+    },
+    "r90p": {
+      "method": "minmax",
+      "unit": "mm_day",
+      "vmin": null,
+      "vmax": null,
+      "scale_m": 5000,
+      "season": "jja",
+      "n_samples": null,
+      "notes": null
+    },
+    "ndvi_p10": {
+      "method": "minmax",
+      "unit": "ndvi",
+      "vmin": null,
+      "vmax": null,
+      "scale_m": 250,
+      "season": "jja",
+      "period": "2015-2024",
+      "n_samples": null,
+      "notes": null
+    },
+    "population_density": {
+      "method": "minmax",
+      "unit": "people_per_km2",
+      "vmin": null,
+      "vmax": null,
+      "n_samples": null,
+      "notes": "Across all MN block groups"
+    },
+    "age_sensitive_share": {
+      "method": "minmax",
+      "unit": "share",
+      "vmin": null,
+      "vmax": null,
+      "n_samples": null,
+      "notes": null
+    },
+    "poverty_rate": {
+      "method": "minmax",
+      "unit": "share",
+      "vmin": null,
+      "vmax": null,
+      "n_samples": null,
+      "notes": null
+    },
+    "median_household_income": {
+      "method": "minmax",
+      "unit": "usd",
+      "vmin": null,
+      "vmax": null,
+      "n_samples": null,
+      "notes": null
+    },
+    "incomplete_plumbing_share": {
+      "method": "minmax",
+      "unit": "share",
+      "vmin": null,
+      "vmax": null,
+      "n_samples": null,
+      "notes": null
+    }
+  }
+}
