@@ -6,6 +6,7 @@ resamples to a ~250 m grid, arithmetic-mean ensemble, writes GeoTIFFs + SVG QA.
 
 Example:
   python transformation/heat_hazard/compute_heat_hazard.py --site plymouth
+  python transformation/heat_hazard/compute_heat_hazard.py --site rochester --product regional
 """
 
 from __future__ import annotations
@@ -35,7 +36,33 @@ LAYER_SPEC: dict[str, tuple[Resampling, str]] = {
     "modis_day_norm": (Resampling.nearest, "MODIS LST Day"),
     "modis_night_norm": (Resampling.nearest, "MODIS LST Night"),
     "era5_hw_norm": (Resampling.nearest, "ERA5 HW Frequency"),
+    "landsat_norm_regional": (Resampling.bilinear, "Landsat LST (regional)"),
+    "modis_day_norm_regional": (Resampling.nearest, "MODIS LST Day (regional)"),
+    "modis_night_norm_regional": (Resampling.nearest, "MODIS LST Night (regional)"),
 }
+
+CITY_NORM_KEYS = ["landsat_norm", "modis_day_norm", "modis_night_norm"]
+REGIONAL_NORM_KEYS = [
+    "landsat_norm_regional",
+    "modis_day_norm_regional",
+    "modis_night_norm_regional",
+]
+
+
+def regional_norm_filename(p90_name: str) -> str:
+    stem = Path(p90_name).stem
+    if "_p90_" in stem:
+        stem = stem.replace("_p90_", "_norm_regional_", 1)
+    elif stem.endswith("_p90"):
+        stem = stem[: -len("_p90")] + "_norm_regional"
+    else:
+        stem = f"{stem}_norm_regional"
+    return f"{stem}.tif"
+
+
+def with_regional_suffix(filename: str) -> str:
+    p = Path(filename)
+    return f"{p.stem}_regional{p.suffix}"
 
 
 def _color_ramp(t: float) -> str:
@@ -131,18 +158,36 @@ def write_raster_grid_svg(
     print(f"Wrote map: {out_path}")
 
 
-def resolve_layers(site_config: dict[str, Any]) -> list[tuple[str, Path, float, Resampling]]:
+def resolve_layers(
+    site_config: dict[str, Any],
+    *,
+    product: str = "city",
+) -> list[tuple[str, Path, float, Resampling]]:
     """Return [(key, path, weight, resampling), ...] for available configured layers."""
     hazard = site_config.get("hazard") or {}
-    layers_cfg = site_config.get("layers") or {}
-    weights = hazard.get("layer_weights") or {}
+    layers_cfg = dict(site_config.get("layers") or {})
+    weights = dict(hazard.get("layer_weights") or {})
     input_dir = Path(site_config["paths_abs"]["data_input"])
+    product = str(product or "city").lower()
 
-    keys = site_config.get("required_inputs")
-    if not keys:
-        keys = ["landsat_norm", "modis_day_norm", "modis_night_norm"]
-        if hazard.get("include_era5", False):
-            keys = list(keys) + ["era5_hw_norm"]
+    if product == "regional":
+        keys = list(REGIONAL_NORM_KEYS)
+        for p90_key, norm_key in (
+            ("landsat_p90", "landsat_norm_regional"),
+            ("modis_day_p90", "modis_day_norm_regional"),
+            ("modis_night_p90", "modis_night_norm_regional"),
+        ):
+            if norm_key not in layers_cfg and layers_cfg.get(p90_key):
+                layers_cfg[norm_key] = regional_norm_filename(str(layers_cfg[p90_key]))
+        for city_key, reg_key in zip(CITY_NORM_KEYS, REGIONAL_NORM_KEYS):
+            if reg_key not in weights and city_key in weights:
+                weights[reg_key] = weights[city_key]
+    else:
+        keys = site_config.get("required_inputs")
+        if not keys:
+            keys = list(CITY_NORM_KEYS)
+            if hazard.get("include_era5", False):
+                keys = list(keys) + ["era5_hw_norm"]
 
     missing: list[str] = []
     resolved: list[tuple[str, Path, float, Resampling]] = []
@@ -156,13 +201,17 @@ def resolve_layers(site_config: dict[str, Any]) -> list[tuple[str, Path, float, 
             missing.append(f"{key} → {path}")
             continue
         rs, _label = LAYER_SPEC.get(key, (Resampling.nearest, key))
-        w = float(weights.get(key, 1.0))
+        w_key = key
+        if key.endswith("_regional") and key not in weights:
+            w_key = key.replace("_regional", "")
+        w = float(weights.get(key, weights.get(w_key, 1.0)))
         resolved.append((key, path, w, rs))
 
     if missing:
         raise FileNotFoundError(
             "Missing required heat hazard input GeoTIFF(s). "
-            "Run upstream LST extract notebooks first.\n  - " + "\n  - ".join(missing)
+            "Run upstream LST extract / apply_regional_heat_norms.py first.\n  - "
+            + "\n  - ".join(missing)
         )
     if not resolved:
         raise FileNotFoundError("No heat hazard input layers resolved.")
@@ -203,16 +252,25 @@ def run(
     *,
     write_qa: bool = True,
     root: Path | None = None,
+    product: str = "city",
 ) -> Path:
     root = Path(root or HEAT_HAZARD_ROOT).resolve()
     site_config = load_site_config(site, root)
     display = str(site_config.get("display_name") or site)
     hazard = site_config.get("hazard") or {}
-    outputs = site_config["outputs"]
+    outputs = dict(site_config["outputs"])
+    product = str(product or "city").lower()
+    if product not in {"city", "regional"}:
+        raise ValueError(f"product must be 'city' or 'regional', got {product!r}")
+    if product == "regional":
+        outputs["heat_hazard_score"] = with_regional_suffix(str(outputs["heat_hazard_score"]))
+        outputs["heat_hazard_n_layers"] = with_regional_suffix(
+            str(outputs["heat_hazard_n_layers"])
+        )
     output_dir = Path(site_config["paths_abs"]["data_output"])
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    layer_specs = resolve_layers(site_config)
+    layer_specs = resolve_layers(site_config, product=product)
     min_layers = int(hazard.get("min_layers", 2))
     target_res_m = int(hazard.get("target_resolution_m", 250))
     deg_per_m = 1 / 111_320
@@ -223,7 +281,7 @@ def run(
     ref_height = math.ceil((lat_max - lat_min) / target_res_deg)
     ref_transform = from_origin(lon_min, lat_max, target_res_deg, target_res_deg)
 
-    print(f"Heat hazard site: {display} ({site})")
+    print(f"Heat hazard site: {display} ({site}) · product={product}")
     print(f"Grid: {ref_height}×{ref_width} @ ~{target_res_m} m")
     print(f"Inputs ({len(layer_specs)}), min_layers={min_layers}:")
 
@@ -243,7 +301,7 @@ def run(
         valid_pct = (1.0 - invalid.mean()) * 100
         finite = data[~invalid]
         print(
-            f"  {key:<20} w={weight:.2f} valid={valid_pct:.1f}% "
+            f"  {key:<28} w={weight:.2f} valid={valid_pct:.1f}% "
             f"min={finite.min():.3f} max={finite.max():.3f} ({path.name})"
         )
 
@@ -283,6 +341,11 @@ def run(
     with rasterio.open(out_score, "w", **write_profile) as dst:
         dst.write(ensemble.astype(np.float32), 1)
         dst.set_band_description(1, "heat_hazard_score_0_1")
+        dst.update_tags(
+            normalization_domain="city" if product == "city" else "regional",
+            product=product,
+            comparability="city" if product == "city" else "regional",
+        )
     print(f"Wrote {out_score}")
 
     out_nlay = output_dir / outputs["heat_hazard_n_layers"]
@@ -292,14 +355,19 @@ def run(
         dst.set_band_description(1, "n_valid_layers")
     print(f"Wrote {out_nlay}")
 
+    qa_prefix = "map_heat_hazard" if product == "city" else "map_heat_hazard_regional"
     if write_qa:
         season = str(site_config.get("season_label") or site_config.get("season") or "")
         years = f"{site_config.get('start_year', '')}–{site_config.get('end_year', '')}"
-        grid_sub = f"{display} · {ref_width}×{ref_height} · ~{target_res_m} m · {season} {years}".strip()
+        domain = "city AOI" if product == "city" else "regional (state) norms"
+        grid_sub = (
+            f"{display} · {domain} · {ref_width}×{ref_height} · "
+            f"~{target_res_m} m · {season} {years}"
+        ).strip()
         write_raster_grid_svg(
             ensemble,
-            output_dir / "map_heat_hazard_score.svg",
-            title=f"Heat hazard score — {display}",
+            output_dir / f"{qa_prefix}_score.svg",
+            title=f"Heat hazard score ({product}) — {display}",
             subtitle=grid_sub,
             vmin=0.0,
             vmax=1.0,
@@ -307,8 +375,8 @@ def run(
         )
         write_raster_grid_svg(
             valid_count.astype("float64"),
-            output_dir / "map_heat_hazard_n_layers.svg",
-            title=f"Heat hazard n layers — {display}",
+            output_dir / f"{qa_prefix}_n_layers.svg",
+            title=f"Heat hazard n layers ({product}) — {display}",
             subtitle=grid_sub,
             vmin=0.0,
             vmax=float(len(layer_specs)),
@@ -329,6 +397,9 @@ def run(
     meta = {
         "site_slug": site,
         "display_name": display,
+        "product": product,
+        "normalization_domain": "city" if product == "city" else "regional",
+        "comparability": "city" if product == "city" else "regional",
         "min_layers": min_layers,
         "target_resolution_m": target_res_m,
         "include_era5": bool(hazard.get("include_era5", False)),
@@ -345,11 +416,12 @@ def run(
             "score": str(out_score),
             "n_layers": str(out_nlay),
         },
-        "qa_maps": sorted(str(p) for p in output_dir.glob("map_heat_*.svg"))
+        "qa_maps": sorted(str(p) for p in output_dir.glob(f"{qa_prefix}*.svg"))
         if write_qa
         else [],
     }
-    meta_path = output_dir / "metadata.json"
+    meta_name = "metadata.json" if product == "city" else "metadata_regional.json"
+    meta_path = output_dir / meta_name
     meta_path.write_text(json.dumps(meta, indent=2), encoding="utf-8")
     print(f"Wrote {meta_path}")
     return output_dir
@@ -358,11 +430,17 @@ def run(
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--site", default=None, help="City slug (default: HEAT_SITE / porto_alegre)")
+    parser.add_argument(
+        "--product",
+        choices=["city", "regional"],
+        default="city",
+        help="city = AOI min–max norms (default); regional = state-domain dual product",
+    )
     parser.add_argument("--no-qa", action="store_true", help="Skip SVG QA maps")
     args = parser.parse_args(argv)
     site = args.site or os.environ.get("HEAT_SITE") or os.environ.get("FLOODS_SITE", "porto_alegre")
     try:
-        out = run(site, write_qa=not args.no_qa)
+        out = run(site, write_qa=not args.no_qa, product=args.product)
     except FileNotFoundError as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 1

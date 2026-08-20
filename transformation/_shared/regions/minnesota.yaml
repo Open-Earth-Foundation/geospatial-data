@@ -1,0 +1,148 @@
+# Minnesota — regional normalization domain (state boundary)
+
+# Dual-product policy (CCRA):
+#   - city  → default screening; domain min–max inside city AOI
+#   - regional → optional comparable product; scales against constants in stats_path
+#
+# Related:
+#   docs/ccra_normalization_decision.md
+#   docs/ccra_regional_normalization_runbook.md
+#   docs/examples/ccra_normalization_stats.schema.json
+
+region_id: minnesota
+display_name: Minnesota, USA
+domain: state
+
+# Default product remains city; regional is opt-in per run / batch.
+products:
+  city:
+    normalization_domain: city
+    catalog_suffix: "" # {city}_{hazard}_hazard
+    comparability: city
+  regional:
+    normalization_domain: minnesota
+    catalog_suffix: _regional # {city}_{hazard}_hazard_regional
+    comparability: regional
+    requires_stats_status: ready
+
+roi:
+  type: state_boundary
+  id: us-state-fips-27
+  display_name: State of Minnesota
+  # US Census / ANSI state FIPS
+  state_fips: "27"
+  state_abbr: MN
+  # Commit a local polygon once (do not use batch union_bbox for scoring constants).
+  boundary_path: transformation/_shared/regions/minnesota/boundary/state.geojson
+  # Prefer filter on a public TIGER states collection when computing in GEE:
+  gee_asset: TIGER/2018/States
+  gee_filter: 'STATEFP == "27"'
+  # Approximate state envelope (WGS84) — convenience only; stats must use the polygon.
+  bbox:
+    west: -97.239209
+    south: 43.499356
+    east: -89.491739
+    north: 49.384358
+
+# Where versioned stats live after compute_regional_norm_stats (future CLI).
+stats:
+  schema: docs/examples/ccra_normalization_stats.schema.json
+  # Active pointer (symlink or copy). Prefer versioned files under cache/:
+  #   cache/regions/minnesota/normalization/v1/normalization_stats.json
+  stats_path: cache/regions/minnesota/normalization/v1/normalization_stats.json
+  example_path: docs/examples/ccra_normalization_stats_minnesota.example.json
+
+# Layers that need regional constants for the regional product.
+# Fixed-threshold / binary inputs are listed under skip (no regional stats).
+layers:
+  # Heat — normalize raw P90 LST with state vmin/vmax at extract (minmax_norm_roi).
+  landsat_p90:
+    hazard: heat
+    method: minmax
+    unit: celsius
+    scale_m: 30
+    season: jja
+    period: "2015-2024"
+    pipeline_stage: extract
+  modis_day_p90:
+    hazard: heat
+    method: minmax
+    unit: celsius
+    scale_m: 1000
+    season: jja
+    period: "2015-2024"
+    pipeline_stage: extract
+  modis_night_p90:
+    hazard: heat
+    method: minmax
+    unit: celsius
+    scale_m: 1000
+    season: jja
+    period: "2015-2024"
+    pipeline_stage: extract
+
+  # Flood — only GFD is domain-scaled; depth classes + GFPLAIN stay as-is.
+  gfd_event_count:
+    hazard: flood
+    method: robust_p95_log1p_minmax
+    unit: count
+    scale_m: 250
+    pipeline_stage: extract
+
+  # Landslide — precip / veg are city min–max today; regional injects vmin/vmax at compute.
+  r90p:
+    hazard: landslide
+    method: minmax
+    unit: mm_day
+    scale_m: 5000
+    season: jja
+    pipeline_stage: compute
+  ndvi_p10:
+    hazard: landslide
+    method: minmax
+    unit: ndvi
+    scale_m: 250
+    season: jja
+    period: "2015-2024"
+    pipeline_stage: compute
+
+  # ACS — min–max across all Minnesota block groups, then clip/join to city.
+  population_density:
+    hazard: acs_ev
+    method: minmax
+    unit: people_per_km2
+    pipeline_stage: acs
+  age_sensitive_share:
+    hazard: acs_ev
+    method: minmax
+    unit: share
+    pipeline_stage: acs
+  poverty_rate:
+    hazard: acs_ev
+    method: minmax
+    unit: share
+    pipeline_stage: acs
+  median_household_income:
+    hazard: acs_ev
+    method: minmax
+    unit: usd
+    pipeline_stage: acs
+  incomplete_plumbing_share:
+    hazard: acs_ev
+    method: minmax
+    unit: share
+    pipeline_stage: acs
+
+# No regional stats — already portable / fixed-threshold.
+skip_layers:
+  - jrc_depth_impact_class
+  - aqueduct_depth_impact_class
+  - gfplain_250m
+  - slope_deg
+  - clay_pct
+  - hand
+
+notes:
+  - City product is unchanged; regional is a second output set.
+  - Do not mix H_city with E/V_regional (or vice versa) when computing R.
+  - Bump stats_version and write a new cache/.../vN/ folder when recomputing.

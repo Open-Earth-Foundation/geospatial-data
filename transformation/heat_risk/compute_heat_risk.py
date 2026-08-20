@@ -6,6 +6,7 @@ writes risk GeoTIFF + block-group zonal GeoPackage + SVG map.
 
 Example:
   python transformation/heat_risk/compute_heat_risk.py --site plymouth
+  python transformation/heat_risk/compute_heat_risk.py --site rochester --product regional
 """
 
 from __future__ import annotations
@@ -298,8 +299,15 @@ def write_geotiff(path: Path, arr: np.ndarray, profile: dict[str, Any], descript
     print(f"Wrote {path}")
 
 
-def run(site: str, root: Path | None = None) -> Path:
+def _with_regional_suffix(path: Path) -> Path:
+    return path.with_name(f"{path.stem}_regional{path.suffix}")
+
+
+def run(site: str, root: Path | None = None, *, product: str = "city") -> Path:
     root = root or HEAT_RISK_ROOT
+    product = str(product or "city").lower()
+    if product not in {"city", "regional"}:
+        raise ValueError(f"product must be 'city' or 'regional', got {product!r}")
     cfg_path = root / "config" / f"{site}.yaml"
     if not cfg_path.is_file():
         raise FileNotFoundError(cfg_path)
@@ -308,8 +316,21 @@ def run(site: str, root: Path | None = None) -> Path:
     e_field = str(cfg.get("exposure_field", "exposure_score"))
     v_field = str(cfg.get("vulnerability_field", "vulnerability_score"))
 
-    hazard_path = _resolve(root, str(cfg["hazard_tif"]))
-    acs_path = _resolve(root, str(cfg["acs_ev_gpkg"]))
+    hazard_path = Path(_resolve(root, str(cfg["hazard_tif"])))
+    acs_path = Path(_resolve(root, str(cfg["acs_ev_gpkg"])))
+    if product == "regional":
+        hazard_path = _with_regional_suffix(hazard_path)
+        if not hazard_path.is_file():
+            raise FileNotFoundError(
+                f"Missing regional hazard: {hazard_path}. "
+                "Run apply_regional_heat_norms.py + compute_heat_hazard.py --product regional."
+            )
+        acs_path = acs_path.with_name("acs_ev_block_groups_regional.gpkg")
+        if not acs_path.is_file():
+            raise FileNotFoundError(
+                f"Missing regional ACS E/V: {acs_path}. "
+                f"Run apply_regional_acs_ev.py --site {site}."
+            )
 
     out_dir = root / "sites" / site / "data" / "output"
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -341,7 +362,7 @@ def run(site: str, root: Path | None = None) -> Path:
         f"R range: {np.nanmin(risk):.3f}–{np.nanmax(risk):.3f}"
     )
 
-    prefix = site
+    prefix = site if product == "city" else f"{site}_regional"
     risk_tif = out_dir / f"heat_risk_score_{prefix}.tif"
     e_tif = out_dir / f"heat_exposure_score_{prefix}.tif"
     v_tif = out_dir / f"heat_vulnerability_score_{prefix}.tif"
@@ -389,41 +410,41 @@ def run(site: str, root: Path | None = None) -> Path:
     write_choropleth_svg(
         zonal_out,
         "heat_risk_score",
-        out_dir / "map_heat_risk_score.svg",
-        title=f"Heat risk R=(H×E×V)^(1/3) — {display}",
-        subtitle="Block-group mean · H=heat ensemble · E/V=ACS",
+        out_dir / ("map_heat_risk_score.svg" if product == "city" else "map_heat_risk_score_regional.svg"),
+        title=f"Heat risk R=(H×E×V)^(1/3) ({product}) — {display}",
+        subtitle=f"Block-group mean · H/E/V {product} domain",
     )
 
     # Grid QA maps (direct from GeoTIFF arrays)
     grid_sub = f"{display} · hazard grid {h.shape[1]}×{h.shape[0]} cells"
     write_raster_grid_svg(
         risk,
-        out_dir / "map_heat_risk_score_grid.svg",
-        title=f"Heat risk grid R=(H×E×V)^(1/3) — {display}",
+        out_dir / ("map_heat_risk_score_grid.svg" if product == "city" else "map_heat_risk_score_grid_regional.svg"),
+        title=f"Heat risk grid R=(H×E×V)^(1/3) ({product}) — {display}",
         subtitle=grid_sub,
         vmin=0.0,
         vmax=1.0,
     )
     write_raster_grid_svg(
         h,
-        out_dir / "map_heat_hazard_grid.svg",
-        title=f"Heat hazard H (ensemble) — {display}",
+        out_dir / ("map_heat_hazard_grid.svg" if product == "city" else "map_heat_hazard_grid_regional.svg"),
+        title=f"Heat hazard H ({product}) — {display}",
         subtitle=grid_sub,
         vmin=0.0,
         vmax=1.0,
     )
     write_raster_grid_svg(
         e,
-        out_dir / "map_heat_exposure_grid.svg",
-        title=f"Exposure E (ACS burned) — {display}",
+        out_dir / ("map_heat_exposure_grid.svg" if product == "city" else "map_heat_exposure_grid_regional.svg"),
+        title=f"Exposure E (ACS burned, {product}) — {display}",
         subtitle=grid_sub,
         vmin=0.0,
         vmax=1.0,
     )
     write_raster_grid_svg(
         v,
-        out_dir / "map_heat_vulnerability_grid.svg",
-        title=f"Vulnerability V (ACS burned) — {display}",
+        out_dir / ("map_heat_vulnerability_grid.svg" if product == "city" else "map_heat_vulnerability_grid_regional.svg"),
+        title=f"Vulnerability V (ACS burned, {product}) — {display}",
         subtitle=grid_sub,
         vmin=0.0,
         vmax=1.0,
@@ -432,6 +453,9 @@ def run(site: str, root: Path | None = None) -> Path:
     meta = {
         "site_slug": site,
         "display_name": display,
+        "product": product,
+        "normalization_domain": "city" if product == "city" else "regional",
+        "comparability": "city" if product == "city" else "regional",
         "formula": "R = (H * E * V) ** (1/3) where H, E, V finite",
         "hazard": {
             "path": str(hazard_path),
@@ -469,7 +493,7 @@ def run(site: str, root: Path | None = None) -> Path:
             "geojson": str(geojson),
         },
     }
-    meta_path = out_dir / "metadata.json"
+    meta_path = out_dir / ("metadata.json" if product == "city" else "metadata_regional.json")
     meta_path.write_text(json.dumps(meta, indent=2), encoding="utf-8")
     print(f"Wrote {meta_path}")
     return out_dir
@@ -478,9 +502,15 @@ def run(site: str, root: Path | None = None) -> Path:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--site", default="plymouth")
+    parser.add_argument(
+        "--product",
+        choices=["city", "regional"],
+        default="city",
+        help="city = city-domain H/E/V (default); regional = state-domain dual product",
+    )
     args = parser.parse_args(argv)
     try:
-        out = run(args.site)
+        out = run(args.site, product=args.product)
     except FileNotFoundError as exc:
         print(f"ERROR: missing input: {exc}", file=sys.stderr)
         return 1

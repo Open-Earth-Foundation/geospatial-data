@@ -8,6 +8,7 @@ and SVG QA maps under ``sites/<city>/data/output/``.
 Example:
   python transformation/flood_hazard/compute_flood_hazard.py --site plymouth
   python transformation/flood_hazard/compute_flood_hazard.py --site plymouth --no-idw
+  python transformation/flood_hazard/compute_flood_hazard.py --site rochester --product regional
 """
 
 from __future__ import annotations
@@ -81,8 +82,23 @@ def reproject_to_reference(
     return dst
 
 
-def resolve_required_inputs(site_config: dict[str, Any]) -> dict[str, Path]:
-    """Map weight keys → absolute input paths; raise if any are missing."""
+def _with_regional_suffix(name: str) -> str:
+    p = Path(name)
+    return f"{p.stem}_regional{p.suffix}"
+
+
+def resolve_required_inputs(
+    site_config: dict[str, Any],
+    *,
+    product: str = "city",
+) -> dict[str, Path]:
+    """Map weight keys → absolute input paths; raise if any are missing.
+
+    For ``product=regional``, only GFD uses the regional-norm sibling; JRC /
+    Aqueduct / GFPLAIN stay the city fixed-threshold / binary inputs.
+    """
+    if product not in {"city", "regional"}:
+        raise ValueError(f"product must be 'city' or 'regional', got {product!r}")
     input_dir = site_config["paths_abs"]["data_input"]
     layers_cfg = site_config.get("layers") or {}
     hazard_cfg = site_config.get("hazard") or {}
@@ -101,9 +117,14 @@ def resolve_required_inputs(site_config: dict[str, Any]) -> dict[str, Path]:
         if not filename:
             missing.append(f"{key} (no layers.{file_key} in site config)")
             continue
+        if product == "regional" and key == "gfd_count_norm":
+            filename = _with_regional_suffix(str(filename))
         path = Path(input_dir) / str(filename)
         if not path.is_file():
-            missing.append(f"{key} → {path}")
+            hint = ""
+            if product == "regional" and key == "gfd_count_norm":
+                hint = " (run apply_regional_flood_norms.py first)"
+            missing.append(f"{key} → {path}{hint}")
             continue
         paths[key] = path
 
@@ -342,19 +363,24 @@ def run(
     *,
     do_idw: bool = True,
     write_qa: bool = True,
+    product: str = "city",
     root: Path | None = None,
 ) -> Path:
+    if product not in {"city", "regional"}:
+        raise ValueError(f"product must be 'city' or 'regional', got {product!r}")
     root = Path(root or FLOOD_HAZARD_ROOT).resolve()
     site_config = load_site_config(site, root)
     display = str(site_config.get("display_name") or site)
     hazard_cfg = site_config["hazard"]
     idw_cfg = site_config["idw"]
-    outputs = site_config["outputs"]
+    outputs = dict(site_config["outputs"])
+    if product == "regional":
+        outputs = {k: _with_regional_suffix(str(v)) for k, v in outputs.items()}
     output_dir = Path(site_config["paths_abs"]["data_output"])
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    input_paths = resolve_required_inputs(site_config)
-    print(f"Flood hazard site: {display} ({site})")
+    input_paths = resolve_required_inputs(site_config, product=product)
+    print(f"Flood hazard site: {display} ({site}) · product={product}")
     print(f"Inputs ({len(input_paths)}):")
     for k, p in input_paths.items():
         print(f"  {k}: {p.name}")
@@ -497,11 +523,12 @@ def run(
             description="flood_score_interpolated_pixels_only",
         )
 
+    qa_tag = "_regional" if product == "regional" else ""
     if write_qa:
         grid_sub = f"{display} · {ref_arr.shape[1]}×{ref_arr.shape[0]} · {score_ref}"
         write_raster_grid_svg(
             flood_score_base,
-            output_dir / "map_flood_hazard_score_base.svg",
+            output_dir / f"map_flood_hazard_score_base{qa_tag}.svg",
             title=f"Flood hazard base (partial) — {display}",
             subtitle=grid_sub,
             vmin=0.0,
@@ -510,7 +537,7 @@ def run(
         )
         write_raster_grid_svg(
             flood_score_strict,
-            output_dir / "map_flood_hazard_score_strict.svg",
+            output_dir / f"map_flood_hazard_score_strict{qa_tag}.svg",
             title=f"Flood hazard strict (all layers) — {display}",
             subtitle=grid_sub,
             vmin=0.0,
@@ -519,7 +546,7 @@ def run(
         )
         write_raster_grid_svg(
             n_layers_used_out,
-            output_dir / "map_flood_hazard_n_layers.svg",
+            output_dir / f"map_flood_hazard_n_layers{qa_tag}.svg",
             title=f"Flood hazard n layers used — {display}",
             subtitle=grid_sub,
             vmin=0.0,
@@ -529,7 +556,7 @@ def run(
         if flood_score_idw is not None and is_interpolated is not None:
             write_raster_grid_svg(
                 flood_score_idw,
-                output_dir / "map_flood_hazard_score_idw.svg",
+                output_dir / f"map_flood_hazard_score_idw{qa_tag}.svg",
                 title=f"Flood hazard IDW-filled — {display}",
                 subtitle=grid_sub,
                 vmin=0.0,
@@ -538,7 +565,7 @@ def run(
             )
             write_raster_grid_svg(
                 np.where(is_interpolated, flood_score_idw, np.nan),
-                output_dir / "map_flood_hazard_interpolated_only.svg",
+                output_dir / f"map_flood_hazard_interpolated_only{qa_tag}.svg",
                 title=f"Flood hazard interpolated cells only — {display}",
                 subtitle=grid_sub,
                 vmin=0.0,
@@ -548,7 +575,7 @@ def run(
             if interp_distance_m is not None and np.isfinite(interp_distance_m).any():
                 write_raster_grid_svg(
                     interp_distance_m,
-                    output_dir / "map_flood_hazard_interp_distance_m.svg",
+                    output_dir / f"map_flood_hazard_interp_distance_m{qa_tag}.svg",
                     title=f"IDW interp distance (m) — {display}",
                     subtitle=grid_sub,
                     vmin=None,
@@ -559,6 +586,9 @@ def run(
     meta = {
         "site_slug": site,
         "display_name": display,
+        "product": product,
+        "normalization_domain": "city" if product == "city" else "regional",
+        "comparability": "city" if product == "city" else "regional",
         "reference_grid": score_ref,
         "weights": weights,
         "min_layers": min_layers,
@@ -583,7 +613,7 @@ def run(
         if write_qa
         else [],
     }
-    meta_path = output_dir / "metadata.json"
+    meta_path = output_dir / ("metadata.json" if product == "city" else "metadata_regional.json")
     meta_path.write_text(json.dumps(meta, indent=2), encoding="utf-8")
     print(f"Wrote {meta_path}")
     return output_dir
@@ -606,17 +636,31 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="Skip SVG QA maps",
     )
+    parser.add_argument(
+        "--product",
+        choices=["city", "regional"],
+        default="city",
+        help="city = AOI GFD norm (default); regional = Minnesota dual product",
+    )
     args = parser.parse_args(argv)
     site = args.site or os.environ.get("FLOODS_SITE", "porto_alegre")
     try:
-        out = run(site, do_idw=not args.no_idw, write_qa=not args.no_qa)
+        out = run(
+            site,
+            do_idw=not args.no_idw,
+            write_qa=not args.no_qa,
+            product=args.product,
+        )
     except FileNotFoundError as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 1
     print(f"\nDone. Outputs in: {out}")
+    domain_flag = (
+        " --normalization-domain regional" if args.product == "regional" else ""
+    )
     print(
         "Next: python transformation/flood_hazard/flood_hazard_publish.py "
-        f"--site {site}"
+        f"--site {site}{domain_flag}"
     )
     return 0
 

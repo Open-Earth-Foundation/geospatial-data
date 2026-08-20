@@ -187,8 +187,9 @@ def fetch_acs_block_groups(
         "get": ",".join(var_list),
         "for": "block group:*",
         "in": f"state:{state_fips} county:{county_fips}",
-        "key": api_key,
     }
+    if api_key and api_key not in {"none", "null"}:
+        params["key"] = api_key
     url = f"https://api.census.gov/data/{year}/acs/acs5?{urlencode(params)}"
     print(f"Fetching ACS {year} 5-year block groups for {state_fips}-{county_fips}…")
     rows = _http_get_json(url)
@@ -207,17 +208,27 @@ def fetch_acs_block_groups(
     return df
 
 
-def minmax_01(series: pd.Series) -> pd.Series:
+def minmax_01(
+    series: pd.Series,
+    *,
+    vmin: float | None = None,
+    vmax: float | None = None,
+) -> pd.Series:
+    """Min-max scale to [0, 1]. Optional vmin/vmax = regional (state) domain."""
     s = pd.to_numeric(series, errors="coerce").astype(float)
     valid = s.dropna()
     if valid.empty:
         return pd.Series(np.nan, index=s.index, dtype="float64")
-    lo, hi = float(valid.min()), float(valid.max())
+    if vmin is None or vmax is None:
+        lo, hi = float(valid.min()), float(valid.max())
+    else:
+        lo, hi = float(vmin), float(vmax)
     if hi <= lo:
         out = pd.Series(np.nan, index=s.index, dtype="float64")
         out.loc[valid.index] = 0.5
         return out
-    return (s - lo) / (hi - lo)
+    out = (s - lo) / (hi - lo)
+    return out.clip(0.0, 1.0)
 
 
 def scrub_acs_value(series: pd.Series) -> pd.Series:
@@ -226,7 +237,11 @@ def scrub_acs_value(series: pd.Series) -> pd.Series:
     return s.mask(s < 0)
 
 
-def compute_scores(gdf: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
+def compute_scores(
+    gdf: gpd.GeoDataFrame,
+    *,
+    norm_bounds: dict[str, tuple[float, float]] | None = None,
+) -> gpd.GeoDataFrame:
     out = gdf.copy()
     # Land area from TIGER (m²); fall back to projected geometry area
     if "ALAND" in out.columns:
@@ -321,16 +336,30 @@ def compute_scores(gdf: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
             has_pop
         )
 
-    # Scores 0–1 within city (null stays null — never coerce missing → 0)
-    out["exposure_score"] = minmax_01(out["population_density"])
+    # Scores 0–1 (city domain by default; pass norm_bounds for regional dual-product)
+    bounds = norm_bounds or {}
 
-    age_n = minmax_01(out["age_sensitive_share"])
-    pov_n = minmax_01(out["poverty_rate"])
+    def _b(key: str) -> tuple[float | None, float | None]:
+        if key not in bounds:
+            return None, None
+        lo, hi = bounds[key]
+        return float(lo), float(hi)
+
+    d_lo, d_hi = _b("population_density")
+    out["exposure_score"] = minmax_01(out["population_density"], vmin=d_lo, vmax=d_hi)
+
+    a_lo, a_hi = _b("age_sensitive_share")
+    p_lo, p_hi = _b("poverty_rate")
+    i_lo, i_hi = _b("median_household_income")
+    pl_lo, pl_hi = _b("incomplete_plumbing_share")
+
+    age_n = minmax_01(out["age_sensitive_share"], vmin=a_lo, vmax=a_hi)
+    pov_n = minmax_01(out["poverty_rate"], vmin=p_lo, vmax=p_hi)
     # Low income → high vulnerability; missing income → null (not 1.0)
-    inc_n = (1.0 - minmax_01(out["median_household_income"])).where(
+    inc_n = (1.0 - minmax_01(out["median_household_income"], vmin=i_lo, vmax=i_hi)).where(
         out["median_household_income"].notna()
     )
-    plum_n = minmax_01(out["incomplete_plumbing_share"])
+    plum_n = minmax_01(out["incomplete_plumbing_share"], vmin=pl_lo, vmax=pl_hi)
     out["income_vulnerability"] = inc_n
 
     v_stack = pd.concat([age_n, pov_n, inc_n, plum_n], axis=1)

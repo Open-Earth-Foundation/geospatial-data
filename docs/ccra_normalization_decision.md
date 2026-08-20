@@ -2,7 +2,7 @@
 
 **Status:** Accepted (working decision)  
 **Ticket:** [CC-579](https://linear.app/openearth/issue/CC-579/structure-the-ccra-data-catalog-and-optimize-the-layer-generation)  
-**Date:** 2026-07-29 · **Updated:** 2026-07-30
+**Date:** 2026-07-29 · **Updated:** 2026-08-12
 
 ## Decision (current)
 
@@ -28,18 +28,20 @@ Runtime configs stay **city-level slugs only** (e.g. `plymouth`, `rochester`), n
 
 ### Layers that use city-domain min–max today
 
-| Product | Component | Where normalized | Cross-city comparable? |
-|---------|-----------|------------------|------------------------|
-| Heat | Landsat / MODIS P90 LST | Extract (`minmax_norm_roi` on city boundary) | No |
-| Flood | GFD event count | Extract (P95 + log1p + min–max in ROI) | No |
-| Flood | JRC / Aqueduct depth | Fixed depth impact classes (m) | Yes (more portable) |
-| Flood | GFPLAIN | Binary 0/1 | Yes |
-| Landslide | R90p → `precip_risk` | Compute (`minmax_norm` on city grid) | No |
-| Landslide | NDVI → `veg_protect` | Compute (`minmax_norm` on city grid) | No |
-| Landslide | slope, clay, HAND | Fixed physical thresholds | Yes (within model) |
-| ACS E/V | exposure, vulnerability | Min–max across city block groups | No |
+| Product | Component | Where normalized | Cross-city comparable? | Model card / formulas |
+|---------|-----------|------------------|------------------------|-----------------------|
+| Heat | Landsat / MODIS P90 LST | Extract (`minmax_norm_roi` on city boundary) | No | [heat_hazard/model_card.md](../models/heat_hazard/model_card.md) §3.1–3.2 |
+| Flood | GFD event count | Extract (P95 + log1p + min–max in ROI) | No | [flood_hazard/model_card.md](../models/flood_hazard/model_card.md) §4.3 |
+| Flood | JRC / Aqueduct depth | Fixed depth impact classes (m) | Yes (more portable) | [flood_hazard/model_card.md](../models/flood_hazard/model_card.md) §4.1–4.2 |
+| Flood | GFPLAIN | Binary 0/1 | Yes | [flood_hazard/model_card.md](../models/flood_hazard/model_card.md) §4.4 |
+| Landslide | R90p → `precip_risk` | Compute (`minmax_norm` on city grid) | No | [landslide_hazard/model_card.md](../models/landslide_hazard/model_card.md) §6.2 |
+| Landslide | NDVI → `veg_protect` | Compute (`minmax_norm` on city grid) | No | [landslide_hazard/model_card.md](../models/landslide_hazard/model_card.md) §6.4 |
+| Landslide | slope, clay, HAND | Fixed physical thresholds | Yes (within model) | [landslide_hazard/model_card.md](../models/landslide_hazard/model_card.md) §6.1, 6.3, 6.5 |
+| ACS E/V | exposure, vulnerability | Min–max across city block groups | No | [acs_ev/README.md](../transformation/acs_ev/README.md) (no model card yet) |
 
 Cross-city ranking is mainly blocked by **heat, GFD, landslide precip/veg, and ACS** — not the entire stack.
+
+**Adding a new hazard:** use the reusable checklist in [ccra_new_hazard_normalization_checklist.md](./ccra_new_hazard_normalization_checklist.md) (inventory → norm family → extract/compute → docs → smoke-test).
 
 ---
 
@@ -153,8 +155,8 @@ Option 2 remains valuable **where it already exists** (flood depth) and for futu
 ### Suggested implementation order (Minnesota)
 
 1. **Spike:** Compute regional `vmin`/`vmax` for heat LST norms and ACS E/V over Minnesota; re-score one city (e.g. Rochester) with regional constants; compare rank vs city-relative maps.  
-2. **Config:** Add `config/regions/minnesota.yaml` (or `transformation/_shared/regions/`) referenced from site YAMLs via `normalization_domain: minnesota`.  
-3. **Catalog:** Publish optional `{city}_*_regional` or a single state-wide reference layer with metadata `comparability: regional`.  
+2. **Config:** Region policy + versioned stats live under `transformation/_shared/regions/` (e.g. [minnesota.yaml](../transformation/_shared/regions/minnesota.yaml)) and [ccra_normalization_stats.schema.json](./examples/ccra_normalization_stats.schema.json). ROI for regional constants = **state boundary** (not batch `union_bbox`). Dual products: city (default) + `{city}_*_regional`.  
+3. **Catalog:** Publish optional `{city}_*_regional` with metadata `comparability: regional` / `normalization_domain: minnesota`.  
 4. **Defer** Option 3 until C40/GCoM scope requires cross-country or “local anomaly” framing.
 
 ---
@@ -170,6 +172,9 @@ Option 2 remains valuable **where it already exists** (flood depth) and for futu
 
 ## Related docs
 
+- **Operator runbook (heat dual product):** [ccra_regional_normalization_runbook.md](./ccra_regional_normalization_runbook.md)  
+- Regional domains (Option 1 config): `transformation/_shared/regions/` · [minnesota.yaml](../transformation/_shared/regions/minnesota.yaml) · [stats schema](./examples/ccra_normalization_stats.schema.json)  
+- New-hazard normalization checklist: [ccra_new_hazard_normalization_checklist.md](./ccra_new_hazard_normalization_checklist.md)  
 - Pipeline architecture: `docs/ccra_pipeline_architecture.md`  
 - Model configs / cards: `models/{flood,heat,landslide}_hazard/`  
 - Migration / city sites: `docs/cougar-migration.md`  

@@ -31,11 +31,53 @@ def list_configured_slugs() -> list[str]:
     return sorted(p.stem for p in root.glob("*.yaml") if p.stem != "README")
 
 
+def _parse_scalar(value: str) -> Any:
+    value = value.strip()
+    if value in {"true", "false"}:
+        return value == "true"
+    if value.startswith("[") and value.endswith("]"):
+        items = [item.strip() for item in value[1:-1].split(",") if item.strip()]
+        return [_parse_scalar(item) for item in items]
+    if (value.startswith('"') and value.endswith('"')) or (
+        value.startswith("'") and value.endswith("'")
+    ):
+        return value[1:-1]
+    try:
+        if "." in value:
+            return float(value)
+        return int(value)
+    except ValueError:
+        return value
+
+
+def _minimal_yaml_load(text: str) -> dict[str, Any]:
+    """Parse the small config subset used in ``config/sites/*.yaml`` (no PyYAML)."""
+    root: dict[str, Any] = {}
+    stack: list[tuple[int, dict[str, Any]]] = [(-1, root)]
+    for raw_line in text.splitlines():
+        if not raw_line.strip() or raw_line.lstrip().startswith("#"):
+            continue
+        indent = len(raw_line) - len(raw_line.lstrip(" "))
+        key, sep, value = raw_line.strip().partition(":")
+        if not sep:
+            continue
+        while stack and indent <= stack[-1][0]:
+            stack.pop()
+        parent = stack[-1][1]
+        if value.strip():
+            parent[key] = _parse_scalar(value)
+        else:
+            child: dict[str, Any] = {}
+            parent[key] = child
+            stack.append((indent, child))
+    return root
+
+
 def _load_yaml(path: Path) -> dict[str, Any]:
     text = path.read_text(encoding="utf-8")
-    if yaml is None:
-        raise RuntimeError("PyYAML is required to resolve site configs")
-    data = yaml.safe_load(text) or {}
+    data = yaml.safe_load(text) if yaml is not None else _minimal_yaml_load(text)
+    if data is None:
+        data = {}
     if not isinstance(data, dict):
         raise ValueError(f"Invalid YAML object: {path}")
     return data

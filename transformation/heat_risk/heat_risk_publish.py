@@ -11,6 +11,10 @@ Note: E/V are burned onto the heat hazard grid (may differ from flood shared E/V
 Example (Plymouth risk, dry-run catalog, no upload):
   python transformation/heat_risk/heat_risk_publish.py --site plymouth --product risk --build
 
+Example (Rochester regional dual product):
+  python transformation/heat_risk/heat_risk_publish.py \\
+    --site rochester --product risk --normalization-domain regional --build
+
 Example (upload + write catalog):
   python transformation/heat_risk/heat_risk_publish.py \\
     --site plymouth --product risk --build --upload --write-catalog
@@ -82,6 +86,17 @@ PRODUCTS: dict[str, dict[str, Any]] = {
         "colors": "heat_risk_colors.txt",
     },
 }
+
+
+def _norm_domain(domain: str | None) -> str:
+    d = str(domain or "city").lower()
+    if d not in {"city", "regional"}:
+        raise ValueError(f"normalization_domain must be 'city' or 'regional', got {domain!r}")
+    return d
+
+
+def _domain_suffix(domain: str) -> str:
+    return "_regional" if _norm_domain(domain) == "regional" else ""
 
 
 def _load_yaml(path: Path) -> dict[str, Any]:
@@ -183,23 +198,35 @@ def _s3_uri(key: str) -> str:
     return f"s3://{S3_BUCKET}/{key.lstrip('/')}"
 
 
-def dataset_id_for_site(site_config: dict[str, Any], product: str) -> str:
+def dataset_id_for_site(
+    site_config: dict[str, Any],
+    product: str,
+    *,
+    normalization_domain: str = "city",
+) -> str:
     meta = PRODUCTS[product]
     slug = str(site_config.get("site_slug") or "")
+    suf = _domain_suffix(normalization_domain)
     if slug == "porto_alegre":
-        return str(meta["dataset_id_poa"])
-    return str(meta["dataset_id_tpl"]).format(slug=slug)
+        return f"{meta['dataset_id_poa']}{suf}"
+    return f"{str(meta['dataset_id_tpl']).format(slug=slug)}{suf}"
 
 
-def product_s3_prefix(site_config: dict[str, Any], product: str) -> str:
+def product_s3_prefix(
+    site_config: dict[str, Any],
+    product: str,
+    *,
+    normalization_domain: str = "city",
+) -> str:
     kind = PRODUCTS[product]["s3_kind"]
     base = str(site_config["s3_prefix"]).rstrip("/")
+    regional = _norm_domain(normalization_domain) == "regional"
     if kind == "heat_risk":
-        return f"{base}/risk"
+        return f"{base}/risk_regional" if regional else f"{base}/risk"
     if kind == "heat_exposure":
-        return f"{base}/exposure"
+        return f"{base}/exposure_regional" if regional else f"{base}/exposure"
     if kind == "heat_vulnerability":
-        return f"{base}/vulnerability"
+        return f"{base}/vulnerability_regional" if regional else f"{base}/vulnerability"
     raise ValueError(f"Unknown s3_kind: {kind}")
 
 
@@ -215,26 +242,53 @@ def site_paths(site: str) -> dict[str, Path]:
     }
 
 
-def resolve_score_tif(site: str, product: str) -> Path:
+def resolve_score_tif(
+    site: str,
+    product: str,
+    *,
+    normalization_domain: str = "city",
+) -> Path:
     pattern = PRODUCTS[product]["score_glob"].format(site=site)
+    if _norm_domain(normalization_domain) == "regional":
+        p = Path(pattern)
+        pattern = f"{p.stem}_regional{p.suffix}"
     path = site_paths(site)["output"] / pattern
     if not path.is_file():
-        raise FileNotFoundError(
-            f"Missing score GeoTIFF: {path}. Run compute_heat_risk.py --site {site} first."
+        hint = (
+            f"Run compute_heat_risk.py --site {site} --product regional first."
+            if _norm_domain(normalization_domain) == "regional"
+            else f"Run compute_heat_risk.py --site {site} first."
         )
+        raise FileNotFoundError(f"Missing score GeoTIFF: {path}. {hint}")
     return path
 
 
-def resolve_gpkg(site: str, product: str) -> Path | None:
+def resolve_gpkg(
+    site: str,
+    product: str,
+    *,
+    normalization_domain: str = "city",
+) -> Path | None:
     glob = PRODUCTS[product].get("gpkg_glob")
     if not glob:
         return None
-    path = site_paths(site)["output"] / glob.format(site=site)
+    name = glob.format(site=site)
+    if _norm_domain(normalization_domain) == "regional":
+        p = Path(name)
+        name = f"{p.stem}_regional{p.suffix}"
+    path = site_paths(site)["output"] / name
     return path if path.is_file() else None
 
 
-def publish_dir_for(site: str, product: str) -> Path:
-    return site_paths(site)["out"] / PRODUCTS[product]["publish_subdir"]
+def publish_dir_for(
+    site: str,
+    product: str,
+    *,
+    normalization_domain: str = "city",
+) -> Path:
+    return site_paths(site)["out"] / (
+        PRODUCTS[product]["publish_subdir"] + _domain_suffix(normalization_domain)
+    )
 
 
 def resolve_publish_paths(publish_dir: Path, product: str) -> dict[str, Path]:
@@ -268,8 +322,11 @@ def expected_urls(
     product: str,
     *,
     gpkg_name: str | None = None,
+    normalization_domain: str = "city",
 ) -> dict[str, str]:
-    prefix = product_s3_prefix(site_config, product)
+    prefix = product_s3_prefix(
+        site_config, product, normalization_domain=normalization_domain
+    )
     cog_name = PRODUCTS[product]["cog_filename"]
     urls = {
         "cog": public_url(f"{prefix}/{cog_name}"),
@@ -412,11 +469,19 @@ def upload_product_to_s3(
     *,
     upload: bool = True,
     gpkg_path: Path | None = None,
+    normalization_domain: str = "city",
 ) -> dict[str, str]:
     paths = validate_publish_dir(publish_dir, product)
     gpkg_name = gpkg_path.name if gpkg_path and gpkg_path.is_file() else None
-    urls = expected_urls(site_config, product, gpkg_name=gpkg_name)
-    prefix = product_s3_prefix(site_config, product)
+    urls = expected_urls(
+        site_config,
+        product,
+        gpkg_name=gpkg_name,
+        normalization_domain=normalization_domain,
+    )
+    prefix = product_s3_prefix(
+        site_config, product, normalization_domain=normalization_domain
+    )
 
     if not upload:
         print(f"Skipping S3 upload (upload=False). Expected prefix: s3://{S3_BUCKET}/{prefix}/")
@@ -456,16 +521,28 @@ def build_catalog_entry(
     site_config: dict[str, Any],
     product: str,
     urls: dict[str, str] | None = None,
+    *,
+    normalization_domain: str = "city",
 ) -> dict[str, Any]:
-    urls = urls or expected_urls(site_config, product)
+    domain = _norm_domain(normalization_domain)
+    urls = urls or expected_urls(site_config, product, normalization_domain=domain)
     display = str(site_config.get("display_name") or site_config.get("site_slug"))
-    dataset_id = dataset_id_for_site(site_config, product)
+    dataset_id = dataset_id_for_site(site_config, product, normalization_domain=domain)
     short = "POA" if str(site_config.get("site_slug")) == "porto_alegre" else display
     meta = PRODUCTS[product]
+    name_suffix = ", MN regional" if domain == "regional" else ""
+    short_labeled = f"{short}{name_suffix}"
 
     download: dict[str, Any] = {"cog_url": urls["cog"]}
     if urls.get("bairro_gpkg"):
         download["bairro_gpkg_url"] = urls["bairro_gpkg"]
+
+    domain_note = (
+        " Normalization domain: Minnesota state (regional dual product); "
+        "scores are comparable across cities in MN."
+        if domain == "regional"
+        else " Normalization domain: city AOI (default screening product)."
+    )
 
     if product == "risk":
         dq = {
@@ -482,7 +559,8 @@ def build_catalog_entry(
             f"OEF heat risk screening index (0–1) for {display}: geometric mean of hazard "
             "(OEF heat LST ensemble), exposure (ACS population density score), and vulnerability "
             "(ACS age/income/poverty composite). Computed by "
-            "`transformation/heat_risk/compute_heat_risk.py`. "
+            "`transformation/heat_risk/compute_heat_risk.py`."
+            f"{domain_note} "
             "Block-group vector (`bairro_gpkg_url`): zonal mean hazard, exposure, vulnerability, "
             "and risk per ACS block group."
         )
@@ -503,6 +581,7 @@ def build_catalog_entry(
             "Derived from ACS population density; E component of heat risk. "
             "Different raster grid than flood shared exposure. Computed via "
             "`transformation/acs_ev` + `transformation/heat_risk/compute_heat_risk.py`."
+            f"{domain_note}"
         )
         source_url = "https://www.census.gov/programs-surveys/acs"
         crs = "EPSG:4326"
@@ -523,13 +602,16 @@ def build_catalog_entry(
             "hazard grid. V component of heat risk. Different raster grid than flood shared "
             "vulnerability. Computed via `transformation/acs_ev` + "
             "`transformation/heat_risk/compute_heat_risk.py`."
+            f"{domain_note}"
         )
         source_url = "https://www.census.gov/programs-surveys/acs"
         crs = "EPSG:4326"
 
     return {
         "dataset_id": dataset_id,
-        "dataset_name": str(meta["dataset_name_tpl"]).format(short=short),
+        "dataset_name": str(meta["dataset_name_tpl"]).format(short=short_labeled),
+        "normalization_domain": "minnesota" if domain == "regional" else "city",
+        "comparability": "regional" if domain == "regional" else "city",
         "publisher": "Open Earth Foundation (derived processing)",
         "license": "CC BY 4.0",
         "resolution": "~250m",
@@ -581,6 +663,12 @@ def _format_catalog_block(entry: dict[str, Any]) -> str:
     download_block = "\n".join(download_lines)
 
     limitations = str(dq["limitations"]).replace("\n", " ").strip()
+    norm_fields = ""
+    if entry.get("normalization_domain"):
+        norm_fields = (
+            f"    normalization_domain: {entry['normalization_domain']}\n"
+            f"    comparability: {entry['comparability']}\n"
+        )
     return (
         f"  - dataset_id: {entry['dataset_id']}\n"
         f"    dataset_name: {entry['dataset_name']}\n"
@@ -592,6 +680,7 @@ def _format_catalog_block(entry: dict[str, Any]) -> str:
         f"    source_url: {entry['source_url']}\n"
         f"    dataset_type: {entry['dataset_type']}\n"
         f"    type: {entry['type']}\n"
+        f"{norm_fields}"
         f"    data_quality:\n"
         f"      temporal_coverage: \"{dq['temporal_coverage']}\"\n"
         f"      accuracy: \"{dq['accuracy']}\"\n"
@@ -694,18 +783,20 @@ def run_publish(
     build: bool = True,
     upload: bool = False,
     write_catalog: bool = False,
+    normalization_domain: str = "city",
 ) -> dict[str, str]:
     if product not in PRODUCTS:
         raise ValueError(f"Unknown product {product!r}; choose from {sorted(PRODUCTS)}")
 
+    domain = _norm_domain(normalization_domain)
     site_config = load_site_config(site)
-    publish_dir = publish_dir_for(site, product)
+    publish_dir = publish_dir_for(site, product, normalization_domain=domain)
     tile_zoom = str(site_config.get("publish", {}).get("tile_zoom", "8-15"))
-    gpkg = resolve_gpkg(site, product)
+    gpkg = resolve_gpkg(site, product, normalization_domain=domain)
 
     if build:
-        in_tif = resolve_score_tif(site, product)
-        print(f"Building {product} publish artifacts from {in_tif}")
+        in_tif = resolve_score_tif(site, product, normalization_domain=domain)
+        print(f"Building {product} publish artifacts from {in_tif} (domain={domain})")
         build_cog_and_tiles(
             in_tif=in_tif,
             publish_dir=publish_dir,
@@ -721,11 +812,16 @@ def run_publish(
         product,
         upload=upload,
         gpkg_path=gpkg,
+        normalization_domain=domain,
     )
-    entry = build_catalog_entry(site_config, product, urls)
+    entry = build_catalog_entry(
+        site_config, product, urls, normalization_domain=domain
+    )
     catalog_path = find_catalog_path(HEAT_RISK_ROOT)
     upsert_datasets_yaml(entry, catalog_path, dry_run=not write_catalog)
-    print(f"UPLOAD={upload} | WRITE_CATALOG={write_catalog} | product={product}")
+    print(
+        f"UPLOAD={upload} | WRITE_CATALOG={write_catalog} | product={product} | domain={domain}"
+    )
     return urls
 
 
@@ -737,6 +833,12 @@ def main(argv: list[str] | None = None) -> int:
         choices=sorted(PRODUCTS),
         default="risk",
         help="Which layer to publish (default: risk)",
+    )
+    parser.add_argument(
+        "--normalization-domain",
+        choices=["city", "regional"],
+        default="city",
+        help="city = AOI product (default); regional = Minnesota dual product",
     )
     parser.add_argument(
         "--build",
@@ -768,8 +870,9 @@ def main(argv: list[str] | None = None) -> int:
             build=args.build,
             upload=args.upload,
             write_catalog=args.write_catalog,
+            normalization_domain=args.normalization_domain,
         )
-    except (FileNotFoundError, RuntimeError, subprocess.CalledProcessError) as exc:
+    except (FileNotFoundError, RuntimeError, subprocess.CalledProcessError, ValueError) as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 1
     return 0
