@@ -9,6 +9,7 @@ Pipeline (after ``compute_flood_hazard.py``):
 
 Example:
   python transformation/flood_hazard/flood_hazard_publish.py --site plymouth
+  python transformation/flood_hazard/flood_hazard_publish.py --site rochester --normalization-domain regional --build
   python transformation/flood_hazard/flood_hazard_publish.py --site plymouth --upload --write-catalog
 """
 
@@ -37,6 +38,17 @@ COLORIZED_FILENAME = "flood_hazard_score_idw_colorized.tif"
 VALUE_RGB_FILENAME = "flood_hazard_score_idw_value_encoded_rgb.tif"
 PUBLISH_SUBDIR = "flood_hazard_score_idw"
 COLORS_TXT = "flood_hazard_colors.txt"
+
+
+def _norm_domain(domain: str | None) -> str:
+    d = str(domain or "city").lower()
+    if d not in {"city", "regional"}:
+        raise ValueError(f"normalization_domain must be 'city' or 'regional', got {domain!r}")
+    return d
+
+
+def _domain_suffix(domain: str) -> str:
+    return "_regional" if _norm_domain(domain) == "regional" else ""
 
 
 def _ensure_common_cli_paths() -> None:
@@ -97,17 +109,27 @@ def gdal2tiles_python(gdal2tiles_path: str) -> str:
     return shutil.which("python3") or shutil.which("python") or "python3"
 
 
-def dataset_id_for_site(site_config: dict[str, Any]) -> str:
-    """porto_alegre keeps legacy id; other cities use {site_slug}_flood_hazard."""
+def dataset_id_for_site(
+    site_config: dict[str, Any],
+    *,
+    normalization_domain: str = "city",
+) -> str:
+    """porto_alegre keeps legacy id; other cities use {site_slug}_flood_hazard[_regional]."""
     slug = str(site_config.get("site_slug") or "")
+    suf = _domain_suffix(normalization_domain)
     if slug == "porto_alegre":
-        return "poa_flood_hazard"
-    return f"{slug}_flood_hazard"
+        return f"poa_flood_hazard{suf}"
+    return f"{slug}_flood_hazard{suf}"
 
 
-def hazard_s3_prefix(site_config: dict[str, Any]) -> str:
+def hazard_s3_prefix(
+    site_config: dict[str, Any],
+    *,
+    normalization_domain: str = "city",
+) -> str:
     base = str(site_config["s3_prefix"]).rstrip("/")
-    return f"{base}/hazard"
+    kind = "hazard_regional" if _norm_domain(normalization_domain) == "regional" else "hazard"
+    return f"{base}/{kind}"
 
 
 def public_url(key: str) -> str:
@@ -128,20 +150,36 @@ def normalize_publish_cfg(site_config: dict[str, Any]) -> dict[str, Any]:
     return site_config["publish"]
 
 
-def resolve_score_tif(site_config: dict[str, Any]) -> Path:
+def resolve_score_tif(
+    site_config: dict[str, Any],
+    *,
+    normalization_domain: str = "city",
+) -> Path:
     out_dir = Path(site_config["paths_abs"]["data_output"])
-    name = site_config["outputs"]["flood_hazard_score_idw"]
+    name = str(site_config["outputs"]["flood_hazard_score_idw"])
+    if _norm_domain(normalization_domain) == "regional":
+        p = Path(name)
+        name = f"{p.stem}_regional{p.suffix}"
     path = out_dir / name
     if not path.is_file():
-        raise FileNotFoundError(
-            f"Missing IDW score GeoTIFF: {path}. "
-            f"Run compute_flood_hazard.py --site {site_config.get('site_slug')} first."
+        slug = site_config.get("site_slug")
+        hint = (
+            f"Run compute_flood_hazard.py --site {slug} --product regional first."
+            if _norm_domain(normalization_domain) == "regional"
+            else f"Run compute_flood_hazard.py --site {slug} first."
         )
+        raise FileNotFoundError(f"Missing IDW score GeoTIFF: {path}. {hint}")
     return path
 
 
-def publish_dir_for(site_config: dict[str, Any]) -> Path:
-    return Path(site_config["paths_abs"]["out"]) / PUBLISH_SUBDIR
+def publish_dir_for(
+    site_config: dict[str, Any],
+    *,
+    normalization_domain: str = "city",
+) -> Path:
+    return Path(site_config["paths_abs"]["out"]) / (
+        PUBLISH_SUBDIR + _domain_suffix(normalization_domain)
+    )
 
 
 def resolve_publish_paths(publish_dir: Path) -> dict[str, Path]:
@@ -169,9 +207,13 @@ def validate_publish_dir(publish_dir: Path) -> dict[str, Path]:
     return paths
 
 
-def expected_urls(site_config: dict[str, Any]) -> dict[str, str]:
+def expected_urls(
+    site_config: dict[str, Any],
+    *,
+    normalization_domain: str = "city",
+) -> dict[str, str]:
     """Public HTTPS URLs for the hazard publish layout (no upload)."""
-    prefix = hazard_s3_prefix(site_config)
+    prefix = hazard_s3_prefix(site_config, normalization_domain=normalization_domain)
     return {
         "cog": public_url(f"{prefix}/{COG_FILENAME}"),
         "tiles_visual": public_url(f"{prefix}/tiles_visual"),
@@ -311,14 +353,15 @@ def upload_flood_hazard_to_s3(
     publish_dir: Path,
     *,
     upload: bool = True,
+    normalization_domain: str = "city",
 ) -> dict[str, str]:
     """Validate local IDW publish artifacts; optionally upload to S3.
 
     Returns public HTTPS URLs (expected layout even when upload=False).
     """
     paths = validate_publish_dir(publish_dir)
-    urls = expected_urls(site_config)
-    prefix = hazard_s3_prefix(site_config)
+    urls = expected_urls(site_config, normalization_domain=normalization_domain)
+    prefix = hazard_s3_prefix(site_config, normalization_domain=normalization_domain)
 
     if not upload:
         print(f"Skipping S3 upload (upload=False). Expected prefix: s3://{S3_BUCKET}/{prefix}/")
@@ -356,16 +399,22 @@ def upload_flood_hazard_to_s3(
 def build_catalog_entry(
     site_config: dict[str, Any],
     urls: dict[str, str] | None = None,
+    *,
+    normalization_domain: str = "city",
 ) -> dict[str, Any]:
     """Build a datasets.yaml entry mirroring poa_flood_hazard."""
-    urls = urls or expected_urls(site_config)
+    domain = _norm_domain(normalization_domain)
+    urls = urls or expected_urls(site_config, normalization_domain=domain)
     display = str(site_config.get("display_name") or site_config.get("site_slug"))
-    dataset_id = dataset_id_for_site(site_config)
-    short = "POA" if dataset_id == "poa_flood_hazard" else display
+    dataset_id = dataset_id_for_site(site_config, normalization_domain=domain)
+    short = "POA" if str(site_config.get("site_slug")) == "porto_alegre" else display
+    name_suffix = ", MN regional" if domain == "regional" else ""
 
     return {
         "dataset_id": dataset_id,
-        "dataset_name": f"Flood Hazard Score ({short})",
+        "dataset_name": f"Flood Hazard Score ({short}{name_suffix})",
+        "normalization_domain": "minnesota" if domain == "regional" else "city",
+        "comparability": "regional" if domain == "regional" else "city",
         "publisher": "Open Earth Foundation (derived processing)",
         "license": "CC BY 4.0",
         "resolution": "~250m",
@@ -409,7 +458,14 @@ def build_catalog_entry(
         "description": (
             f"OEF flood hazard susceptibility index (0–1) for {display}. Ensemble of JRC GLOFLO v2.1, "
             "Global Flood Database, WRI Aqueduct, and GFPLAIN250m on a common ~250 m grid "
-            "(IDW distance-capped fill). Methodology in `models/flood_hazard/model_card.md`; "
+            "(IDW distance-capped fill). "
+            + (
+                "GFD uses Minnesota state robust norms (regional dual product); "
+                "JRC/Aqueduct/GFPLAIN stay fixed-threshold. Scores are comparable across cities in MN. "
+                if domain == "regional"
+                else "Normalization domain: city AOI for GFD (default screening product). "
+            )
+            + "Methodology in `models/flood_hazard/model_card.md`; "
             "defaults in `models/flood_hazard/config.yaml`; score CLI "
             "`transformation/flood_hazard/compute_flood_hazard.py`."
         ),
@@ -436,6 +492,13 @@ def _format_catalog_block(entry: dict[str, Any]) -> str:
         desc_lines.append(line)
     desc_body = "\n".join(f"      {ln}" for ln in desc_lines)
 
+    norm_fields = ""
+    if entry.get("normalization_domain"):
+        norm_fields = (
+            f"    normalization_domain: {entry['normalization_domain']}\n"
+            f"    comparability: {entry['comparability']}\n"
+        )
+
     return (
         f"  - dataset_id: {entry['dataset_id']}\n"
         f"    dataset_name: {entry['dataset_name']}\n"
@@ -447,6 +510,7 @@ def _format_catalog_block(entry: dict[str, Any]) -> str:
         f"    source_url: {entry['source_url']}\n"
         f"    dataset_type: {entry['dataset_type']}\n"
         f"    type: {entry['type']}\n"
+        f"{norm_fields}"
         f"    data_quality:\n"
         f"      temporal_coverage: \"{dq['temporal_coverage']}\"\n"
         f"      accuracy: \"{dq['accuracy']}\"\n"
@@ -551,15 +615,17 @@ def run_publish(
     build: bool = True,
     upload: bool = False,
     write_catalog: bool = False,
+    normalization_domain: str = "city",
 ) -> dict[str, str]:
+    domain = _norm_domain(normalization_domain)
     site_config = load_site_config(site, FLOOD_HAZARD_ROOT)
     publish_cfg = normalize_publish_cfg(site_config)
     tile_zoom = str(publish_cfg.get("tile_zoom", "8-15"))
-    publish_dir = publish_dir_for(site_config)
+    publish_dir = publish_dir_for(site_config, normalization_domain=domain)
 
     if build:
-        in_tif = resolve_score_tif(site_config)
-        print(f"Building publish artifacts from {in_tif}")
+        in_tif = resolve_score_tif(site_config, normalization_domain=domain)
+        print(f"Building publish artifacts from {in_tif} (domain={domain})")
         build_cog_and_tiles(
             in_tif=in_tif,
             publish_dir=publish_dir,
@@ -568,11 +634,16 @@ def run_publish(
     else:
         print(f"Skipping build; using existing artifacts in {publish_dir}")
 
-    urls = upload_flood_hazard_to_s3(site_config, publish_dir, upload=upload)
-    entry = build_catalog_entry(site_config, urls)
+    urls = upload_flood_hazard_to_s3(
+        site_config,
+        publish_dir,
+        upload=upload,
+        normalization_domain=domain,
+    )
+    entry = build_catalog_entry(site_config, urls, normalization_domain=domain)
     catalog_path = find_catalog_path(FLOOD_HAZARD_ROOT)
     upsert_datasets_yaml(entry, catalog_path, dry_run=not write_catalog)
-    print(f"UPLOAD={upload} | WRITE_CATALOG={write_catalog}")
+    print(f"UPLOAD={upload} | WRITE_CATALOG={write_catalog} | domain={domain}")
     print(f"Publish dir: {publish_dir}")
     return urls
 
@@ -580,6 +651,12 @@ def run_publish(
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--site", default=None, help="City slug (default: FLOODS_SITE)")
+    parser.add_argument(
+        "--normalization-domain",
+        choices=["city", "regional"],
+        default="city",
+        help="city = AOI product (default); regional = Minnesota dual product",
+    )
     parser.add_argument(
         "--build",
         action="store_true",
@@ -610,6 +687,7 @@ def main(argv: list[str] | None = None) -> int:
             build=args.build,
             upload=args.upload,
             write_catalog=args.write_catalog,
+            normalization_domain=args.normalization_domain,
         )
     except (FileNotFoundError, RuntimeError, subprocess.CalledProcessError, ValueError) as exc:
         print(f"ERROR: {exc}", file=sys.stderr)

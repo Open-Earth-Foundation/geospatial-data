@@ -4559,3 +4559,42 @@ datasets:
       component of heat risk. Different raster grid than flood shared vulnerability. Computed via
       `transformation/acs_ev` + `transformation/heat_risk/compute_heat_risk.py`. Normalization domain:
       Minnesota state (regional dual product); scores are comparable across cities in MN.
+
+  - dataset_id: rochester_flood_hazard_regional
+    dataset_name: Flood Hazard Score (Rochester, MN regional)
+    publisher: Open Earth Foundation (derived processing)
+    license: CC BY 4.0
+    resolution: ~250m
+    crs: EPSG:3857
+    access_type: internal_storage
+    source_url: https://developers.google.com/earth-engine/datasets/catalog/JRC_GLOFLOR_V2_1
+    dataset_type: flood
+    type: numeric_raster
+    normalization_domain: minnesota
+    comparability: regional
+    data_quality:
+      temporal_coverage: "Static hazard layers (JRC, Aqueduct, GFD, GFPLAIN ensemble)"
+      accuracy: "Weighted ensemble of normalized global fluvial hazard products; partial coverage rule (>=3/4 layers + fluvial); IDW gap-fill"
+      limitations: "Hazard screening only (no exposure/vulnerability); not event-specific observed depth"
+    value_encoding:
+      type: rgb_24bit_scaled
+      scale: 10000
+      offset: 0.0
+      unit: "score"
+      decode_formula: "value = (R + 256*G + 65536*B) / scale"
+    assets:
+      visual_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/rochester/climate_hazards/floods/hazard_regional/tiles_visual/{z}/{x}/{y}.png
+      value_tiles:
+        url_template: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/rochester/climate_hazards/floods/hazard_regional/tiles_values/{z}/{x}/{y}.png
+      download:
+        cog_url: https://geo-test-api.s3.us-east-1.amazonaws.com/oef_calculation/release/v1/rochester/climate_hazards/floods/hazard_regional/flood_hazard_score_idw_cog.tif
+      metadata:
+        url: []
+    description: >
+      OEF flood hazard susceptibility index (0–1) for Rochester. Ensemble of JRC GLOFLO v2.1, Global Flood
+      Database, WRI Aqueduct, and GFPLAIN250m on a common ~250 m grid (IDW distance-capped fill). GFD uses
+      Minnesota state robust norms (regional dual product); JRC/Aqueduct/GFPLAIN stay fixed-threshold.
+      Scores are comparable across cities in MN. Methodology in `models/flood_hazard/model_card.md`;
+      defaults in `models/flood_hazard/config.yaml`; score CLI
+      `transformation/flood_hazard/compute_flood_hazard.py`.

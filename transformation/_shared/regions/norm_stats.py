@@ -70,6 +70,31 @@ def layer_minmax(stats: dict[str, Any], layer_key: str) -> tuple[float, float]:
     return lo, hi
 
 
+def layer_gfd_robust_params(stats: dict[str, Any], layer_key: str = "gfd_event_count") -> dict[str, float]:
+    """Return p95 + log-space vmin/vmax for robust_p95_log1p_minmax GFD."""
+    layers = stats.get("layers") or {}
+    row = layers.get(layer_key)
+    if not isinstance(row, dict):
+        raise KeyError(f"Layer {layer_key!r} missing from regional stats")
+    if row.get("method") != "robust_p95_log1p_minmax":
+        raise ValueError(
+            f"Layer {layer_key!r} method is {row.get('method')!r}, "
+            "expected robust_p95_log1p_minmax"
+        )
+    p95, vmin, vmax = row.get("p95"), row.get("vmin"), row.get("vmax")
+    if p95 is None or vmin is None or vmax is None:
+        raise ValueError(
+            f"Layer {layer_key!r} incomplete (need p95, vmin, vmax). "
+            "Run compute_regional_norm_stats.py --layers gfd_event_count."
+        )
+    p95_f, lo, hi = float(p95), float(vmin), float(vmax)
+    if p95_f <= 0:
+        raise ValueError(f"Layer {layer_key!r} invalid p95={p95_f}")
+    if hi <= lo:
+        raise ValueError(f"Layer {layer_key!r} invalid log range vmin={lo} vmax={hi}")
+    return {"p95": p95_f, "vmin": lo, "vmax": hi}
+
+
 def save_norm_stats(payload: dict[str, Any], path: Path | None = None) -> Path:
     region_id = str(payload["region_id"])
     stats_version = str(payload.get("stats_version") or "v1")

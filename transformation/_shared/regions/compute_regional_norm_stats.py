@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
 """Compute regional (state-boundary) normalization stats for CCRA dual-product.
 
-Spike focus: heat Landsat / MODIS P90 vmin–vmax over the Minnesota state polygon
-(GEE ``TIGER/2018/States``, STATEFP=27). Writes versioned JSON under
-``cache/regions/{region}/normalization/{stats_version}/``.
+Supports heat Landsat/MODIS P90 min–max and flood GFD robust P95+log1p constants
+over the Minnesota state polygon (GEE ``TIGER/2018/States``, STATEFP=27).
+Writes / merges versioned JSON under ``cache/regions/{region}/normalization/{stats_version}/``.
 
 City AOI product is unchanged. This only fills constants for the regional product.
 
 Examples:
   python transformation/_shared/regions/compute_regional_norm_stats.py \\
-    --region minnesota --layers landsat_p90
+    --region minnesota --layers landsat_p90,modis_day_p90,modis_night_p90
 
   python transformation/_shared/regions/compute_regional_norm_stats.py \\
-    --region minnesota --layers landsat_p90,modis_day_p90,modis_night_p90
+    --region minnesota --layers gfd_event_count
 
   # Refresh local state.geojson from GEE (simplified)
   python transformation/_shared/regions/compute_regional_norm_stats.py \\
@@ -30,11 +30,11 @@ from pathlib import Path
 from typing import Any
 
 SHARED_REGIONS = Path(__file__).resolve().parent
-TRANSFORMATION = SHARED_REGIONS.parent.parent  # transformation/
-REPO = TRANSFORMATION.parent  # geospatial-data/
-HEAT_HAZARD = TRANSFORMATION / "heat_hazard"
-LANDSAT = TRANSFORMATION / "landsat_lst"
-MODIS = TRANSFORMATION / "modis_lst"
+TRANSFORM = SHARED_REGIONS.parent.parent  # transformation/
+REPO = TRANSFORM.parent  # geospatial-data/
+HEAT_HAZARD = TRANSFORM / "heat_hazard"
+LANDSAT = TRANSFORM / "landsat_lst"
+MODIS = TRANSFORM / "modis_lst"
 
 if str(HEAT_HAZARD) not in sys.path:
     sys.path.insert(0, str(HEAT_HAZARD))
@@ -42,8 +42,11 @@ if str(LANDSAT) not in sys.path:
     sys.path.insert(0, str(LANDSAT))
 if str(MODIS) not in sys.path:
     sys.path.insert(0, str(MODIS))
+if str(SHARED_REGIONS) not in sys.path:
+    sys.path.insert(0, str(SHARED_REGIONS))
 
 from input_common import init_ee, season_months  # noqa: E402
+from norm_stats import default_stats_path  # noqa: E402
 
 try:
     import yaml
@@ -58,8 +61,11 @@ DEFAULT_END_YEAR = 2024
 LANDSAT_NORM_SCALE_M = 300
 LANDSAT_MAX_CLOUD_LAND = 30
 MODIS_SCALE_M = 1000
+GFD_BAND = "flood_event_count_no_perm_water"
 
 HEAT_LAYER_KEYS = ("landsat_p90", "modis_day_p90", "modis_night_p90")
+FLOOD_LAYER_KEYS = ("gfd_event_count",)
+SUPPORTED_LAYER_KEYS = HEAT_LAYER_KEYS + FLOOD_LAYER_KEYS
 
 
 def load_region_yaml(region_id: str) -> dict[str, Any]:
@@ -81,16 +87,18 @@ def load_example_stats(region_id: str) -> dict[str, Any]:
     }
 
 
+def load_or_init_stats(region_id: str, stats_version: str) -> dict[str, Any]:
+    """Prefer existing cache so incremental layer runs do not wipe prior fill."""
+    existing = default_stats_path(region_id, stats_version)
+    if existing.is_file():
+        payload = json.loads(existing.read_text(encoding="utf-8"))
+        print(f"Merging into existing stats: {existing}")
+        return payload
+    return load_example_stats(region_id)
+
+
 def stats_out_path(region: dict[str, Any], stats_version: str) -> Path:
-    return (
-        REPO
-        / "cache"
-        / "regions"
-        / str(region["region_id"])
-        / "normalization"
-        / stats_version
-        / "normalization_stats.json"
-    )
+    return default_stats_path(str(region["region_id"]), stats_version)
 
 
 def load_state_roi(ee: Any, region: dict[str, Any]) -> Any:
@@ -273,6 +281,70 @@ def compute_heat_layer(
     }
 
 
+def build_gfd_count(ee: Any, roi: Any) -> Any:
+    gfd = ee.ImageCollection("GLOBAL_FLOOD_DB/MODIS_EVENTS/V1")
+    flood_only = gfd.map(
+        lambda img: img.select("flooded")
+        .updateMask(img.select("jrc_perm_water").neq(1))
+        .rename("flooded_no_perm_water")
+        .copyProperties(img, img.propertyNames())
+    )
+    return flood_only.sum().rename(GFD_BAND).clip(roi)
+
+
+def compute_gfd_layer(ee: Any, roi: Any, layer_cfg: dict[str, Any]) -> dict[str, Any]:
+    """State-domain robust P95 + log1p min–max constants (same algebra as extract_gfd)."""
+    scale = int(layer_cfg.get("scale_m") or 250)
+    print(f"Computing gfd_event_count over state ROI (scale={scale}m) …")
+    count = build_gfd_count(ee, roi)
+    pos_mask = count.gt(0)
+    count_pos = count.updateMask(pos_mask)
+    p95 = ee.Number(
+        count_pos.reduceRegion(
+            reducer=ee.Reducer.percentile([95]),
+            geometry=roi,
+            scale=scale,
+            maxPixels=1e13,
+            bestEffort=True,
+            tileScale=4,
+        ).get(GFD_BAND)
+    )
+    p95_safe = ee.Number(ee.Algorithms.If(p95, ee.Algorithms.If(p95.gt(0), p95, 1), 1))
+    count_cap = count_pos.min(p95_safe)
+    count_log = count_cap.add(1).log()
+    mm = count_log.reduceRegion(
+        reducer=ee.Reducer.minMax(),
+        geometry=roi,
+        scale=scale,
+        maxPixels=1e13,
+        bestEffort=True,
+        tileScale=4,
+    )
+    p95_val = float(p95_safe.getInfo())
+    mm_info = mm.getInfo()
+    vmin = mm_info.get(f"{GFD_BAND}_min")
+    vmax = mm_info.get(f"{GFD_BAND}_max")
+    if vmin is None or vmax is None:
+        raise RuntimeError(f"GFD log min/max nulls: p95={p95_val} mm={mm_info}")
+    print(
+        f"  gfd_event_count: p95={p95_val:.4f} "
+        f"log_vmin={float(vmin):.6f} log_vmax={float(vmax):.6f}"
+    )
+    return {
+        "method": "robust_p95_log1p_minmax",
+        "unit": layer_cfg.get("unit") or "count",
+        "p95": p95_val,
+        "vmin": float(vmin),
+        "vmax": float(vmax),
+        "scale_m": scale,
+        "n_samples": None,
+        "notes": (
+            "Zeros stay 0; positives: cap at regional P95, log1p, min–max over state. "
+            "Matches extract_gfd.gfd_robust_normalize algebra."
+        ),
+    }
+
+
 def merge_status(layers: dict[str, Any]) -> str:
     filled = 0
     total = 0
@@ -308,9 +380,9 @@ def run(
     for key in layer_keys:
         if key not in region_layers:
             raise KeyError(f"{key} not listed in {region_id}.yaml layers")
-        if key not in HEAT_LAYER_KEYS:
+        if key not in SUPPORTED_LAYER_KEYS:
             raise ValueError(
-                f"This spike currently supports heat layers only: {HEAT_LAYER_KEYS}. Got {key!r}."
+                f"Unsupported layer {key!r}. Supported: {SUPPORTED_LAYER_KEYS}."
             )
 
     ee = init_ee(authenticate=authenticate)
@@ -318,7 +390,7 @@ def run(
     if refresh_boundary:
         refresh_local_boundary(ee, region, roi)
 
-    payload = load_example_stats(region_id)
+    payload = load_or_init_stats(region_id, stats_version)
     payload["schema_version"] = "1"
     payload["region_id"] = region_id
     payload["stats_version"] = stats_version
@@ -328,7 +400,7 @@ def run(
         "ee_project": os.environ.get("EE_PROJECT", "eecc-maureen"),
         "git_sha": os.environ.get("GIT_SHA"),
         "notes": (
-            f"Spike: {', '.join(layer_keys)} over state boundary; "
+            f"Layers: {', '.join(layer_keys)} over state boundary; "
             f"season={season} {start_year}-{end_year}."
         ),
     }
@@ -344,15 +416,20 @@ def run(
 
     layers_out = dict(payload.get("layers") or {})
     for key in layer_keys:
-        layers_out[key] = compute_heat_layer(
-            ee,
-            roi,
-            key,
-            region_layers[key],
-            season=season,
-            start_year=start_year,
-            end_year=end_year,
-        )
+        if key in HEAT_LAYER_KEYS:
+            layers_out[key] = compute_heat_layer(
+                ee,
+                roi,
+                key,
+                region_layers[key],
+                season=season,
+                start_year=start_year,
+                end_year=end_year,
+            )
+        elif key in FLOOD_LAYER_KEYS:
+            layers_out[key] = compute_gfd_layer(ee, roi, region_layers[key])
+        else:
+            raise ValueError(f"Unhandled layer {key!r}")
     payload["layers"] = layers_out
     payload["status"] = merge_status(layers_out)
 
@@ -369,7 +446,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--layers",
         default="landsat_p90",
-        help="Comma-separated layer keys (default: landsat_p90)",
+        help="Comma-separated layer keys (heat and/or gfd_event_count)",
     )
     parser.add_argument("--stats-version", default="v1")
     parser.add_argument("--season", default=DEFAULT_SEASON)

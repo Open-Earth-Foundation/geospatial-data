@@ -19,29 +19,27 @@ Config for **dual-product** scoring: city AOI (**default, never replaced**) + op
 2. **Two products** — city screening unchanged; regional is a second output
 3. **Versioned stats** — `stats_version: v1` under `cache/.../v1/`
 
-## How to run (heat)
+## How to run (heat + flood)
 
 **Operator runbook:** [docs/ccra_regional_normalization_runbook.md](../../../docs/ccra_regional_normalization_runbook.md)
 
-Short path (after stats exist + city P90 inputs exist):
+Flood (GFD regional only):
 
 ```bash
-python transformation/heat_hazard/apply_regional_heat_norms.py --site rochester --region minnesota
-python transformation/heat_hazard/compute_heat_hazard.py --site rochester --product regional
-python transformation/acs_ev/apply_regional_acs_ev.py --site rochester --region minnesota
-python transformation/heat_risk/compute_heat_risk.py --site rochester --product regional
-python transformation/heat_hazard/heat_hazard_publish.py \
+python transformation/_shared/regions/compute_regional_norm_stats.py \
+  --region minnesota --layers gfd_event_count
+python transformation/flood_hazard/apply_regional_flood_norms.py --site rochester --region minnesota
+python transformation/flood_hazard/compute_flood_hazard.py --site rochester --product regional
+python transformation/flood_hazard/flood_hazard_publish.py \
   --site rochester --normalization-domain regional --upload --write-catalog
-python transformation/heat_risk/heat_risk_publish.py \
-  --site rochester --product risk --normalization-domain regional --upload --write-catalog
 ```
 
 ## Status
 
 | Hazard | Regional dual product | Notes |
 |--------|----------------------|--------|
-| Heat H + R (+ E/V) | Done (Rochester spike on S3) | See runbook |
-| Flood | Not yet | Domain-scaled: GFD only |
+| Heat H + R (+ E/V) | Done (Rochester on S3) | See runbook |
+| Flood H | Done (Rochester on S3) | GFD regional only; JRC/Aqueduct/GFPLAIN unchanged |
 | Landslide | Not yet | Domain-scaled: r90p, ndvi_p10 |
 
 See `docs/ccra_normalization_decision.md` (Option 1).
