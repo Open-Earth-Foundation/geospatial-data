@@ -14,6 +14,9 @@ Examples:
   python transformation/_shared/regions/compute_regional_norm_stats.py \\
     --region minnesota --layers gfd_event_count
 
+  python transformation/_shared/regions/compute_regional_norm_stats.py \\
+    --region minnesota --layers r90p,ndvi_p10
+
   # Refresh local state.geojson from GEE (simplified)
   python transformation/_shared/regions/compute_regional_norm_stats.py \\
     --region minnesota --layers landsat_p90 --refresh-boundary
@@ -65,7 +68,8 @@ GFD_BAND = "flood_event_count_no_perm_water"
 
 HEAT_LAYER_KEYS = ("landsat_p90", "modis_day_p90", "modis_night_p90")
 FLOOD_LAYER_KEYS = ("gfd_event_count",)
-SUPPORTED_LAYER_KEYS = HEAT_LAYER_KEYS + FLOOD_LAYER_KEYS
+LANDSLIDE_LAYER_KEYS = ("r90p", "ndvi_p10")
+SUPPORTED_LAYER_KEYS = HEAT_LAYER_KEYS + FLOOD_LAYER_KEYS + LANDSLIDE_LAYER_KEYS
 
 
 def load_region_yaml(region_id: str) -> dict[str, Any]:
@@ -345,6 +349,76 @@ def compute_gfd_layer(ee: Any, roi: Any, layer_cfg: dict[str, Any]) -> dict[str,
     }
 
 
+
+def compute_landslide_layer(
+    ee: Any,
+    roi: Any,
+    layer_key: str,
+    layer_cfg: dict[str, Any],
+    *,
+    season: str,
+    start_year: int,
+    end_year: int,
+) -> dict[str, Any]:
+    """State-domain min–max for CHIRPS R90p or MODIS NDVI P10."""
+    months = season_months(_site_like_config(season, start_year, end_year))
+    print(f"Computing {layer_key} over state ROI …")
+    if layer_key == "r90p":
+        scale = int(layer_cfg.get("scale_m") or 5000)
+        raw = (
+            ee.ImageCollection("UCSB-CHG/CHIRPS/DAILY")
+            .filterBounds(roi)
+            .filterDate(f"{start_year}-01-01", f"{end_year}-12-31")
+            .map(lambda image: image.set("month", image.date().get("month")))
+            .filter(ee.Filter.inList("month", months))
+        )
+        n = raw.size().getInfo()
+        print(f"  CHIRPS days in filter: {n}")
+        img = (
+            raw.reduce(ee.Reducer.percentile([90]))
+            .rename("r90p")
+            .clip(roi)
+        )
+        band = "r90p"
+        unit = layer_cfg.get("unit") or "mm_day"
+    elif layer_key == "ndvi_p10":
+        scale = int(layer_cfg.get("scale_m") or 250)
+        raw = (
+            ee.ImageCollection("MODIS/061/MOD13Q1")
+            .select("NDVI")
+            .filterBounds(roi)
+            .filterDate(f"{start_year}-01-01", f"{end_year}-12-31")
+            .map(lambda image: image.set("month", image.date().get("month")))
+            .filter(ee.Filter.inList("month", months))
+            .map(lambda img: img.multiply(0.0001).copyProperties(img, img.propertyNames()))
+        )
+        n = raw.size().getInfo()
+        print(f"  MODIS NDVI images in filter: {n}")
+        img = (
+            raw.reduce(ee.Reducer.percentile([10]))
+            .rename("ndvi_p10")
+            .clip(roi)
+        )
+        band = "ndvi_p10"
+        unit = layer_cfg.get("unit") or "ndvi"
+    else:
+        raise ValueError(f"Unsupported landslide layer: {layer_key}")
+
+    mm = reduce_minmax(img, band_name=band, roi=roi, ee=ee, scale=scale)
+    print(f"  {layer_key}: vmin={mm['vmin']:.6f} vmax={mm['vmax']:.6f} (scale={scale}m)")
+    return {
+        "method": "minmax",
+        "unit": unit,
+        "vmin": mm["vmin"],
+        "vmax": mm["vmax"],
+        "scale_m": scale,
+        "season": season,
+        "period": f"{start_year}-{end_year}",
+        "n_samples": None,
+        "notes": "Computed over full state boundary (GEE TIGER), not batch union_bbox.",
+    }
+
+
 def merge_status(layers: dict[str, Any]) -> str:
     filled = 0
     total = 0
@@ -428,6 +502,16 @@ def run(
             )
         elif key in FLOOD_LAYER_KEYS:
             layers_out[key] = compute_gfd_layer(ee, roi, region_layers[key])
+        elif key in LANDSLIDE_LAYER_KEYS:
+            layers_out[key] = compute_landslide_layer(
+                ee,
+                roi,
+                key,
+                region_layers[key],
+                season=season,
+                start_year=start_year,
+                end_year=end_year,
+            )
         else:
             raise ValueError(f"Unhandled layer {key!r}")
     payload["layers"] = layers_out

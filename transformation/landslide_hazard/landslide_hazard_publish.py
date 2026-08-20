@@ -10,6 +10,7 @@ Pipeline (after ``compute_landslide_hazard.py``):
 
 Example:
   python transformation/landslide_hazard/landslide_hazard_publish.py --site plymouth
+  python transformation/landslide_hazard/landslide_hazard_publish.py --site rochester --normalization-domain regional --build
   python transformation/landslide_hazard/landslide_hazard_publish.py --site plymouth --upload --write-catalog
 """
 
@@ -42,6 +43,17 @@ COLORIZED_FILENAME = "landslide_hazard_90m_colorized.tif"
 VALUE_RGB_FILENAME = "landslide_hazard_90m_value_encoded_rgb.tif"
 PUBLISH_SUBDIR = "landslide_hazard_score"
 COLORS_TXT = "landslide_hazard_colors.txt"
+
+
+def _norm_domain(domain: str | None) -> str:
+    d = str(domain or "city").lower()
+    if d not in {"city", "regional"}:
+        raise ValueError(f"normalization_domain must be 'city' or 'regional', got {domain!r}")
+    return d
+
+
+def _domain_suffix(domain: str) -> str:
+    return "_regional" if _norm_domain(domain) == "regional" else ""
 
 
 def _ensure_common_cli_paths() -> None:
@@ -104,15 +116,25 @@ def _s3_uri(key: str) -> str:
     return f"s3://{S3_BUCKET}/{key.lstrip('/')}"
 
 
-def dataset_id_for_site(site_config: dict[str, Any]) -> str:
+def dataset_id_for_site(
+    site_config: dict[str, Any],
+    *,
+    normalization_domain: str = "city",
+) -> str:
     slug = str(site_config.get("site_slug") or "")
+    suf = _domain_suffix(normalization_domain)
     if slug == "porto_alegre":
-        return "poa_landslide_hazard"
-    return f"{slug}_landslide_hazard"
+        return f"poa_landslide_hazard{suf}"
+    return f"{slug}_landslide_hazard{suf}"
 
 
-def hazard_s3_prefix(site_config: dict[str, Any]) -> str:
-    return f"{str(site_config['s3_prefix']).rstrip('/')}/hazard"
+def hazard_s3_prefix(
+    site_config: dict[str, Any],
+    *,
+    normalization_domain: str = "city",
+) -> str:
+    kind = "hazard_regional" if _norm_domain(normalization_domain) == "regional" else "hazard"
+    return f"{str(site_config['s3_prefix']).rstrip('/')}/{kind}"
 
 
 def vector_s3_prefix(site_config: dict[str, Any]) -> str:
@@ -129,15 +151,25 @@ def normalize_publish_cfg(site_config: dict[str, Any]) -> dict[str, Any]:
     return site_config["publish"]
 
 
-def resolve_score_tif(site_config: dict[str, Any]) -> Path:
+def resolve_score_tif(
+    site_config: dict[str, Any],
+    *,
+    normalization_domain: str = "city",
+) -> Path:
     out_dir = Path(site_config["paths_abs"]["data_output"])
-    name = site_config["outputs"]["landslide_hazard_score"]
+    name = str(site_config["outputs"]["landslide_hazard_score"])
+    if _norm_domain(normalization_domain) == "regional":
+        p = Path(name)
+        name = f"{p.stem}_regional{p.suffix}"
     path = out_dir / name
     if not path.is_file():
-        raise FileNotFoundError(
-            f"Missing score GeoTIFF: {path}. "
-            f"Run compute_landslide_hazard.py --site {site_config.get('site_slug')} first."
+        slug = site_config.get("site_slug")
+        hint = (
+            f"Run compute_landslide_hazard.py --site {slug} --product regional first."
+            if _norm_domain(normalization_domain) == "regional"
+            else f"Run compute_landslide_hazard.py --site {slug} first."
         )
+        raise FileNotFoundError(f"Missing score GeoTIFF: {path}. {hint}")
     return path
 
 
@@ -153,9 +185,13 @@ def resolve_gpkg(site_config: dict[str, Any]) -> Path | None:
     return path if path.is_file() else None
 
 
-def publish_dir_for(site_config: dict[str, Any]) -> Path:
+def publish_dir_for(
+    site_config: dict[str, Any],
+    *,
+    normalization_domain: str = "city",
+) -> Path:
     out_root = Path(site_config["paths_abs"]["out"])
-    return out_root / PUBLISH_SUBDIR
+    return out_root / (PUBLISH_SUBDIR + _domain_suffix(normalization_domain))
 
 
 def resolve_publish_paths(publish_dir: Path) -> dict[str, Path]:
@@ -185,8 +221,9 @@ def expected_urls(
     site_config: dict[str, Any],
     *,
     gpkg_name: str | None = None,
+    normalization_domain: str = "city",
 ) -> dict[str, str]:
-    prefix = hazard_s3_prefix(site_config)
+    prefix = hazard_s3_prefix(site_config, normalization_domain=normalization_domain)
     urls = {
         "cog": public_url(f"{prefix}/{COG_FILENAME}"),
         "tiles_visual": public_url(f"{prefix}/tiles_visual"),
@@ -331,11 +368,14 @@ def upload_landslide_hazard_to_s3(
     *,
     upload: bool = True,
     gpkg_path: Path | None = None,
+    normalization_domain: str = "city",
 ) -> dict[str, str]:
     paths = validate_publish_dir(publish_dir)
     gpkg_name = gpkg_path.name if gpkg_path and gpkg_path.is_file() else None
-    urls = expected_urls(site_config, gpkg_name=gpkg_name)
-    prefix = hazard_s3_prefix(site_config)
+    urls = expected_urls(
+        site_config, gpkg_name=gpkg_name, normalization_domain=normalization_domain
+    )
+    prefix = hazard_s3_prefix(site_config, normalization_domain=normalization_domain)
 
     if not upload:
         print(f"Skipping S3 upload (upload=False). Expected prefix: s3://{S3_BUCKET}/{prefix}/")
@@ -367,11 +407,15 @@ def upload_landslide_hazard_to_s3(
 def build_catalog_entry(
     site_config: dict[str, Any],
     urls: dict[str, str] | None = None,
+    *,
+    normalization_domain: str = "city",
 ) -> dict[str, Any]:
-    urls = urls or expected_urls(site_config)
+    domain = _norm_domain(normalization_domain)
+    urls = urls or expected_urls(site_config, normalization_domain=domain)
     display = str(site_config.get("display_name") or site_config.get("site_slug"))
-    dataset_id = dataset_id_for_site(site_config)
-    short = "POA" if dataset_id == "poa_landslide_hazard" else display
+    dataset_id = dataset_id_for_site(site_config, normalization_domain=domain)
+    short = "POA" if str(site_config.get("site_slug")) == "porto_alegre" else display
+    name_suffix = ", MN regional" if domain == "regional" else ""
     season = str(site_config.get("season_label") or site_config.get("season") or "").upper()
     start_year = site_config.get("start_year", "")
     end_year = site_config.get("end_year", "")
@@ -384,7 +428,9 @@ def build_catalog_entry(
 
     return {
         "dataset_id": dataset_id,
-        "dataset_name": f"Landslide Hazard Score ({short})",
+        "dataset_name": f"Landslide Hazard Score ({short}{name_suffix})",
+        "normalization_domain": "minnesota" if domain == "regional" else "city",
+        "comparability": "regional" if domain == "regional" else "city",
         "publisher": "Open Earth Foundation (derived processing)",
         "license": "CC BY 4.0",
         "resolution": "~90m",
@@ -425,8 +471,14 @@ def build_catalog_entry(
             f"OEF landslide susceptibility index (0–1) for {display} on a 90 m grid. "
             "Ensemble of Copernicus GLO-30 slope, CHIRPS R90p, SoilGrids clay %, "
             "MODIS NDVI P10, and MERIT Hydro HAND, with Dynamic World land cover modifier. "
-            "Slope < 15° gates all components to zero. Methodology in "
-            "`models/landslide_hazard/model_card.md`. Score CLI "
+            "Slope < 15° gates all components to zero. "
+            + (
+                "R90p and NDVI use Minnesota state min–max (regional dual product); "
+                "slope/clay/HAND stay fixed-threshold. Scores are comparable across cities in MN. "
+                if domain == "regional"
+                else "Normalization domain: city AOI for R90p/NDVI (default screening product). "
+            )
+            + "Methodology in `models/landslide_hazard/model_card.md`. Score CLI "
             "`transformation/landslide_hazard/compute_landslide_hazard.py`."
         ),
     }
@@ -456,6 +508,13 @@ def _format_catalog_block(entry: dict[str, Any]) -> str:
         download_lines.append(f"        bairro_gpkg_url: {download['bairro_gpkg_url']}")
     download_block = "\n".join(download_lines)
 
+    norm_fields = ""
+    if entry.get("normalization_domain"):
+        norm_fields = (
+            f"    normalization_domain: {entry['normalization_domain']}\n"
+            f"    comparability: {entry['comparability']}\n"
+        )
+
     return (
         f"  - dataset_id: {entry['dataset_id']}\n"
         f"    dataset_name: {entry['dataset_name']}\n"
@@ -467,6 +526,7 @@ def _format_catalog_block(entry: dict[str, Any]) -> str:
         f"    source_url: {entry['source_url']}\n"
         f"    dataset_type: {entry['dataset_type']}\n"
         f"    type: {entry['type']}\n"
+        f"{norm_fields}"
         f"    data_quality:\n"
         f"      temporal_coverage: \"{dq['temporal_coverage']}\"\n"
         f"      accuracy: \"{dq['accuracy']}\"\n"
@@ -568,16 +628,18 @@ def run_publish(
     build: bool = True,
     upload: bool = False,
     write_catalog: bool = False,
+    normalization_domain: str = "city",
 ) -> dict[str, str]:
+    domain = _norm_domain(normalization_domain)
     site_config = load_site_config(site, LANDSLIDE_HAZARD_ROOT)
     publish_cfg = normalize_publish_cfg(site_config)
     tile_zoom = str(publish_cfg.get("tile_zoom", "8-15"))
-    publish_dir = publish_dir_for(site_config)
+    publish_dir = publish_dir_for(site_config, normalization_domain=domain)
     gpkg = resolve_gpkg(site_config)
 
     if build:
-        in_tif = resolve_score_tif(site_config)
-        print(f"Building publish artifacts from {in_tif}")
+        in_tif = resolve_score_tif(site_config, normalization_domain=domain)
+        print(f"Building publish artifacts from {in_tif} (domain={domain})")
         build_cog_and_tiles(
             in_tif=in_tif,
             publish_dir=publish_dir,
@@ -591,11 +653,12 @@ def run_publish(
         publish_dir,
         upload=upload,
         gpkg_path=gpkg,
+        normalization_domain=domain,
     )
-    entry = build_catalog_entry(site_config, urls)
+    entry = build_catalog_entry(site_config, urls, normalization_domain=domain)
     catalog_path = find_catalog_path(LANDSLIDE_HAZARD_ROOT)
     upsert_datasets_yaml(entry, catalog_path, dry_run=not write_catalog)
-    print(f"UPLOAD={upload} | WRITE_CATALOG={write_catalog}")
+    print(f"UPLOAD={upload} | WRITE_CATALOG={write_catalog} | domain={domain}")
     print(f"Publish dir: {publish_dir}")
     return urls
 
@@ -603,6 +666,12 @@ def run_publish(
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--site", default=None, help="City slug (default: LANDSLIDES_SITE)")
+    parser.add_argument(
+        "--normalization-domain",
+        choices=["city", "regional"],
+        default="city",
+        help="city = AOI product (default); regional = Minnesota dual product",
+    )
     parser.add_argument(
         "--build",
         action="store_true",
@@ -637,6 +706,7 @@ def main(argv: list[str] | None = None) -> int:
             build=args.build,
             upload=args.upload,
             write_catalog=args.write_catalog,
+            normalization_domain=args.normalization_domain,
         )
     except (FileNotFoundError, RuntimeError, subprocess.CalledProcessError, ValueError) as exc:
         print(f"ERROR: {exc}", file=sys.stderr)

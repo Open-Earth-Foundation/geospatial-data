@@ -7,6 +7,7 @@ writes GeoTIFF + SVG QA maps.
 
 Example:
   python transformation/landslide_hazard/compute_landslide_hazard.py --site plymouth
+  python transformation/landslide_hazard/compute_landslide_hazard.py --site rochester --product regional
 """
 
 from __future__ import annotations
@@ -138,11 +139,22 @@ def clamp01(arr: np.ndarray) -> np.ndarray:
     return np.clip(arr, 0.0, 1.0)
 
 
-def minmax_norm(arr: np.ndarray) -> np.ndarray:
-    lo, hi = np.nanmin(arr), np.nanmax(arr)
+def minmax_norm(
+    arr: np.ndarray,
+    *,
+    vmin: float | None = None,
+    vmax: float | None = None,
+) -> np.ndarray:
+    lo = float(vmin) if vmin is not None else float(np.nanmin(arr))
+    hi = float(vmax) if vmax is not None else float(np.nanmax(arr))
     if not np.isfinite(lo) or not np.isfinite(hi) or hi == lo:
         return np.zeros_like(arr, dtype="float32")
-    return ((arr - lo) / (hi - lo)).astype("float32")
+    return np.clip((arr - lo) / (hi - lo), 0.0, 1.0).astype("float32")
+
+
+def _with_regional_suffix(name: str) -> str:
+    p = Path(name)
+    return f"{p.stem}_regional{p.suffix}"
 
 
 def resolve_inputs(site_config: dict[str, Any]) -> dict[str, Path]:
@@ -196,18 +208,25 @@ def run(
     site: str,
     *,
     write_qa: bool = True,
+    product: str = "city",
+    region: str = "minnesota",
+    stats_version: str = "v1",
     root: Path | None = None,
 ) -> Path:
+    if product not in {"city", "regional"}:
+        raise ValueError(f"product must be 'city' or 'regional', got {product!r}")
     root = Path(root or LANDSLIDE_HAZARD_ROOT).resolve()
     site_config = load_site_config(site, root)
     display = str(site_config.get("display_name") or site)
     hazard = site_config.get("hazard") or {}
-    outputs = site_config["outputs"]
+    outputs = dict(site_config["outputs"])
+    if product == "regional":
+        outputs = {k: _with_regional_suffix(str(v)) for k, v in outputs.items()}
     output_dir = Path(site_config["paths_abs"]["data_output"])
     output_dir.mkdir(parents=True, exist_ok=True)
 
     input_paths = resolve_inputs(site_config)
-    print(f"Landslide hazard site: {display} ({site})")
+    print(f"Landslide hazard site: {display} ({site}) · product={product}")
     print(f"Inputs ({len(input_paths)}):")
     for k, p in input_paths.items():
         print(f"  {k}: {p.name}")
@@ -258,9 +277,27 @@ def run(
 
     slope_span = max(slope_sat - slope_gate, 1e-6)
     slope_risk = clamp01((slope_arr - slope_gate) / slope_span)
-    precip_risk = minmax_norm(r90p_fill)
+    r90p_bounds: tuple[float, float] | None = None
+    ndvi_bounds: tuple[float, float] | None = None
+    if product == "regional":
+        regions_dir = LANDSLIDE_HAZARD_ROOT.parent / "_shared" / "regions"
+        if str(regions_dir) not in sys.path:
+            sys.path.insert(0, str(regions_dir))
+        from norm_stats import layer_minmax, load_norm_stats  # noqa: WPS433
+
+        stats = load_norm_stats(region, stats_version=stats_version)
+        r90p_bounds = layer_minmax(stats, "r90p")
+        ndvi_bounds = layer_minmax(stats, "ndvi_p10")
+        print(
+            f"Regional norms: r90p={r90p_bounds[0]:.4f}..{r90p_bounds[1]:.4f} "
+            f"ndvi_p10={ndvi_bounds[0]:.4f}..{ndvi_bounds[1]:.4f}"
+        )
+        precip_risk = minmax_norm(r90p_fill, vmin=r90p_bounds[0], vmax=r90p_bounds[1])
+        veg_protect = minmax_norm(ndvi_fill, vmin=ndvi_bounds[0], vmax=ndvi_bounds[1])
+    else:
+        precip_risk = minmax_norm(r90p_fill)
+        veg_protect = minmax_norm(ndvi_fill)
     soil_risk = clamp01(clay_fill / clay_sat)
-    veg_protect = minmax_norm(ndvi_fill)
     hand_factor = clamp01(1.0 - (hand_fill / hand_sat))
 
     w = hazard.get("weights") or {}
@@ -332,11 +369,12 @@ def run(
         "hand_factor": hand_factor,
     }
 
+    qa_tag = "_regional" if product == "regional" else ""
     if write_qa:
         grid_sub = f"{display} · {ref_width}×{ref_height} · ~{target_res_m} m"
         write_raster_grid_svg(
             hazard_score,
-            output_dir / "map_landslide_hazard_score.svg",
+            output_dir / f"map_landslide_hazard_score{qa_tag}.svg",
             title=f"Landslide hazard score — {display}",
             subtitle=grid_sub,
             vmin=0.0,
@@ -345,7 +383,7 @@ def run(
         )
         write_raster_grid_svg(
             slope_arr,
-            output_dir / "map_landslide_slope_deg.svg",
+            output_dir / f"map_landslide_slope_deg{qa_tag}.svg",
             title=f"Slope (deg) — {display}",
             subtitle=grid_sub,
             vmin=None,
@@ -355,7 +393,7 @@ def run(
         for name, arr in components.items():
             write_raster_grid_svg(
                 np.where(np.isfinite(slope_arr), arr, np.nan),
-                output_dir / f"map_landslide_{name}.svg",
+                output_dir / f"map_landslide_{name}{qa_tag}.svg",
                 title=f"Landslide component {name} — {display}",
                 subtitle=grid_sub,
                 vmin=0.0,
@@ -366,6 +404,13 @@ def run(
     meta = {
         "site_slug": site,
         "display_name": display,
+        "product": product,
+        "normalization_domain": "city" if product == "city" else region,
+        "comparability": "city" if product == "city" else "regional",
+        "regional_bounds": {
+            "r90p": list(r90p_bounds) if r90p_bounds else None,
+            "ndvi_p10": list(ndvi_bounds) if ndvi_bounds else None,
+        },
         "target_resolution_m": target_res_m,
         "slope_gate_deg": slope_gate,
         "weights": {
@@ -390,7 +435,7 @@ def run(
         if write_qa
         else [],
     }
-    meta_path = output_dir / "metadata.json"
+    meta_path = output_dir / ("metadata.json" if product == "city" else "metadata_regional.json")
     meta_path.write_text(json.dumps(meta, indent=2), encoding="utf-8")
     print(f"Wrote {meta_path}")
     return output_dir
@@ -404,6 +449,14 @@ def main(argv: list[str] | None = None) -> int:
         help="City slug (default: LANDSLIDES_SITE / porto_alegre)",
     )
     parser.add_argument("--no-qa", action="store_true", help="Skip SVG QA maps")
+    parser.add_argument(
+        "--product",
+        choices=["city", "regional"],
+        default="city",
+        help="city = AOI min–max for r90p/ndvi (default); regional = Minnesota dual product",
+    )
+    parser.add_argument("--region", default="minnesota")
+    parser.add_argument("--stats-version", default="v1")
     args = parser.parse_args(argv)
     site = (
         args.site
@@ -411,14 +464,23 @@ def main(argv: list[str] | None = None) -> int:
         or os.environ.get("FLOODS_SITE", "porto_alegre")
     )
     try:
-        out = run(site, write_qa=not args.no_qa)
-    except FileNotFoundError as exc:
+        out = run(
+            site,
+            write_qa=not args.no_qa,
+            product=args.product,
+            region=args.region,
+            stats_version=args.stats_version,
+        )
+    except (FileNotFoundError, ValueError, KeyError) as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 1
     print(f"\nDone. Outputs in: {out}")
+    domain_flag = (
+        " --normalization-domain regional" if args.product == "regional" else ""
+    )
     print(
         "Next: python transformation/landslide_hazard/landslide_hazard_publish.py "
-        f"--site {site}"
+        f"--site {site}{domain_flag}"
     )
     return 0
 

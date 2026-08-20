@@ -1,6 +1,6 @@
-# CCRA regional normalization — runbook (heat + flood)
+# CCRA regional normalization — runbook (heat + flood + landslide)
 
-**Status:** Dual product proven on **Rochester, MN** for **heat** (H + R) and **flood hazard** (city product unchanged).  
+**Status:** Dual product proven on **Rochester, MN** for **heat** (H + R), **flood hazard**, and **landslide hazard** (city product unchanged).  
 **Policy:** Option 1 — state-boundary constants; both products stay published.  
 **Decision:** [ccra_normalization_decision.md](./ccra_normalization_decision.md) · Config: [`transformation/_shared/regions/`](../transformation/_shared/regions/)
 
@@ -12,10 +12,16 @@ Use the repo `.venv` if present (`geospatial-data/.venv/bin/python`).
 
 | Product | Domain | Outputs | Use |
 |---------|--------|---------|-----|
-| **City** (default) | City AOI norms (GFD / LST / ACS) | `{city}_*_hazard`, `{city}_heat_risk`, … | Local hotspots / screening |
+| **City** (default) | City AOI norms | `{city}_*_hazard`, `{city}_heat_risk`, … | Local hotspots / screening |
 | **Regional** (opt-in) | Minnesota state constants | `{city}_*_regional` | Compare cities within MN |
 
-**Flood note:** only **GFD** is re-scaled regionally. JRC / Aqueduct / GFPLAIN stay fixed-threshold on both products.
+**What is re-scaled regionally**
+
+| Hazard | Regional layers | Unchanged (fixed / binary) |
+|--------|-----------------|----------------------------|
+| Heat | Landsat / MODIS LST (+ ACS for risk) | — |
+| Flood | GFD event count | JRC, Aqueduct, GFPLAIN |
+| Landslide | R90p, NDVI P10 | slope, clay, HAND, Dynamic World |
 
 Never mix city H with regional E/V (or vice versa) when computing heat risk.
 
@@ -25,56 +31,44 @@ Never mix city H with regional E/V (or vice versa) when computing heat risk.
 
 From repo root `geospatial-data/`:
 
-1. **City inputs already extracted** for the site (heat P90s and/or flood ensemble layers under `sites/{site}/data/input/`).
-2. **GEE auth** (only when recomputing state heat / GFD stats).
-3. **`CENSUS_API_KEY`** (preferred for statewide ACS stats — heat risk).
-4. Tools for publish: GDAL (`gdal_translate`, `gdaldem`, `gdal_calc.py`, `gdal2tiles.py`) and AWS CLI (upload).
-
-Regional stats path (versioned):
+1. City inputs already extracted for the site.
+2. GEE auth when recomputing state stats.
+3. `CENSUS_API_KEY` for statewide ACS (heat risk).
+4. GDAL + AWS CLI for publish/upload.
 
 ```text
 cache/regions/minnesota/normalization/v1/normalization_stats.json
 ```
 
-(`cache/regions/` is gitignored — recompute or restore locally before apply.)
+(`cache/regions/` is gitignored.)
 
 ---
 
-## One-time / rare: compute Minnesota constants
-
-### Heat LST (GEE over state polygon)
+## One-time: Minnesota constants
 
 ```bash
+# Heat LST
 python transformation/_shared/regions/compute_regional_norm_stats.py \
-  --region minnesota \
-  --layers landsat_p90,modis_day_p90,modis_night_p90
-```
+  --region minnesota --layers landsat_p90,modis_day_p90,modis_night_p90
 
-### Flood GFD (GEE over state polygon)
-
-Merges into the same stats JSON (does not wipe heat layers):
-
-```bash
+# Flood GFD
 python transformation/_shared/regions/compute_regional_norm_stats.py \
-  --region minnesota \
-  --layers gfd_event_count
-```
+  --region minnesota --layers gfd_event_count
 
-Writes `layers.gfd_event_count.{p95,vmin,vmax}` (robust P95 + log1p min–max, scale ~250 m).
+# Landslide R90p + NDVI
+python transformation/_shared/regions/compute_regional_norm_stats.py \
+  --region minnesota --layers r90p,ndvi_p10
 
-### ACS E/V (statewide block groups)
-
-```bash
+# ACS E/V (heat risk)
 export CENSUS_API_KEY=...
-python transformation/_shared/regions/compute_regional_acs_norm_stats.py \
-  --region minnesota
+python transformation/_shared/regions/compute_regional_acs_norm_stats.py --region minnesota
 ```
 
-Bump `stats_version` / write `cache/.../vN/` when recomputing.
+Incremental runs **merge** into the existing stats JSON.
 
 ---
 
-## Per city: heat (Rochester)
+## Per city: heat
 
 ```bash
 python transformation/heat_hazard/apply_regional_heat_norms.py --site rochester --region minnesota
@@ -90,16 +84,25 @@ python transformation/heat_risk/heat_risk_publish.py \
 
 ---
 
-## Per city: flood (Rochester)
-
-Only GFD uses regional constants. City product remains default.
+## Per city: flood
 
 ```bash
-python transformation/flood_hazard/apply_regional_flood_norms.py \
-  --site rochester --region minnesota
-python transformation/flood_hazard/compute_flood_hazard.py \
-  --site rochester --product regional
+python transformation/flood_hazard/apply_regional_flood_norms.py --site rochester --region minnesota
+python transformation/flood_hazard/compute_flood_hazard.py --site rochester --product regional
 python transformation/flood_hazard/flood_hazard_publish.py \
+  --site rochester --normalization-domain regional --upload --write-catalog
+```
+
+---
+
+## Per city: landslide
+
+```bash
+python transformation/landslide_hazard/apply_regional_landslide_norms.py \
+  --site rochester --region minnesota
+python transformation/landslide_hazard/compute_landslide_hazard.py \
+  --site rochester --product regional
+python transformation/landslide_hazard/landslide_hazard_publish.py \
   --site rochester --normalization-domain regional --upload --write-catalog
 ```
 
@@ -107,22 +110,22 @@ python transformation/flood_hazard/flood_hazard_publish.py \
 
 ## Naming & S3 layout
 
-| Hazard | City `dataset_id` | Regional `dataset_id` | Regional S3 |
-|--------|-------------------|-----------------------|-------------|
-| Heat H | `{city}_heat_hazard` | `{city}_heat_hazard_regional` | `…/heat/hazard_regional/` |
-| Heat R | `{city}_heat_risk` | `{city}_heat_risk_regional` | `…/heat/risk_regional/` |
-| Flood H | `{city}_flood_hazard` | `{city}_flood_hazard_regional` | `…/floods/hazard_regional/` |
+| Hazard | Regional `dataset_id` | Regional S3 |
+|--------|----------------------|-------------|
+| Heat H | `{city}_heat_hazard_regional` | `…/heat/hazard_regional/` |
+| Heat R | `{city}_heat_risk_regional` | `…/heat/risk_regional/` |
+| Flood H | `{city}_flood_hazard_regional` | `…/floods/hazard_regional/` |
+| Landslide H | `{city}_landslide_hazard_regional` | `…/landslides/hazard_regional/` |
 
-Catalog fields: `normalization_domain: minnesota`, `comparability: regional`.
+Catalog: `normalization_domain: minnesota`, `comparability: regional`.
 
-**Proven on S3 (Rochester):** heat `*_regional` + `rochester_flood_hazard_regional`.
+**Proven on S3 (Rochester):** heat, flood, and landslide `*_regional`.
 
 ---
 
 ## Not yet
 
-- Landslide regional (**r90p**, **ndvi_p10**)
-- Flood risk / E/V regional
-- All MN cities rolled out
+- Flood / landslide risk (E/V) regional products
+- Rollout to all MN cities
 
 See [`minnesota.yaml`](../transformation/_shared/regions/minnesota.yaml) · [ccra_new_hazard_normalization_checklist.md](./ccra_new_hazard_normalization_checklist.md).
