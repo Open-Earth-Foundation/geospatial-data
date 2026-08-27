@@ -1,0 +1,3181 @@
+{
+  "_metadata": {
+    "name": "CCRA Hazard–Receptor Taxonomy",
+    "version": "1.0",
+    "framework": "IPCC AR6-aligned operational CCRA taxonomy",
+    "structure": "RECEPTOR > receptor_id + receptor_name > risk_pathways > hazard_id + hazard_name + ipcc_cid > Hazard + Exposure + Vulnerability (Sensitivity + Adaptive Capacity)",
+    "ipcc_cid_note": "ipcc_cid is always an array because one operational hazard/risk pathway may correspond to one or multiple IPCC AR6 WGI Chapter 12 Climatic Impact-Drivers. Operational hazard names are not assumed to be identical to IPCC CID names.",
+    "methodological_note": "Hazard indicators are receptor-specific characterizations of physical climatic impact-drivers. Exposure identifies people, assets, ecosystems or activities present in places that may be affected. Vulnerability is separated into Sensitivity and Adaptive Capacity."
+  },
+  "receptors": [
+    {
+      "receptor_id": "REC_HUMAN_HEALTH_WELL_BEING",
+      "receptor_name": "Human Health & Well-being",
+      "risk_pathways": [
+        {
+          "hazard_id": "HZ_EXTREME_HEAT",
+          "hazard_name": "Extreme Heat",
+          "ipcc_cid": [
+            "Extreme heat"
+          ],
+          "Hazard": [
+            "Heat Index / humid heat",
+            "Heatwave duration",
+            "Hot-night frequency",
+            "Days above health threshold"
+          ],
+          "Exposure": [
+            "Population in heat-hazard area",
+            "Population density",
+            "Outdoor workers"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Older population",
+              "Young children",
+              "Pre-existing health vulnerability",
+              "Disability / reduced mobility",
+              "Housing thermal sensitivity"
+            ],
+            "Adaptive Capacity": [
+              "Income / poverty",
+              "Cooling access",
+              "Healthcare accessibility",
+              "Heat-health warning systems",
+              "Emergency response"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_HEAVY_PRECIPITATION_PLUVIAL_FLOOD",
+          "hazard_name": "Heavy Precipitation & Pluvial Flood",
+          "ipcc_cid": [
+            "Heavy precipitation and pluvial flood"
+          ],
+          "Hazard": [
+            "Flood depth",
+            "Flood duration",
+            "Flood velocity",
+            "Inundation extent"
+          ],
+          "Exposure": [
+            "Population within inundation area",
+            "Households within inundation area"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Older population",
+              "Young children",
+              "Reduced mobility",
+              "Poor-quality housing",
+              "Informal settlements"
+            ],
+            "Adaptive Capacity": [
+              "Income / recovery resources",
+              "Warning systems",
+              "Evacuation access",
+              "Shelters",
+              "Healthcare / emergency access"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_RIVER_FLOOD",
+          "hazard_name": "River Flood",
+          "ipcc_cid": [
+            "River flood"
+          ],
+          "Hazard": [
+            "Flood depth",
+            "Flood velocity",
+            "Flood duration",
+            "Return-period inundation"
+          ],
+          "Exposure": [
+            "Population in floodplain",
+            "Households in flood extent"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Demographic vulnerability",
+              "Housing quality",
+              "Mobility limitations"
+            ],
+            "Adaptive Capacity": [
+              "Income / insurance",
+              "Warning systems",
+              "Evacuation capacity",
+              "Shelter access",
+              "Emergency services"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_DROUGHT_WATER_SCARCITY",
+          "hazard_name": "Drought & Water Scarcity",
+          "ipcc_cid": [
+            "Hydrological drought"
+          ],
+          "Hazard": [
+            "Hydrological drought severity",
+            "Low-flow anomaly",
+            "Reservoir / groundwater deficit",
+            "Water-supply deficit"
+          ],
+          "Exposure": [
+            "Population dependent on affected water sources",
+            "Households in water-scarce areas"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Inadequate water access",
+              "Poor sanitation",
+              "Water-sensitive health conditions"
+            ],
+            "Adaptive Capacity": [
+              "Income / poverty",
+              "Alternative water access",
+              "Emergency water supply",
+              "Healthcare accessibility"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_FIRE_WEATHER_WILDFIRE",
+          "hazard_name": "Fire Weather & Wildfire",
+          "ipcc_cid": [
+            "Fire weather"
+          ],
+          "Hazard": [
+            "Fire Weather Index",
+            "Burn probability",
+            "Fire intensity",
+            "Smoke-exposure potential"
+          ],
+          "Exposure": [
+            "Population in WUI / fire zones",
+            "Population in smoke-impact zones"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Respiratory / cardiovascular vulnerability",
+              "Older people",
+              "Children",
+              "Housing flammability",
+              "Reduced mobility"
+            ],
+            "Adaptive Capacity": [
+              "Warning / evacuation",
+              "Fire-service access",
+              "Healthcare access",
+              "Clean-air shelters",
+              "Recovery resources"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_SEVERE_WIND_STORM_TROPICAL_CYCLONE",
+          "hazard_name": "Severe Wind Storm & Tropical Cyclone",
+          "ipcc_cid": [
+            "Severe wind storm",
+            "Tropical cyclone"
+          ],
+          "Hazard": [
+            "Maximum sustained wind",
+            "Wind gust",
+            "Storm intensity",
+            "Compound rainfall / surge where relevant"
+          ],
+          "Exposure": [
+            "Population in storm-prone area",
+            "Housing / settlements"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Housing structural quality",
+              "Lightweight / informal construction",
+              "Mobility limitations"
+            ],
+            "Adaptive Capacity": [
+              "Early warning",
+              "Shelter / evacuation",
+              "Emergency response",
+              "Income / insurance"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_COASTAL_FLOOD",
+          "hazard_name": "Coastal Flood",
+          "ipcc_cid": [
+            "Coastal flood"
+          ],
+          "Hazard": [
+            "Extreme sea level",
+            "Storm surge",
+            "Coastal inundation depth",
+            "Flood frequency"
+          ],
+          "Exposure": [
+            "Population in coastal inundation zone",
+            "Households in low-elevation coastal zone"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Housing quality",
+              "Mobility limitations",
+              "Displacement sensitivity"
+            ],
+            "Adaptive Capacity": [
+              "Coastal warning",
+              "Evacuation / shelter access",
+              "Income / recovery resources",
+              "Coastal protection / relocation capacity"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_AIR_POLLUTION_WEATHER",
+          "hazard_name": "Air Pollution Weather",
+          "ipcc_cid": [
+            "Air pollution weather"
+          ],
+          "Hazard": [
+            "Meteorology conducive to pollutant accumulation",
+            "Heat-ozone episodes",
+            "Smoke dispersion / accumulation potential"
+          ],
+          "Exposure": [
+            "Population in high-pollution zones",
+            "Outdoor workers"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Respiratory / cardiovascular vulnerability",
+              "Older people",
+              "Children"
+            ],
+            "Adaptive Capacity": [
+              "Healthcare access",
+              "Air-quality warnings",
+              "Filtered indoor environments",
+              "Ability to reduce exposure"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "receptor_id": "REC_WATER_RESOURCES",
+      "receptor_name": "Water Resources",
+      "risk_pathways": [
+        {
+          "hazard_id": "HZ_HYDROLOGICAL_DROUGHT",
+          "hazard_name": "Hydrological Drought",
+          "ipcc_cid": [
+            "Hydrological drought"
+          ],
+          "Hazard": [
+            "Low-flow magnitude / duration",
+            "Streamflow anomaly",
+            "Reservoir-storage anomaly",
+            "Groundwater-level anomaly"
+          ],
+          "Exposure": [
+            "Surface-water systems",
+            "Groundwater systems",
+            "Reservoirs / intakes",
+            "Demand dependent on affected source"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Single-source dependence",
+              "High demand-to-availability ratio",
+              "Existing groundwater stress",
+              "Low storage",
+              "Water-quality sensitivity"
+            ],
+            "Adaptive Capacity": [
+              "Source diversification",
+              "Storage capacity",
+              "Reuse",
+              "Demand management",
+              "Interconnections / transfers"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_HEAVY_PRECIPITATION_PLUVIAL_FLOOD",
+          "hazard_name": "Heavy Precipitation & Pluvial Flood",
+          "ipcc_cid": [
+            "Heavy precipitation and pluvial flood"
+          ],
+          "Hazard": [
+            "Extreme-rainfall intensity",
+            "Runoff intensity",
+            "Flood depth / duration at water assets"
+          ],
+          "Exposure": [
+            "Treatment facilities",
+            "Intakes",
+            "Wells",
+            "Reservoirs"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Contamination susceptibility",
+              "Sediment sensitivity",
+              "Treatment sensitivity"
+            ],
+            "Adaptive Capacity": [
+              "Treatment redundancy",
+              "Alternative sources",
+              "Emergency storage",
+              "Source protection / monitoring"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_RIVER_FLOOD",
+          "hazard_name": "River Flood",
+          "ipcc_cid": [
+            "River flood"
+          ],
+          "Hazard": [
+            "Peak discharge",
+            "Flood depth / velocity / duration at assets"
+          ],
+          "Exposure": [
+            "Intakes",
+            "Treatment facilities",
+            "Reservoir infrastructure",
+            "Floodplain wells"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Contamination / sediment sensitivity",
+              "Asset elevation",
+              "Dependence on exposed intake"
+            ],
+            "Adaptive Capacity": [
+              "Alternative intakes",
+              "Backup treatment",
+              "Emergency storage",
+              "System redundancy"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_EXTREME_HEAT",
+          "hazard_name": "Extreme Heat",
+          "ipcc_cid": [
+            "Extreme heat"
+          ],
+          "Hazard": [
+            "Extreme air / water temperature",
+            "Heatwave duration",
+            "Evaporative demand"
+          ],
+          "Exposure": [
+            "Reservoirs",
+            "Surface-water bodies",
+            "Intake / treatment systems"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Shallow storage",
+              "High evaporation susceptibility",
+              "Temperature-sensitive water quality",
+              "High seasonal demand"
+            ],
+            "Adaptive Capacity": [
+              "Storage diversification",
+              "Alternative sources",
+              "Demand management",
+              "Treatment capacity"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_RELATIVE_SEA_LEVEL_SALINITY_INTRUSION",
+          "hazard_name": "Relative Sea Level & Salinity Intrusion",
+          "ipcc_cid": [
+            "Relative sea level"
+          ],
+          "Hazard": [
+            "Relative sea-level change",
+            "Saltwater-intrusion extent",
+            "Groundwater / estuarine salinity anomaly"
+          ],
+          "Exposure": [
+            "Coastal aquifers",
+            "Coastal wells",
+            "Surface-water intakes"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Dependence on coastal aquifers",
+              "Low hydraulic head",
+              "Salinity-sensitive treatment"
+            ],
+            "Adaptive Capacity": [
+              "Alternative freshwater sources",
+              "Managed recharge",
+              "Salinity treatment / desalination",
+              "Pumping management"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_SNOW_GLACIER_ICE_CHANGE",
+          "hazard_name": "Snow, Glacier & Ice Change",
+          "ipcc_cid": [
+            "Snow, glacier and ice sheet"
+          ],
+          "Hazard": [
+            "Snow-water-equivalent change",
+            "Glacier mass change",
+            "Snowmelt timing",
+            "Seasonal runoff shift"
+          ],
+          "Exposure": [
+            "Snow / glacier-fed water systems",
+            "Reservoirs dependent on meltwater"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "High dependence on cryospheric storage",
+              "Seasonal demand mismatch"
+            ],
+            "Adaptive Capacity": [
+              "Reservoir storage",
+              "Source diversification",
+              "Seasonal demand management"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "receptor_id": "REC_AGRICULTURE_CROPS",
+      "receptor_name": "Agriculture & Crops",
+      "risk_pathways": [
+        {
+          "hazard_id": "HZ_EXTREME_HEAT",
+          "hazard_name": "Extreme Heat",
+          "ipcc_cid": [
+            "Extreme heat"
+          ],
+          "Hazard": [
+            "Days above crop-specific critical temperature",
+            "Heat during critical growth stage",
+            "Extreme Tmax",
+            "Duration of damaging heat"
+          ],
+          "Exposure": [
+            "Cropland",
+            "Crop production",
+            "Agricultural establishments",
+            "Agricultural labor"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Crop heat tolerance",
+              "Phenological stage",
+              "Low crop diversity",
+              "Soil condition"
+            ],
+            "Adaptive Capacity": [
+              "Irrigation",
+              "Heat-tolerant varieties",
+              "Crop diversification",
+              "Extension / finance / insurance"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_AGRICULTURAL_DROUGHT",
+          "hazard_name": "Agricultural Drought",
+          "ipcc_cid": [
+            "Agricultural and ecological drought"
+          ],
+          "Hazard": [
+            "Root-zone soil-moisture deficit",
+            "Crop water deficit",
+            "SPEI / water-balance index",
+            "CDD",
+            "Drought duration / severity"
+          ],
+          "Exposure": [
+            "Cropland",
+            "Rainfed cropland",
+            "Crop production",
+            "Agricultural establishments"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Rainfed dependence",
+              "Crop water requirements",
+              "Soil water-holding capacity",
+              "Low diversity"
+            ],
+            "Adaptive Capacity": [
+              "Irrigation",
+              "Drought-tolerant varieties",
+              "Water storage",
+              "Diversification",
+              "Credit / insurance / extension"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_RIVER_PLUVIAL_FLOOD",
+          "hazard_name": "River & Pluvial Flood",
+          "ipcc_cid": [
+            "River flood",
+            "Heavy precipitation and pluvial flood"
+          ],
+          "Hazard": [
+            "Inundation depth",
+            "Duration",
+            "Timing relative to crop cycle",
+            "Velocity"
+          ],
+          "Exposure": [
+            "Cropland in flood extent",
+            "Farms",
+            "Storage / processing facilities"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Crop flood tolerance",
+              "Phenological stage",
+              "Soil drainage",
+              "Erosion susceptibility"
+            ],
+            "Adaptive Capacity": [
+              "Agricultural drainage",
+              "Flood-tolerant varieties",
+              "Diversification",
+              "Insurance / recovery resources"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_FROST_COLD_SPELL",
+          "hazard_name": "Frost & Cold Spell",
+          "ipcc_cid": [
+            "Frost",
+            "Cold spell"
+          ],
+          "Hazard": [
+            "Days below crop-specific frost threshold",
+            "Tmin",
+            "Cold-spell duration",
+            "Frost timing"
+          ],
+          "Exposure": [
+            "Cold-sensitive crop area",
+            "Crop production"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Crop cold tolerance",
+              "Phenological stage"
+            ],
+            "Adaptive Capacity": [
+              "Frost protection",
+              "Protected cultivation",
+              "Varietal diversification",
+              "Forecast access"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_HAIL_SEVERE_WIND",
+          "hazard_name": "Hail & Severe Wind",
+          "ipcc_cid": [
+            "Hail",
+            "Severe wind storm"
+          ],
+          "Hazard": [
+            "Hail frequency / size",
+            "Maximum wind gust",
+            "Severe-storm frequency"
+          ],
+          "Exposure": [
+            "Cropland",
+            "Orchards",
+            "Greenhouses / agricultural structures"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Crop physical sensitivity",
+              "Growth stage",
+              "Structure robustness"
+            ],
+            "Adaptive Capacity": [
+              "Protective structures",
+              "Insurance",
+              "Warning systems",
+              "Diversification"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_COASTAL_FLOOD_SALINITY",
+          "hazard_name": "Coastal Flood & Salinity",
+          "ipcc_cid": [
+            "Coastal flood",
+            "Relative sea level"
+          ],
+          "Hazard": [
+            "Coastal inundation",
+            "Soil / irrigation-water salinity",
+            "Saltwater intrusion"
+          ],
+          "Exposure": [
+            "Coastal cropland",
+            "Irrigated land using coastal aquifers"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Crop salt sensitivity",
+              "Soil salinity sensitivity",
+              "Low elevation"
+            ],
+            "Adaptive Capacity": [
+              "Salt-tolerant varieties",
+              "Drainage / leaching",
+              "Alternative irrigation sources",
+              "Production diversification"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "receptor_id": "REC_LIVESTOCK_PASTURE",
+      "receptor_name": "Livestock & Pasture",
+      "risk_pathways": [
+        {
+          "hazard_id": "HZ_EXTREME_HEAT",
+          "hazard_name": "Extreme Heat",
+          "ipcc_cid": [
+            "Extreme heat"
+          ],
+          "Hazard": [
+            "Temperature-Humidity Index",
+            "Days above livestock heat threshold",
+            "Heatwave duration",
+            "Hot nights"
+          ],
+          "Exposure": [
+            "Livestock population",
+            "Pasture area",
+            "Animal facilities"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Species / breed heat tolerance",
+              "Production intensity",
+              "Water requirement",
+              "Pasture condition"
+            ],
+            "Adaptive Capacity": [
+              "Shade / cooling",
+              "Reliable water",
+              "Heat-tolerant breeds",
+              "Veterinary / extension support",
+              "Financial resources"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_AGRICULTURAL_ECOLOGICAL_DROUGHT",
+          "hazard_name": "Agricultural & Ecological Drought",
+          "ipcc_cid": [
+            "Agricultural and ecological drought"
+          ],
+          "Hazard": [
+            "Soil-moisture deficit",
+            "Pasture drought severity",
+            "SPEI",
+            "Drought duration"
+          ],
+          "Exposure": [
+            "Livestock population",
+            "Pasture / rangeland"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Natural-pasture dependence",
+              "Stocking density",
+              "Water dependence",
+              "Rangeland degradation"
+            ],
+            "Adaptive Capacity": [
+              "Supplementary feed",
+              "Alternative water",
+              "Stock management flexibility",
+              "Financial support"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_FLOOD",
+          "hazard_name": "Flood",
+          "ipcc_cid": [
+            "River flood",
+            "Heavy precipitation and pluvial flood"
+          ],
+          "Hazard": [
+            "Flood depth",
+            "Duration",
+            "Velocity"
+          ],
+          "Exposure": [
+            "Livestock / pastures / animal facilities in flood zones"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Mobility constraints",
+              "Facility condition",
+              "Post-flood disease susceptibility"
+            ],
+            "Adaptive Capacity": [
+              "Evacuation / relocation",
+              "Veterinary access",
+              "Alternative feed / water"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_FIRE_WEATHER_WILDFIRE",
+          "hazard_name": "Fire Weather & Wildfire",
+          "ipcc_cid": [
+            "Fire weather"
+          ],
+          "Hazard": [
+            "Fire Weather Index",
+            "Burn probability",
+            "Fire intensity"
+          ],
+          "Exposure": [
+            "Rangelands",
+            "Livestock",
+            "Animal facilities"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Fuel continuity",
+              "Mobility constraints",
+              "Rangeland degradation"
+            ],
+            "Adaptive Capacity": [
+              "Fire management",
+              "Evacuation capacity",
+              "Fuel management",
+              "Alternative grazing / feed"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_COLD_SPELL_SEVERE_STORM",
+          "hazard_name": "Cold Spell & Severe Storm",
+          "ipcc_cid": [
+            "Cold spell",
+            "Severe wind storm"
+          ],
+          "Hazard": [
+            "Livestock cold threshold",
+            "Cold-spell duration",
+            "Wind chill",
+            "Severe wind / snowfall"
+          ],
+          "Exposure": [
+            "Livestock",
+            "Animal facilities"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Species / breed cold tolerance",
+              "Housing quality"
+            ],
+            "Adaptive Capacity": [
+              "Shelter",
+              "Feed reserves",
+              "Forecast / warning",
+              "Veterinary support"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "receptor_id": "REC_FISHERIES_AQUACULTURE",
+      "receptor_name": "Fisheries & Aquaculture",
+      "risk_pathways": [
+        {
+          "hazard_id": "HZ_MEAN_OCEAN_TEMPERATURE_MARINE_HEATWAVE",
+          "hazard_name": "Mean Ocean Temperature & Marine Heatwave",
+          "ipcc_cid": [
+            "Mean ocean temperature",
+            "Marine heatwave"
+          ],
+          "Hazard": [
+            "Ocean-temperature anomaly",
+            "Marine heatwave intensity / duration",
+            "Species thermal threshold"
+          ],
+          "Exposure": [
+            "Fishing grounds",
+            "Aquaculture sites",
+            "Target species habitat",
+            "Fishing-dependent production"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Species thermal tolerance",
+              "Stock condition",
+              "Disease sensitivity",
+              "Dependence on few species"
+            ],
+            "Adaptive Capacity": [
+              "Species / livelihood diversification",
+              "Adaptive fisheries management",
+              "Aquaculture technology",
+              "Monitoring / forecasting"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_OCEAN_ACIDITY",
+          "hazard_name": "Ocean Acidity",
+          "ipcc_cid": [
+            "Ocean acidity"
+          ],
+          "Hazard": [
+            "pH anomaly",
+            "Carbonate saturation change"
+          ],
+          "Exposure": [
+            "Shellfish aquaculture",
+            "Calcifying target species",
+            "Fishing grounds"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Species acidification sensitivity",
+              "Life-stage sensitivity",
+              "Dependence on calcifying species"
+            ],
+            "Adaptive Capacity": [
+              "Species diversification",
+              "Water-quality management",
+              "Monitoring",
+              "Alternative livelihoods"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_DISSOLVED_OXYGEN",
+          "hazard_name": "Dissolved Oxygen",
+          "ipcc_cid": [
+            "Dissolved oxygen"
+          ],
+          "Hazard": [
+            "Dissolved oxygen",
+            "Hypoxia frequency / duration",
+            "Species oxygen threshold"
+          ],
+          "Exposure": [
+            "Aquaculture sites",
+            "Fishing grounds",
+            "Target-species habitat"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Species oxygen sensitivity",
+              "Stock condition",
+              "High-density aquaculture"
+            ],
+            "Adaptive Capacity": [
+              "Aeration / water exchange",
+              "Stocking management",
+              "Monitoring",
+              "Site diversification"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_OCEAN_SALINITY",
+          "hazard_name": "Ocean Salinity",
+          "ipcc_cid": [
+            "Ocean salinity"
+          ],
+          "Hazard": [
+            "Salinity anomaly",
+            "Rapid salinity change",
+            "Species salinity threshold"
+          ],
+          "Exposure": [
+            "Aquaculture sites",
+            "Estuarine fisheries",
+            "Target habitat"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Species salinity tolerance",
+              "Life-stage sensitivity"
+            ],
+            "Adaptive Capacity": [
+              "Site diversification",
+              "Species selection",
+              "Water management"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_SEVERE_WIND_STORM_TROPICAL_CYCLONE",
+          "hazard_name": "Severe Wind Storm & Tropical Cyclone",
+          "ipcc_cid": [
+            "Severe wind storm",
+            "Tropical cyclone"
+          ],
+          "Hazard": [
+            "Wind intensity",
+            "Wave height",
+            "Storm surge",
+            "Storm frequency"
+          ],
+          "Exposure": [
+            "Fishing vessels",
+            "Aquaculture infrastructure",
+            "Ports / landing facilities"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Vessel / cage condition",
+              "Site exposure",
+              "Single landing-facility dependence"
+            ],
+            "Adaptive Capacity": [
+              "Forecast / warning",
+              "Safe harbor access",
+              "Structural standards",
+              "Insurance / recovery"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "receptor_id": "REC_FORESTRY",
+      "receptor_name": "Forestry",
+      "risk_pathways": [
+        {
+          "hazard_id": "HZ_EXTREME_HEAT_MEAN_TEMPERATURE_CHANGE",
+          "hazard_name": "Extreme Heat & Mean Temperature Change",
+          "ipcc_cid": [
+            "Extreme heat",
+            "Mean air temperature"
+          ],
+          "Hazard": [
+            "Extreme-temperature threshold",
+            "Heatwave duration",
+            "Seasonal temperature shift"
+          ],
+          "Exposure": [
+            "Forest production area",
+            "Managed stands",
+            "Forest-dependent livelihoods"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Species thermal tolerance",
+              "Stand age / composition",
+              "Pest / disease susceptibility"
+            ],
+            "Adaptive Capacity": [
+              "Species / genetic diversity",
+              "Adaptive management",
+              "Monitoring",
+              "Restoration capacity"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_AGRICULTURAL_ECOLOGICAL_DROUGHT",
+          "hazard_name": "Agricultural & Ecological Drought",
+          "ipcc_cid": [
+            "Agricultural and ecological drought"
+          ],
+          "Hazard": [
+            "Soil-moisture deficit",
+            "SPEI",
+            "Drought duration / severity",
+            "Vegetation water stress"
+          ],
+          "Exposure": [
+            "Forest area",
+            "Plantations",
+            "Forest-dependent livelihoods"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Species drought tolerance",
+              "Stand density",
+              "Forest degradation",
+              "Soil water holding"
+            ],
+            "Adaptive Capacity": [
+              "Forest diversification",
+              "Adaptive thinning / management",
+              "Restoration",
+              "Monitoring"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_FIRE_WEATHER_WILDFIRE",
+          "hazard_name": "Fire Weather & Wildfire",
+          "ipcc_cid": [
+            "Fire weather"
+          ],
+          "Hazard": [
+            "Fire Weather Index",
+            "Fire-season duration",
+            "Burn probability",
+            "Potential fire intensity"
+          ],
+          "Exposure": [
+            "Forest area",
+            "Plantations",
+            "Forestry infrastructure"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Fuel load",
+              "Forest degradation",
+              "Species fire sensitivity",
+              "Stand continuity"
+            ],
+            "Adaptive Capacity": [
+              "Fire management",
+              "Fuel management",
+              "Detection / suppression",
+              "Restoration"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_SEVERE_WIND_STORM_TROPICAL_CYCLONE",
+          "hazard_name": "Severe Wind Storm & Tropical Cyclone",
+          "ipcc_cid": [
+            "Severe wind storm",
+            "Tropical cyclone"
+          ],
+          "Hazard": [
+            "Maximum wind gust",
+            "Storm intensity",
+            "Storm frequency"
+          ],
+          "Exposure": [
+            "Forest stands",
+            "Forestry infrastructure"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Windthrow sensitivity",
+              "Stand age / structure",
+              "Soil saturation"
+            ],
+            "Adaptive Capacity": [
+              "Diversified stand structure",
+              "Salvage / recovery",
+              "Adaptive management"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "receptor_id": "REC_TERRESTRIAL_ECOSYSTEMS_BIODIVERSITY",
+      "receptor_name": "Terrestrial Ecosystems & Biodiversity",
+      "risk_pathways": [
+        {
+          "hazard_id": "HZ_MEAN_TEMPERATURE_EXTREME_HEAT",
+          "hazard_name": "Mean Temperature & Extreme Heat",
+          "ipcc_cid": [
+            "Mean air temperature",
+            "Extreme heat"
+          ],
+          "Hazard": [
+            "Mean seasonal temperature shift",
+            "Extreme-temperature threshold",
+            "Heatwave duration",
+            "Climate velocity"
+          ],
+          "Exposure": [
+            "Natural habitat",
+            "Protected areas",
+            "Species ranges",
+            "Biodiversity hotspots"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Species thermal tolerance",
+              "Biodiversity intactness",
+              "Habitat fragmentation",
+              "Endemism / restricted range",
+              "Existing degradation"
+            ],
+            "Adaptive Capacity": [
+              "Habitat connectivity",
+              "Protected-area effectiveness",
+              "Ecological integrity",
+              "Restoration capacity",
+              "Climate refugia"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_AGRICULTURAL_ECOLOGICAL_DROUGHT",
+          "hazard_name": "Agricultural & Ecological Drought",
+          "ipcc_cid": [
+            "Agricultural and ecological drought"
+          ],
+          "Hazard": [
+            "Soil-moisture deficit",
+            "Ecological drought severity / duration",
+            "Vegetation water-stress anomaly"
+          ],
+          "Exposure": [
+            "Natural ecosystems",
+            "Protected areas",
+            "Species habitat"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Drought-sensitive species / habitats",
+              "Fragmentation",
+              "Degradation",
+              "Low functional diversity"
+            ],
+            "Adaptive Capacity": [
+              "Landscape connectivity",
+              "Climate refugia",
+              "Restoration / management",
+              "Protected-area effectiveness"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_FIRE_WEATHER_WILDFIRE",
+          "hazard_name": "Fire Weather & Wildfire",
+          "ipcc_cid": [
+            "Fire weather"
+          ],
+          "Hazard": [
+            "Fire Weather Index",
+            "Fire-season duration",
+            "Burn probability",
+            "Fire intensity"
+          ],
+          "Exposure": [
+            "Natural habitat",
+            "Protected areas",
+            "Species ranges"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Fire-regime sensitivity",
+              "Invasive species",
+              "Fragmentation",
+              "Degradation"
+            ],
+            "Adaptive Capacity": [
+              "Ecological connectivity",
+              "Natural fire resilience",
+              "Fire management",
+              "Restoration"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_HEAVY_PRECIPITATION_FLOOD_LANDSLIDE",
+          "hazard_name": "Heavy Precipitation, Flood & Landslide",
+          "ipcc_cid": [
+            "Heavy precipitation and pluvial flood",
+            "River flood",
+            "Landslide"
+          ],
+          "Hazard": [
+            "Extreme precipitation",
+            "Flood extent / duration",
+            "Landslide probability / runout"
+          ],
+          "Exposure": [
+            "Terrestrial / riparian habitats",
+            "Protected areas"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Erosion sensitivity",
+              "Fragmentation",
+              "Degraded vegetation"
+            ],
+            "Adaptive Capacity": [
+              "Habitat connectivity",
+              "Natural regeneration",
+              "Restoration / conservation management"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "receptor_id": "REC_FRESHWATER_ECOSYSTEMS_BIODIVERSITY",
+      "receptor_name": "Freshwater Ecosystems & Biodiversity",
+      "risk_pathways": [
+        {
+          "hazard_id": "HZ_MEAN_TEMPERATURE_EXTREME_HEAT",
+          "hazard_name": "Mean Temperature & Extreme Heat",
+          "ipcc_cid": [
+            "Mean air temperature",
+            "Extreme heat"
+          ],
+          "Hazard": [
+            "Stream / lake temperature anomaly",
+            "Species thermal threshold",
+            "Heatwave duration"
+          ],
+          "Exposure": [
+            "Rivers",
+            "Lakes",
+            "Wetlands",
+            "Freshwater species habitat"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Species thermal tolerance",
+              "Low-oxygen sensitivity",
+              "Fragmentation",
+              "Existing water-quality stress"
+            ],
+            "Adaptive Capacity": [
+              "Riparian shading",
+              "Habitat connectivity",
+              "Environmental-flow protection",
+              "Restoration"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_HYDROLOGICAL_DROUGHT",
+          "hazard_name": "Hydrological Drought",
+          "ipcc_cid": [
+            "Hydrological drought"
+          ],
+          "Hazard": [
+            "Low-flow magnitude / duration",
+            "Water-level anomaly",
+            "Intermittency"
+          ],
+          "Exposure": [
+            "Freshwater habitats",
+            "Wetlands",
+            "Species ranges"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Low-flow sensitivity",
+              "Fragmented habitat",
+              "Water-quality impairment"
+            ],
+            "Adaptive Capacity": [
+              "Environmental flows",
+              "Habitat connectivity",
+              "Refugia",
+              "Restoration"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_RIVER_FLOOD_HEAVY_PRECIPITATION",
+          "hazard_name": "River Flood & Heavy Precipitation",
+          "ipcc_cid": [
+            "River flood",
+            "Heavy precipitation and pluvial flood"
+          ],
+          "Hazard": [
+            "Peak flow",
+            "Flood duration / frequency",
+            "Sediment / runoff pulse"
+          ],
+          "Exposure": [
+            "River / wetland habitats",
+            "Freshwater species"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Flow-regime sensitivity",
+              "Riparian degradation",
+              "Pollution sensitivity"
+            ],
+            "Adaptive Capacity": [
+              "Floodplain connectivity",
+              "Riparian restoration",
+              "Catchment protection"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_SNOW_ICE_CHANGE",
+          "hazard_name": "Snow & Ice Change",
+          "ipcc_cid": [
+            "Snow, glacier and ice sheet",
+            "Lake, river and sea ice"
+          ],
+          "Hazard": [
+            "Snowmelt timing",
+            "Ice-cover duration",
+            "Glacier-melt contribution"
+          ],
+          "Exposure": [
+            "Snow / glacier-fed waters",
+            "Cold-water species habitat"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Cold-water dependence",
+              "Seasonal-flow dependence"
+            ],
+            "Adaptive Capacity": [
+              "Habitat connectivity",
+              "Thermal refugia",
+              "Flow management"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "receptor_id": "REC_COASTAL_ECOSYSTEMS_BIODIVERSITY",
+      "receptor_name": "Coastal Ecosystems & Biodiversity",
+      "risk_pathways": [
+        {
+          "hazard_id": "HZ_RELATIVE_SEA_LEVEL_COASTAL_FLOOD",
+          "hazard_name": "Relative Sea Level & Coastal Flood",
+          "ipcc_cid": [
+            "Relative sea level",
+            "Coastal flood"
+          ],
+          "Hazard": [
+            "Relative sea-level rise",
+            "Coastal inundation frequency",
+            "Inundation depth / duration"
+          ],
+          "Exposure": [
+            "Mangroves",
+            "Salt marshes",
+            "Intertidal habitat",
+            "Coastal protected areas"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Elevation",
+              "Sediment deficit",
+              "Habitat degradation",
+              "Coastal squeeze"
+            ],
+            "Adaptive Capacity": [
+              "Landward migration space",
+              "Sediment supply",
+              "Habitat connectivity",
+              "Restoration capacity"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_COASTAL_EROSION",
+          "hazard_name": "Coastal Erosion",
+          "ipcc_cid": [
+            "Coastal erosion"
+          ],
+          "Hazard": [
+            "Shoreline-retreat rate",
+            "Wave-energy exposure",
+            "Erosion-event frequency"
+          ],
+          "Exposure": [
+            "Coastal habitats",
+            "Beaches / dunes",
+            "Intertidal ecosystems"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Geomorphic sensitivity",
+              "Vegetation degradation",
+              "Sediment deficit"
+            ],
+            "Adaptive Capacity": [
+              "Natural sediment supply",
+              "Dune / mangrove / wetland restoration",
+              "Migration space"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_MEAN_OCEAN_TEMPERATURE_MARINE_HEATWAVE",
+          "hazard_name": "Mean Ocean Temperature & Marine Heatwave",
+          "ipcc_cid": [
+            "Mean ocean temperature",
+            "Marine heatwave"
+          ],
+          "Hazard": [
+            "Sea-surface temperature anomaly",
+            "Marine heatwave intensity / duration",
+            "Habitat thermal threshold"
+          ],
+          "Exposure": [
+            "Coral reefs",
+            "Mangroves",
+            "Seagrass",
+            "Coastal species habitats"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Thermal sensitivity",
+              "Existing degradation",
+              "Disease susceptibility",
+              "Low ecological redundancy"
+            ],
+            "Adaptive Capacity": [
+              "Connectivity",
+              "Climate refugia",
+              "Local-pressure reduction",
+              "Restoration / conservation"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_OCEAN_ACIDITY_SALINITY_OXYGEN_CHANGE",
+          "hazard_name": "Ocean Acidity, Salinity & Oxygen Change",
+          "ipcc_cid": [
+            "Ocean acidity",
+            "Ocean salinity",
+            "Dissolved oxygen"
+          ],
+          "Hazard": [
+            "pH / carbonate saturation change",
+            "Salinity anomaly",
+            "Dissolved-oxygen decline"
+          ],
+          "Exposure": [
+            "Coastal marine habitats",
+            "Estuaries",
+            "Calcifying-species habitat"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Physiological sensitivity",
+              "Existing water-quality stress",
+              "Low diversity"
+            ],
+            "Adaptive Capacity": [
+              "Habitat connectivity",
+              "Pollution reduction",
+              "Restoration / conservation"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_TROPICAL_CYCLONE_SEVERE_STORM",
+          "hazard_name": "Tropical Cyclone & Severe Storm",
+          "ipcc_cid": [
+            "Tropical cyclone",
+            "Severe wind storm"
+          ],
+          "Hazard": [
+            "Wind intensity",
+            "Wave height",
+            "Storm surge",
+            "Storm frequency"
+          ],
+          "Exposure": [
+            "Coral reefs",
+            "Mangroves",
+            "Dunes",
+            "Coastal wetlands"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Habitat structural condition",
+              "Existing degradation",
+              "Low sediment availability"
+            ],
+            "Adaptive Capacity": [
+              "Natural regeneration",
+              "Connectivity",
+              "Restoration"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "receptor_id": "REC_MARINE_ECOSYSTEMS_BIODIVERSITY",
+      "receptor_name": "Marine Ecosystems & Biodiversity",
+      "risk_pathways": [
+        {
+          "hazard_id": "HZ_MEAN_OCEAN_TEMPERATURE_MARINE_HEATWAVE",
+          "hazard_name": "Mean Ocean Temperature & Marine Heatwave",
+          "ipcc_cid": [
+            "Mean ocean temperature",
+            "Marine heatwave"
+          ],
+          "Hazard": [
+            "Mean ocean-temperature anomaly",
+            "Marine heatwave intensity / duration",
+            "Thermal threshold",
+            "Climate velocity"
+          ],
+          "Exposure": [
+            "Species ranges",
+            "Marine protected areas",
+            "Key habitats",
+            "Biodiversity hotspots"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Species thermal tolerance",
+              "Restricted ranges",
+              "Ecological degradation",
+              "Low functional diversity"
+            ],
+            "Adaptive Capacity": [
+              "Habitat connectivity",
+              "Climate refugia",
+              "Protected-area effectiveness",
+              "Reduction of non-climate stressors"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_OCEAN_ACIDITY",
+          "hazard_name": "Ocean Acidity",
+          "ipcc_cid": [
+            "Ocean acidity"
+          ],
+          "Hazard": [
+            "pH anomaly",
+            "Carbonate saturation-state change"
+          ],
+          "Exposure": [
+            "Calcifying organisms",
+            "Coral / shell-forming habitats",
+            "Marine protected areas"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Species acidification sensitivity",
+              "Life-stage sensitivity",
+              "Existing stress"
+            ],
+            "Adaptive Capacity": [
+              "Genetic / species diversity",
+              "Habitat connectivity",
+              "Local-pressure reduction",
+              "Conservation management"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_DISSOLVED_OXYGEN",
+          "hazard_name": "Dissolved Oxygen",
+          "ipcc_cid": [
+            "Dissolved oxygen"
+          ],
+          "Hazard": [
+            "Dissolved-oxygen decline",
+            "Hypoxia frequency / duration"
+          ],
+          "Exposure": [
+            "Species habitat",
+            "Marine protected areas",
+            "Oxygen-sensitive ecosystems"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Species oxygen tolerance",
+              "Restricted mobility / habitat",
+              "Existing nutrient stress"
+            ],
+            "Adaptive Capacity": [
+              "Habitat connectivity",
+              "Nutrient-load reduction",
+              "Conservation management"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_OCEAN_SALINITY_SEA_ICE_CHANGE",
+          "hazard_name": "Ocean Salinity & Sea-Ice Change",
+          "ipcc_cid": [
+            "Ocean salinity",
+            "Lake, river and sea ice"
+          ],
+          "Hazard": [
+            "Salinity anomaly",
+            "Sea-ice extent / duration change"
+          ],
+          "Exposure": [
+            "Salinity-sensitive habitats",
+            "Polar marine ecosystems",
+            "Species ranges"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Species salinity / ice dependence",
+              "Restricted ranges"
+            ],
+            "Adaptive Capacity": [
+              "Habitat connectivity",
+              "Climate refugia",
+              "Conservation protection"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "receptor_id": "REC_BUILDINGS_HOUSING",
+      "receptor_name": "Buildings & Housing",
+      "risk_pathways": [
+        {
+          "hazard_id": "HZ_EXTREME_HEAT",
+          "hazard_name": "Extreme Heat",
+          "ipcc_cid": [
+            "Extreme heat"
+          ],
+          "Hazard": [
+            "Outdoor design-temperature exceedance",
+            "Indoor overheating potential",
+            "Heatwave duration",
+            "Hot nights"
+          ],
+          "Exposure": [
+            "Building stock",
+            "Residential floor area",
+            "Housing units"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Building age",
+              "Envelope / insulation",
+              "Roof / wall thermal properties",
+              "Ventilation limitations"
+            ],
+            "Adaptive Capacity": [
+              "Passive cooling",
+              "Cooling access",
+              "Building codes",
+              "Retrofit capacity",
+              "Backup power"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_PLUVIAL_RIVER_FLOOD",
+          "hazard_name": "Pluvial & River Flood",
+          "ipcc_cid": [
+            "Heavy precipitation and pluvial flood",
+            "River flood"
+          ],
+          "Hazard": [
+            "Flood depth",
+            "Duration",
+            "Velocity",
+            "Return-period inundation"
+          ],
+          "Exposure": [
+            "Buildings in flood extent",
+            "Residential floor area / asset value"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Ground-floor / basement exposure",
+              "Construction material",
+              "Building condition",
+              "Foundation type"
+            ],
+            "Adaptive Capacity": [
+              "Floodproofing",
+              "Building codes",
+              "Insurance",
+              "Drainage / protection",
+              "Recovery resources"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_COASTAL_FLOOD_RELATIVE_SEA_LEVEL",
+          "hazard_name": "Coastal Flood & Relative Sea Level",
+          "ipcc_cid": [
+            "Coastal flood",
+            "Relative sea level"
+          ],
+          "Hazard": [
+            "Coastal inundation depth",
+            "Storm surge",
+            "Extreme sea level",
+            "Flood frequency"
+          ],
+          "Exposure": [
+            "Buildings in coastal inundation zone",
+            "Housing in low-elevation coastal zone"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Building elevation",
+              "Saltwater-sensitive materials",
+              "Building condition"
+            ],
+            "Adaptive Capacity": [
+              "Coastal protection",
+              "Elevation / floodproofing",
+              "Insurance",
+              "Relocation / recovery"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_SEVERE_WIND_STORM_TROPICAL_CYCLONE",
+          "hazard_name": "Severe Wind Storm & Tropical Cyclone",
+          "ipcc_cid": [
+            "Severe wind storm",
+            "Tropical cyclone"
+          ],
+          "Hazard": [
+            "Maximum wind gust",
+            "Storm intensity",
+            "Windborne-debris potential"
+          ],
+          "Exposure": [
+            "Buildings in wind-prone areas"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Roof / structural design",
+              "Building age",
+              "Construction material",
+              "Code compliance"
+            ],
+            "Adaptive Capacity": [
+              "Wind-resistant codes",
+              "Retrofit",
+              "Insurance",
+              "Maintenance"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_LANDSLIDE",
+          "hazard_name": "Landslide",
+          "ipcc_cid": [
+            "Landslide"
+          ],
+          "Hazard": [
+            "Landslide probability / susceptibility",
+            "Runout extent",
+            "Expected magnitude"
+          ],
+          "Exposure": [
+            "Buildings in landslide / runout zones"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Foundation type",
+              "Building condition",
+              "Slope position"
+            ],
+            "Adaptive Capacity": [
+              "Slope stabilization",
+              "Drainage",
+              "Monitoring / warning",
+              "Relocation"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_FIRE_WEATHER_WILDFIRE",
+          "hazard_name": "Fire Weather & Wildfire",
+          "ipcc_cid": [
+            "Fire weather"
+          ],
+          "Hazard": [
+            "Burn probability",
+            "Fire intensity",
+            "Ember / flame exposure"
+          ],
+          "Exposure": [
+            "Buildings in WUI / burn zones"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Combustible materials",
+              "Vegetation proximity",
+              "Roof / vent vulnerability"
+            ],
+            "Adaptive Capacity": [
+              "Defensible space",
+              "Fire-resistant codes / retrofit",
+              "Fire-service access",
+              "Insurance"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "receptor_id": "REC_TRANSPORT_INFRASTRUCTURE",
+      "receptor_name": "Transport Infrastructure",
+      "risk_pathways": [
+        {
+          "hazard_id": "HZ_EXTREME_HEAT",
+          "hazard_name": "Extreme Heat",
+          "ipcc_cid": [
+            "Extreme heat"
+          ],
+          "Hazard": [
+            "Days above pavement / rail design threshold",
+            "Extreme Tmax",
+            "Heatwave duration"
+          ],
+          "Exposure": [
+            "Road network",
+            "Rail network",
+            "Airports",
+            "Transport nodes"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Material heat tolerance",
+              "Asset age / condition",
+              "Design standard"
+            ],
+            "Adaptive Capacity": [
+              "Heat-resilient design",
+              "Maintenance",
+              "Alternative routes",
+              "Monitoring"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_PLUVIAL_RIVER_FLOOD",
+          "hazard_name": "Pluvial & River Flood",
+          "ipcc_cid": [
+            "Heavy precipitation and pluvial flood",
+            "River flood"
+          ],
+          "Hazard": [
+            "Flood depth",
+            "Depth-velocity",
+            "Duration",
+            "Return-period inundation"
+          ],
+          "Exposure": [
+            "Road / rail in flood extent",
+            "Bridges",
+            "Terminals / airports"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Asset elevation",
+              "Drainage condition",
+              "Bridge scour sensitivity",
+              "Network criticality"
+            ],
+            "Adaptive Capacity": [
+              "Drainage",
+              "Flood protection",
+              "Route redundancy",
+              "Rapid repair",
+              "Emergency management"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_LANDSLIDE",
+          "hazard_name": "Landslide",
+          "ipcc_cid": [
+            "Landslide"
+          ],
+          "Hazard": [
+            "Landslide probability",
+            "Runout extent",
+            "Magnitude",
+            "Rainfall-threshold exceedance"
+          ],
+          "Exposure": [
+            "Road / rail in landslide zones",
+            "Bridges / tunnels"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Cut-slope condition",
+              "Asset condition",
+              "Network criticality"
+            ],
+            "Adaptive Capacity": [
+              "Slope stabilization",
+              "Drainage",
+              "Monitoring",
+              "Route redundancy"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_COASTAL_FLOOD_COASTAL_EROSION",
+          "hazard_name": "Coastal Flood & Coastal Erosion",
+          "ipcc_cid": [
+            "Coastal flood",
+            "Coastal erosion"
+          ],
+          "Hazard": [
+            "Coastal inundation",
+            "Storm surge",
+            "Shoreline retreat",
+            "Wave exposure"
+          ],
+          "Exposure": [
+            "Coastal roads / rail",
+            "Ports",
+            "Airports",
+            "Bridges"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Asset elevation",
+              "Erosion susceptibility",
+              "Saltwater / wave sensitivity"
+            ],
+            "Adaptive Capacity": [
+              "Coastal protection",
+              "Elevation / relocation",
+              "Route redundancy",
+              "Maintenance"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_SEVERE_WIND_STORM_TROPICAL_CYCLONE",
+          "hazard_name": "Severe Wind Storm & Tropical Cyclone",
+          "ipcc_cid": [
+            "Severe wind storm",
+            "Tropical cyclone"
+          ],
+          "Hazard": [
+            "Maximum wind gust",
+            "Storm intensity",
+            "Wave / surge for ports"
+          ],
+          "Exposure": [
+            "Roads / bridges",
+            "Railways",
+            "Ports",
+            "Airports"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Structural wind tolerance",
+              "Tree / debris exposure",
+              "Asset condition"
+            ],
+            "Adaptive Capacity": [
+              "Design standards",
+              "Shutdown protocols",
+              "Alternative routes",
+              "Rapid repair"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_SNOW_ICE_PERMAFROST_CHANGE",
+          "hazard_name": "Snow, Ice & Permafrost Change",
+          "ipcc_cid": [
+            "Snow, glacier and ice sheet",
+            "Lake, river and sea ice",
+            "Permafrost",
+            "Heavy snowfall and ice storm"
+          ],
+          "Hazard": [
+            "Heavy snowfall",
+            "Ice storms",
+            "Freeze-thaw cycles",
+            "Permafrost thaw"
+          ],
+          "Exposure": [
+            "Road / rail",
+            "Airports",
+            "Bridges"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Freeze-thaw sensitivity",
+              "Foundation dependence on permafrost"
+            ],
+            "Adaptive Capacity": [
+              "Snow / ice management",
+              "Cold-region design",
+              "Monitoring / maintenance"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_HYDROLOGICAL_DROUGHT",
+          "hazard_name": "Hydrological Drought",
+          "ipcc_cid": [
+            "Hydrological drought"
+          ],
+          "Hazard": [
+            "Low river level",
+            "Low-flow duration"
+          ],
+          "Exposure": [
+            "Navigable waterways",
+            "River ports"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Draft requirements",
+              "Dependence on river navigation"
+            ],
+            "Adaptive Capacity": [
+              "Alternative freight routes",
+              "Navigation management",
+              "Operational flexibility"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "receptor_id": "REC_ENERGY_INFRASTRUCTURE_SYSTEMS",
+      "receptor_name": "Energy Infrastructure & Systems",
+      "risk_pathways": [
+        {
+          "hazard_id": "HZ_EXTREME_HEAT",
+          "hazard_name": "Extreme Heat",
+          "ipcc_cid": [
+            "Extreme heat"
+          ],
+          "Hazard": [
+            "Days above power-system design threshold",
+            "Extreme air temperature",
+            "Cooling-water temperature threshold",
+            "Cooling-degree demand"
+          ],
+          "Exposure": [
+            "Power plants",
+            "Transmission / distribution",
+            "Substations",
+            "Electricity demand"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Cooling-water dependence",
+              "Transmission efficiency sensitivity",
+              "Transformer heat sensitivity",
+              "Peak-demand sensitivity"
+            ],
+            "Adaptive Capacity": [
+              "Generation diversity",
+              "Reserve margin",
+              "Grid interconnection",
+              "Demand response",
+              "Cooling adaptation"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_HYDROLOGICAL_DROUGHT",
+          "hazard_name": "Hydrological Drought",
+          "ipcc_cid": [
+            "Hydrological drought"
+          ],
+          "Hazard": [
+            "Low streamflow",
+            "Reservoir-storage deficit",
+            "Drought duration",
+            "Cooling-water availability"
+          ],
+          "Exposure": [
+            "Hydropower",
+            "Water-dependent thermal plants"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Hydropower share",
+              "Cooling-water dependence",
+              "Single-source dependence"
+            ],
+            "Adaptive Capacity": [
+              "Generation diversification",
+              "Energy storage",
+              "Grid interconnection",
+              "Alternative cooling",
+              "Demand management"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_FLOOD",
+          "hazard_name": "Flood",
+          "ipcc_cid": [
+            "River flood",
+            "Heavy precipitation and pluvial flood"
+          ],
+          "Hazard": [
+            "Flood depth",
+            "Velocity",
+            "Duration",
+            "Inundation probability"
+          ],
+          "Exposure": [
+            "Power plants",
+            "Substations",
+            "Transmission / distribution"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Asset elevation",
+              "Water-sensitive equipment",
+              "Network criticality"
+            ],
+            "Adaptive Capacity": [
+              "Floodproofing",
+              "Network redundancy",
+              "Backup generation",
+              "Rapid restoration"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_SEVERE_WIND_STORM_TROPICAL_CYCLONE",
+          "hazard_name": "Severe Wind Storm & Tropical Cyclone",
+          "ipcc_cid": [
+            "Severe wind storm",
+            "Tropical cyclone"
+          ],
+          "Hazard": [
+            "Maximum wind gust",
+            "Storm intensity",
+            "Windborne debris"
+          ],
+          "Exposure": [
+            "Transmission lines",
+            "Distribution networks",
+            "Wind turbines",
+            "Power plants"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Pole / tower design",
+              "Vegetation exposure",
+              "Asset age / condition"
+            ],
+            "Adaptive Capacity": [
+              "Grid redundancy",
+              "Vegetation management",
+              "Design standards",
+              "Rapid restoration"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_FIRE_WEATHER_WILDFIRE",
+          "hazard_name": "Fire Weather & Wildfire",
+          "ipcc_cid": [
+            "Fire weather"
+          ],
+          "Hazard": [
+            "Fire Weather Index",
+            "Burn probability",
+            "Fire intensity"
+          ],
+          "Exposure": [
+            "Transmission lines",
+            "Substations",
+            "Generation assets"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Vegetation proximity",
+              "Above-ground exposure",
+              "Asset condition"
+            ],
+            "Adaptive Capacity": [
+              "Vegetation management",
+              "Grid sectionalization",
+              "Fire-resistant design",
+              "Redundant supply"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_COASTAL_FLOOD_RELATIVE_SEA_LEVEL",
+          "hazard_name": "Coastal Flood & Relative Sea Level",
+          "ipcc_cid": [
+            "Coastal flood",
+            "Relative sea level"
+          ],
+          "Hazard": [
+            "Extreme sea level",
+            "Storm surge",
+            "Coastal inundation"
+          ],
+          "Exposure": [
+            "Coastal power plants",
+            "Substations",
+            "Fuel / energy terminals"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Asset elevation",
+              "Saltwater sensitivity"
+            ],
+            "Adaptive Capacity": [
+              "Flood barriers",
+              "Asset elevation / relocation",
+              "Grid redundancy"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_COLD_SNOW_ICE",
+          "hazard_name": "Cold, Snow & Ice",
+          "ipcc_cid": [
+            "Cold spell",
+            "Snow, glacier and ice sheet",
+            "Heavy snowfall and ice storm"
+          ],
+          "Hazard": [
+            "Cold-spell intensity",
+            "Ice loading",
+            "Heavy snowfall",
+            "Freezing rain"
+          ],
+          "Exposure": [
+            "Transmission / distribution",
+            "Generation assets"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Ice-load sensitivity",
+              "Fuel-supply sensitivity",
+              "Winter peak-demand sensitivity"
+            ],
+            "Adaptive Capacity": [
+              "Winterization",
+              "Reserve capacity",
+              "Fuel diversification",
+              "Grid redundancy"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "receptor_id": "REC_WATER_SANITATION_INFRASTRUCTURE",
+      "receptor_name": "Water & Sanitation Infrastructure",
+      "risk_pathways": [
+        {
+          "hazard_id": "HZ_HYDROLOGICAL_DROUGHT",
+          "hazard_name": "Hydrological Drought",
+          "ipcc_cid": [
+            "Hydrological drought"
+          ],
+          "Hazard": [
+            "Source-flow deficit",
+            "Reservoir / groundwater anomaly",
+            "Drought duration"
+          ],
+          "Exposure": [
+            "Water-supply systems",
+            "Treatment plants",
+            "Pumping stations",
+            "Sewer systems"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Single-source dependence",
+              "Low storage",
+              "High leakage",
+              "Source-quality dependence"
+            ],
+            "Adaptive Capacity": [
+              "Source diversification",
+              "Storage",
+              "Reuse",
+              "Leak reduction",
+              "Emergency connections"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_PLUVIAL_RIVER_FLOOD",
+          "hazard_name": "Pluvial & River Flood",
+          "ipcc_cid": [
+            "Heavy precipitation and pluvial flood",
+            "River flood"
+          ],
+          "Hazard": [
+            "Flood depth",
+            "Duration",
+            "Runoff intensity",
+            "Sewer-overflow potential"
+          ],
+          "Exposure": [
+            "Treatment plants",
+            "Pump stations",
+            "Sewer networks",
+            "Intakes / wells"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Combined sewers",
+              "Low-lying assets",
+              "Water-sensitive equipment",
+              "Infiltration / inflow sensitivity"
+            ],
+            "Adaptive Capacity": [
+              "Stormwater / sewer capacity",
+              "Backup power",
+              "Floodproofing",
+              "System redundancy"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_EXTREME_HEAT",
+          "hazard_name": "Extreme Heat",
+          "ipcc_cid": [
+            "Extreme heat"
+          ],
+          "Hazard": [
+            "Extreme temperature",
+            "Heatwave duration",
+            "Water-temperature anomaly"
+          ],
+          "Exposure": [
+            "Treatment facilities",
+            "Pumping / storage assets"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Temperature-sensitive processes",
+              "Peak water demand",
+              "Equipment heat sensitivity"
+            ],
+            "Adaptive Capacity": [
+              "Treatment flexibility",
+              "Backup power",
+              "Demand management"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_COASTAL_FLOOD_SALINITY_INTRUSION",
+          "hazard_name": "Coastal Flood & Salinity Intrusion",
+          "ipcc_cid": [
+            "Coastal flood",
+            "Relative sea level"
+          ],
+          "Hazard": [
+            "Coastal inundation",
+            "Storm surge",
+            "Saltwater intrusion"
+          ],
+          "Exposure": [
+            "Coastal treatment plants",
+            "Outfalls",
+            "Wells / intakes"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Low elevation",
+              "Saltwater-sensitive equipment / sources"
+            ],
+            "Adaptive Capacity": [
+              "Floodproofing",
+              "Alternative sources",
+              "Treatment capacity",
+              "Asset relocation / elevation"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_LANDSLIDE_SEVERE_STORM",
+          "hazard_name": "Landslide & Severe Storm",
+          "ipcc_cid": [
+            "Landslide",
+            "Severe wind storm"
+          ],
+          "Hazard": [
+            "Landslide probability / runout",
+            "Maximum wind gust",
+            "Storm rainfall"
+          ],
+          "Exposure": [
+            "Pipelines",
+            "Treatment assets",
+            "Pump stations"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Exposed pipelines",
+              "Slope crossings",
+              "Above-ground components"
+            ],
+            "Adaptive Capacity": [
+              "Redundant pipelines",
+              "Slope stabilization",
+              "Backup supply",
+              "Rapid repair"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "receptor_id": "REC_COMMUNICATIONS_DIGITAL_INFRASTRUCTURE",
+      "receptor_name": "Communications & Digital Infrastructure",
+      "risk_pathways": [
+        {
+          "hazard_id": "HZ_EXTREME_HEAT",
+          "hazard_name": "Extreme Heat",
+          "ipcc_cid": [
+            "Extreme heat"
+          ],
+          "Hazard": [
+            "Days above equipment design temperature",
+            "Heatwave duration"
+          ],
+          "Exposure": [
+            "Data centers",
+            "Telecom towers",
+            "Network cabinets / exchanges"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Cooling dependence",
+              "Equipment heat tolerance",
+              "Electricity dependence"
+            ],
+            "Adaptive Capacity": [
+              "Backup cooling",
+              "Backup power",
+              "Network redundancy",
+              "Preventive maintenance"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_FLOOD_COASTAL_FLOOD",
+          "hazard_name": "Flood & Coastal Flood",
+          "ipcc_cid": [
+            "River flood",
+            "Heavy precipitation and pluvial flood",
+            "Coastal flood"
+          ],
+          "Hazard": [
+            "Flood depth",
+            "Flood duration",
+            "Coastal inundation"
+          ],
+          "Exposure": [
+            "Data centers",
+            "Exchanges",
+            "Fiber / cable",
+            "Telecom towers"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Low elevation",
+              "Water-sensitive equipment",
+              "Single network nodes"
+            ],
+            "Adaptive Capacity": [
+              "Floodproofing",
+              "Network redundancy",
+              "Backup power",
+              "Alternative routing"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_SEVERE_WIND_STORM_TROPICAL_CYCLONE",
+          "hazard_name": "Severe Wind Storm & Tropical Cyclone",
+          "ipcc_cid": [
+            "Severe wind storm",
+            "Tropical cyclone"
+          ],
+          "Hazard": [
+            "Maximum wind gust",
+            "Storm intensity"
+          ],
+          "Exposure": [
+            "Telecom towers",
+            "Overhead lines",
+            "Network facilities"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Tower / pole design",
+              "Above-ground exposure",
+              "Vegetation exposure"
+            ],
+            "Adaptive Capacity": [
+              "Structural standards",
+              "Network redundancy",
+              "Rapid repair",
+              "Backup power"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_FIRE_WEATHER_WILDFIRE_LANDSLIDE",
+          "hazard_name": "Fire Weather, Wildfire & Landslide",
+          "ipcc_cid": [
+            "Fire weather",
+            "Landslide"
+          ],
+          "Hazard": [
+            "Burn probability / intensity",
+            "Landslide probability / runout"
+          ],
+          "Exposure": [
+            "Towers",
+            "Fiber / cable routes",
+            "Network facilities"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Above-ground infrastructure",
+              "Single-route dependence"
+            ],
+            "Adaptive Capacity": [
+              "Alternative routing",
+              "Redundant networks",
+              "Rapid repair"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "receptor_id": "REC_SOLID_WASTE_INFRASTRUCTURE",
+      "receptor_name": "Solid Waste Infrastructure",
+      "risk_pathways": [
+        {
+          "hazard_id": "HZ_FLOOD",
+          "hazard_name": "Flood",
+          "ipcc_cid": [
+            "River flood",
+            "Heavy precipitation and pluvial flood"
+          ],
+          "Hazard": [
+            "Flood depth",
+            "Duration",
+            "Velocity"
+          ],
+          "Exposure": [
+            "Landfills",
+            "Transfer stations",
+            "Collection / treatment sites"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Low elevation",
+              "Containment sensitivity",
+              "Drainage condition"
+            ],
+            "Adaptive Capacity": [
+              "Floodproofing",
+              "Emergency containment",
+              "Alternative facilities / routes",
+              "Rapid cleanup"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_EXTREME_HEAT",
+          "hazard_name": "Extreme Heat",
+          "ipcc_cid": [
+            "Extreme heat"
+          ],
+          "Hazard": [
+            "Extreme temperature",
+            "Heatwave duration"
+          ],
+          "Exposure": [
+            "Waste storage / treatment",
+            "Collection operations"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Organic-waste fraction",
+              "Worker heat exposure",
+              "Fire susceptibility"
+            ],
+            "Adaptive Capacity": [
+              "Temperature / fire management",
+              "Worker protections",
+              "Operational flexibility"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_SEVERE_WIND_STORM_TROPICAL_CYCLONE",
+          "hazard_name": "Severe Wind Storm & Tropical Cyclone",
+          "ipcc_cid": [
+            "Severe wind storm",
+            "Tropical cyclone"
+          ],
+          "Hazard": [
+            "Maximum wind gust",
+            "Storm intensity"
+          ],
+          "Exposure": [
+            "Landfills",
+            "Transfer / treatment sites",
+            "Collection infrastructure"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Open storage",
+              "Lightweight structures",
+              "Access-route dependence"
+            ],
+            "Adaptive Capacity": [
+              "Containment",
+              "Alternative routes / sites",
+              "Emergency response"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_LANDSLIDE_WILDFIRE",
+          "hazard_name": "Landslide & Wildfire",
+          "ipcc_cid": [
+            "Landslide",
+            "Fire weather"
+          ],
+          "Hazard": [
+            "Landslide probability",
+            "Burn probability / intensity"
+          ],
+          "Exposure": [
+            "Landfills",
+            "Waste-treatment facilities"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Slope location",
+              "Combustible waste",
+              "Containment condition"
+            ],
+            "Adaptive Capacity": [
+              "Slope stabilization",
+              "Fire prevention",
+              "Monitoring",
+              "Alternative disposal capacity"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "receptor_id": "REC_CRITICAL_SOCIAL_INFRASTRUCTURE",
+      "receptor_name": "Critical & Social Infrastructure",
+      "risk_pathways": [
+        {
+          "hazard_id": "HZ_EXTREME_HEAT",
+          "hazard_name": "Extreme Heat",
+          "ipcc_cid": [
+            "Extreme heat"
+          ],
+          "Hazard": [
+            "Extreme temperature",
+            "Heatwave duration",
+            "Indoor overheating potential"
+          ],
+          "Exposure": [
+            "Hospitals / clinics",
+            "Schools",
+            "Emergency facilities",
+            "Care facilities"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Heat-sensitive occupants",
+              "Building thermal performance",
+              "Cooling / power dependence"
+            ],
+            "Adaptive Capacity": [
+              "Cooling",
+              "Backup power",
+              "Emergency plans",
+              "Staffing / surge capacity"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_FLOOD_COASTAL_FLOOD",
+          "hazard_name": "Flood & Coastal Flood",
+          "ipcc_cid": [
+            "River flood",
+            "Heavy precipitation and pluvial flood",
+            "Coastal flood"
+          ],
+          "Hazard": [
+            "Flood depth",
+            "Duration",
+            "Coastal inundation"
+          ],
+          "Exposure": [
+            "Hospitals",
+            "Schools",
+            "Emergency facilities",
+            "Shelters"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Asset elevation",
+              "Critical equipment location",
+              "Access-route sensitivity"
+            ],
+            "Adaptive Capacity": [
+              "Floodproofing",
+              "Backup power / water",
+              "Alternative facilities",
+              "Emergency access"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_DROUGHT_WATER_SCARCITY",
+          "hazard_name": "Drought & Water Scarcity",
+          "ipcc_cid": [
+            "Hydrological drought"
+          ],
+          "Hazard": [
+            "Water-supply deficit",
+            "Hydrological drought duration"
+          ],
+          "Exposure": [
+            "Hospitals",
+            "Schools",
+            "Care facilities"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Water-intensive services",
+              "Single-source dependence"
+            ],
+            "Adaptive Capacity": [
+              "Emergency storage",
+              "Alternative water",
+              "Continuity planning"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_SEVERE_WIND_WILDFIRE_LANDSLIDE",
+          "hazard_name": "Severe Wind, Wildfire & Landslide",
+          "ipcc_cid": [
+            "Severe wind storm",
+            "Fire weather",
+            "Landslide"
+          ],
+          "Hazard": [
+            "Wind intensity",
+            "Burn probability / intensity",
+            "Landslide probability / runout"
+          ],
+          "Exposure": [
+            "Hospitals",
+            "Schools",
+            "Emergency / care facilities"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Structural condition",
+              "Access-route dependence",
+              "Site-specific sensitivity"
+            ],
+            "Adaptive Capacity": [
+              "Structural resilience",
+              "Backup systems",
+              "Alternative access / facilities",
+              "Emergency plans"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "receptor_id": "REC_CULTURAL_HERITAGE",
+      "receptor_name": "Cultural Heritage",
+      "risk_pathways": [
+        {
+          "hazard_id": "HZ_EXTREME_HEAT_ARIDITY",
+          "hazard_name": "Extreme Heat & Aridity",
+          "ipcc_cid": [
+            "Extreme heat",
+            "Aridity"
+          ],
+          "Hazard": [
+            "Extreme temperature",
+            "Temperature variability",
+            "Aridity",
+            "Drought duration"
+          ],
+          "Exposure": [
+            "Historic buildings",
+            "Archaeological sites",
+            "Cultural landscapes",
+            "Collections"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Material sensitivity",
+              "Existing deterioration",
+              "Soil / foundation sensitivity",
+              "Organic-material content"
+            ],
+            "Adaptive Capacity": [
+              "Conservation management",
+              "Monitoring",
+              "Protective retrofits",
+              "Funding / technical capacity"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_HEAVY_PRECIPITATION_FLOOD",
+          "hazard_name": "Heavy Precipitation & Flood",
+          "ipcc_cid": [
+            "Heavy precipitation and pluvial flood",
+            "River flood"
+          ],
+          "Hazard": [
+            "Extreme rainfall",
+            "Flood depth / duration",
+            "Moisture exposure"
+          ],
+          "Exposure": [
+            "Heritage sites in flood areas",
+            "Museums / archives",
+            "Historic districts"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Water-sensitive materials",
+              "Foundation / drainage condition",
+              "Existing deterioration"
+            ],
+            "Adaptive Capacity": [
+              "Drainage / flood protection",
+              "Emergency conservation plans",
+              "Documentation / digitization",
+              "Recovery funding"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_COASTAL_FLOOD_COASTAL_EROSION",
+          "hazard_name": "Coastal Flood & Coastal Erosion",
+          "ipcc_cid": [
+            "Coastal flood",
+            "Coastal erosion"
+          ],
+          "Hazard": [
+            "Coastal inundation",
+            "Shoreline retreat",
+            "Wave exposure",
+            "Saltwater exposure"
+          ],
+          "Exposure": [
+            "Coastal heritage sites",
+            "Historic waterfronts",
+            "Archaeological sites"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Salt-sensitive materials",
+              "Low elevation",
+              "Erosion susceptibility"
+            ],
+            "Adaptive Capacity": [
+              "Coastal protection",
+              "Documentation / salvage planning",
+              "Relocation where feasible",
+              "Conservation funding"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_SEVERE_WIND_WILDFIRE_LANDSLIDE",
+          "hazard_name": "Severe Wind, Wildfire & Landslide",
+          "ipcc_cid": [
+            "Severe wind storm",
+            "Fire weather",
+            "Landslide"
+          ],
+          "Hazard": [
+            "Maximum wind gust",
+            "Burn probability / intensity",
+            "Landslide probability / runout"
+          ],
+          "Exposure": [
+            "Historic buildings",
+            "Cultural landscapes",
+            "Archaeological sites"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Structural / material sensitivity",
+              "Combustible materials",
+              "Slope location"
+            ],
+            "Adaptive Capacity": [
+              "Emergency planning",
+              "Fire protection",
+              "Slope stabilization",
+              "Conservation / recovery capacity"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "receptor_id": "REC_TOURISM_RECREATION",
+      "receptor_name": "Tourism & Recreation",
+      "risk_pathways": [
+        {
+          "hazard_id": "HZ_EXTREME_HEAT",
+          "hazard_name": "Extreme Heat",
+          "ipcc_cid": [
+            "Extreme heat"
+          ],
+          "Hazard": [
+            "Heat Index",
+            "Heatwave duration",
+            "Days above outdoor-activity threshold"
+          ],
+          "Exposure": [
+            "Tourism sites",
+            "Outdoor recreation areas",
+            "Visitors / tourism employment"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Outdoor-activity dependence",
+              "Seasonal concentration",
+              "Visitor heat sensitivity"
+            ],
+            "Adaptive Capacity": [
+              "Season / schedule flexibility",
+              "Shade / cooling / water",
+              "Destination diversification",
+              "Warning systems"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_DROUGHT_WATER_SCARCITY",
+          "hazard_name": "Drought & Water Scarcity",
+          "ipcc_cid": [
+            "Hydrological drought"
+          ],
+          "Hazard": [
+            "Hydrological drought",
+            "Water-supply deficit",
+            "Drought duration"
+          ],
+          "Exposure": [
+            "Water-dependent tourism facilities",
+            "Tourism demand in water-scarce areas"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "High water demand",
+              "Peak-demand overlap",
+              "Dependence on natural amenities"
+            ],
+            "Adaptive Capacity": [
+              "Water efficiency / reuse",
+              "Alternative supply",
+              "Demand management",
+              "Business diversification"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_FIRE_WEATHER_WILDFIRE",
+          "hazard_name": "Fire Weather & Wildfire",
+          "ipcc_cid": [
+            "Fire weather"
+          ],
+          "Hazard": [
+            "Fire Weather Index",
+            "Burn probability",
+            "Smoke-exposure potential"
+          ],
+          "Exposure": [
+            "Tourism sites",
+            "Trails / recreation areas",
+            "Visitors"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Dependence on fire-prone natural areas",
+              "Limited evacuation routes"
+            ],
+            "Adaptive Capacity": [
+              "Warning / closure systems",
+              "Evacuation planning",
+              "Destination diversification"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_SNOW_ICE_CHANGE",
+          "hazard_name": "Snow & Ice Change",
+          "ipcc_cid": [
+            "Snow, glacier and ice sheet",
+            "Lake, river and sea ice"
+          ],
+          "Hazard": [
+            "Snow-cover duration",
+            "Snow-water equivalent",
+            "Snow reliability",
+            "Glacier / ice loss"
+          ],
+          "Exposure": [
+            "Winter-tourism areas",
+            "Ski infrastructure",
+            "Glacier-dependent attractions"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Natural snow / ice dependence",
+              "Low elevation",
+              "Seasonal economic dependence"
+            ],
+            "Adaptive Capacity": [
+              "Tourism diversification",
+              "Seasonal adaptation",
+              "Alternative recreation products"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_COASTAL_FLOOD_COASTAL_EROSION",
+          "hazard_name": "Coastal Flood & Coastal Erosion",
+          "ipcc_cid": [
+            "Coastal flood",
+            "Coastal erosion"
+          ],
+          "Hazard": [
+            "Coastal inundation",
+            "Shoreline retreat",
+            "Wave / storm exposure"
+          ],
+          "Exposure": [
+            "Beaches",
+            "Coastal tourism facilities",
+            "Recreation infrastructure"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Beach-width dependence",
+              "Low-elevation facilities",
+              "Dependence on coastal natural assets"
+            ],
+            "Adaptive Capacity": [
+              "Setbacks / relocation",
+              "Ecosystem-based protection",
+              "Destination diversification"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_MARINE_HEATWAVE_OCEAN_ECOSYSTEM_CHANGE",
+          "hazard_name": "Marine Heatwave & Ocean Ecosystem Change",
+          "ipcc_cid": [
+            "Marine heatwave",
+            "Mean ocean temperature"
+          ],
+          "Hazard": [
+            "Marine heatwave intensity / duration",
+            "Coral thermal stress",
+            "Ocean ecosystem-condition anomaly"
+          ],
+          "Exposure": [
+            "Dive / snorkel sites",
+            "Recreational fisheries",
+            "Marine tourism areas"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Dependence on coral / marine biodiversity",
+              "Low destination diversification"
+            ],
+            "Adaptive Capacity": [
+              "Marine conservation / restoration",
+              "Tourism diversification",
+              "Visitor management"
+            ]
+          }
+        },
+        {
+          "hazard_id": "HZ_TROPICAL_CYCLONE_SEVERE_STORM",
+          "hazard_name": "Tropical Cyclone & Severe Storm",
+          "ipcc_cid": [
+            "Tropical cyclone",
+            "Severe wind storm"
+          ],
+          "Hazard": [
+            "Wind intensity",
+            "Storm surge",
+            "Wave height",
+            "Storm frequency"
+          ],
+          "Exposure": [
+            "Tourism facilities",
+            "Visitors",
+            "Ports / marinas / recreation assets"
+          ],
+          "Vulnerability": {
+            "Sensitivity": [
+              "Coastal concentration",
+              "Exposed facilities",
+              "Seasonal visitor concentration"
+            ],
+            "Adaptive Capacity": [
+              "Warning / evacuation",
+              "Structural standards",
+              "Business continuity / insurance"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
